@@ -27,12 +27,10 @@ export default {
     })
     .then(response => {
       // JSON responses are automatically parsed.
-      console.log(response.data);
       this.data = response.data;
     })
     .catch(e => {
       this.errors.push(e)
-      console.error("error");
     })
   }
 };

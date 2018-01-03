@@ -1,79 +1,93 @@
 <template>
-  <md-card>
-    <md-card-header>
-      <div class="md-title" v-if="$route.params.id">Inhalt bearbeiten</div>
-      <div class="md-title" v-else>Inhalt erstellen</div>
-    </md-card-header>
-    <md-card-content>
-      <form id="contentForm" @submit.prevent="validateBeforeSubmit">
-        <md-input-container :class="{'md-input-invalid': errors.has('title')}">
-          <label>Titel</label>
-          <md-input v-model="data.title" type="text" v-validate name="title" data-vv-rules="required"></md-input>
-          <span class="md-error">{{errors.first('title')}}</span>
-        </md-input-container>
+  <md-layout md-gutter>
+    <md-layout md-flex-medium="100" md-flex-large="70" md-flex-xlarge="70">
+      <md-card>
+        <md-card-header>
+          <div class="md-title" v-if="$route.params.id">Inhalt bearbeiten</div>
+          <div class="md-title" v-else>Inhalt erstellen</div>
+        </md-card-header>
+        <md-card-content>
+          <form id="contentForm" @submit.prevent="validateBeforeSubmit">
+            <md-input-container :class="{'md-input-invalid': errors.has('title')}">
+              <label>Titel</label>
+              <md-input v-model="data.title" type="text" v-validate name="title" data-vv-rules="required"></md-input>
+              <span class="md-error">{{errors.first('title')}}</span>
+            </md-input-container>
 
-        <md-input-container :class="{'md-input-invalid': errors.has('description')}">
-          <label>Beschreibung</label>
-          <md-textarea v-model="data.description" v-validate name="description" data-vv-rules="max:140" maxlength="140"></md-textarea>
-          <span class="md-error">{{errors.first('description')}}</span>
-        </md-input-container>
+            <md-input-container :class="{'md-input-invalid': errors.has('description')}">
+              <label>Beschreibung</label>
+              <md-textarea v-model="data.description" v-validate name="description" data-vv-rules="max:140" maxlength="140"></md-textarea>
+              <span class="md-error">{{errors.first('description')}}</span>
+            </md-input-container>
 
-        <md-input-container :class="{'md-input-invalid': errors.has('url')}">
-          <label>URL</label>
-          <md-input v-model="data.url" v-validate name="url" data-vv-rules="required|url"></md-input>
-          <span class="md-error">{{errors.first('url')}}</span>
-        </md-input-container>
+            <md-input-container :class="{'md-input-invalid': errors.has('url')}">
+              <label>URL</label>
+              <md-input v-model="data.url" v-validate name="url" data-vv-rules="required|url"></md-input>
+              <span class="md-error">{{errors.first('url')}}</span>
+            </md-input-container>
 
-        <md-input-container :class="{'md-input-invalid': errors.has('thumbnail')}">
-          <label>Thumbnail-URL</label>
-          <md-input v-model="data.thumbnail" v-validate name="thumbnail" data-vv-rules="url"></md-input>
-          <span class="md-error">{{errors.first('thumbnail')}}</span>
-        </md-input-container>
-        <div v-if="data.thumbnail" >
-            <img :src="data.thumbnail">
-        </div>
+            <md-input-container :class="{'md-input-invalid': errors.has('thumbnail')}">
+              <label>Thumbnail-URL</label>
+              <md-input v-model="data.thumbnail" v-validate name="thumbnail" data-vv-rules="url"></md-input>
+              <span class="md-error">{{errors.first('thumbnail')}}</span>
+            </md-input-container>
+            <div v-if="data.thumbnail" >
+                <img :src="data.thumbnail">
+            </div>
 
-        <md-input-container>
-          <label for="license">Lizenz</label>
-          <md-select v-model="data.licenses" id="license" multiple name="license">
-            <md-option value="GPL">GPL</md-option>
-            <md-option value="MIT">MIT</md-option>
-            <md-option value="CC BY-SA">CC BY-SA</md-option>
-          </md-select>
-        </md-input-container>
+            <md-input-container>
+              <label for="license">Lizenz</label>
+              <md-select v-model="data.licenses" id="license" multiple name="license">
+                <md-option value="GPL">GPL</md-option>
+                <md-option value="MIT">MIT</md-option>
+                <md-option value="CC BY-SA">CC BY-SA</md-option>
+              </md-select>
+            </md-input-container>
 
-        <md-input-container>
-          <label for="contentCategory">Kategorie</label>
-          <md-select v-model="data.contentCategory" name="contentCategory" id="contentCategory">
-            <md-option value="atomic">Atomic</md-option>
-            <md-option value="interactive">Interactive</md-option>
-          </md-select>
-        </md-input-container>
+            <md-input-container>
+              <label for="contentCategory">Kategorie</label>
+              <md-select v-model="data.contentCategory" name="contentCategory" id="contentCategory">
+                <md-option value="atomic">Atomic</md-option>
+                <md-option value="interactive">Interactive</md-option>
+              </md-select>
+            </md-input-container>
 
-        <section>
-            <md-chips id="tags" v-model="data.tags" :md-max="10" md-input-placeholder="Tags... (max. 10)">
-              <template slot-scope="tag" slot="tag">
-                <span>{{ tag.value }}</span>
-              </template>
-            </md-chips>
-        </section>
-      </form>
-    </md-card-content>
-    <md-card-actions>
-      <md-button style="position:absolute; left:8px;">Delete</md-button>
-      <router-link to="/list"><md-button style="color: initial;">Cancel</md-button></router-link>
-      <md-button class="md-accent" type="submit" form="contentForm">Save</md-button>
-    </md-card-actions>
-  </md-card>
+            <section>
+                <md-chips id="tags" v-model="data.tags" :md-max="10" md-input-placeholder="Tags... (max. 10)">
+                  <template slot-scope="tag" slot="tag">
+                    <span>{{ tag.value }}</span>
+                  </template>
+                </md-chips>
+            </section>
+          </form>
+        </md-card-content>
+        <md-card-actions>
+          <md-button style="position:absolute; left:8px;">Delete</md-button>
+          <router-link to="/list"><md-button style="color: initial;">Cancel</md-button></router-link>
+          <md-button class="md-accent" type="submit" form="contentForm">Save</md-button>
+        </md-card-actions>
+      </md-card>
+    </md-layout>
+    <md-layout>
+      <div class="preview-wrapper">
+        <h1>Livevorschau:</h1>
+        <app-previewCard v-bind:data="data"></app-previewCard>
+      </div>
+    </md-layout>
+  </md-layout>
 </template>
 
 <script>
 import Vue from 'vue';
 import VeeValidate from 'vee-validate';
 Vue.use(VeeValidate);
+import previewCard from './previewCard.vue';
 
 import axios from 'axios';
 export default {
+  components: {
+    'app-previewCard': previewCard
+  },
   name: 'contentForm',
   data() {
     return {
@@ -89,16 +103,8 @@ export default {
       },
     };
   },
-  beforeCreate() {
-      this.loadContent();
-  },
-  watch:{
-    '$route' (to, from){
-      this.loadContent();
-    }
-  },
   methods: {
-    loadContent(){
+    loadContent() {
       if(this.$route.params.id){
         axios.get('https://schul-cloud.org:8080/content/resources/'+ this.$route.params.id ,{headers: {
             "Authorization" : "Bearer " + localStorage.getItem('jwt')
@@ -133,13 +139,29 @@ export default {
             axios.post("https://schul-cloud.org:8080/content/resources/", this.data);
         }
     }
-  }
+  },
+  created() {
+      this.loadContent();
+  },
+  watch:{
+    '$route' (to, from){
+      this.loadContent();
+    }
+  },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-.md-has-textarea{
+  .md-layout > .md-layout{
+    padding: 5px;
+  }
+  .preview-wrapper{
+    display: block;
+    width: 100%;
+    
+  }
+  .md-has-textarea{
     label{
         top: -6px !important;
         left: 0 !important;
@@ -147,5 +169,5 @@ export default {
     .md-textarea{
         padding: 0 !important;
     }
-}
+  }
 </style>
