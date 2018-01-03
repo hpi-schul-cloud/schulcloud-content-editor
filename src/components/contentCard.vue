@@ -1,6 +1,6 @@
 <template>
   <md-card class="card-content">
-    <md-card-media md-ratio="16:9">
+    <md-card-media v-if="data.thumbnail" md-ratio="16:9">
       <img :src="data.thumbnail" :alt="'Thumbnail for ~' + data.title + '~'">
     </md-card-media>
 

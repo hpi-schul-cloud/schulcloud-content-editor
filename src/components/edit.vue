@@ -31,9 +31,6 @@
               <md-input v-model="data.thumbnail" v-validate name="thumbnail" data-vv-rules="url"></md-input>
               <span class="md-error">{{errors.first('thumbnail')}}</span>
             </md-input-container>
-            <div v-if="data.thumbnail" >
-                <img :src="data.thumbnail">
-            </div>
 
             <md-input-container>
               <label for="license">Lizenz</label>
@@ -156,10 +153,12 @@ export default {
   .md-layout > .md-layout{
     padding: 5px;
   }
+  .md-card{
+    width: 100%;
+  }
   .preview-wrapper{
     display: block;
     width: 100%;
-    
   }
   .md-has-textarea{
     label{
