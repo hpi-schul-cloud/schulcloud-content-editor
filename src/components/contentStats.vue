@@ -1,20 +1,20 @@
 <template>
-    <md-layout md-gutter>
-        <md-layout class="card-wrapper" v-for="item in data" md-flex-xsmall="100" md-flex-small="50" md-flex-medium="50" md-flex-large="33" md-flex-xlarge="33">
-            <app-contentCard v-bind:data="item"></app-contentCard>
-        </md-layout>
-    </md-layout>
+  <md-card class="card-content">
+    <md-card-header>
+      <h2 class="md-title">Statistik</h2>
+    </md-card-header>
+
+    <md-card-content>
+      <div><b>Artikel:</b> {{data.total}}</div>
+    </md-card-content>
+  </md-card>
 </template>
 
 <script>
-import contentCard from './contentCard.vue';
 import axios from 'axios';
 
 export default {
-  components: {
-    'app-contentCard': contentCard
-  },
-  name: 'contentList',
+  name: 'contentStats',
   data() {
     return {
       data: [],
@@ -27,10 +27,12 @@ export default {
     })
     .then(response => {
       // JSON responses are automatically parsed.
-      this.data = response.data.data;
+      console.log(response.data);
+      this.data = response.data;
     })
     .catch(e => {
       this.errors.push(e)
+      console.error("error");
     })
   }
 };
@@ -39,8 +41,4 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-    .card-wrapper{
-        padding: 5px;
-        box-sizing: border-box;
-    }
 </style>

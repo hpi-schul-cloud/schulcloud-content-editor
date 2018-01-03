@@ -90,9 +90,18 @@ export default {
     };
   },
   beforeCreate() {
+      this.loadContent();
+  },
+  watch:{
+    '$route' (to, from){
+      this.loadContent();
+    }
+  },
+  methods: {
+    loadContent(){
       if(this.$route.params.id){
         axios.get('https://schul-cloud.org:8080/content/resources/'+ this.$route.params.id ,{headers: {
-            "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6ImFjY2VzcyJ9.eyJhY2NvdW50SWQiOiIwMDAwZDIzMTgxNmFiYmE1ODQ3MTRjOWYiLCJ1c2VySWQiOiIwMDAwZDIzMTgxNmFiYmE1ODQ3MTRjOWUiLCJpYXQiOjE1MTA3MzUwNjIsImV4cCI6MTUxMzMyNzA2MiwiYXVkIjoiaHR0cHM6Ly9zY2h1bC1jbG91ZC5vcmciLCJpc3MiOiJmZWF0aGVycyIsInN1YiI6ImFub255bW91cyJ9.OKdBL4TJVc9weiF7l-tv6fT7oFrFiCvAOyqey141NPM"
+            "Authorization" : "Bearer " + localStorage.getItem('jwt')
           }
         })
         .then(response => {
@@ -102,18 +111,19 @@ export default {
         .catch(e => {
           this.errors.push(e)
         })
+      }else{
+        this.data = [];
       }
-  },
-  methods: {
+    },
     validateBeforeSubmit() {
       this.$validator.validateAll().then((result) => {
         if (result) {
-          alert('From Submitted!');
+          alert('Form Submitted!');
           this.submitContent();
           return;
         }
 
-        alert('Correct them errors!');
+        alert('Correct the errors!');
       });
     },
     submitContent: function (event) {

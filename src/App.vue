@@ -8,27 +8,42 @@
             </h3>
         </router-link>
 
-        <router-link to="/create"><md-button>Create</md-button></router-link>
-        <router-link to="/list"><md-button>Search</md-button></router-link>
+        <router-link v-if="jwt" to="/create"><md-button>Create</md-button></router-link>
+        <router-link v-if="jwt" to="/list"><md-button>Search</md-button></router-link>
+        <md-button v-if="jwt" v-on:click="logout">LogOut</md-button>
       </md-toolbar>
     </div>
     </header>
     <main class="page-container container-fluid">
-        <router-view></router-view>
+        <router-view v-if="jwt"></router-view>
+        <app-login v-else></app-login>
     </main>
   </div>
 </template>
 
 <script>
+import login from './components/login.vue';
+
 export default {
+  components: {
+    'app-login': login,
+  },
   name: 'app',
   data() {
     return {
       title: 'Schul-Cloud Content',
+      jwt: localStorage.getItem('jwt'),
     };
   },
+  methods: {
+    logout() {
+        localStorage.removeItem("jwt");
+        window.location.href = "/";
+    }
+  }
 };
 </script>
+
 
 <style lang="scss">
 
@@ -61,6 +76,7 @@ header{
     background: #b10438;
     .md-theme-default.md-toolbar{
         background: transparent;
+        color: #fff !important;
         a{
             color: #fff !important;
         }
