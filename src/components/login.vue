@@ -7,10 +7,16 @@
     <md-card-content>
       <form id="loginForm" @submit.prevent="validateBeforeSubmit">
         <md-input-container :class="{'md-input-invalid': errors.has('url')}">
-          <label>JWT</label>
-          <md-input v-model="jwt" v-validate name="jwt" data-vv-rules="required"></md-input>
-          <span class="md-error">{{errors.first('jwt')}}</span>
+          <label>Benutzername</label>
+          <md-input v-model="login.username" v-validate name="username" data-vv-rules="required"></md-input>
+          <span class="md-error">{{errors.first('username')}}</span>
         </md-input-container>
+        <md-input-container md-has-password :class="{'md-input-invalid': errors.has('url')}">
+          <label>Passwort</label>
+          <md-input v-model="login.password" v-validate name="password" type="password" data-vv-rules="required"></md-input>
+          <span class="md-error">{{errors.first('password')}}</span>
+        </md-input-container>
+        <a href="https://schul-cloud.org/login?recovery=true">Passwort vergessen?</a>
       </form>
     </md-card-content>
       
@@ -21,34 +27,46 @@
 </template>
 
 <script>
+import Vue from 'vue';
+import VeeValidate from 'vee-validate';
+Vue.use(VeeValidate);
 import axios from 'axios';
 
 export default {
   name: 'login',
   data() {
     return {
-      jwt: '',
+      login: {
+        username: '',
+        password: ''
+      }
     };
   },
   created() {
-    axios.get(`https://schul-cloud.org:8080/content/resources/`,{headers: {
-        "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6ImFjY2VzcyJ9.eyJhY2NvdW50SWQiOiI1YTMyNWRiNTVhOTE2NzBlYTZiNWE5ZWQiLCJ1c2VySWQiOiI1YTMyNWFkNTVhOTE2NzBlYTZiNWE5ZTgiLCJpYXQiOjE1MTQ5OTY3NTUsImV4cCI6MTUxNzU4ODc1NSwiYXVkIjoiaHR0cHM6Ly9zY2h1bC1jbG91ZC5vcmciLCJpc3MiOiJmZWF0aGVycyIsInN1YiI6ImFub255bW91cyJ9._fr7fzOJaUK_gqM0ePwTc6YntUGtam6EnC-hOjjfd2c"
-      }
-    })
-    .then(response => {
-      // JSON responses are automatically parsed.
-      this.data = response.data.data;
-    })
-    .catch(e => {
-      this.errors.push(e)
-    })
+    if(this.$cookies.get('jwt')){
+        localStorage.setItem("jwt", this.$cookies.get('jwt'));
+        this.$router.go();
+    }
   },
   methods: {
+    getToken: function(){
+        axios.post(`https://schul-cloud.org:8080/authentication`, this.login)
+        .then(response => {
+          // JSON responses are automatically parsed.
+          const jwt = response.data.accessToken;
+          localStorage.setItem("jwt", jwt);
+          this.$cookies.set('jwt', jwt, new Date(Date.now() + 30 * 24 * 60 * 60 * 1000))
+          window.location.href = "/";
+        })
+        .catch(e => {
+            alert("Login gescheitert!");
+            console.error(e);
+        })
+    },
     validateBeforeSubmit() {
       this.$validator.validateAll().then((result) => {
         if (result) {
-          localStorage.setItem("jwt", this.jwt);
-          window.location.href = "/";
+          this.getToken();
           return;
         }
         alert('Correct the errors!');
