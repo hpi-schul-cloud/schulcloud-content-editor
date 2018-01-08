@@ -15,11 +15,11 @@
     },
     {
       "path": "./dist/static/**/!([0-9])*.js",
-      "maxSize": "100 KB"
+      "maxSize": "200 KB"
     },
     {
       "path": "./dist/static/**/*.css",
-      "maxSize": "30 KB"
+      "maxSize": "50 KB"
     }
   ],
   "scripts": {
