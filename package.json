@@ -27,7 +27,8 @@
     "start": "node build/dev-server.js",
     "build": "node build/build.js",
     "lint": "eslint --ext .js,.vue src",
-    "test": "bundlesize"
+    "test": "bundlesize",
+    "travis": "npm run build && bundlesize"
   },
   "dependencies": {
     "axios": "^0.17.1",
