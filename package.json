@@ -6,8 +6,16 @@
   "private": true,
   "bundlesize": [
     {
-      "path": "./dist/**/*.js",
-      "maxSize": "250 KB"
+      "path": "./dist/service-worker.js",
+      "maxSize": "10 KB"
+    },
+    {
+      "path": "./dist/static/**/*.js",
+      "maxSize": "200 KB"
+    },
+    {
+      "path": "./dist/static/**/*.css",
+      "maxSize": "200 KB"
     }
   ],
   "scripts": {
