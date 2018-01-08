@@ -9,8 +9,8 @@
       <div class="md-subhead">
         <md-icon>label</md-icon>
         <span v-for="tag in data.tags">
-          {{ tag }}, 
-        </span>            
+          {{ tag }},
+        </span>
         </md-chips>
       </div>
     </md-card-header>
@@ -18,8 +18,11 @@
     <md-card-content>
       {{data.description}}
     </md-card-content>
-      
+
     <md-card-actions>
+      <a v-bind:href="'https://www.schul-cloud.org/content/redirect/' + data._id" target="_blank">
+        <md-button class="md-accent">open</md-button>
+      </a>
       <router-link :to="{path: '/edit/' + data._id}">
         <md-button class="md-accent">edit</md-button>
       </router-link>
