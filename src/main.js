@@ -8,6 +8,9 @@ import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.css'
 Vue.use(VueMaterial)
 
+import VueCookies from 'vue-cookies'
+Vue.use(VueCookies)
+
 Vue.config.silent = false;
 
 Vue.config.productionTip = false;

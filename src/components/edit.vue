@@ -131,9 +131,13 @@ export default {
     },
     submitContent: function (event) {
         if(this.$route.params.id){
-            axios.patch("https://schul-cloud.org:8080/content/resources/59919169c9df580090bc0815", this.data);
+            axios.patch(" https://schul-cloud.org:4040/content/resources/"+this.$route.params.id, this.data, {
+                headers: {"Authorization" : "Bearer " + localStorage.getItem('jwt')},
+            });
         }else{
-            axios.post("https://schul-cloud.org:8080/content/resources/", this.data);
+            axios.post(" https://schul-cloud.org:4040/content/resources/", this.data, {
+                headers: {"Authorization" : "Bearer " + localStorage.getItem('jwt')},
+            });
         }
     }
   },

@@ -38,6 +38,7 @@ export default {
   methods: {
     logout() {
         localStorage.removeItem("jwt");
+        this.$cookies.remove("jwt");
         window.location.href = "/";
     }
   }
