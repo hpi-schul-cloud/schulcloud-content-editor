@@ -7,7 +7,10 @@
 
 <script>
 import contentStats from './contentStats.vue';
-import listContent from './listContent.vue';
+/* load listContent async */
+const listContent = () => import(
+    /* webpackChunkName: "listContent" */ './listContent.vue'
+);
 
 export default {
   components: {
