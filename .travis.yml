@@ -1,13 +1,9 @@
 language: node_js
 node_js:
   - "6"
-services:
-env:
 script:
   - npm run test
   - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
-after_success:
-  - bash <(curl -X POST --data "apiKey=$apiKey&branch=$BRANCH" http://$url/update)
 cache:
   directories:
     - node_modules
