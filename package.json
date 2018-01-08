@@ -1,6 +1,6 @@
 {
   "name": "schul-cloud-content-client",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Schul-Cloud Content",
   "author": "adrianjost <homepage@hackedit.de>",
   "private": true,
@@ -10,12 +10,16 @@
       "maxSize": "10 KB"
     },
     {
-      "path": "./dist/static/**/*.js",
+      "path": "./dist/static/**/[0-9]*.js",
+      "maxSize": "30 KB"
+    },
+    {
+      "path": "./dist/static/**/!([0-9])*.js",
       "maxSize": "200 KB"
     },
     {
       "path": "./dist/static/**/*.css",
-      "maxSize": "200 KB"
+      "maxSize": "50 KB"
     }
   ],
   "scripts": {
@@ -23,7 +27,8 @@
     "start": "node build/dev-server.js",
     "build": "node build/build.js",
     "lint": "eslint --ext .js,.vue src",
-    "test": "npm run build && bundlesize"
+    "test": "bundlesize",
+    "travis": "npm run build && bundlesize"
   },
   "dependencies": {
     "axios": "^0.17.1",

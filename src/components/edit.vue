@@ -78,7 +78,11 @@
 import Vue from 'vue';
 import VeeValidate from 'vee-validate';
 Vue.use(VeeValidate);
-import previewCard from './previewCard.vue';
+
+/* load previewCard async */
+const previewCard = () => import(
+    /* webpackChunkName: "previewCard" */ './previewCard.vue'
+);
 
 import axios from 'axios';
 export default {
