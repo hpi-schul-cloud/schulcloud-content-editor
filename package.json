@@ -1,14 +1,21 @@
 {
   "name": "schul-cloud-content-client",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Schul-Cloud Content",
   "author": "adrianjost <homepage@hackedit.de>",
   "private": true,
+  "bundlesize": [
+    {
+      "path": "./dist/**/*.js",
+      "maxSize": "250 KB"
+    }
+  ],
   "scripts": {
     "dev": "node build/dev-server.js",
     "start": "node build/dev-server.js",
     "build": "node build/build.js",
-    "lint": "eslint --ext .js,.vue src"
+    "lint": "eslint --ext .js,.vue src",
+    "test": "bundlesize"
   },
   "dependencies": {
     "axios": "^0.17.1",
@@ -26,6 +33,7 @@
     "babel-preset-env": "^1.6.0",
     "babel-preset-stage-2": "^6.24.1",
     "babel-register": "^6.26.0",
+    "bundlesize": "^0.15.3",
     "chalk": "^2.1.0",
     "connect-history-api-fallback": "^1.4.0",
     "copy-webpack-plugin": "^4.1.1",
