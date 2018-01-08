@@ -1,0 +1,9 @@
+language: node_js
+node_js:
+  - "6"
+script:
+  - npm run test
+  - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
+cache:
+  directories:
+    - node_modules
