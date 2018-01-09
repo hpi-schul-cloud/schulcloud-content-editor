@@ -1,21 +1,26 @@
 <template>
-    <md-layout md-gutter>
-        <md-layout class="card-wrapper" v-for="item in data" md-flex-xsmall="100" md-flex-small="50" md-flex-medium="50" md-flex-large="33" md-flex-xlarge="33">
-            <app-contentCard v-bind:data="item"></app-contentCard>
-        </md-layout>
-    </md-layout>
+    <table>
+        <thead>
+            <tr>
+              <th>Title</th>
+              <th>URL</th>
+              <th class="md-hide-small">Lizenz</th>
+              <th class="md-hide-medium">Kategorie</th>
+            </tr>
+        </thead>
+        <app-contentRow v-for="item in data" v-bind:data="item"></app-contentRow>
+    </table>
 </template>
 
 <script>
-//import contentCard from './contentCard.vue';
-import contentCard from './contentTableColumn.vue';
+import contentTableRow from './contentTableRow.vue';
 import axios from 'axios';
 
 export default {
   components: {
-    'app-contentCard': contentCard
+    'app-contentRow': contentTableRow
   },
-  name: 'contentList',
+  name: 'contentTable',
   data() {
     return {
       data: [],
@@ -35,13 +40,23 @@ export default {
     })
   }
 };
-
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="scss" scoped>
-    .card-wrapper{
-        padding: 5px;
-        box-sizing: border-box;
+<style lang="scss">
+main{
+    max-width: 1750px !important;
+}
+table{
+    min-width: 800px;
+    width:100%;
+    overflow: auto;
+    border-collapse: collapse;
+    thead{
+        text-align: left;
+        th{
+            padding: 0 8px;
+        }
     }
+}
 </style>

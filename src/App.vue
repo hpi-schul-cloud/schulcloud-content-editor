@@ -9,7 +9,8 @@
         </router-link>
 
         <router-link v-if="jwt" to="/create"><md-button>Create</md-button></router-link>
-        <router-link v-if="jwt" to="/list"><md-button>Search</md-button></router-link>
+        <router-link v-if="jwt" to="/list"><md-button>List</md-button></router-link>
+        <router-link v-if="jwt" to="/search"><md-button>Search</md-button></router-link>
         <md-button v-if="jwt" v-on:click="logout">LogOut</md-button>
       </md-toolbar>
     </div>

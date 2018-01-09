@@ -38,6 +38,8 @@
                 <md-option value="GPL">GPL</md-option>
                 <md-option value="MIT">MIT</md-option>
                 <md-option value="CC BY-SA">CC BY-SA</md-option>
+                <md-option value="CC BY-NC-SA (KA default)">CC BY-NC-SA (KA default)</md-option>
+                <md-option value="Standard Youtube">Standard Youtube</md-option>
               </md-select>
             </md-input-container>
 
