@@ -1,5 +1,5 @@
 <template>
-  <md-layout md-gutter>
+  <md-layout md-gutter class="container-fluid">
     <md-layout md-flex-medium="100" md-flex-large="70" md-flex-xlarge="70">
       <md-card>
         <md-card-header>
@@ -38,6 +38,8 @@
                 <md-option value="GPL">GPL</md-option>
                 <md-option value="MIT">MIT</md-option>
                 <md-option value="CC BY-SA">CC BY-SA</md-option>
+                <md-option value="CC BY-NC-SA (KA default)">CC BY-NC-SA (KA default)</md-option>
+                <md-option value="Standard Youtube">Standard Youtube</md-option>
               </md-select>
             </md-input-container>
 
@@ -60,7 +62,7 @@
         </md-card-content>
         <md-card-actions>
           <md-button style="position:absolute; left:8px;">Delete</md-button>
-          <router-link to="/list"><md-button style="color: initial;">Cancel</md-button></router-link>
+          <md-button v-on:click="$router.go(-1)" style="color: initial;">Cancel</md-button>
           <md-button class="md-accent" type="submit" form="contentForm">Save</md-button>
         </md-card-actions>
       </md-card>

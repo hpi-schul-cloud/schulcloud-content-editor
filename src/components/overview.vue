@@ -1,21 +1,21 @@
 <template>
     <div>
         <app-contentStats></app-contentStats>
-        <app-listContent></app-listContent>
+        <app-searchContent></app-searchContent>
     </div>
 </template>
 
 <script>
 import contentStats from './contentStats.vue';
-/* load listContent async */
-const listContent = () => import(
-    /* webpackChunkName: "listContent" */ './listContent.vue'
+/* load searchContent async */
+const searchContent = () => import(
+    /* webpackChunkName: "searchContent" */ './searchContent.vue'
 );
 
 export default {
   components: {
     'app-contentStats': contentStats,
-    'app-listContent': listContent
+    'app-searchContent': searchContent
   },
   name: 'overview',
 };

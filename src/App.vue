@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <header class="md-elevation-1 md-accent"><div class="container-fluid">
+    <header class="md-elevation-1 md-accent"><div class="container-fluid-max">
       <md-toolbar md-elevation="0" class="md-toolbar md-theme-default">
         <router-link to="/" class="md-title" style="flex: 1">
             <h3 class="cloud-logo">
@@ -9,12 +9,12 @@
         </router-link>
 
         <router-link v-if="jwt" to="/create"><md-button>Create</md-button></router-link>
-        <router-link v-if="jwt" to="/list"><md-button>Search</md-button></router-link>
+        <router-link v-if="jwt" to="/search"><md-button>Search</md-button></router-link>
         <md-button v-if="jwt" v-on:click="logout">LogOut</md-button>
       </md-toolbar>
     </div>
     </header>
-    <main class="page-container container-fluid">
+    <main class="page-container container-fluid-max">
         <router-view v-if="jwt"></router-view>
         <app-login v-else></app-login>
     </main>
@@ -53,6 +53,11 @@ body {padding: 90px 0 15px;}
 .container-fluid{
   width: 100%;
   max-width: 900px;
+  margin: 0 auto 0;
+}
+.container-fluid-max{
+  width: 100%;
+  max-width: 1750px;
   margin: 0 auto 0;
 }
 
