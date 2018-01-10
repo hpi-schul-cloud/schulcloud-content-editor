@@ -16,7 +16,7 @@
           <md-input v-model="login.password" v-validate name="password" type="password" data-vv-rules="required"></md-input>
           <span class="md-error">{{errors.first('password')}}</span>
         </md-input-container>
-        <a href="https://schul-cloud.org/login?recovery=true">Passwort vergessen?</a>
+        <a :href="this.$config.API.baseUrl + this.$config.API.pwRecoveryPath">Passwort vergessen?</a>
       </form>
     </md-card-content>
       
@@ -50,13 +50,13 @@ export default {
   },
   methods: {
     getToken: function(){
-        axios.post(`https://schul-cloud.org:8080/authentication`, this.login)
+        axios.post(this.$config.API.baseUrl + this.$config.API.port + this.$config.API.authPath, this.login)
         .then(response => {
           // JSON responses are automatically parsed.
           const jwt = response.data.accessToken;
           localStorage.setItem("jwt", jwt);
           this.$cookies.set('jwt', jwt, new Date(Date.now() + 30 * 24 * 60 * 60 * 1000))
-          window.location.href = "/";
+          this.$router.go();
         })
         .catch(e => {
             alert("Login gescheitert!");

@@ -107,7 +107,7 @@ export default {
   methods: {
     loadContent() {
       if(this.$route.params.id){
-        axios.get('https://schul-cloud.org:8080/content/resources/'+ this.$route.params.id ,{headers: {
+        axios.get( this.$config.API.baseUrl + this.$config.API.port + this.$config.API.getPath + this.$route.params.id ,{headers: {
             "Authorization" : "Bearer " + localStorage.getItem('jwt')
           }
         })
@@ -119,27 +119,35 @@ export default {
           this.errors.push(e)
         })
       }else{
-        this.data = [];
+        this.data = {};
       }
     },
     validateBeforeSubmit() {
       this.$validator.validateAll().then((result) => {
         if (result) {
-          alert('Form Submitted!');
           this.submitContent();
           return;
         }
-
-        alert('Correct the errors!');
       });
     },
     submitContent: function (event) {
+        const d = this.data;
+        const newData = {
+                "providerName": d.providerName,
+                "url": d.url,
+                "title": d.title,
+                "description": d.description,
+                "thumbnail": d.thumbnail,
+                "contentCategory": d.contentCategory,
+                "licenses": d.licenses,
+                "tags": d.tags
+            };
         if(this.$route.params.id){
-            axios.patch(" https://schul-cloud.org:4040/content/resources/"+this.$route.params.id, this.data, {
+            axios.patch( this.$config.API.baseUrl + this.$config.API.pushPort + this.$config.API.pushContentPath + this.$route.params.id, newData, {
                 headers: {"Authorization" : "Bearer " + localStorage.getItem('jwt')},
             });
         }else{
-            axios.post(" https://schul-cloud.org:4040/content/resources/", this.data, {
+            axios.post( this.$config.API.baseUrl + this.$config.API.pushPort + this.$config.API.pushContentPath, newData, {
                 headers: {"Authorization" : "Bearer " + localStorage.getItem('jwt')},
             });
         }
