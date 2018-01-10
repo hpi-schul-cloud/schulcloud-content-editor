@@ -11,6 +11,11 @@ Vue.use(VueMaterial)
 import VueCookies from 'vue-cookies'
 Vue.use(VueCookies)
 
+import VueConfig from 'vue-config'
+const configFile = require('./config');
+const configs = configFile.configs;
+Vue.use(VueConfig, configs)
+
 Vue.config.silent = false;
 
 Vue.config.productionTip = false;

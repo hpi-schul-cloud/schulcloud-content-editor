@@ -21,7 +21,7 @@ export default {
     };
   },
   created() {
-    axios.get(`https://schul-cloud.org:8080/content/resources/`,{headers: {
+    axios.get( this.$config.API.baseUrl + this.$config.API.port + this.$config.API.getPath,{headers: {
         "Authorization" : "Bearer " + localStorage.getItem('jwt')
       }
     })
