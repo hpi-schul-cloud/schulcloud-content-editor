@@ -20,7 +20,7 @@
     </md-card-content>
 
     <md-card-actions>
-      <a v-bind:href="'https://www.schul-cloud.org/content/redirect/' + data._id" target="_blank">
+      <a v-bind:href="this.$config.API.baseUrl + this.$config.API.redirectPath + data._id" target="_blank">
         <md-button class="md-accent">open</md-button>
       </a>
       <router-link :to="{path: '/edit/' + data._id}">
