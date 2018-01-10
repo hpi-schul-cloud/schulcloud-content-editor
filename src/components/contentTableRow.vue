@@ -60,11 +60,11 @@ export default {
     },
     submitContent: function (event) {
         if(this.$route.params.id){
-            axios.patch(" https://schul-cloud.org:4040/content/resources/"+this.data._id, this.data, {
+            axios.patch(this.$config.API.baseUrl + this.$config.API.pushPort + this.$config.API.pushContentPath + this.data._id, this.data, {
                 headers: {"Authorization" : "Bearer " + localStorage.getItem('jwt')},
             });
         }else{
-            axios.post(" https://schul-cloud.org:4040/content/resources/"+this.data._id, this.data, {
+            axios.post(this.$config.API.baseUrl + this.$config.API.pushPort + this.$config.API.pushContentPath, this.data, {
                 headers: {"Authorization" : "Bearer " + localStorage.getItem('jwt')},
             });
         }
@@ -86,7 +86,7 @@ form{
             min-height: initial;
         }
         &:last-of-type{
-            min-width: 100px;
+            width: 80px;
             white-space: nowrap;
         }
         .md-button{
