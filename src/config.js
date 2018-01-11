@@ -8,6 +8,7 @@ module.exports = {
             authPath: '/authentication',
             pwRecoveryPath: '/login?recovery=true',
             getPath: '/content/resources/',
+            searchPath: '/content/search/',
             pushContentPath: '/resources/',
             redirectPath: '/content/redirect/'
         }
