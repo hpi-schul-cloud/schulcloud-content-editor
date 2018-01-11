@@ -24,7 +24,7 @@ export default {
   },
   created() {
     this.pageString = this.config.page.toString();
-    calcMaxPages();
+    this.calcMaxPages();
   },
   methods: {
     calcMaxPages(){
@@ -39,6 +39,7 @@ export default {
         this.calcMaxPages();
     },
     'config.page': function(to, from){
+        if(this.config.scroll){window.scroll(this.config.scroll);}
         this.pageString = this.config.page.toString();
         this.$emit('pageChanged', this.config.page);
     },

@@ -60,6 +60,11 @@ export default {
           itemsPerPage: 12,
           totalEntrys: 0,
           buttonRange: 2,
+          scroll: {
+            top: 0, 
+            left: 0, 
+            behavior: 'smooth' 
+          }
       }
     };
   },
@@ -91,7 +96,6 @@ export default {
       // set unique url
       this.$router.push({ query: { ...this.$route.query, q: searchString }});
       this.$router.push({ query: { ...this.$route.query, p: page }});
-
       // build request path and fetch new data
       const path = (searchString.length == 0)?this.$config.API.getPath:(this.$config.API.searchPath + "?" + paginationQuery + "&" + searchQuery );
       axios.get(this.$config.API.baseUrl + this.$config.API.port + path, {headers: {
@@ -101,6 +105,7 @@ export default {
       .then(response => {
         this.data = response.data.data;
         this.pagination.totalEntrys = response.data.total;
+        
       })
       .catch(e => {
         console.error(e);
