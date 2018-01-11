@@ -54,8 +54,8 @@ export default {
   },
   methods: {
     loadContent(){
-      let query =  { "_all": { "$match": this.queryString } };
-      const path = (this.queryString == '')?this.$config.API.getPath:(this.$config.API.searchPath + this.queryString );
+      let searchQuery =  "_all[$match]="+this.queryString;
+      const path = (this.queryString == '')?this.$config.API.getPath:(this.$config.API.searchPath + "?" + searchQuery );
       axios.get(this.$config.API.baseUrl + this.$config.API.port + path, {headers: {
           "Authorization" : "Bearer " + localStorage.getItem('jwt')
         }
