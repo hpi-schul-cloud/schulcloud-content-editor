@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <md-card class="card-content">
     <md-card-media v-if="data.thumbnail" md-ratio="16:9">
       <img :src="data.thumbnail" :alt="'Thumbnail for ~' + data.title + '~'">
@@ -6,22 +6,23 @@
 
     <md-card-header>
       <h2 class="md-title">{{data.title}}</h2>
-      <div class="md-subhead">
-        <md-icon>label</md-icon>
-        <span v-for="tag in data.tags">
-          {{ tag }},
-        </span>
-        </md-chips>
+      <div class="md-subhead">      
+        <div class="tags">
+            <md-icon>label</md-icon>
+            <span v-for="tag in data.tags.slice(0,this.$config.card.displayedTags)">
+              {{ tag }}
+            </span>
+        </div>
       </div>
     </md-card-header>
 
     <md-card-content>
-      {{data.description}}
+      {{data.description.slice(0,500)}}...
     </md-card-content>
 
     <md-card-actions>
       <a v-bind:href="this.$config.API.baseUrl + this.$config.API.redirectPath + data._id" target="_blank">
-        <md-button class="md-accent">open</md-button>
+        <md-button>open</md-button>
       </a>
       <router-link :to="{path: '/edit/' + data._id}">
         <md-button class="md-accent">edit</md-button>
@@ -40,8 +41,12 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 .card-content {
+  width: 100%;
   position: relative;
   padding-bottom: 52px;
+  word-break: break-all;
+  word-break: break-word;
+  overflow-x: hidden;
   .md-subhead {
     .md-icon {
       $size: 16px;
@@ -57,6 +62,9 @@ export default {
     span {
       vertical-align: middle;
     }
+  }
+  a .md-button{
+    color: initial;
   }
   .md-card-actions{
     position: absolute;
