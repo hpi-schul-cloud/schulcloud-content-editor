@@ -29,8 +29,12 @@
 
 <script>
 import contentCard from './contentCard.vue';
-import contentTableRow from './contentTableRow.vue';
+/* load contentTableRow async */
+const contentTableRow = () => import(
+    /* webpackChunkName: "contentTableRow" */ './contentTableRow.vue'
+);
 import axios from 'axios';
+const qs = require('query-string');
 
 export default {
   components: {
@@ -50,6 +54,7 @@ export default {
   },
   methods: {
     loadContent(){
+      let query =  { "_all": { "$match": this.queryString } };
       const path = (this.queryString == '')?this.$config.API.getPath:(this.$config.API.searchPath + this.queryString );
       axios.get(this.$config.API.baseUrl + this.$config.API.port + path, {headers: {
           "Authorization" : "Bearer " + localStorage.getItem('jwt')
