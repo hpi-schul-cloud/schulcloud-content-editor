@@ -1,14 +1,12 @@
 <template>
     <md-button-toggle class="pagination">
         <md-button v-if="config.page == 1" class="md-icon-button" disabled><md-icon>arrow_back</md-icon></md-button>
-        <md-button v-else class="md-icon-button" v-on:click="prev"><md-icon>arrow_back</md-icon></md-button>
 
         <md-button id="pageNumber" class="md-button md-accent">
               <input type="number" v-model="pageString" min="1" :max="maxPages"></input>
         </md-button>
 
         <md-button v-if="config.page == maxPages" class="md-icon-button" disabled><md-icon>arrow_forward</md-icon></md-button>
-        <md-button v-else class="md-icon-button" v-on:click="next"><md-icon>arrow_forward</md-icon></md-button>
   </md-button-toggle>
 </template>
 
@@ -18,7 +16,7 @@ export default {
   props: ['config'],
   data() {
     return {
-      pageString: "1",
+      pageString: "1",  // needed to display current page (only strings allowed for v-model)
       maxPages: "1",
     };
   },
@@ -27,12 +25,6 @@ export default {
     calcMaxPages();
   },
   methods: {
-    next(){
-        this.config.page += 1;
-    },
-    prev(){
-        this.config.page -= 1;
-    },
     calcMaxPages(){
         this.maxPages = (Math.ceil(this.config.totalEntrys/this.config.itemsPerPage)||1).toString();
     }
