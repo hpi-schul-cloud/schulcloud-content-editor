@@ -1,5 +1,9 @@
 <template>
     <div>
+        <md-input-container id="search-input">
+            <label>Suche nach</label>
+            <md-autocomplete v-model="queryString" :fetch="loadContent"></md-autocomplete>
+        </md-input-container>
         <md-button-toggle md-single id="viewToggle">
           <md-button v-bind:class="{ 'md-accent md-raised':  gutter}" v-on:click="gutter = true">Karten</md-button>
           <md-button v-bind:class="{ 'md-accent md-raised': !gutter}" v-on:click="gutter = false">Liste</md-button>
@@ -25,8 +29,12 @@
 
 <script>
 import contentCard from './contentCard.vue';
-import contentTableRow from './contentTableRow.vue';
+/* load contentTableRow async */
+const contentTableRow = () => import(
+    /* webpackChunkName: "contentTableRow" */ './contentTableRow.vue'
+);
 import axios from 'axios';
+const qs = require('query-string');
 
 export default {
   components: {
@@ -38,20 +46,28 @@ export default {
     return {
       data: [],
       gutter: true,
+      queryString: '',
     };
   },
   created() {
-    axios.get(this.$config.API.baseUrl + this.$config.API.port + this.$config.API.getPath, {headers: {
-        "Authorization" : "Bearer " + localStorage.getItem('jwt')
-      }
-    })
-    .then(response => {
-      // JSON responses are automatically parsed.
-      this.data = response.data.data;
-    })
-    .catch(e => {
-      this.errors.push(e)
-    })
+    this.loadContent();
+  },
+  methods: {
+    loadContent(){
+      let searchQuery =  "_all[$match]="+this.queryString;
+      const path = (this.queryString == '')?this.$config.API.getPath:(this.$config.API.searchPath + "?" + searchQuery );
+      axios.get(this.$config.API.baseUrl + this.$config.API.port + path, {headers: {
+          "Authorization" : "Bearer " + localStorage.getItem('jwt')
+        }
+      })
+      .then(response => {
+        // JSON responses are automatically parsed.
+        this.data = response.data.data;
+      })
+      .catch(e => {
+        this.errors.push(e)
+      })
+    },
   }
 };
 
@@ -72,5 +88,10 @@ export default {
     #viewToggle{
         margin-top: 16px;
         float: right;
+    }
+    #search-input{
+        margin-top: 16px;
+        float: left;
+        max-width: 400px;
     }
 </style>
