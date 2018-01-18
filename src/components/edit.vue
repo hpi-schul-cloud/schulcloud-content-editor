@@ -1,5 +1,5 @@
 <template>
-  <md-layout md-gutter>
+  <md-layout md-gutter class="container-fluid">
     <md-layout md-flex-medium="100" md-flex-large="70" md-flex-xlarge="70">
       <md-card>
         <md-card-header>
@@ -38,6 +38,8 @@
                 <md-option value="GPL">GPL</md-option>
                 <md-option value="MIT">MIT</md-option>
                 <md-option value="CC BY-SA">CC BY-SA</md-option>
+                <md-option value="CC BY-NC-SA (KA default)">CC BY-NC-SA (KA default)</md-option>
+                <md-option value="Standard Youtube">Standard Youtube</md-option>
               </md-select>
             </md-input-container>
 
@@ -60,7 +62,7 @@
         </md-card-content>
         <md-card-actions>
           <md-button style="position:absolute; left:8px;">Delete</md-button>
-          <router-link to="/list"><md-button style="color: initial;">Cancel</md-button></router-link>
+          <md-button v-on:click="$router.go(-1)" style="color: initial;">Cancel</md-button>
           <md-button class="md-accent" type="submit" form="contentForm">Save</md-button>
         </md-card-actions>
       </md-card>
@@ -107,7 +109,7 @@ export default {
   methods: {
     loadContent() {
       if(this.$route.params.id){
-        axios.get('https://schul-cloud.org:8080/content/resources/'+ this.$route.params.id ,{headers: {
+        axios.get( this.$config.API.baseUrl + this.$config.API.port + this.$config.API.getPath + this.$route.params.id ,{headers: {
             "Authorization" : "Bearer " + localStorage.getItem('jwt')
           }
         })
@@ -119,27 +121,35 @@ export default {
           this.errors.push(e)
         })
       }else{
-        this.data = [];
+        this.data = {};
       }
     },
     validateBeforeSubmit() {
       this.$validator.validateAll().then((result) => {
         if (result) {
-          alert('Form Submitted!');
           this.submitContent();
           return;
         }
-
-        alert('Correct the errors!');
       });
     },
     submitContent: function (event) {
+        const d = this.data;
+        const newData = {
+                "providerName": d.providerName,
+                "url": d.url,
+                "title": d.title,
+                "description": d.description,
+                "thumbnail": d.thumbnail,
+                "contentCategory": d.contentCategory,
+                "licenses": d.licenses,
+                "tags": d.tags
+            };
         if(this.$route.params.id){
-            axios.patch(" https://schul-cloud.org:4040/content/resources/"+this.$route.params.id, this.data, {
+            axios.patch( this.$config.API.baseUrl + this.$config.API.pushPort + this.$config.API.pushContentPath + this.$route.params.id, newData, {
                 headers: {"Authorization" : "Bearer " + localStorage.getItem('jwt')},
             });
         }else{
-            axios.post(" https://schul-cloud.org:4040/content/resources/", this.data, {
+            axios.post( this.$config.API.baseUrl + this.$config.API.pushPort + this.$config.API.pushContentPath, newData, {
                 headers: {"Authorization" : "Bearer " + localStorage.getItem('jwt')},
             });
         }

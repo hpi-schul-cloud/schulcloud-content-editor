@@ -1,6 +1,6 @@
 {
   "name": "schul-cloud-content-client",
-  "version": "0.1.5",
+  "version": "0.1.7",
   "description": "Schul-Cloud Content",
   "author": "adrianjost <homepage@hackedit.de>",
   "private": true,
@@ -32,9 +32,10 @@
   },
   "dependencies": {
     "axios": "^0.17.1",
-    "v-tooltip": "latest",
+    "query-string": "^5.0.1",
     "vee-validate": "^2.0.0-rc.21",
     "vue": "^2.5.2",
+    "vue-config": "^1.0.0",
     "vue-cookies": "^1.5.4",
     "vue-material": "0.8.1",
     "vue-router": "^3.0.1",
