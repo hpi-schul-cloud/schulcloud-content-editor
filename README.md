@@ -8,6 +8,9 @@
 # install dependencies
 npm install
 
+# update vuejs-localization manually (download files and replace in node-modules folder
+# Link: https://github.com/valterlorran/vuejs-localization/blob/master/package.json
+
 # serve with hot reload at localhost:8080
 npm run dev
 
