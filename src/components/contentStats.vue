@@ -11,8 +11,6 @@
 </template>
 
 <script>
-import axios from 'axios';
-
 export default {
   name: 'contentStats',
   data() {
@@ -21,7 +19,7 @@ export default {
     };
   },
   created() {
-    axios.get( this.$config.API.baseUrl + this.$config.API.port + this.$config.API.getPath,{headers: {
+    this.$http.get( this.$config.API.baseUrl + this.$config.API.port + this.$config.API.getPath,{headers: {
         "Authorization" : "Bearer " + localStorage.getItem('jwt')
       }
     })

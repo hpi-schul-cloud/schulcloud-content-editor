@@ -16,7 +16,7 @@
 
             <md-input-container :class="{'md-input-invalid': errors.has('description')}">
               <label>{{$lang.form.description}} <span v-tippy title="Geben Sie Geben Sie eine Beschreibung für den Inhalt an."><md-icon>help</md-icon></span></label>
-              <md-textarea v-model="data.description" v-validate name="description" data-vv-rules="max:140" maxlength="140"></md-textarea>
+              <md-textarea v-model="data.description" v-validate name="description" data-vv-rules="max:500" maxlength="500"></md-textarea>
               <span class="md-error">{{errors.first('description')}}</span>
             </md-input-container>
 
@@ -80,13 +80,14 @@
 import Vue from 'vue';
 import VeeValidate from 'vee-validate';
 Vue.use(VeeValidate);
+import VueTippy from 'vue-tippy';
+Vue.use(VueTippy);
 
 /* load previewCard async */
 const previewCard = () => import(
     /* webpackChunkName: "previewCard" */ './previewCard.vue'
 );
 
-import axios from 'axios';
 export default {
   components: {
     'app-previewCard': previewCard
@@ -109,7 +110,7 @@ export default {
   methods: {
     loadContent() {
       if(this.$route.params.id){
-        axios.get( this.$config.API.baseUrl + this.$config.API.port + this.$config.API.getPath + this.$route.params.id ,{headers: {
+        this.$http.get( this.$config.API.baseUrl + this.$config.API.port + this.$config.API.getPath + this.$route.params.id ,{headers: {
             "Authorization" : "Bearer " + localStorage.getItem('jwt')
           }
         })
@@ -188,9 +189,7 @@ export default {
     }
   }
   .md-icon {
-    height: 16px !important;
-    width: 16px !important;
-    min-height: 16px !important;
-    min-width: 16px !important;
+    font-size: 1.5em;
+    vertical-align: middle;
   }
 </style>

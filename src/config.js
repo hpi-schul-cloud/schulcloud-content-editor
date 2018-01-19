@@ -11,6 +11,9 @@ module.exports = {
             searchPath: '/content/search/',
             pushContentPath: '/resources/',
             redirectPath: '/content/redirect/'
+        },
+        card: {
+            displayedTags: 9,
         }
     }
 }
