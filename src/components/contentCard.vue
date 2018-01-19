@@ -17,7 +17,7 @@
     </md-card-header>
 
     <md-card-content>
-      <truncate clamp="(mehr)" :length="300" less="(weniger)" :text="data.description"></truncate>
+      {{ data.description.substring(0, 300) }}{{ (data.description.length>300)?'...':'' }}
     </md-card-content>
 
     <md-card-actions>
@@ -32,14 +32,9 @@
 </template>
 
 <script>
-import truncate from 'vue-truncate-collapsed';
-
 export default {
   props: ['data'],
-  name: 'contentForm',
-  components: {
-    'truncate': truncate
-  },
+  name: 'contentForm'
 };
 </script>
 

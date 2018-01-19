@@ -39,8 +39,7 @@
     "vue-cookies": "^1.5.4",
     "vue-material": "0.8.1",
     "vue-router": "^3.0.1",
-    "vue-tippy": "^2.0.5",
-    "vue-truncate-collapsed": "^1.2.0"
+    "vue-tippy": "^2.0.5"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.5",
