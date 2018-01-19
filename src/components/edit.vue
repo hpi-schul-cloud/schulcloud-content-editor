@@ -86,7 +86,6 @@ const previewCard = () => import(
     /* webpackChunkName: "previewCard" */ './previewCard.vue'
 );
 
-import axios from 'axios';
 export default {
   components: {
     'app-previewCard': previewCard
@@ -109,7 +108,7 @@ export default {
   methods: {
     loadContent() {
       if(this.$route.params.id){
-        axios.get( this.$config.API.baseUrl + this.$config.API.port + this.$config.API.getPath + this.$route.params.id ,{headers: {
+        this.$http.get( this.$config.API.baseUrl + this.$config.API.port + this.$config.API.getPath + this.$route.params.id ,{headers: {
             "Authorization" : "Bearer " + localStorage.getItem('jwt')
           }
         })

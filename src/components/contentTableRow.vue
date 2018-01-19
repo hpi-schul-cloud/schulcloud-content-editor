@@ -43,7 +43,6 @@ import Vue from 'vue';
 import VeeValidate from 'vee-validate';
 Vue.use(VeeValidate);
 
-import axios from 'axios';
 export default {
   name: 'contentTableRow',
   props: ['data'],
@@ -60,11 +59,11 @@ export default {
     },
     submitContent: function (event) {
         if(this.$route.params.id){
-            axios.patch(this.$config.API.baseUrl + this.$config.API.pushPort + this.$config.API.pushContentPath + this.data._id, this.data, {
+            this.$http.patch(this.$config.API.baseUrl + this.$config.API.pushPort + this.$config.API.pushContentPath + this.data._id, this.data, {
                 headers: {"Authorization" : "Bearer " + localStorage.getItem('jwt')},
             });
         }else{
-            axios.post(this.$config.API.baseUrl + this.$config.API.pushPort + this.$config.API.pushContentPath, this.data, {
+            this.$http.post(this.$config.API.baseUrl + this.$config.API.pushPort + this.$config.API.pushContentPath, this.data, {
                 headers: {"Authorization" : "Bearer " + localStorage.getItem('jwt')},
             });
         }

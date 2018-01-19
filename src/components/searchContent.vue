@@ -40,7 +40,6 @@ import pagination from './paginationTemplate.vue';
 const contentTableRow = () => import(
     /* webpackChunkName: "contentTableRow" */ './contentTableRow.vue'
 );
-import axios from 'axios';
 const qs = require('query-string');
 
 export default {
@@ -98,7 +97,7 @@ export default {
       this.$router.push({ query: { ...this.$route.query, p: page }});
       // build request path and fetch new data
       const path = (searchString.length == 0)?this.$config.API.getPath:(this.$config.API.searchPath + "?" + paginationQuery + "&" + searchQuery );
-      axios.get(this.$config.API.baseUrl + this.$config.API.port + path, {headers: {
+      this.$http.get(this.$config.API.baseUrl + this.$config.API.port + path, {headers: {
           "Authorization" : "Bearer " + localStorage.getItem('jwt')
         }
       })
