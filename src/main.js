@@ -4,9 +4,6 @@ import Vue from 'vue';
 import App from './App';
 import router from './router';
 
-import VueTippy from 'vue-tippy';
-Vue.use(VueTippy);
-
 import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.css'
 Vue.use(VueMaterial)
