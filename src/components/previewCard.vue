@@ -16,25 +16,19 @@
     </md-card-header>
 
     <md-card-content>
-      {{this.truncateHTML(data.description)}}
+      <truncate clamp="(mehr)" :length="300" less="(weniger)" :text="data.description"></truncate>
     </md-card-content>
   </md-card>
 </template>
 
 <script>
-const truncatehtml = require('truncate-html');
+import truncate from 'vue-truncate-collapsed';
 
 export default {
   props: ['data'],
   name: 'previewCard',
-  methods: {
-    truncateHTML: function(text = '', length = 500){
-        if (text.length <= length) {return text;}
-        return truncatehtml(text, length, {
-          stripTags: true,
-          decodeEntities: true,
-        })
-    },
+  components: {
+    'truncate': truncate
   },
 };
 </script>
@@ -43,7 +37,6 @@ export default {
 <style lang="scss" scoped>
 .card-content {
   position: relative;
-  padding-bottom: 52px;
   .md-subhead {
     .md-icon {
       $size: 16px;
