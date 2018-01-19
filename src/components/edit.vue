@@ -80,6 +80,8 @@
 import Vue from 'vue';
 import VeeValidate from 'vee-validate';
 Vue.use(VeeValidate);
+import VueTippy from 'vue-tippy';
+Vue.use(VueTippy);
 
 /* load previewCard async */
 const previewCard = () => import(
