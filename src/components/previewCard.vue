@@ -16,15 +16,26 @@
     </md-card-header>
 
     <md-card-content>
-      {{data.description}}
+      {{this.truncateHTML(data.description)}}
     </md-card-content>
   </md-card>
 </template>
 
 <script>
+const truncatehtml = require('truncate-html');
+
 export default {
   props: ['data'],
   name: 'previewCard',
+  methods: {
+    truncateHTML: function(text = '', length = 500){
+        if (text.length <= length) {return text;}
+        return truncatehtml(text, length, {
+          stripTags: true,
+          decodeEntities: true,
+        })
+    },
+  },
 };
 </script>
 

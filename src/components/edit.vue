@@ -16,7 +16,7 @@
 
             <md-input-container :class="{'md-input-invalid': errors.has('description')}">
               <label>Beschreibung</label>
-              <md-textarea v-model="data.description" v-validate name="description" data-vv-rules="max:140" maxlength="140"></md-textarea>
+              <md-textarea v-model="data.description" v-validate name="description" data-vv-rules="max:500" maxlength="500"></md-textarea>
               <span class="md-error">{{errors.first('description')}}</span>
             </md-input-container>
 
