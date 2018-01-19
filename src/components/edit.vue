@@ -3,37 +3,37 @@
     <md-layout md-flex-medium="100" md-flex-large="70" md-flex-xlarge="70">
       <md-card>
         <md-card-header>
-          <div class="md-title" v-if="$route.params.id">Inhalt bearbeiten</div>
-          <div class="md-title" v-else>Inhalt erstellen</div>
+          <div class="md-title" v-if="$route.params.id">{{$lang.form.title_edit}}</div>
+          <div class="md-title" v-else>{{$lang.form.title_create}}</div>
         </md-card-header>
         <md-card-content>
           <form id="contentForm" @submit.prevent="validateBeforeSubmit">
             <md-input-container :class="{'md-input-invalid': errors.has('title')}">
-              <label>Titel</label>
+              <label>{{$lang.form.title}}</label>
               <md-input v-model="data.title" type="text" v-validate name="title" data-vv-rules="required"></md-input>
               <span class="md-error">{{errors.first('title')}}</span>
             </md-input-container>
 
             <md-input-container :class="{'md-input-invalid': errors.has('description')}">
-              <label>Beschreibung <span v-tippy title="Geben Sie Geben Sie eine Beschreibung für den Inhalt an."><md-icon>help</md-icon></span></label>
+              <label>{{$lang.form.description}} <span v-tippy title="Geben Sie Geben Sie eine Beschreibung für den Inhalt an."><md-icon>help</md-icon></span></label>
               <md-textarea v-model="data.description" v-validate name="description" data-vv-rules="max:140" maxlength="140"></md-textarea>
               <span class="md-error">{{errors.first('description')}}</span>
             </md-input-container>
 
             <md-input-container :class="{'md-input-invalid': errors.has('url')}">
-              <label>URL</label>
+              <label>{{$lang.form.url}}</label>
               <md-input v-model="data.url" v-validate name="url" data-vv-rules="required|url"></md-input>
               <span class="md-error">{{errors.first('url')}}</span>
             </md-input-container>
 
             <md-input-container :class="{'md-input-invalid': errors.has('thumbnail')}">
-              <label>Thumbnail-URL <span v-tippy title="Geben Sie optional eine URL zu einem Titelbild für den Inhalt an."><md-icon>help</md-icon></span></label>
+              <label>{{$lang.form.thumbnail_url}} <span v-tippy title="Geben Sie optional eine URL zu einem Titelbild für den Inhalt an."><md-icon>help</md-icon></span></label>
               <md-input v-model="data.thumbnail" v-validate name="thumbnail" data-vv-rules="url"></md-input>
               <span class="md-error">{{errors.first('thumbnail')}}</span>
             </md-input-container>
 
             <md-input-container>
-              <label for="license">Lizenz</label>
+              <label for="license">{{$lang.form.license}}</label>
               <md-select v-model="data.licenses" id="license" multiple name="license">
                 <md-option value="GPL">GPL</md-option>
                 <md-option value="MIT">MIT</md-option>
@@ -44,7 +44,7 @@
             </md-input-container>
 
             <md-input-container>
-              <label for="contentCategory">Kategorie</label>
+              <label for="contentCategory">{{$lang.form.categorie}}</label>
               <md-select v-model="data.contentCategory" name="contentCategory" id="contentCategory">
                 <md-option value="atomic">Atomic</md-option>
                 <md-option value="interactive">Interactive</md-option>
@@ -52,7 +52,7 @@
             </md-input-container>
 
             <section>
-                <md-chips id="tags" v-model="data.tags" :md-max="10" md-input-placeholder="Tags... (max. 10)">
+                <md-chips id="tags" v-model="data.tags" :md-max="10" :md-input-placeholder="($lang.form.tags)+'... ('+($lang.form.max)+' 10)'">
                   <template slot-scope="tag" slot="tag">
                     <span>{{ tag.value }}</span>
                   </template>
@@ -61,15 +61,15 @@
           </form>
         </md-card-content>
         <md-card-actions>
-          <md-button style="position:absolute; left:8px;">Delete</md-button>
-          <md-button v-on:click="$router.go(-1)" style="color: initial;">Cancel</md-button>
-          <md-button class="md-accent" type="submit" form="contentForm">Save</md-button>
+          <md-button style="position:absolute; left:8px;">{{$lang.buttons.delete}}</md-button>
+          <md-button v-on:click="$router.go(-1)" style="color: initial;">{{$lang.buttons.cancel}}</md-button>
+          <md-button class="md-accent" type="submit" form="contentForm">{{$lang.buttons.save}}</md-button>
         </md-card-actions>
       </md-card>
     </md-layout>
     <md-layout>
       <div class="preview-wrapper">
-        <h1>Livevorschau:</h1>
+        <h2>{{$lang.form.livepreview}}:</h2>
         <app-previewCard v-bind:data="data"></app-previewCard>
       </div>
     </md-layout>

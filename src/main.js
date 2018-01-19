@@ -19,8 +19,11 @@ const configFile = require('./config');
 const configs = configFile.configs;
 Vue.use(VueConfig, configs)
 
-Vue.config.silent = false;
+const VueLang = require('vuejs-localization');
+VueLang.requireAll(require.context('./lang', true, /\.js$/));
+Vue.use(VueLang, {default:'de'});
 
+Vue.config.silent = false;
 Vue.config.productionTip = false;
 
 /* eslint-disable no-new */

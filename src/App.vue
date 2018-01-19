@@ -8,9 +8,9 @@
             </h3>
         </router-link>
 
-        <router-link v-if="jwt" to="/create"><md-button>Create</md-button></router-link>
-        <router-link v-if="jwt" to="/search"><md-button>Search</md-button></router-link>
-        <md-button v-if="jwt" v-on:click="logout">LogOut</md-button>
+        <router-link v-if="jwt" to="/create"><md-button>{{$lang.buttons.create}}</md-button></router-link>
+        <router-link v-if="jwt" to="/search"><md-button>{{$lang.buttons.search}}</md-button></router-link>
+        <md-button v-if="jwt" v-on:click="logout">{{$lang.buttons.logout}}</md-button>
       </md-toolbar>
     </div>
     </header>

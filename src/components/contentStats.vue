@@ -1,11 +1,11 @@
 <template>
   <md-card class="card-content">
     <md-card-header>
-      <h2 class="md-title">Statistik</h2>
+      <h2 class="md-title">{{$lang.stats.title}}</h2>
     </md-card-header>
 
     <md-card-content>
-      <div><b>Artikel:</b> {{data.total}}</div>
+      <div><b>{{$lang.stats.article}}:</b> {{data.total}}</div>
     </md-card-content>
   </md-card>
 </template>
