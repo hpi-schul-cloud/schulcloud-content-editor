@@ -30,7 +30,6 @@
 import Vue from 'vue';
 import VeeValidate from 'vee-validate';
 Vue.use(VeeValidate);
-import axios from 'axios';
 
 export default {
   name: 'login',
@@ -50,7 +49,7 @@ export default {
   },
   methods: {
     getToken: function(){
-        axios.post(this.$config.API.baseUrl + this.$config.API.port + this.$config.API.authPath, this.login)
+        this.$http.post(this.$config.API.baseUrl + this.$config.API.port + this.$config.API.authPath, this.login)
         .then(response => {
           // JSON responses are automatically parsed.
           const jwt = response.data.accessToken;
