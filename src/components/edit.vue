@@ -188,9 +188,7 @@ export default {
     }
   }
   .md-icon {
-    height: 16px !important;
-    width: 16px !important;
-    min-height: 16px !important;
-    min-width: 16px !important;
+    font-size: 1.5em;
+    vertical-align: middle;
   }
 </style>
