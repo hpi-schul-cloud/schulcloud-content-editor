@@ -1,27 +1,27 @@
 <template>
   <md-card class="card-content">
     <md-card-header>
-      <h2 class="md-title">Login</h2>
+      <h2 class="md-title">{{$lang.login.title}}</h2>
     </md-card-header>
 
     <md-card-content>
       <form id="loginForm" @submit.prevent="validateBeforeSubmit">
         <md-input-container :class="{'md-input-invalid': errors.has('url')}">
-          <label>Benutzername</label>
+          <label>{{$lang.login.username}}</label>
           <md-input v-model="login.username" v-validate name="username" data-vv-rules="required"></md-input>
           <span class="md-error">{{errors.first('username')}}</span>
         </md-input-container>
         <md-input-container md-has-password :class="{'md-input-invalid': errors.has('url')}">
-          <label>Passwort</label>
+          <label>{{$lang.login.password}}</label>
           <md-input v-model="login.password" v-validate name="password" type="password" data-vv-rules="required"></md-input>
           <span class="md-error">{{errors.first('password')}}</span>
         </md-input-container>
-        <a :href="this.$config.API.baseUrl + this.$config.API.pwRecoveryPath">Passwort vergessen?</a>
+        <a :href="this.$config.API.baseUrl + this.$config.API.pwRecoveryPath">{{$lang.login.forgot_password}}?</a>
       </form>
     </md-card-content>
       
     <md-card-actions>
-      <md-button class="md-accent" type="submit" form="loginForm">Login</md-button>
+      <md-button class="md-accent" type="submit" form="loginForm">{{$lang.buttons.login}}</md-button>
     </md-card-actions>
   </md-card>
 </template>

@@ -1,13 +1,13 @@
 <template>
     <div>
         <md-input-container id="search-input">
-            <label>Suche nach</label>
+            <label>{{$lang.searchContent.search_for}}</label>
             <md-input v-model="searchQuery"></md-input>
         </md-input-container>
-        <b id="resultHeadline" v-if="searchQuery">{{this.pagination.totalEntrys}} Suchergebnisse für "{{this.searchQuery}}"</b>
+        <b id="resultHeadline" v-if="searchQuery">{{this.pagination.totalEntrys}} {{$lang.searchContent.searchResults_for}} "{{this.searchQuery}}"</b>
         <md-button-toggle md-single id="viewToggle">
-          <md-button v-bind:class="{ 'md-accent md-raised':  gutter}" v-on:click="gutter = true">Karten</md-button>
-          <md-button v-bind:class="{ 'md-accent md-raised': !gutter}" v-on:click="gutter = false">Liste</md-button>
+          <md-button v-bind:class="{ 'md-accent md-raised':  gutter}" v-on:click="gutter = true">{{$lang.buttons.card}}</md-button>
+          <md-button v-bind:class="{ 'md-accent md-raised': !gutter}" v-on:click="gutter = false">{{$lang.buttons.list}}</md-button>
         </md-button-toggle>
         <md-layout md-gutter v-if="gutter">
             <md-layout class="card-wrapper" v-for="item in data" md-flex-xsmall="100" md-flex-small="50" md-flex-medium="50" md-flex-large="33" md-flex-xlarge="25">
@@ -17,10 +17,10 @@
         <table v-else>
             <thead>
                 <tr>
-                  <th>Title</th>
-                  <th>URL</th>
-                  <th class="md-hide-small">Lizenz</th>
-                  <th class="md-hide-medium">Kategorie</th>
+                  <th>{{$lang.form.title}}</th>
+                  <th>{{$lang.form.url}}</th>
+                  <th class="md-hide-small">{{$lang.form.license}}</th>
+                  <th class="md-hide-medium">{{$lang.form.categorie}}</th>
                 </tr>
             </thead>
             <app-contentRow v-for="item in data" v-bind:data="item"></app-contentRow>

@@ -21,11 +21,11 @@
     </md-card-content>
 
     <md-card-actions>
-      <a v-bind:href="this.$config.API.baseUrl + this.$config.API.redirectPath + data._id" target="_blank">
-        <md-button>open</md-button>
+      <a id="open" v-bind:href="this.$config.API.baseUrl + this.$config.API.redirectPath + data._id" target="_blank">
+        <md-button>{{$lang.buttons.open}}</md-button>
       </a>
       <router-link :to="{path: '/edit/' + data._id}">
-        <md-button class="md-accent">edit</md-button>
+        <md-button class="md-accent">{{$lang.buttons.edit}}</md-button>
       </router-link>
     </md-card-actions>
   </md-card>
@@ -71,6 +71,9 @@ export default {
     bottom: 0;
     left: 0;
     right: 0;
+    #open{
+        color: #000;
+    }
   }
 }
 </style>
