@@ -15,7 +15,7 @@
             </md-input-container>
 
             <md-input-container :class="{'md-input-invalid': errors.has('description')}">
-              <label>Beschreibung</label>
+              <label>Beschreibung <span v-tippy title="Geben Sie Geben Sie eine Beschreibung für den Inhalt an."><md-icon>help</md-icon></span></label>
               <md-textarea v-model="data.description" v-validate name="description" data-vv-rules="max:500" maxlength="500"></md-textarea>
               <span class="md-error">{{errors.first('description')}}</span>
             </md-input-container>
@@ -27,7 +27,7 @@
             </md-input-container>
 
             <md-input-container :class="{'md-input-invalid': errors.has('thumbnail')}">
-              <label>Thumbnail-URL</label>
+              <label>Thumbnail-URL <span v-tippy title="Geben Sie optional eine URL zu einem Titelbild für den Inhalt an."><md-icon>help</md-icon></span></label>
               <md-input v-model="data.thumbnail" v-validate name="thumbnail" data-vv-rules="url"></md-input>
               <span class="md-error">{{errors.first('thumbnail')}}</span>
             </md-input-container>
@@ -186,5 +186,11 @@ export default {
     .md-textarea{
         padding: 0 !important;
     }
+  }
+  .md-icon {
+    height: 16px !important;
+    width: 16px !important;
+    min-height: 16px !important;
+    min-width: 16px !important;
   }
 </style>
