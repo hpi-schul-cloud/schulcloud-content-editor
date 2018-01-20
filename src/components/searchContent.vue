@@ -1,10 +1,13 @@
 <template>
     <div>
-        <md-input-container id="search-input">
+        <!--<md-input-container id="search-input">
             <label>{{$lang.searchContent.search_for}}</label>
             <md-input v-model="searchQuery"></md-input>
-        </md-input-container>
-        <b id="resultHeadline" v-if="searchQuery">{{this.pagination.totalEntrys}} {{$lang.searchContent.searchResults_for}} "{{this.searchQuery}}"</b>
+        </md-input-container>-->
+        <div id="search-input">
+            <input id="search-query-input" v-model.lazy="searchQuery" :placeholder="$lang.searchContent.search_for + '...'" /></br>
+            <span id="resultHeadline" v-if="searchQuery"><b>{{this.pagination.totalEntrys}}</b> {{$lang.searchContent.searchResults_for}} <b>"{{this.searchQuery}}"</b></span>
+        </div>
         <md-button-toggle md-single id="viewToggle">
           <md-button v-bind:class="{ 'md-accent md-raised':  gutter}" v-on:click="gutter = true">{{$lang.buttons.card}}</md-button>
           <md-button v-bind:class="{ 'md-accent md-raised': !gutter}" v-on:click="gutter = false">{{$lang.buttons.list}}</md-button>
@@ -83,6 +86,9 @@ export default {
         this.loadContent();
     },
     loadContent(){
+      // clear data to show "loading state"
+      this.data = [];
+      
       // pagination for request
       const page = this.pagination.page || 1;
       let paginationQuery = qs.stringify({$limit: this.pagination.itemsPerPage, $skip: this.pagination.itemsPerPage * (page - 1)});
@@ -114,8 +120,12 @@ export default {
   watch:{
     '$route' (to, from){
         /* handle url changes */
-        this.searchQuery = this.$route.query.q;
-        this.pagination.page = parseInt(this.$route.query.p);
+        if(this.searchQuery != this.$route.query.q){
+            this.searchQuery = this.$route.query.q;
+        }
+        if(this.pagination.page != parseInt(this.$route.query.p)){
+            this.pagination.page = parseInt(this.$route.query.p);
+        }
     },
     searchQuery: function(to, from){
         this.pagination.page = 1;
@@ -133,10 +143,6 @@ export default {
     .md-layout{
         clear: both;
     }
-    #resultHeadline{
-        display: block;
-        clear: left;
-    }
     .card-wrapper{
         padding: 5px;
         box-sizing: border-box;
@@ -149,10 +155,32 @@ export default {
         float: right;
     }
     #search-input{
-        font-size: 2em !important;
+        font-size: 1.25em !important;
         margin-top: 16px;
         float: left;
-        max-width: 400px;
+        width: calc(100% - 200px);
+        #search-query-input{
+            display: inline-block;
+            font-size: 1em;
+            line-height: 1em;
+            width: 100%;
+            max-width: 500px;
+            padding: 0;
+            margin: 0;
+            outline: none;
+            background: transparent;
+            border: none;
+            color: inherit;
+            border-bottom: 1px solid grey;
+            &:focus{
+                color: #e91e63;
+                border-bottom: 1px solid #e91e63;
+            }
+        }
+        #resultHeadline{
+            font-size: 1rem;
+            display: block;
+        }
     }
     #placeholder{
         display: block;
