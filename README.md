@@ -12,7 +12,7 @@ git clone https://github.com/schul-cloud/schulcloud-content-editor.git
 npm install
 ```
 update vuejs-localization manually (download files and replace in node-modules folder
-# Link: https://github.com/valterlorran/vuejs-localization/
+Link: https://github.com/valterlorran/vuejs-localization/
 
 ## Build & Development
 
