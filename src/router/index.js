@@ -18,4 +18,11 @@ export default new Router({
     {path: '/create',   name: 'create', component: contentForm, },
     {path: '/edit/:id', name: 'edit',   component: contentForm, },
   ],
+  scrollBehavior (to, from, savedPosition) {
+    if (savedPosition) {
+        return savedPosition
+    } else {
+        return { x: 0, y: 0 }
+    }
+  },
 });
