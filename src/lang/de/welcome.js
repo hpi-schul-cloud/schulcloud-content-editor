@@ -1,4 +1,4 @@
 //welcome.js
 module.exports = {
-  message: 'Willkommen auf der Schulcloud Seite.'
+  message: 'Willkommen im Schul-Cloud Content Editor'
 };
