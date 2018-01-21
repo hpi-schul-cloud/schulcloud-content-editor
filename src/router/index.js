@@ -14,7 +14,7 @@ Vue.use(Router);
 export default new Router({
   routes: [
     {path: '/',         name: 'main',   component: overview,    },
-    {path: '/search',     name: 'search', component: searchContent, },
+    {path: '/search',   name: 'search', component: searchContent, },
     {path: '/create',   name: 'create', component: contentForm, },
     {path: '/edit/:id', name: 'edit',   component: contentForm, },
   ],

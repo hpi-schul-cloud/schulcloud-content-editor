@@ -1,5 +1,9 @@
 <template>
-  <div id="app">
+  <div>
+    <div v-if="$route.query.noframe == 'true'">
+        <router-view v-if="jwt"></router-view>
+    </div>
+    <div id="app" v-else>
     <header class="md-elevation-1 md-accent"><div class="container-fluid-max">
       <md-toolbar md-elevation="0" class="md-toolbar md-theme-default">
         <router-link to="/" class="md-title" style="flex: 1">
@@ -18,6 +22,7 @@
         <router-view v-if="jwt"></router-view>
         <app-login v-else></app-login>
     </main>
+  </div>
   </div>
 </template>
 
@@ -41,14 +46,14 @@ export default {
         this.$cookies.remove("jwt");
         window.location.href = "/";
     }
-  }
+  },
 };
 </script>
 
 
 <style lang="scss">
 
-body {padding: 90px 0 15px;}
+body {}
 
 .container-fluid{
   width: 100%;
@@ -62,6 +67,7 @@ body {padding: 90px 0 15px;}
 }
 
 #app {
+  padding: 90px 0 15px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
