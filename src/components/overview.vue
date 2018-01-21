@@ -1,11 +1,13 @@
 <template>
     <div>
+        <app-welcomeMessage></app-welcomeMessage>
         <app-contentStats></app-contentStats>
         <app-searchContent></app-searchContent>
     </div>
 </template>
 
 <script>
+import welcomeMessage from './welcomeMessage.vue';
 import contentStats from './contentStats.vue';
 /* load searchContent async */
 const searchContent = () => import(
@@ -15,7 +17,8 @@ const searchContent = () => import(
 export default {
   components: {
     'app-contentStats': contentStats,
-    'app-searchContent': searchContent
+    'app-searchContent': searchContent,
+    'app-welcomeMessage': welcomeMessage
   },
   name: 'overview',
 };
