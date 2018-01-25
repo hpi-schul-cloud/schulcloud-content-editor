@@ -8,15 +8,15 @@
             <input id="search-query-input" v-model.lazy="searchQuery" :placeholder="$lang.searchContent.search_for + '...'" /></br>
             <span id="resultHeadline" v-if="searchQuery"><b>{{this.pagination.totalEntrys}}</b> {{$lang.searchContent.searchResults_for}} <b>"{{this.searchQuery}}"</b></span>
         </div>
-        <md-button-toggle md-single id="viewToggle">
-          <md-button v-bind:class="{ 'md-primary md-raised':  gutter}" v-on:click="gutter = true">{{$lang.buttons.card}}</md-button>
-          <md-button v-bind:class="{ 'md-primary md-raised': !gutter}" v-on:click="gutter = false">{{$lang.buttons.list}}</md-button>
-        </md-button-toggle>
-        <md-layout md-gutter v-if="gutter" class="grid">
-            <md-layout class="card-wrapper grid-xs-12 grid-s-6 grid-m-6 grid-l-4 grid-xl-3" v-for="item in data">
+        <div id="viewToggle">
+          <md-button class="md-toggle" v-bind:class="{ 'md-primary md-raised':  gutter}" v-on:click="gutter = true">{{$lang.buttons.card}}</md-button>
+          <md-button class="md-toggle" v-bind:class="{ 'md-primary md-raised': !gutter}" v-on:click="gutter = false">{{$lang.buttons.list}}</md-button>
+        </div>
+        <div md-gutter v-if="gutter" class="grid">
+            <div class="card-wrapper grid-xs-12 grid-s-6 grid-m-6 grid-l-4 grid-xl-3" v-for="item in data">
                 <app-contentCard v-bind:data="item" class="height-100"></app-contentCard>
-            </md-layout>
-        </md-layout>
+            </div>
+        </div>
         <table v-else>
             <thead>
                 <tr>
@@ -140,7 +140,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
-    .md-layout{
+    .grid{
         clear: both;
     }
     .card-wrapper{
@@ -153,6 +153,9 @@ export default {
     #viewToggle{
         margin-top: 16px;
         float: right;
+        .md-button{
+            margin: 0;
+        }
     }
     #search-input{
         font-size: 1.25em !important;
@@ -173,8 +176,8 @@ export default {
             color: inherit;
             border-bottom: 1px solid grey;
             &:focus{
-                color: #e91e63;
-                border-bottom: 1px solid #e91e63;
+                color: var(--md-theme-default-primary);
+                border-bottom: 1px solid var(--md-theme-default-primary);
             }
         }
         #resultHeadline{

@@ -2,13 +2,13 @@
   <form id="contentForm" @submit.prevent="validateBeforeSubmit">
     <td>
         <md-field :class="{'md-input-invalid': errors.has('title')}">
-          <md-input v-model="data.title" type="text" v-validate name="title" data-vv-rules="required"></md-input>
+          <md-input v-model="data.title" type="text"></md-input>
           <span class="md-error">{{errors.first('title')}}</span>
         </md-field>
     </td>
     <td>
         <md-field :class="{'md-input-invalid': errors.has('url')}">
-          <md-input v-model="data.url" v-validate name="url" data-vv-rules="required|url"></md-input>
+          <md-input v-model="data.url"></md-input>
           <span class="md-error">{{errors.first('url')}}</span>
         </md-field>
     </td>
@@ -33,7 +33,7 @@
     </td>
     <td>
         <md-button class="md-icon-button" type="delete"><md-icon>delete</md-icon></md-button>
-        <md-button class="md-icon-button md-accent" type="submit"><md-icon>save</md-icon></md-button>
+        <md-button class="md-icon-button md-primary" type="submit"><md-icon>save</md-icon></md-button>
     </td>
   </form>
 </template>
@@ -47,15 +47,22 @@ export default {
   name: 'contentTableRow',
   props: ['data'],
   methods: {
+    required(item){
+        return (item && item != '');
+    },
+    isUrl(item){
+        return (item.match(/[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/gi))
+    },
+    maxLength(text, length){
+        return (text.length <= length);
+    },
     validateBeforeSubmit() {
-      this.$validator.validateAll().then((result) => {
-        if (result) {
+        if (this.isUrl(this.data.url) && this.required(this.data.title)) {
           alert('Form Submitted!');
           this.submitContent();
           return;
         }
         alert('Correct the errors!');
-      });
     },
     submitContent: function (event) {
         if(this.$route.params.id){

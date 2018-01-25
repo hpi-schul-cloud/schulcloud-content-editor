@@ -1,6 +1,6 @@
 <template>
-  <md-layout md-gutter class="container-fluid grid">
-    <md-layout class="grid-xl-8 grid-s-12">
+  <div md-gutter class="container-fluid grid">
+    <div class="grid-xl-8 grid-s-12">
       <md-card >
         <md-card-header>
           <div class="md-title" v-if="$route.params.id">{{$lang.form.title_edit}}</div>
@@ -66,14 +66,14 @@
           <md-button class="md-primary" type="submit" form="contentForm">{{$lang.buttons.save}}</md-button>
         </md-card-actions>
       </md-card>
-    </md-layout>
-    <md-layout class="grid-xl-4 grid-s-12">
+    </div>
+    <div class="grid-xl-4 grid-s-12">
       <div class="preview-wrapper">
         <h2>{{$lang.form.livepreview}}:</h2>
         <app-previewCard v-bind:data="data"></app-previewCard>
       </div>
-    </md-layout>
-  </md-layout>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -169,7 +169,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  .md-layout > .md-layout{
+  .gutter > div{
     padding: 5px;
   }
   .md-card{

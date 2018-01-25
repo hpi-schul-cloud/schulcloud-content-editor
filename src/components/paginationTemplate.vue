@@ -1,5 +1,5 @@
 <template>
-    <md-button-toggle class="pagination">
+    <div class="pagination">
         <md-button v-if="config.page == 1" class="md-icon-button" disabled><md-icon>arrow_back</md-icon></md-button>
         <md-button v-else class="md-icon-button" v-on:click="config.page -= 1"><md-icon>arrow_back</md-icon></md-button>
 
@@ -9,7 +9,7 @@
 
         <md-button v-if="config.page == maxPages" class="md-icon-button" disabled><md-icon>arrow_forward</md-icon></md-button>
         <md-button v-else class="md-icon-button" v-on:click="config.page += 1"><md-icon>arrow_forward</md-icon></md-button>
-  </md-button-toggle>
+  </div>
 </template>
 
 <script>
