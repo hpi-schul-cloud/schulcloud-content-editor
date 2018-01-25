@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 const overview = () => import(/* webpackChunkName: "overview" */ '@/components/overview.vue');
-const searchContent = () => import(/* webpackChunkName: "listContent" */ '@/components/searchContent.vue');
+const contentStats = () => import(/* webpackChunkName: "listContent" */ '@/components/contentStats.vue');
 const contentForm = () => import(/* webpackChunkName: "edit" */ '@/components/edit.vue');
 /*
 import overview from '@/components/overview';
@@ -14,7 +14,7 @@ Vue.use(Router);
 export default new Router({
   routes: [
     {path: '/',         name: 'main',   component: overview,    },
-    {path: '/search',     name: 'search', component: searchContent, },
+    {path: '/stats',    name: 'stats', component: contentStats, },
     {path: '/create',   name: 'create', component: contentForm, },
     {path: '/edit/:id', name: 'edit',   component: contentForm, },
   ],
