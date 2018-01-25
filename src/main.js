@@ -5,7 +5,7 @@ import App from './App';
 import router from './router';
 
 import VueMaterial from 'vue-material'
-import 'vue-material/dist/vue-material.css'
+import 'vue-material/dist/vue-material.min.css'
 Vue.use(VueMaterial);
 
 import VueCookies from 'vue-cookies'

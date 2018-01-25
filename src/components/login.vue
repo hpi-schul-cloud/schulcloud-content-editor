@@ -1,27 +1,27 @@
 <template>
-  <md-card class="card-content">
+  <md-card id="login-card" class="card-content">
     <md-card-header>
       <h2 class="md-title">{{$lang.login.title}}</h2>
     </md-card-header>
 
     <md-card-content>
       <form id="loginForm" @submit.prevent="validateBeforeSubmit">
-        <md-input-container :class="{'md-input-invalid': errors.has('url')}">
+        <md-field :class="{'md-input-invalid': errors.has('url')}">
           <label>{{$lang.login.username}}</label>
           <md-input v-model="login.username" v-validate name="username" data-vv-rules="required"></md-input>
           <span class="md-error">{{errors.first('username')}}</span>
-        </md-input-container>
-        <md-input-container md-has-password :class="{'md-input-invalid': errors.has('url')}">
+        </md-field>
+        <md-field md-has-password :class="{'md-input-invalid': errors.has('url')}">
           <label>{{$lang.login.password}}</label>
           <md-input v-model="login.password" v-validate name="password" type="password" data-vv-rules="required"></md-input>
           <span class="md-error">{{errors.first('password')}}</span>
-        </md-input-container>
+        </md-field>
         <a :href="this.$config.API.baseUrl + this.$config.API.pwRecoveryPath">{{$lang.login.forgot_password}}?</a>
       </form>
     </md-card-content>
       
     <md-card-actions>
-      <md-button class="md-accent" type="submit" form="loginForm">{{$lang.buttons.login}}</md-button>
+      <md-button class="md-primary" type="submit" form="loginForm">{{$lang.buttons.login}}</md-button>
     </md-card-actions>
   </md-card>
 </template>
@@ -78,4 +78,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+#login-card{
+    max-width: 600px;
+    margin: 0 auto;
+}
 </style>

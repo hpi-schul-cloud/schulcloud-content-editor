@@ -1,20 +1,20 @@
 <template>
     <div>
-        <!--<md-input-container id="search-input">
+        <!--<md-field id="search-input">
             <label>{{$lang.searchContent.search_for}}</label>
             <md-input v-model="searchQuery"></md-input>
-        </md-input-container>-->
+        </md-field>-->
         <div id="search-input">
             <input id="search-query-input" v-model.lazy="searchQuery" :placeholder="$lang.searchContent.search_for + '...'" /></br>
             <span id="resultHeadline" v-if="searchQuery"><b>{{this.pagination.totalEntrys}}</b> {{$lang.searchContent.searchResults_for}} <b>"{{this.searchQuery}}"</b></span>
         </div>
         <md-button-toggle md-single id="viewToggle">
-          <md-button v-bind:class="{ 'md-accent md-raised':  gutter}" v-on:click="gutter = true">{{$lang.buttons.card}}</md-button>
-          <md-button v-bind:class="{ 'md-accent md-raised': !gutter}" v-on:click="gutter = false">{{$lang.buttons.list}}</md-button>
+          <md-button v-bind:class="{ 'md-primary md-raised':  gutter}" v-on:click="gutter = true">{{$lang.buttons.card}}</md-button>
+          <md-button v-bind:class="{ 'md-primary md-raised': !gutter}" v-on:click="gutter = false">{{$lang.buttons.list}}</md-button>
         </md-button-toggle>
-        <md-layout md-gutter v-if="gutter">
-            <md-layout class="card-wrapper" v-for="item in data" md-flex-xsmall="100" md-flex-small="50" md-flex-medium="50" md-flex-large="33" md-flex-xlarge="25">
-                <app-contentCard v-bind:data="item"></app-contentCard>
+        <md-layout md-gutter v-if="gutter" class="grid">
+            <md-layout class="card-wrapper grid-xs-12 grid-s-6 grid-m-6 grid-l-4 grid-xl-3" v-for="item in data">
+                <app-contentCard v-bind:data="item" class="height-100"></app-contentCard>
             </md-layout>
         </md-layout>
         <table v-else>
@@ -22,14 +22,14 @@
                 <tr>
                   <th>{{$lang.form.title}}</th>
                   <th>{{$lang.form.url}}</th>
-                  <th class="md-hide-small">{{$lang.form.license}}</th>
-                  <th class="md-hide-medium">{{$lang.form.categorie}}</th>
+                  <th class="hide-s">{{$lang.form.license}}</th>
+                  <th class="hide-m">{{$lang.form.categorie}}</th>
                 </tr>
             </thead>
             <app-contentRow v-for="item in data" v-bind:data="item"></app-contentRow>
         </table>
         <div id="placeholder" v-if="data.length == 0">
-            <md-icon class="md-size-3x md-accent">error_outline</md-icon>
+            <md-icon class="md-size-3x md-primary">error_outline</md-icon>
             <p>keine Ergebnisse gefunden</p>
         </div>
         <app-pagination @pageChanged="pageChanged" v-bind:config="pagination"></app-pagination>
