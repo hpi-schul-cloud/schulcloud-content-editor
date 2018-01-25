@@ -28,10 +28,11 @@
             </thead>
             <app-contentRow v-for="item in data" v-bind:data="item"></app-contentRow>
         </table>
-        <div id="placeholder" v-if="data.length == 0">
-            <md-icon class="md-size-3x md-primary">error_outline</md-icon>
-            <p>keine Ergebnisse gefunden</p>
-        </div>
+        <md-empty-state v-if="data.length == 0" class="md-primary"
+          md-icon="error_outline"
+          :md-label="$lang.searchContent.nothing_found"
+          :md-description="$lang.searchContent.nothing_found_help">
+        </md-empty-state>
         <app-pagination @pageChanged="pageChanged" v-bind:config="pagination"></app-pagination>
     </div>
 </template>
@@ -184,11 +185,5 @@ export default {
             font-size: 1rem;
             display: block;
         }
-    }
-    #placeholder{
-        display: block;
-        text-align: center;
-        font-size: 2rem;
-        margin: 5rem auto;
     }
 </style>
