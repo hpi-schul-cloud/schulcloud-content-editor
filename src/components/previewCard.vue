@@ -16,7 +16,7 @@
     </md-card-header>
 
     <md-card-content>
-        {{ data.description.substring(0, 300) }}{{ (data.description.length>300)?'...':'' }}
+        {{ (data.description||"").substring(0, 300) }}{{ ((data.description||"").length>300)?'...':'' }}
     </md-card-content>
   </md-card>
 </template>
