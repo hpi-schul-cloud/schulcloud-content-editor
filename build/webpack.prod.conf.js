@@ -13,6 +13,9 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin')
 const loadMinified = require('./load-minified')
+// import Purgecss webpack plugin and glob-all
+const PurgecssPlugin = require('purgecss-webpack-plugin')
+const glob = require('glob-all')
 
 const env = config.build.env
 
@@ -50,6 +53,15 @@ const webpackConfig = merge(baseWebpackConfig, {
       cssProcessorOptions: {
         safe: true
       }
+    }),
+    // Remove unused CSS using purgecss. See https://github.com/FullHuman/purgecss
+    // for more information about purgecss.
+    new PurgecssPlugin({
+      paths: glob.sync([
+        path.join(__dirname, './../src/index.html'),
+        path.join(__dirname, './../**/*.vue'),
+        path.join(__dirname, './../src/**/*.js')
+      ])
     }),
     // generate dist index.html with correct asset hash for caching.
     // you can customize output by editing /index.html
