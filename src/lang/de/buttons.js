@@ -12,4 +12,5 @@ module.exports = {
   open :    'öffnen',
   save :    'speichern',
   search :  'suchen',
+  stats :  'Stastik',
 }

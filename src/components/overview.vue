@@ -1,7 +1,6 @@
 <template>
     <div>
         <app-welcomeMessage></app-welcomeMessage>
-        <app-contentStats></app-contentStats>
         <app-searchContent></app-searchContent>
     </div>
 </template>

@@ -1,15 +1,15 @@
 <template>
-    <md-button-toggle class="pagination">
+    <div class="pagination">
         <md-button v-if="config.page == 1" class="md-icon-button" disabled><md-icon>arrow_back</md-icon></md-button>
         <md-button v-else class="md-icon-button" v-on:click="config.page -= 1"><md-icon>arrow_back</md-icon></md-button>
 
-        <md-button id="pageNumber" class="md-button md-accent">
+        <md-button id="pageNumber" class="md-button md-primary">
               <input type="number" v-model.lazy="pageString" min="1" :max="maxPages"></input>
         </md-button>
 
         <md-button v-if="config.page == maxPages" class="md-icon-button" disabled><md-icon>arrow_forward</md-icon></md-button>
         <md-button v-else class="md-icon-button" v-on:click="config.page += 1"><md-icon>arrow_forward</md-icon></md-button>
-  </md-button-toggle>
+  </div>
 </template>
 
 <script>
@@ -66,6 +66,7 @@ export default {
 #pageNumber{
     height: 40px;
     padding: 0;
+    margin: 0;
     input{
         font-size: 1.2em;
         font-weight: bold;

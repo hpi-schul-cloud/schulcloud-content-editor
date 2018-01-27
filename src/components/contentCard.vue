@@ -25,7 +25,7 @@
         <md-button>{{$lang.buttons.open}}</md-button>
       </a>
       <router-link :to="{path: '/edit/' + data._id}">
-        <md-button class="md-accent">{{$lang.buttons.edit}}</md-button>
+        <md-button class="md-primary">{{$lang.buttons.edit}}</md-button>
       </router-link>
     </md-card-actions>
   </md-card>
@@ -46,7 +46,7 @@ export default {
   padding-bottom: 52px;
   word-break: break-all;
   word-break: break-word;
-  overflow-x: hidden;
+  overflow: hidden;
   .md-subhead {
     .md-icon {
       $size: 16px;
@@ -63,17 +63,11 @@ export default {
       vertical-align: middle;
     }
   }
-  a .md-button{
-    color: initial;
-  }
   .md-card-actions{
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
-    #open{
-        color: #000;
-    }
   }
 }
 </style>

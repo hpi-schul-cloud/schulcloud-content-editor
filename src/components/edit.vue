@@ -1,38 +1,38 @@
 <template>
-  <md-layout md-gutter class="container-fluid">
-    <md-layout md-flex-medium="100" md-flex-large="70" md-flex-xlarge="70">
-      <md-card>
+  <div md-gutter class="container-fluid grid">
+    <div class="grid-xl-8 grid-s-12">
+      <md-card >
         <md-card-header>
           <div class="md-title" v-if="$route.params.id">{{$lang.form.title_edit}}</div>
           <div class="md-title" v-else>{{$lang.form.title_create}}</div>
         </md-card-header>
         <md-card-content>
           <form id="contentForm" @submit.prevent="validateBeforeSubmit">
-            <md-input-container :class="{'md-input-invalid': errors.has('title')}">
+            <md-field :class="{'md-input-invalid': errors.has('title')}">
               <label>{{$lang.form.title}}</label>
               <md-input v-model="data.title" type="text" v-validate name="title" data-vv-rules="required"></md-input>
               <span class="md-error">{{errors.first('title')}}</span>
-            </md-input-container>
+            </md-field>
 
-            <md-input-container :class="{'md-input-invalid': errors.has('description')}">
+            <md-field :class="{'md-input-invalid': errors.has('description')}">
               <label>{{$lang.form.description}} <span v-tippy :title="$lang.form.description_tooltip"><md-icon>help</md-icon></span></label>
               <md-textarea v-model="data.description" v-validate name="description" data-vv-rules="max:500" maxlength="500"></md-textarea>
               <span class="md-error">{{errors.first('description')}}</span>
-            </md-input-container>
+            </md-field>
 
-            <md-input-container :class="{'md-input-invalid': errors.has('url')}">
+            <md-field :class="{'md-input-invalid': errors.has('url')}">
               <label>{{$lang.form.url}}</label>
               <md-input v-model="data.url" v-validate name="url" data-vv-rules="required|url"></md-input>
               <span class="md-error">{{errors.first('url')}}</span>
-            </md-input-container>
+            </md-field>
 
-            <md-input-container :class="{'md-input-invalid': errors.has('thumbnail')}">
+            <md-field :class="{'md-input-invalid': errors.has('thumbnail')}">
               <label>{{$lang.form.thumbnail_url}} <span v-tippy :title="$lang.form.thumbnail_url_tooptip"><md-icon>help</md-icon></span></label>
               <md-input v-model="data.thumbnail" v-validate name="thumbnail" data-vv-rules="url"></md-input>
               <span class="md-error">{{errors.first('thumbnail')}}</span>
-            </md-input-container>
+            </md-field>
 
-            <md-input-container>
+            <md-field>
               <label for="license">{{$lang.form.license}}</label>
               <md-select v-model="data.licenses" id="license" multiple name="license">
                 <md-option value="GPL">GPL</md-option>
@@ -41,15 +41,15 @@
                 <md-option value="CC BY-NC-SA (KA default)">CC BY-NC-SA (KA default)</md-option>
                 <md-option value="Standard Youtube">Standard Youtube</md-option>
               </md-select>
-            </md-input-container>
+            </md-field>
 
-            <md-input-container>
+            <md-field>
               <label for="contentCategory">{{$lang.form.categorie}}</label>
               <md-select v-model="data.contentCategory" name="contentCategory" id="contentCategory">
                 <md-option value="atomic">Atomic</md-option>
                 <md-option value="interactive">Interactive</md-option>
               </md-select>
-            </md-input-container>
+            </md-field>
 
             <section>
                 <md-chips id="tags" v-model="data.tags" :md-max="10" :md-input-placeholder="($lang.form.tags)+'... ('+($lang.form.max)+' 10)'">
@@ -63,17 +63,17 @@
         <md-card-actions>
           <md-button style="position:absolute; left:8px;">{{$lang.buttons.delete}}</md-button>
           <md-button v-on:click="$router.go(-1)" style="color: initial;">{{$lang.buttons.cancel}}</md-button>
-          <md-button class="md-accent" type="submit" form="contentForm">{{$lang.buttons.save}}</md-button>
+          <md-button class="md-primary" type="submit" form="contentForm">{{$lang.buttons.save}}</md-button>
         </md-card-actions>
       </md-card>
-    </md-layout>
-    <md-layout>
+    </div>
+    <div class="grid-xl-4 grid-s-12">
       <div class="preview-wrapper">
         <h2>{{$lang.form.livepreview}}:</h2>
         <app-previewCard v-bind:data="data"></app-previewCard>
       </div>
-    </md-layout>
-  </md-layout>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -169,7 +169,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  .md-layout > .md-layout{
+  .gutter > div{
     padding: 5px;
   }
   .md-card{
@@ -179,7 +179,10 @@ export default {
     display: block;
     width: 100%;
   }
-  .md-has-textarea{
+  textarea{
+    min-height: 8rem !important;
+  }
+  /*.md-has-textarea{
     label{
         top: -6px !important;
         left: 0 !important;
@@ -187,7 +190,7 @@ export default {
     .md-textarea{
         padding: 0 !important;
     }
-  }
+  }*/
   .md-icon {
     font-size: 1.5em;
     vertical-align: middle;

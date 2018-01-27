@@ -2,6 +2,7 @@
 module.exports = {
   title_create: 'Inhalt erstellen',
   title_edit:   'Inhalt bearbeiten',
+  title:        'Titel',
   url:          'URL',
   license:      'Lizenz',
   categorie:    'Kategorie',
