@@ -15,7 +15,7 @@
     },
     {
       "path": "./dist/static/**/!([0-9])*.js",
-      "maxSize": "200 KB"
+      "maxSize": "500 KB"
     },
     {
       "path": "./dist/static/**/*.css",
