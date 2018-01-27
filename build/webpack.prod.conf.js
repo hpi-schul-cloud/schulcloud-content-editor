@@ -13,9 +13,6 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin')
 const loadMinified = require('./load-minified')
-// import Purgecss webpack plugin and glob-all
-const PurgecssPlugin = require('purgecss-webpack-plugin')
-const glob = require('glob-all')
 
 const env = config.build.env
 
