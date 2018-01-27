@@ -52,11 +52,7 @@
             </md-field>
 
             <section>
-                <md-chips id="tags" v-model="data.tags" :md-max="10" :md-input-placeholder="($lang.form.tags)+'... ('+($lang.form.max)+' 10)'">
-                  <template slot-scope="tag" slot="tag">
-                    <span>{{ tag.value }}</span>
-                  </template>
-                </md-chips>
+                <md-chips id="tags" v-model="data.tags" :md-max="10" :md-placeholder="($lang.form.tags)+'... ('+($lang.form.max)+' 10)'"></md-chips>
             </section>
           </form>
         </md-card-content>
@@ -103,7 +99,7 @@ export default {
             "thumbnail": "",
             "contentCategory": "",
             "licenses": [],
-            "tags": []
+            "tags": [],
       },
     };
   },
@@ -122,7 +118,7 @@ export default {
           this.errors.push(e)
         })
       }else{
-        this.data = {};
+        this.data = {tags:[]};
       }
     },
     validateBeforeSubmit() {
@@ -181,18 +177,5 @@ export default {
   }
   textarea{
     min-height: 8rem !important;
-  }
-  /*.md-has-textarea{
-    label{
-        top: -6px !important;
-        left: 0 !important;
-    }
-    .md-textarea{
-        padding: 0 !important;
-    }
-  }*/
-  .md-icon {
-    font-size: 1.5em;
-    vertical-align: middle;
   }
 </style>
