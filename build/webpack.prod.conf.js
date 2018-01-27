@@ -54,15 +54,6 @@ const webpackConfig = merge(baseWebpackConfig, {
         safe: true
       }
     }),
-    // Remove unused CSS using purgecss. See https://github.com/FullHuman/purgecss
-    // for more information about purgecss.
-    new PurgecssPlugin({
-      paths: glob.sync([
-        path.join(__dirname, './../src/index.html'),
-        path.join(__dirname, './../**/*.vue'),
-        path.join(__dirname, './../src/**/*.js')
-      ])
-    }),
     // generate dist index.html with correct asset hash for caching.
     // you can customize output by editing /index.html
     // see https://github.com/ampedandwired/html-webpack-plugin
