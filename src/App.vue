@@ -13,10 +13,8 @@
     </div>
     </header>
     <main class="page-container container-fluid-max">
-        <transition name="slide">
-            <router-view v-if="jwt"></router-view>
-            <app-login v-else></app-login>
-        </transition>
+        <router-view v-if="jwt"></router-view>
+        <app-login v-else></app-login>
     </main>
   </div>
   </div>
