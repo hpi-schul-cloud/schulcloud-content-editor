@@ -48,7 +48,6 @@ export default {
 <style lang="scss">
 
 @import "./default";
-body {padding: 90px 0 15px;}
 
 .container-fluid{
   width: 100%;

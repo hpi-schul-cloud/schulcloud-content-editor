@@ -66,7 +66,7 @@
     <div class="grid-xl-4 grid-s-12">
       <div class="preview-wrapper">
         <h2>{{$lang.form.livepreview}}:</h2>
-        <app-previewCard v-bind:data="data"></app-previewCard>
+        <app-contentCard v-bind:data="data" v-bind:readOnly="true"></app-contentCard>
       </div>
     </div>
   </div>
@@ -79,14 +79,14 @@ Vue.use(VeeValidate);
 import VueTippy from 'vue-tippy';
 Vue.use(VueTippy);
 
-/* load previewCard async */
-const previewCard = () => import(
-    /* webpackChunkName: "previewCard" */ './previewCard.vue'
+/* load contentCard async */
+const contentCard = () => import(
+    /* webpackChunkName: "contentCard" */ './contentCard.vue'
 );
 
 export default {
   components: {
-    'app-previewCard': previewCard
+    'app-contentCard': contentCard
   },
   name: 'contentForm',
   data() {

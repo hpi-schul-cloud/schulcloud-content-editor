@@ -22,9 +22,9 @@
 
     <md-card-actions>
       <a id="open" v-bind:href="this.$config.API.baseUrl + this.$config.API.redirectPath + data._id" target="_blank">
-        <md-button>{{$lang.buttons.open}}</md-button>
+        <md-button v-bind:class="{'md-primary': readOnly}">{{$lang.buttons.open}}</md-button>
       </a>
-      <router-link :to="{path: '/edit/' + data._id}">
+      <router-link v-if="readOnly != true" :to="{path: '/edit/' + data._id}">
         <md-button class="md-primary">{{$lang.buttons.edit}}</md-button>
       </router-link>
     </md-card-actions>
@@ -33,7 +33,7 @@
 
 <script>
 export default {
-  props: ['data'],
+  props: ['data', 'readOnly'],
   name: 'contentForm'
 };
 </script>

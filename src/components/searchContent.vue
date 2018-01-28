@@ -8,16 +8,16 @@
             <input id="search-query-input" v-model.lazy="searchQuery" :placeholder="$lang.searchContent.search_for + '...'" /></br>
             <span id="resultHeadline" v-if="searchQuery"><b>{{this.pagination.totalEntrys}}</b> {{$lang.searchContent.searchResults_for}} <b>"{{this.searchQuery}}"</b></span>
         </div>
-        <div id="viewToggle">
+        <div v-if="readOnly != true" id="viewToggle">
           <md-button class="md-toggle" v-bind:class="{ 'md-primary md-raised':  gutter}" v-on:click="gutter = true">{{$lang.buttons.card}}</md-button>
           <md-button class="md-toggle" v-bind:class="{ 'md-primary md-raised': !gutter}" v-on:click="gutter = false">{{$lang.buttons.list}}</md-button>
         </div>
         <div md-gutter v-if="gutter" class="grid">
             <div class="card-wrapper grid-xs-12 grid-s-6 grid-m-6 grid-l-4 grid-xl-3" v-for="item in data">
-                <app-contentCard v-bind:data="item" class="height-100"></app-contentCard>
+                <app-contentCard v-bind:data="item" v-bind:readOnly="readOnly" class="height-100"></app-contentCard>
             </div>
         </div>
-        <table v-else>
+        <table v-else-if="readOnly != true">
             <thead>
                 <tr>
                   <th>{{$lang.form.title}}</th>
@@ -53,6 +53,7 @@ export default {
     'app-pagination': pagination,
   },
   name: 'contentList',
+  props: ['readOnly'],
   data() {
     return {
       data: [],
