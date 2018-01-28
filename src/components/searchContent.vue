@@ -112,9 +112,6 @@ export default {
       query.q = searchString;
       query.p = page;
       this.updateURL(query);
-      //location.search = ;
-      //this.$router.push({ query: { ...this.$route.query, q: searchString }});
-      //this.$router.push({ query: { ...this.$route.query, p: page }});
       // build request path and fetch new data
       const path = (searchString.length == 0)?this.$config.API.getPath:(this.$config.API.searchPath + "?" + paginationQuery + "&" + searchQuery );
       this.$http.get(this.$config.API.baseUrl + this.$config.API.port + path, {headers: {
@@ -143,11 +140,15 @@ export default {
   },
   watch:{
     searchQuery: function(to, from){
-        this.pagination.page = 1;
-        this.loadContent();
+        if(from != "" && to != from){
+            this.pagination.page = 1;
+            this.loadContent();
+        }
     },
     'pagination.page': function(to, from){
-        this.loadContent();
+        if(from != "" && to != from){
+            this.loadContent();
+        }
     }
   },
 };
