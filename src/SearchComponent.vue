@@ -4,7 +4,7 @@
 
 <script>
 
-import searchContent from './components/searchContent-exp.vue';
+import searchContent from './components/searchContent.vue';
 
 export default {
   components: {

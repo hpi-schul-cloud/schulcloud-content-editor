@@ -5,7 +5,7 @@ module.exports = {
   entry: './src/exportSearch.js',
   output: {
     path: path.resolve(__dirname, '../component-export'),
-    filename: 'searchContent.js'
+    filename: 'searchComponent.js'
   },
   resolve: {
     extensions: ['.js', '.vue'],
