@@ -8,11 +8,17 @@
     }],
     "stage-2"
   ],
-  "plugins": ["transform-runtime"],
+  "plugins": [],
   "env": {
     "test": {
       "presets": ["env", "stage-2"],
       "plugins": [ "istanbul" ]
+    },
+    "development": {
+        "plugins": ["transform-runtime"]
+    },
+    "export": {
+        "plugins": []
     }
   }
 }
