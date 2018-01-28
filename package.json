@@ -26,11 +26,13 @@
     "dev": "node build/dev-server.js",
     "start": "node build/dev-server.js",
     "build": "node build/build.js",
+    "export": "rimraf component-export && cross-env NODE_ENV=production BABEL_ENV=export webpack --config ./build/webpack-export.config.js",
     "lint": "eslint --ext .js,.vue src",
     "test": "bundlesize",
-    "travis": "npm run build && bundlesize"
+    "travis": "npm run build && npm run export && bundlesize"
   },
   "dependencies": {
+    "babel-runtime": "^6.26.0",
     "query-string": "^5.0.1",
     "vee-validate": "^2.0.0-rc.21",
     "vue": "^2.5.9",
@@ -55,6 +57,7 @@
     "chalk": "^2.1.0",
     "connect-history-api-fallback": "^1.4.0",
     "copy-webpack-plugin": "^4.1.1",
+    "cross-env": "^4.0.0",
     "css-loader": "^0.28.7",
     "cssnano": "^3.10.0",
     "eslint": "^4.9.0",
@@ -82,7 +85,9 @@
     "shelljs": "^0.8.1",
     "sw-precache-webpack-plugin": "^0.11.4",
     "uglify-es": "^3.3.9",
+    "uglify-js": "git://github.com/mishoo/UglifyJS2.git#harmony",
     "url-loader": "^0.6.2",
+    "vue-custom-element": "^1.0.13",
     "vue-loader": "^13.3.0",
     "vue-style-loader": "^3.0.3",
     "vue-template-compiler": "*",

@@ -43,6 +43,7 @@ bower_components
 
 # Builds
 /dist/
+/component-export/
 
 # Dependency directories
 node_modules/

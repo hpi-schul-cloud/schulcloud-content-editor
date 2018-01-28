@@ -17,6 +17,7 @@
         <app-login v-else></app-login>
     </main>
   </div>
+  </div>
 </template>
 
 <script>
@@ -39,14 +40,14 @@ export default {
         this.$cookies.remove("jwt");
         window.location.href = "/";
     }
-  }
+  },
 };
 </script>
 
 
 <style lang="scss">
+
 @import "./default";
-body {padding: 90px 0 15px;}
 
 .container-fluid{
   width: 100%;
@@ -124,6 +125,7 @@ body {padding: 90px 0 15px;}
 }
 
 #app {
+  padding: 90px 0 15px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

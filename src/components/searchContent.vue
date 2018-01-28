@@ -8,16 +8,16 @@
             <input id="search-query-input" v-model.lazy="searchQuery" :placeholder="$lang.searchContent.search_for + '...'" /></br>
             <span id="resultHeadline" v-if="searchQuery"><b>{{this.pagination.totalEntrys}}</b> {{$lang.searchContent.searchResults_for}} <b>"{{this.searchQuery}}"</b></span>
         </div>
-        <div id="viewToggle">
+        <div v-if="readOnly != true" id="viewToggle">
           <md-button class="md-toggle" v-bind:class="{ 'md-primary md-raised':  gutter}" v-on:click="gutter = true">{{$lang.buttons.card}}</md-button>
           <md-button class="md-toggle" v-bind:class="{ 'md-primary md-raised': !gutter}" v-on:click="gutter = false">{{$lang.buttons.list}}</md-button>
         </div>
         <div md-gutter v-if="gutter" class="grid">
-            <div class="card-wrapper grid-xs-12 grid-s-6 grid-m-6 grid-l-4 grid-xl-3" v-for="item in data">
-                <app-contentCard v-bind:data="item" class="height-100"></app-contentCard>
+            <div class="card-wrapper grid-xs-12 grid-s-6 grid-m-6 grid-l-4 grid-xl-3 height-100" v-for="item in data">
+                <app-contentCard v-bind:data="item" v-bind:readOnly="readOnly" class="height-100"></app-contentCard>
             </div>
         </div>
-        <table v-else>
+        <table v-else-if="readOnly != true">
             <thead>
                 <tr>
                   <th>{{$lang.form.title}}</th>
@@ -53,6 +53,7 @@ export default {
     'app-pagination': pagination,
   },
   name: 'contentList',
+  props: ['readOnly'],
   data() {
     return {
       data: [],
@@ -72,19 +73,26 @@ export default {
     };
   },
   created() {
-    if(this.$route.query.q){
-        this.searchQuery = this.$route.query.q;
+    let query = qs.parse(location.search);
+    if(query.q){
+        this.searchQuery = query.q;
     }
-    if(this.$route.query.p){
-        this.pagination.page = parseInt(this.$route.query.p);
+    if(query.p){
+        this.pagination.page = parseInt(query.p);
     }
     this.loadContent();
-    
+    window.onhashchange = this.urlChangeHandler;
   },
   methods: {
     pageChanged(page){
         this.pagination.page = page;
         this.loadContent();
+    },
+    updateURL(newQuery) {
+      if (history.pushState) {
+          var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + "?" + qs.stringify(newQuery);
+          window.history.pushState({path:newurl},'',newurl);
+      }
     },
     loadContent(){
       // clear data to show "loading state"
@@ -100,8 +108,10 @@ export default {
       let searchQuery =  searchItem + "[$match]="+searchString;
 
       // set unique url
-      this.$router.push({ query: { ...this.$route.query, q: searchString }});
-      this.$router.push({ query: { ...this.$route.query, p: page }});
+      let query = qs.parse(location.search);
+      query.q = searchString;
+      query.p = page;
+      this.updateURL(query);
       // build request path and fetch new data
       const path = (searchString.length == 0)?this.$config.API.getPath:(this.$config.API.searchPath + "?" + paginationQuery + "&" + searchQuery );
       this.$http.get(this.$config.API.baseUrl + this.$config.API.port + path, {headers: {
@@ -117,23 +127,28 @@ export default {
         console.error(e);
       })
     },
+    urlChangeHandler(){
+        // handle url changes
+        let query = qs.parse(location.search);
+        if(this.searchQuery != query.q){
+            this.searchQuery = query.q;
+        }
+        if(this.pagination.page != parseInt(query.p)){
+            this.pagination.page = parseInt(query.p);
+        }
+    }
   },
   watch:{
-    '$route' (to, from){
-        /* handle url changes */
-        if(this.searchQuery != this.$route.query.q){
-            this.searchQuery = this.$route.query.q;
-        }
-        if(this.pagination.page != parseInt(this.$route.query.p)){
-            this.pagination.page = parseInt(this.$route.query.p);
-        }
-    },
     searchQuery: function(to, from){
-        this.pagination.page = 1;
-        this.loadContent();
+        if(from != "" && to != from){
+            this.pagination.page = 1;
+            this.loadContent();
+        }
     },
     'pagination.page': function(to, from){
-        this.loadContent();
+        if(from != "" && to != from){
+            this.loadContent();
+        }
     }
   },
 };
