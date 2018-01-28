@@ -1,20 +1,14 @@
 <template>
-  <div>
-    <div v-if="$route.query.noframe == 'true'">
-        <router-view v-if="jwt"></router-view>
-    </div>
-    <div id="app" v-else>
-    <header class="md-elevation-1 md-accent"><div class="container-fluid-max">
-      <md-toolbar md-elevation="0" class="md-toolbar md-theme-default">
-        <router-link to="/" class="md-title" style="flex: 1">
-            <h3 class="cloud-logo">
-                {{title}}
-            </h3>
+  <div id="app">
+    <header class="md-elevation-1 md-primary"><div class="container-fluid-max">
+      <md-toolbar md-elevation="0" class="md-primary">
+        <router-link to="/" style="flex: 1">
+            <h2 class="cloud-logo md-title" style="flex: 1">{{title}}</h2>
         </router-link>
 
         <router-link v-if="jwt" to="/create"><md-button>{{$lang.buttons.create}}</md-button></router-link>
-        <router-link v-if="jwt" to="/search"><md-button>{{$lang.buttons.search}}</md-button></router-link>
-        <md-button v-if="jwt" v-on:click="logout">{{$lang.buttons.logout}}</md-button>
+        <router-link v-if="jwt" to="/stats"><md-button>{{$lang.buttons.stats}}</md-button></router-link>
+        <md-button v-if="jwt" v-on:click="logout">{{$lang.buttons.logout}}</md-button>  
       </md-toolbar>
     </div>
     </header>
@@ -53,7 +47,8 @@ export default {
 
 <style lang="scss">
 
-body {}
+@import "./default";
+body {padding: 90px 0 15px;}
 
 .container-fluid{
   width: 100%;
@@ -64,6 +59,70 @@ body {}
   width: 100%;
   max-width: 1750px;
   margin: 0 auto 0;
+}
+
+
+.grid{
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-gap: 5px;
+}
+
+@for $i from 1 through 12{
+    .hide-xl{
+        display: none;
+    }
+  .grid-xl-#{$i}{
+    grid-column: span $i;
+  }
+}
+
+@media (max-width: 1903px){
+    .hide-l{
+        display: none;
+    }
+    @for $i from 1 through 12{
+      .grid-l-#{$i}{
+        grid-column: span $i;
+      }
+    }
+}
+@media (max-width: 1264px){
+    .hide-m{
+        display: none;
+    }
+    @for $i from 1 through 12{
+      .grid-m-#{$i}{
+        grid-column: span $i;
+      }
+    }
+}
+@media (max-width: 944px){
+    .hide-s{
+        display: none;
+    }
+    @for $i from 1 through 12{
+      .grid-s-#{$i}{
+        grid-column: span $i;
+      }
+    }
+}
+@media (max-width: 600px){
+    .hide-s{
+        display: none;
+    }
+    @for $i from 1 through 12{
+      .grid-xs-#{$i}{
+        grid-column: span $i;
+      }
+    }
+}
+
+@for $i from 0 through 10{
+  .height-#{$i*10}{
+    height: percentage($i/10);
+  }
 }
 
 #app {
@@ -79,26 +138,21 @@ main {
 }
 
 header{
-    width: 100%;
+    width: 100vw;
     position: fixed;
     top: 0;
     left: 0;
-    right: 0;
     z-index: 999;
-    background: #b10438;
-    .md-theme-default.md-toolbar{
-        background: transparent;
-        color: #fff !important;
-        a{
-            color: #fff !important;
+    padding-right: 16px !important;
+    background: var(--md-theme-default-accent-on-background, #b10438);
+    .md-title{
+        font-size: 1.5rem !important;
+        &:hover{
+            text-decoration: none !important;
         }
-        .md-title,
-        .md-title:hover{
-            text-decoration: none;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
+    }
+    .md-button{
+        margin: 0;
     }
     .cloud-logo::before{
         content: "";

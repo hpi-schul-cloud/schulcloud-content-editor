@@ -1,19 +1,19 @@
 <template>
   <form id="contentForm" @submit.prevent="validateBeforeSubmit">
     <td>
-        <md-input-container :class="{'md-input-invalid': errors.has('title')}">
-          <md-input v-model="data.title" type="text" v-validate name="title" data-vv-rules="required"></md-input>
+        <md-field :class="{'md-input-invalid': errors.has('title')}">
+          <md-input v-model="data.title" type="text"></md-input>
           <span class="md-error">{{errors.first('title')}}</span>
-        </md-input-container>
+        </md-field>
     </td>
     <td>
-        <md-input-container :class="{'md-input-invalid': errors.has('url')}">
-          <md-input v-model="data.url" v-validate name="url" data-vv-rules="required|url"></md-input>
+        <md-field :class="{'md-input-invalid': errors.has('url')}">
+          <md-input v-model="data.url"></md-input>
           <span class="md-error">{{errors.first('url')}}</span>
-        </md-input-container>
+        </md-field>
     </td>
-    <td class="md-hide-small">
-        <md-input-container>
+    <td class="hide-s">
+        <md-field>
           <md-select v-model="data.licenses" id="license" multiple name="license">
             <md-option value="GPL">GPL</md-option>
             <md-option value="MIT">MIT</md-option>
@@ -21,19 +21,19 @@
             <md-option value="CC BY-NC-SA (KA default)">CC BY-NC-SA (KA default)</md-option>
             <md-option value="Standard Youtube">Standard Youtube</md-option>
           </md-select>
-        </md-input-container>
+        </md-field>
     </td>
-    <td class="md-hide-medium">
-        <md-input-container>
+    <td class="hide-m">
+        <md-field>
           <md-select v-model="data.contentCategory" name="contentCategory" id="contentCategory">
             <md-option value="atomic">Atomic</md-option>
             <md-option value="interactive">Interactive</md-option>
           </md-select>
-        </md-input-container>
+        </md-field>
     </td>
     <td>
         <md-button class="md-icon-button" type="delete"><md-icon>delete</md-icon></md-button>
-        <md-button class="md-icon-button md-accent" type="submit"><md-icon>save</md-icon></md-button>
+        <md-button class="md-icon-button md-primary" type="submit"><md-icon>save</md-icon></md-button>
     </td>
   </form>
 </template>
@@ -47,15 +47,22 @@ export default {
   name: 'contentTableRow',
   props: ['data'],
   methods: {
+    required(item){
+        return (item && item != '');
+    },
+    isUrl(item){
+        return (item.match(/[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/gi))
+    },
+    maxLength(text, length){
+        return (text.length <= length);
+    },
     validateBeforeSubmit() {
-      this.$validator.validateAll().then((result) => {
-        if (result) {
+        if (this.isUrl(this.data.url) && this.required(this.data.title)) {
           alert('Form Submitted!');
           this.submitContent();
           return;
         }
         alert('Correct the errors!');
-      });
     },
     submitContent: function (event) {
         if(this.$route.params.id){
@@ -79,7 +86,7 @@ form{
     td{
         vertical-align:top;
         padding: 0 8px;
-        .md-input-container{
+        .md-field{
             margin-top: 0;
             padding-top: 0;
             min-height: initial;
