@@ -1,15 +1,15 @@
 ﻿<template>
   <md-card class="card-content">
-    <md-card-media v-if="data.thumbnail" md-ratio="16:9">
-      <img :src="data.thumbnail" :alt="'Thumbnail for ~' + data.title + '~'">
+    <md-card-media md-ratio="16:9">
+      <img :src="(data.thumbnail||'https://placeholdit.co//i/320x180?bg=CCC&fc=000&text=Platzhalter')" :alt="'Thumbnail for ~' + data.title + '~'">
     </md-card-media>
 
     <md-card-header>
-      <h2 class="md-title">{{data.title}}</h2>
+      <h2 class="md-title">{{data.title||"Titel"}}</h2>
       <div class="md-subhead">      
         <div class="tags">
             <md-icon>label</md-icon>
-            <span v-for="tag in data.tags.slice(0,this.$config.card.displayedTags)">
+            <span v-for="tag in (data.tags||[]).slice(0,this.$config.card.displayedTags)">
               {{ tag }}
             </span>
         </div>
@@ -17,7 +17,7 @@
     </md-card-header>
 
     <md-card-content>
-      {{ data.description.substring(0, 300) }}{{ (data.description.length>300)?'...':'' }}
+      {{ (data.description||"Beschreibung...").substring(0, 300) }}{{ ((data.description||"").length>300)?'...':'' }}
     </md-card-content>
 
     <md-card-actions>
