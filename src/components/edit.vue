@@ -57,7 +57,7 @@
           </form>
         </md-card-content>
         <md-card-actions>
-          <md-button style="position:absolute; left:8px;" v-if="$route.params.id">{{$lang.buttons.delete}}</md-button>
+          <md-button class="delete" v-if="$route.params.id">{{$lang.buttons.delete}}</md-button>
           <md-button v-on:click="$router.go(-1)" style="color: initial;">{{$lang.buttons.cancel}}</md-button>
           <md-button class="md-primary" type="submit" form="contentForm">{{$lang.buttons.save}}</md-button>
         </md-card-actions>
@@ -177,5 +177,11 @@ export default {
   }
   textarea{
     min-height: 8rem !important;
+  }
+  .md-card-actions{
+    .delete{
+      position:absolute;
+      left:8px;
+    }
   }
 </style>
