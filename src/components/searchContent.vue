@@ -100,20 +100,24 @@ export default {
       
       // pagination for request
       const page = this.pagination.page || 1;
-      let paginationQuery = qs.stringify({$limit: this.pagination.itemsPerPage, $skip: this.pagination.itemsPerPage * (page - 1)});
 
       // query for search request
       const searchString = this.searchQuery || "";
-      const searchItem = "_all"
-      let searchQuery =  searchItem + "[$match]="+searchString;
 
       // set unique url
       let query = qs.parse(location.search);
       query.q = searchString;
       query.p = page;
       this.updateURL(query);
+      
       // build request path and fetch new data
-      const path = (searchString.length == 0)?this.$config.API.getPath:(this.$config.API.searchPath + "?" + paginationQuery + "&" + searchQuery );
+      //apiQuery
+      let apiQuery = {
+        $limit: this.pagination.itemsPerPage, 
+        $skip: this.pagination.itemsPerPage * (page - 1),
+        "_all[$match]": searchString,
+      };
+      const path = (searchString.length == 0)?this.$config.API.getPath:(this.$config.API.searchPath + "?" + qs.stringify(apiQuery));
       this.$http.get(this.$config.API.baseUrl + this.$config.API.port + path, {headers: {
           "Authorization" : "Bearer " + localStorage.getItem('jwt')
         }

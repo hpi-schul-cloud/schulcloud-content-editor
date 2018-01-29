@@ -9,7 +9,7 @@
       <div class="md-subhead">      
         <div class="tags">
             <md-icon>label</md-icon>
-            <span v-for="tag in data.tags.slice(0,this.$config.card.displayedTags)">
+            <span v-for="tag in (data.tags||[]).slice(0,this.$config.card.displayedTags)">
               {{ tag }}
             </span>
         </div>
