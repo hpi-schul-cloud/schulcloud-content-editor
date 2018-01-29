@@ -6,7 +6,7 @@
 
     <md-card-header>
       <h2 class="md-title">{{data.title}}</h2>
-      <div class="md-subhead">      
+      <div class="md-subhead">
         <div class="tags">
             <md-icon>label</md-icon>
             <span v-for="tag in data.tags.slice(0,this.$config.card.displayedTags)">
@@ -21,6 +21,9 @@
     </md-card-content>
 
     <md-card-actions>
+      <md-card-provider class="providerName">
+          {{ data.providerName}}
+      </md-card-provider>
       <a id="open" v-bind:href="this.$config.API.baseUrl + this.$config.API.redirectPath + data._id" target="_blank">
         <md-button v-bind:class="{'md-primary': readOnly}">{{$lang.buttons.open}}</md-button>
       </a>
@@ -68,6 +71,10 @@ export default {
     bottom: 0;
     left: 0;
     right: 0;
+    .providerName{
+      position:absolute;
+      left:16px;
+    }
   }
 }
 </style>
