@@ -65,9 +65,9 @@ export default {
           totalEntrys: 0,
           buttonRange: 2,
           scroll: {
-            top: 0, 
-            left: 0, 
-            behavior: 'smooth' 
+            top: 0,
+            left: 0,
+            behavior: 'smooth'
           }
       }
     };
@@ -97,27 +97,23 @@ export default {
     loadContent(){
       // clear data to show "loading state"
       this.data = [];
-      
+
       // pagination for request
       const page = this.pagination.page || 1;
+      let paginationQuery = qs.stringify({$limit: this.pagination.itemsPerPage, $skip: this.pagination.itemsPerPage * (page - 1)});
 
       // query for search request
       const searchString = this.searchQuery || "";
+      const searchItem = "_all"
+      let searchQuery =  searchItem + "[$match]="+searchString;
 
       // set unique url
       let query = qs.parse(location.search);
       query.q = searchString;
       query.p = page;
       this.updateURL(query);
-      
       // build request path and fetch new data
-      //apiQuery
-      let apiQuery = {
-        $limit: this.pagination.itemsPerPage, 
-        $skip: this.pagination.itemsPerPage * (page - 1),
-        "_all[$match]": searchString,
-      };
-      const path = (searchString.length == 0)?this.$config.API.getPath:(this.$config.API.searchPath + "?" + qs.stringify(apiQuery));
+      const path = (searchString.length == 0)?this.$config.API.getPath:(this.$config.API.searchPath + "?" + paginationQuery + "&" + searchQuery );
       this.$http.get(this.$config.API.baseUrl + this.$config.API.port + path, {headers: {
           "Authorization" : "Bearer " + localStorage.getItem('jwt')
         }
@@ -125,7 +121,7 @@ export default {
       .then(response => {
         this.data = response.data.data;
         this.pagination.totalEntrys = response.data.total;
-        
+
       })
       .catch(e => {
         console.error(e);
@@ -178,7 +174,7 @@ export default {
         }
     }
     #search-input{
-        font-size: 1.25em !important;
+        font-size: 1.75em !important;
         margin-top: 16px;
         float: left;
         width: calc(100% - 200px);
@@ -190,6 +186,7 @@ export default {
             max-width: 500px;
             padding: 0;
             margin: 0;
+            margin-left: 5px;
             outline: none;
             background: transparent;
             border: none;

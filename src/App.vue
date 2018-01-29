@@ -8,7 +8,7 @@
 
         <router-link v-if="jwt" to="/create"><md-button>{{$lang.buttons.create}}</md-button></router-link>
         <router-link v-if="jwt" to="/stats"><md-button>{{$lang.buttons.stats}}</md-button></router-link>
-        <md-button v-if="jwt" v-on:click="logout">{{$lang.buttons.logout}}</md-button>  
+        <md-button v-if="jwt" v-on:click="logout">{{$lang.buttons.logout}}</md-button>
       </md-toolbar>
     </div>
     </header>
