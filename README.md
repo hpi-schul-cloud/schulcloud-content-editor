@@ -11,8 +11,6 @@ git clone https://github.com/schul-cloud/schulcloud-content-editor.git
 # install dependencies
 npm install
 ```
-update vuejs-localization manually (download files and replace in node-modules folder
-Link: https://github.com/valterlorran/vuejs-localization/
 
 ## Build & Development
 
@@ -51,5 +49,5 @@ Default branch: master
 ## Testing
 ``` bash
 # run build & check bundlesize
-npm run test
+npm run travis
 ```
