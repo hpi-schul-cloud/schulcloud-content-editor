@@ -11,22 +11,22 @@
             v-if="searchQuery"><b>{{this.pagination.totalEntrys}}</b> {{$lang.searchContent.searchResults_for}} <b>"{{this.searchQuery}}"</b></span>
     </div>
 
-    <div class="filter">
-      <p class="filter-title">{{$lang.searchContent.createdDate}}</p>
-      <date-range-picker
-        start-date="01/01/2016"
-        :end-date="today()"
-        format="DD/MM/YYYY"
-        @get-dates="setCreatedDateRange">
-      </date-range-picker>
-      <span v-on:click="clearDatePicker">
-                <md-icon>clear</md-icon>
-            </span>
-    </div>
+    <div class="md-layout">
+      <div class="md-layout-item">
+        <v-select placeholder="Provider" v-model="selectedProviders" multiple :on-change="loadContent"
+        :options="['Khan Academy', 'Anderer Provider']"></v-select>
+      </div>
 
-    <div class="filter">
-      <p class="filter-title">{{$lang.searchContent.providers}}</p>
-      <v-select v-model="selectedProviders" multiple :options="['Khan Academy', 'Anderer Provider']"></v-select>
+      <div class="md-layout-item date-picker">
+        <date-range-picker
+          start-date="01/07/2017"
+          :end-date="today()"
+          format="DD/MM/YYYY"
+          @get-dates="setCreatedDateRange">
+        </date-range-picker>
+        <span class="clear-date-picker" v-on:click="clearDatePicker">
+                <md-icon>delete</md-icon></span>
+      </div>
     </div>
 
     <div v-if="readOnly != true" id="viewToggle">
@@ -142,18 +142,15 @@
         this.updateURL(query);
 
         // build request path and fetch new data
-        let basicQuery = {
+        let searchQuery = {
           $limit: this.pagination.itemsPerPage,
           $skip: this.pagination.itemsPerPage * (page - 1),
           "_all[$match]": searchString,
         };
 
-        // apply filters
-        let apiQuery = Object.assign({}, basicQuery, this.getFilterQuery());
-
         // TODO redo
-        //const path = (searchString.length == 0) ? this.$config.API.getPath : (this.$config.API.searchPath + "?" + qs.stringify(apiQuery));
-        const path = this.$config.API.getPath + "?" + qs.stringify(this.getFilterQuery());
+        const path = (searchString.length == 0) ? this.$config.API.getPath + "?" + qs.stringify(this.getFilterQuery())
+          : (this.$config.API.searchPath + "?" + qs.stringify(searchQuery));
         this.$http.get(this.$config.API.baseUrl + this.$config.API.port + path, {
           headers: {
             "Authorization": "Bearer " + localStorage.getItem('jwt')
@@ -185,15 +182,12 @@
           let startDate = new Date(this.createdDateRange.start);
           let endDate = new Date(this.createdDateRange.end);
 
-          filterQuery["createdAt"] = {
-            $gte: startDate,
-            $lte: endDate
-          }
+          filterQuery["createdAt[$gte]"] = startDate.getTime();
+          filterQuery["createdAt[$lte]"] = endDate.getTime();
         }
+
         if (this.selectedProviders.length != 0) {
-          filterQuery["providerName"] = {
-            $in: this.selectedProviders[0]
-          }
+          filterQuery["providerName[$in]"] = this.selectedProviders;
         }
 
         return filterQuery;
@@ -238,6 +232,23 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
+  .date-picker{
+    display: inline-flex;
+  }
+
+  .clear-date-picker{
+    margin-top: 7px;
+  }
+
+  .md-layout {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+
+  .md-layout-item {
+    margin-right: 5px;
+  }
+
   .grid {
     clear: both;
   }
@@ -264,6 +275,7 @@
     margin-top: 16px;
     float: left;
     width: calc(100% - 200px);
+    margin-bottom: 16px;
     #search-query-input {
       display: inline-block;
       font-size: 1em;
