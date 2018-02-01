@@ -3,7 +3,7 @@
 import Vue from 'vue';
 import App from './App';
 import router from './router';
-
+import NProgress from 'vue-nprogress';
 import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.min.css'
 Vue.use(VueMaterial);
@@ -26,10 +26,25 @@ Vue.use(VueLang, {default:'de'});
 Vue.config.silent = false;
 Vue.config.productionTip = false;
 
+Vue.use(NProgress);
+
+var nprogress = new NProgress({parent: '.nprogress-container'})
+
+router.beforeEach((to, from, next) => {
+  nprogress.start();
+  nprogress.set(0.1);
+  next();
+});
+
+router.afterEach(() => {
+  setTimeout(() => nprogress.done(), 500)
+});
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  nprogress,
   template: '<App/>',
   components: { App },
 });
