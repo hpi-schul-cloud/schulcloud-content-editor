@@ -18,7 +18,8 @@
         "plugins": ["transform-runtime"]
     },
     "export": {
-        "plugins": []
+        "plugins": [],
+        "presets": ["es2015"]
     }
   }
 }
