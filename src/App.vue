@@ -15,17 +15,22 @@
     <main class="page-container container-fluid-max">
         <router-view v-if="jwt"></router-view>
         <app-login v-else></app-login>
+        <app-footer></app-footer>
     </main>
-  </div>
   </div>
 </template>
 
 <script>
 import login from './components/login.vue';
+/* load footer async */
+const footer = () => import(
+    /* webpackChunkName: "footer" */ './components/footer.vue'
+);
 
 export default {
   components: {
     'app-login': login,
+    'app-footer': footer,
   },
   name: 'app',
   data() {
@@ -129,6 +134,17 @@ export default {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  &:after{
+    background: linear-gradient(-3deg, var(--md-theme-default-accent) 15%, #fff 15%);
+    display: block;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    content: "";
+    right: 0;
+    left: 0;
+    z-index: -999;
+  }
 }
 
 main {
