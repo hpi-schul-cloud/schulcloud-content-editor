@@ -29,7 +29,7 @@
     "export": "rimraf component-export && cross-env NODE_ENV=production BABEL_ENV=export webpack --config ./build/webpack-export.config.js",
     "lint": "eslint --ext .js,.vue src",
     "test": "bundlesize",
-    "travis": "npm run build && npm run export && bundlesize"
+    "travis": "npm run build --report && npm run export && bundlesize"
   },
   "dependencies": {
     "babel-runtime": "^6.26.0",
