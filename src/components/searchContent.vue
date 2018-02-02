@@ -136,10 +136,15 @@
         const searchString = this.searchQuery || "";
 
         // set unique url
-        let query = qs.parse(location.search);
-        query.q = searchString;
-        query.p = page;
-        this.updateURL(query);
+        if(this.$router){
+            this.$router.push({ query: { ...this.$route.query, q: searchString }});
+            this.$router.push({ query: { ...this.$route.query, p: page }});
+        }else{
+            let query = qs.parse(location.search);
+            query.q = searchString;
+            query.p = page;
+            this.updateURL(query);
+        }
 
         // build request path and fetch new data
         let searchQuery = {
@@ -167,12 +172,21 @@
       },
       urlChangeHandler() {
         // handle url changes
-        let query = qs.parse(location.search);
-        if (this.searchQuery != query.q) {
-          this.searchQuery = query.q;
-        }
-        if (this.pagination.page != parseInt(query.p)) {
-          this.pagination.page = parseInt(query.p);
+        if(this.$router){
+            if(this.searchQuery != this.$route.query.q){
+                this.searchQuery = this.$route.query.q;
+            }
+            if(this.pagination.page != parseInt(this.$route.query.p)){
+                this.pagination.page = parseInt(this.$route.query.p);
+            }
+        }else{
+            let query = qs.parse(location.search);
+            if (this.searchQuery != query.q) {
+              this.searchQuery = query.q;
+            }
+            if (this.pagination.page != parseInt(query.p)) {
+              this.pagination.page = parseInt(query.p);
+            }
         }
       },
       getFilterQuery() {
@@ -196,7 +210,6 @@
         this.createdDateRange.start = range.startDate;
         this.createdDateRange.end = range.endDate;
         this.loadContent();
-        console.log(this.createdDateRange);
       },
       today() {
         let date = new Date();
@@ -216,13 +229,13 @@
     },
     watch: {
       searchQuery: function (to, from) {
-        if (from != "" && to != from) {
+        if (to != from) {
           this.pagination.page = 1;
           this.loadContent();
         }
       },
       'pagination.page': function (to, from) {
-        if (from != "" && to != from) {
+        if (to != from) {
           this.loadContent();
         }
       }
