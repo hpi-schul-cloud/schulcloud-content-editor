@@ -80,6 +80,11 @@ export default {
     active: function(to, from){
       this.isActive = to;
     },
+    isActive: function(to){
+      if(to == false){
+        this.onCancle();
+      }
+    }
   },
   computed: {
       firstDayOfAWeek: {

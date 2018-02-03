@@ -46,7 +46,6 @@ export default {
       this.activeFilter.push([identifier, filterData]);
     },
     removeFilter(key){
-      console.log(key);
       //delete this.activeFilter[key];
       this.activeFilter = this.activeFilter.filter(item => { return item[0] != key; })
       // TODO: prevent showing modal again
@@ -56,12 +55,9 @@ export default {
     },
     sendNewQuery(){
       let apiQuery = {}
-      console.log(this.activeFilter);
       this.activeFilter.forEach(value => {
-        console.log("value:",value);
         Object.assign(apiQuery, value[1].apiQuery);
       }, {} );
-      console.log("apiQuery:",apiQuery);
       this.$emit('newFilter', apiQuery);
     },
     isApplied(identifier){
