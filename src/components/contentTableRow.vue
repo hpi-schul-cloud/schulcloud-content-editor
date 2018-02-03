@@ -1,5 +1,5 @@
 <template>
-  <form id="contentForm" @submit.prevent="validateBeforeSubmit" @change="itemChanged" v-bind:class="{ changed: data.isDirty }">
+  <form id="contentForm" @submit.prevent="validateBeforeSubmit" @change="itemChanged" v-bind:class="{ changed: isDirty }">
     <td>
         <md-field :class="{'md-input-invalid': errors.has('title')}">
           <md-input v-model="data.title" type="text"></md-input>
@@ -70,8 +70,9 @@ export default {
         alert('Correct the errors!');
     },
     submitContent: function (event) {
-        this.data.isDirty = false;
-        console.log(this.data.isDirty);
+        // Take back the changed status of the row
+        this.isDirty = false;
+
         if(this.$route.params.id){
             this.$http.patch(this.$config.API.baseUrl + this.$config.API.pushPort + this.$config.API.pushContentPath + this.data._id, this.data, {
                 headers: {"Authorization" : "Bearer " + localStorage.getItem('jwt')},
@@ -83,11 +84,17 @@ export default {
         }
     },
     itemChanged() {
-      console.log('blaaa');
-      this.data.isDirty = true;
-      console.log(this.data.isDirty);
+      this.isDirty = true;
     },
   },
+  watch: {
+    'data.contentCategory': function() {
+      this.itemChanged();
+    },
+    'data.licenses': function() {
+      this.itemChanged();
+    }
+  }
 };
 </script>
 
@@ -114,6 +121,6 @@ form{
 }
 
 .changed {
-  background-color: aqua;
+  background-color: lightgoldenrodyellow;
 }
 </style>
