@@ -1,14 +1,14 @@
 <template>
     <div class="pagination">
-        <md-button v-if="config.page == 1" class="md-icon-button" disabled><md-icon>arrow_back</md-icon></md-button>
-        <md-button v-else class="md-icon-button" v-on:click="config.page -= 1"><md-icon>arrow_back</md-icon></md-button>
+        <md-button v-if="config.page == 1" class="md-icon-button md-raised" disabled><md-icon>arrow_back</md-icon></md-button>
+        <md-button v-else class="md-icon-button md-raised" v-on:click="config.page -= 1"><md-icon>arrow_back</md-icon></md-button>
 
-        <md-button id="pageNumber" class="md-button md-primary">
+        <md-button id="pageNumber" class="md-button md-primary md-raised">
               <input type="number" v-model.lazy="pageString" min="1" :max="maxPages"></input>
         </md-button>
 
-        <md-button v-if="config.page == maxPages" class="md-icon-button" disabled><md-icon>arrow_forward</md-icon></md-button>
-        <md-button v-else class="md-icon-button" v-on:click="config.page += 1"><md-icon>arrow_forward</md-icon></md-button>
+        <md-button v-if="config.page == maxPages" class="md-icon-button md-raised" disabled><md-icon>arrow_forward</md-icon></md-button>
+        <md-button v-else class="md-icon-button md-raised" v-on:click="config.page += 1"><md-icon>arrow_forward</md-icon></md-button>
   </div>
 </template>
 
@@ -55,10 +55,14 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+.md-button{
+    margin: 0 8px;
+}
 .paginationWrapper{
     width: 100%;
 }
 .pagination{
+    margin-top: 2rem;
     display: block;
     width: 100%;
     text-align:center
