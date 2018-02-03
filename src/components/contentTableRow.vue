@@ -1,5 +1,5 @@
 <template>
-  <form id="contentForm" @submit.prevent="validateBeforeSubmit">
+  <form id="contentForm" @submit.prevent="validateBeforeSubmit" @change="itemChanged" v-bind:class="{ changed: data.isDirty }">
     <td>
         <md-field :class="{'md-input-invalid': errors.has('title')}">
           <md-input v-model="data.title" type="text"></md-input>
@@ -46,6 +46,11 @@ Vue.use(VeeValidate);
 export default {
   name: 'contentTableRow',
   props: ['data'],
+  data() {
+    return {
+      isDirty: false,
+    }
+  },
   methods: {
     required(item){
         return (item && item != '');
@@ -65,6 +70,8 @@ export default {
         alert('Correct the errors!');
     },
     submitContent: function (event) {
+        this.data.isDirty = false;
+        console.log(this.data.isDirty);
         if(this.$route.params.id){
             this.$http.patch(this.$config.API.baseUrl + this.$config.API.pushPort + this.$config.API.pushContentPath + this.data._id, this.data, {
                 headers: {"Authorization" : "Bearer " + localStorage.getItem('jwt')},
@@ -74,7 +81,12 @@ export default {
                 headers: {"Authorization" : "Bearer " + localStorage.getItem('jwt')},
             });
         }
-    }
+    },
+    itemChanged() {
+      console.log('blaaa');
+      this.data.isDirty = true;
+      console.log(this.data.isDirty);
+    },
   },
 };
 </script>
@@ -99,5 +111,9 @@ form{
             margin: 0;
         }
     }
+}
+
+.changed {
+  background-color: aqua;
 }
 </style>
