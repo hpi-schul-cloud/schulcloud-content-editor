@@ -39,26 +39,26 @@
     </div>
     <div md-gutter v-if="gutter" class="grid">
       <div class="card-wrapper grid-xs-12 grid-s-6 grid-m-6 grid-l-4 grid-xl-3 height-100" v-for="item in data">
-        <app-contentCard v-bind:data="item" v-bind:readOnly="readOnly" class="height-100"></app-contentCard>
+        <contentCard v-bind:data="item" v-bind:readOnly="readOnly" class="height-100"></contentCard>
       </div>
     </div>
     <table v-else-if="readOnly != true">
       <thead>
       <tr>
-        <th>{{$lang.form.title}}</th>
-        <th>{{$lang.form.url}}</th>
-        <th class="hide-s">{{$lang.form.license}}</th>
-        <th class="hide-m">{{$lang.form.categorie}}</th>
+        <th>{{$lang.edit.form.title}}</th>
+        <th>{{$lang.edit.form.url}}</th>
+        <th class="hide-s">{{$lang.edit.form.license}}</th>
+        <th class="hide-m">{{$lang.edit.form.categorie}}</th>
       </tr>
       </thead>
-      <app-contentRow v-for="item in data" v-bind:data="item"></app-contentRow>
+      <contentRow v-for="item in data" v-bind:contentData="item" @delete="deleteEntry"></contentRow>
     </table>
     <md-empty-state v-if="data.length == 0" class="md-primary"
                     md-icon="error_outline"
                     :md-label="$lang.searchContent.nothing_found"
                     :md-description="$lang.searchContent.nothing_found_help">
     </md-empty-state>
-    <app-pagination @pageChanged="pageChanged" v-bind:config="pagination"></app-pagination>
+    <pagination @pageChanged="pageChanged" v-bind:config="pagination"></pagination>
   </div>
 </template>
 
@@ -70,16 +70,16 @@
   /* load contentTableRow async */
   const contentTableRow = () => import(
     /* webpackChunkName: "contentTableRow" */ './contentTableRow.vue'
-    );
+  );
   const qs = require('query-string');
 
   export default {
     components: {
-      'app-contentCard': contentCard,
-      'app-contentRow': contentTableRow,
-      'app-pagination': pagination,
+      contentCard,
+      pagination,
+      'contentRow': contentTableRow,
       'date-range-picker': dateRangePicker,
-      'v-select': vueSelect
+      'v-select': vueSelect,
     },
     name: 'contentList',
     props: ['readOnly'],
@@ -225,6 +225,13 @@
 
         this.$el.querySelector('.start-date').value = '-';
         this.$el.querySelector('.end-date').value = '-';
+      },
+      deleteEntry(id){
+        this.data.forEach((entry, index) => {
+            if (entry._id == id){
+              this.data.splice(index, 1);
+            }
+        });
       }
     },
     watch: {
