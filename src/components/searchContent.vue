@@ -13,8 +13,16 @@
 
     <div class="md-layout">
       <div class="md-layout-item">
-        <v-select placeholder="Provider" v-model="selectedProviders" multiple :on-change="loadContent"
-        :options="['Khan Academy', 'Anderer Provider']"></v-select>
+        <md-field>
+          <label for="selectedProviders">Provider</label>
+          <md-select v-model="selectedProviders" id="selectedProviders" md-dense>
+            <md-option value="">kein Provider</md-option>
+            <md-option value="Khan Academy">Khan Academy</md-option>
+            <md-option value="Serlo">Serlo</md-option>
+            <md-option value="Youtube">Youtube</md-option>
+            <md-option value="LEIFI Physik">LEIFI Physik</md-option>           
+          </md-select>
+        </md-field>
       </div>
 
       <div class="md-layout-item date-picker">
@@ -65,11 +73,12 @@
 <script>
   import contentCard from './contentCard.vue';
   import pagination from './paginationTemplate.vue';
-  import dateRangePicker from 'vue-daterange-picker';
-  import vueSelect from 'vue-select';
   /* load contentTableRow async */
   const contentTableRow = () => import(
     /* webpackChunkName: "contentTableRow" */ './contentTableRow.vue'
+  );
+  const dateRangePicker = () => import(
+    /* webpackChunkName: "dateRangePicker" */ 'vue-daterange-picker'
   );
   const qs = require('query-string');
 
@@ -79,7 +88,6 @@
       pagination,
       'contentRow': contentTableRow,
       'date-range-picker': dateRangePicker,
-      'v-select': vueSelect,
     },
     name: 'contentList',
     props: ['readOnly'],
@@ -154,8 +162,9 @@
         };
 
         // TODO redo
-        const path = (searchString.length == 0) ? this.$config.API.getPath + "?" + qs.stringify(this.getFilterQuery())
-          : (this.$config.API.searchPath + "?" + qs.stringify(searchQuery));
+        const queryString = qs.stringify(Object.assign(searchQuery, this.getFilterQuery()));
+        const path = (searchString.length == 0) ? (this.$config.API.getPath)
+          : (this.$config.API.searchPath + "?" + queryString);
         this.$http.get(this.$config.API.baseUrl + this.$config.API.port + path, {
           headers: {
             "Authorization": "Bearer " + localStorage.getItem('jwt')
@@ -201,7 +210,9 @@
         }
 
         if (this.selectedProviders.length != 0) {
-          filterQuery["providerName[$in]"] = this.selectedProviders;
+          // corret but api seems broken
+          //filterQuery["providerName[$in]"] = this.selectedProviders;
+          filterQuery["providerName[$match]"] = this.selectedProviders;
         }
 
         return filterQuery;
@@ -245,7 +256,12 @@
         if (to != from) {
           this.loadContent();
         }
-      }
+      },
+      selectedProviders: function (to, from) {
+        if (to != from) {
+          this.loadContent();
+        }
+      },
     },
   };
 </script>

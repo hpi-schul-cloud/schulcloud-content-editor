@@ -11,7 +11,7 @@
     },
     {
       "path": "./dist/static/**/[0-9]*.js",
-      "maxSize": "100 KB"
+      "maxSize": "70 KB"
     },
     {
       "path": "./dist/static/**/!([0-9])*.js",
