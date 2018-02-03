@@ -12,7 +12,7 @@
           <div class="tags">
               <md-icon>label</md-icon>
               <span v-for="tag in (data.tags||[]).slice(0,this.$config.card.displayedTags)">
-                {{ tag }}
+                {{ tag }},
               </span>
           </div>
         </div>
