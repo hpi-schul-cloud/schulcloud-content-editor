@@ -1,5 +1,5 @@
 <template>  
-    <md-dialog :md-active="active">
+    <md-dialog :md-active.sync="isActive">
       <md-dialog-title>Filter nach Providern</md-dialog-title>
 
       <div id="provider-picker">
@@ -28,6 +28,7 @@ export default {
   props: ['identifier', 'active'],
   data() {
     return {
+      isActive: false,
       selectedProviders: '', //[]
       apiQuery: {},
       urlQuery: {},
@@ -56,7 +57,12 @@ export default {
     onCancle () {
       this.$emit('cancle');
     }
-  }
+  },
+  watch:{
+    active: function(to, from){
+      this.isActive = to;
+    },
+  },
 }
 </script>
 

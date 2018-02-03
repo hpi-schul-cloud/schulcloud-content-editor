@@ -1,13 +1,12 @@
 <template>
     <div class="filter">
-      <div class="md-subheading">Filter</div>
       <md-chip v-for="chip in activeFilter" v-model="activeFilter" :key="chip[0]" v-on:click="visibleProvider = chip[0]" @md-delete="removeFilter(chip[0])" md-clickable md-deletable>{{ chip[1].displayString }}</md-chip>
       
       <md-menu md-direction="bottom-end">
         <md-button md-menu-trigger><md-icon><i class="material-icons">add</i></md-icon> FILTER HINZUFÜGEN</md-button>
         <md-menu-content>
-          <md-menu-item v-on:click="visibleProvider = 'provider'">Provider</md-menu-item>
-          <md-menu-item v-on:click="visibleProvider = 'createdat'">Erstellt am</md-menu-item>
+          <md-menu-item v-if="!isApplied('provider')" v-on:click="visibleProvider = 'provider'">Provider</md-menu-item>
+          <md-menu-item v-if="!isApplied('createdat')"  v-on:click="visibleProvider = 'createdat'">Erstellt am</md-menu-item>
         </md-menu-content>
       </md-menu>
       
@@ -37,10 +36,6 @@ export default {
       activeFilter: [],
     };
   },
-  created() {
-    this.pageString = this.config.page.toString();
-    this.calcMaxPages();
-  },
   methods: {
     setFilter(identifier, filterData){
       this.visibleProvider = '';
@@ -68,6 +63,9 @@ export default {
       }, {} );
       console.log("apiQuery:",apiQuery);
       this.$emit('newFilter', apiQuery);
+    },
+    isApplied(identifier){
+      return this.activeFilter.map(i=>{return i[0];}).includes(identifier);
     }
   },
   watch:{

@@ -1,6 +1,6 @@
 <template>  
-    <md-dialog :md-active="active">
-      <md-dialog-title>Filter nach Providern</md-dialog-title>
+    <md-dialog :md-active.sync="isActive">
+      <md-dialog-title>Erstellt am</md-dialog-title>
 
       <div id="provider-picker">
         <md-datepicker v-model="createdDateRange.from">
@@ -25,6 +25,7 @@ export default {
   props: ['identifier', 'active'],
   data() {
     return {
+      isActive: false,
       createdDateRange: {
         from: "",
         to: "",
@@ -74,6 +75,11 @@ export default {
     onCancle () {
       this.$emit('cancle');
     }
+  },
+  watch:{
+    active: function(to, from){
+      this.isActive = to;
+    },
   },
   computed: {
       firstDayOfAWeek: {
