@@ -31,6 +31,8 @@ import Vue from 'vue';
 import VeeValidate from 'vee-validate';
 Vue.use(VeeValidate);
 
+const jwtTool = require('jsonwebtoken');
+
 export default {
   name: 'login',
   data() {
@@ -48,20 +50,6 @@ export default {
     }
   },
   methods: {
-    getToken: function(){
-        this.$http.post(this.$config.API.baseUrl + this.$config.API.port + this.$config.API.authPath, this.login)
-        .then(response => {
-          // JSON responses are automatically parsed.
-          const jwt = response.data.accessToken;
-          localStorage.setItem("jwt", jwt);
-          this.$cookies.set('jwt', jwt, new Date(Date.now() + 30 * 24 * 60 * 60 * 1000))
-          this.$router.go();
-        })
-        .catch(e => {
-            alert("Login gescheitert!");
-            console.error(e);
-        })
-    },
     validateBeforeSubmit() {
       this.$validator.validateAll().then((result) => {
         if (result) {
@@ -70,6 +58,35 @@ export default {
         }
         alert('Correct the errors!');
       });
+    },
+    getToken: function(){
+        this.$http.post(this.$config.API.baseUrl + this.$config.API.port + this.$config.API.authPath, this.login)
+        .then(response => {
+          // JSON responses are automatically parsed.
+          const jwt = response.data.accessToken;
+          localStorage.setItem("jwt", jwt);
+          this.$cookies.set('jwt', jwt, new Date(Date.now() + 30 * 24 * 60 * 60 * 1000))
+          this.getUserInfo(jwt)
+        })
+        .catch(e => {
+            alert("Login gescheitert!");
+            console.error(e);
+        })
+    },
+    getUserInfo: function(jwt){
+        let payload = (jwtTool.decode(jwt, {complete: true}) || {}).payload;
+        this.$http.get(this.$config.API.baseUrl + this.$config.API.port + this.$config.API.userInfoPath + payload.userId, {
+          headers: {
+            "Authorization": "Bearer " + jwt
+          }
+        })
+        .then(response => {
+            localStorage.setItem("userInfo", JSON.stringify(response.data));
+            this.$router.go();
+        })
+        .catch(e => {
+            console.error(e);
+        })
     }
   }
 };

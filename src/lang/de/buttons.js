@@ -7,10 +7,9 @@ module.exports = {
   delete :  'löschen',
   edit :    'bearbeiten',
   list :    'Liste',
-  login :   'login',
-  logout :  'ausloggen',
+  login :   'Anmelden',
+  logout :  'Abmelden',
   open :    'öffnen',
   save :    'speichern',
   search :  'suchen',
-  stats :  'Statistik',
 }
