@@ -56,9 +56,6 @@
   const contentTableRow = () => import(
     /* webpackChunkName: "contentTableRow" */ './contentTableRow.vue'
   );
-  const dateRangePicker = () => import(
-    /* webpackChunkName: "dateRangePicker" */ 'vue-daterange-picker'
-  );
   const qs = require('query-string');
 
   export default {
@@ -67,7 +64,6 @@
       'search-filter': filter,
       pagination,
       'contentRow': contentTableRow,
-      'date-range-picker': dateRangePicker,
     },
     name: 'contentList',
     props: ['readOnly'],
