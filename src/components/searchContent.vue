@@ -12,29 +12,7 @@
     </div>
 
     <div class="md-layout">
-      <div class="md-layout-item">
-        <md-field>
-          <label for="selectedProviders">Provider</label>
-          <md-select v-model="selectedProviders" id="selectedProviders" md-dense>
-            <md-option value="">kein Provider</md-option>
-            <md-option value="Khan Academy">Khan Academy</md-option>
-            <md-option value="Serlo">Serlo</md-option>
-            <md-option value="Youtube">Youtube</md-option>
-            <md-option value="LEIFI Physik">LEIFI Physik</md-option>           
-          </md-select>
-        </md-field>
-      </div>
-
-      <div class="md-layout-item date-picker">
-        <date-range-picker
-          start-date="01/07/2017"
-          :end-date="today()"
-          format="DD/MM/YYYY"
-          @get-dates="setCreatedDateRange">
-        </date-range-picker>
-        <span class="clear-date-picker" v-on:click="clearDatePicker">
-                <md-icon>delete</md-icon></span>
-      </div>
+      <search-filter @newFilter="updateFilter"></search-filter>
     </div>
 
     <div v-if="readOnly != true" id="viewToggle">
@@ -72,6 +50,7 @@
 
 <script>
   import contentCard from './contentCard.vue';
+  import filter from './filter.vue';
   import pagination from './paginationTemplate.vue';
   /* load contentTableRow async */
   const contentTableRow = () => import(
@@ -85,6 +64,7 @@
   export default {
     components: {
       contentCard,
+      'search-filter': filter,
       pagination,
       'contentRow': contentTableRow,
       'date-range-picker': dateRangePicker,
@@ -94,10 +74,9 @@
     data() {
       return {
         data: [],
-        createdDateRange: {start: undefined, end: undefined},
-        selectedProviders: [],
         gutter: true,
         searchQuery: '',
+        filterQuery: {},
         pagination: {
           page: 1,
           itemsPerPage: 12,
@@ -136,12 +115,8 @@
       loadContent() {
         // clear data to show "loading state"
         this.data = [];
-
-        // pagination for request
-        const page = this.pagination.page || 1;
-
-        // query for search request
-        const searchString = this.searchQuery || "";
+        const page = this.pagination.page || 1;       // pagination for request
+        const searchString = this.searchQuery || "";  // query for search request
 
         // set unique url
         if(this.$router){
@@ -162,9 +137,10 @@
         };
 
         // TODO redo
-        const queryString = qs.stringify(Object.assign(searchQuery, this.getFilterQuery()));
-        const path = (searchString.length == 0) ? (this.$config.API.getPath)
-          : (this.$config.API.searchPath + "?" + queryString);
+        const queryString = qs.stringify(Object.assign(searchQuery, this.filterQuery));
+        const path = (searchString.length == 0) ? 
+                        (this.$config.API.getPath)
+                      : (this.$config.API.searchPath + "?" + queryString);
         this.$http.get(this.$config.API.baseUrl + this.$config.API.port + path, {
           headers: {
             "Authorization": "Bearer " + localStorage.getItem('jwt')
@@ -198,44 +174,10 @@
             }
         }
       },
-      getFilterQuery() {
-        let filterQuery = {};
-
-        if (this.createdDateRange.start && this.createdDateRange.end) {
-          let startDate = new Date(this.createdDateRange.start);
-          let endDate = new Date(this.createdDateRange.end);
-
-          filterQuery["createdAt[$gte]"] = startDate.getTime();
-          filterQuery["createdAt[$lte]"] = endDate.getTime();
-        }
-
-        if (this.selectedProviders.length != 0) {
-          // corret but api seems broken
-          //filterQuery["providerName[$in]"] = this.selectedProviders;
-          filterQuery["providerName[$match]"] = this.selectedProviders;
-        }
-
-        return filterQuery;
-      },
-      setCreatedDateRange(range) {
-        this.createdDateRange.start = range.startDate;
-        this.createdDateRange.end = range.endDate;
+      updateFilter(newFilter){
+        console.log("newFilter",newFilter);
+        this.filterQuery = newFilter;
         this.loadContent();
-      },
-      today() {
-        let date = new Date();
-        let month = date.getMonth() + 1;
-        let day = date.getDate();
-        let year = date.getFullYear();
-
-        return day + "/" + month + "/" + year;
-      },
-      clearDatePicker() {
-        this.createdDateRange.start = null;
-        this.createdDateRange.end = null;
-
-        this.$el.querySelector('.start-date').value = '-';
-        this.$el.querySelector('.end-date').value = '-';
       },
       deleteEntry(id){
         this.data.forEach((entry, index) => {
