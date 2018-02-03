@@ -10,7 +10,8 @@ module.exports = {
             getPath: '/content/resources/',
             searchPath: '/content/search/',
             pushContentPath: '/resources/',
-            redirectPath: '/content/redirect/'
+            redirectPath: '/content/redirect/',
+            userInfoPath: '/users/'
         },
         card: {
             displayedTags: 9,
