@@ -14,23 +14,6 @@
   </footer>
 </template>
 
-<script>
-import Vue from 'vue';
-import VeeValidate from 'vee-validate';
-Vue.use(VeeValidate);
-
-export default {
-  name: 'footer',
-  data() {
-  },
-  created() {
-  },
-  methods: {
-  }
-};
-
-</script>
-
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
   footer{

@@ -5,10 +5,16 @@
         <router-link to="/" style="flex: 1">
             <h2 class="cloud-logo md-title" style="flex: 1">{{title}}</h2>
         </router-link>
-
-        <router-link v-if="jwt" to="/create"><md-button>{{$lang.buttons.create}}</md-button></router-link>
-        <router-link v-if="jwt" to="/stats"><md-button>{{$lang.buttons.stats}}</md-button></router-link>
-        <md-button v-if="jwt" v-on:click="logout">{{$lang.buttons.logout}}</md-button>  
+        <div v-if="jwt">
+          <router-link to="/create"><md-button>{{$lang.buttons.create}}</md-button></router-link>
+          <router-link to="/stats"><md-button>{{$lang.buttons.stats}}</md-button></router-link>
+          <md-menu md-direction="bottom-end" :md-align-trigger="true">
+            <md-button id="userName" md-menu-trigger>{{userInfo.displayName}} <md-icon><i class="material-icons">arrow_drop_down</i></md-icon></md-button>
+            <md-menu-content>
+              <md-menu-item v-on:click="logout">{{$lang.buttons.logout}}</md-menu-item>
+            </md-menu-content>
+          </md-menu>
+        </div>
       </md-toolbar>
     </div>
     </header>
@@ -22,26 +28,28 @@
 
 <script>
 import login from './components/login.vue';
-/* load footer async */
-const footer = () => import(
-    /* webpackChunkName: "footer" */ './components/footer.vue'
+/* load hpiFooter async */
+const hpiFooter = () => import(
+    /* webpackChunkName: "hpiFooter" */ './components/hpi-footer.vue'
 );
 
 export default {
   components: {
     'app-login': login,
-    'app-footer': footer,
+    'app-footer': hpiFooter,
   },
   name: 'app',
   data() {
     return {
       title: 'Schul-Cloud Content',
       jwt: localStorage.getItem('jwt'),
+      userInfo: JSON.parse(localStorage.getItem('userInfo')),
     };
   },
   methods: {
     logout() {
         localStorage.removeItem("jwt");
+        localStorage.removeItem("userInfo");
         this.$cookies.remove("jwt");
         window.location.href = "/";
     }
@@ -169,6 +177,15 @@ header{
     .md-button{
         margin: 0;
     }
+    #userName{
+      .md-icon{
+        min-height: 1em;
+        height: 1em;
+        min-width: 1em;
+        width: 1em;
+        font-size: 1em !important;
+      }
+    }
     .cloud-logo::before{
         content: "";
         display: inline-block;
@@ -178,5 +195,8 @@ header{
         background: url(./assets/cloud-transparent-mono.svg) no-repeat center;
         background-size: contain;
     }
+}
+.md-menu-content{
+  z-index: 9999;
 }
 </style>
