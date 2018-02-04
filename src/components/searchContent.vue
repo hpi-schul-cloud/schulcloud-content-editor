@@ -29,6 +29,17 @@
       </div>
     </div>
 
+    <div class="md-layout-item items-per-page-picker">
+      <md-field>
+        <label for="itemsPerPage">{{$lang.searchContent.items_per_page}}</label>
+        <md-select v-model.number="pagination.itemsPerPage" name="itemsPerPage" id="itemsPerPage">
+          <md-option value=12>12</md-option>
+          <md-option value=24>24</md-option>
+          <md-option value=48>48</md-option>
+          </md-select>
+        </md-field>
+    </div>
+
     <div v-if="readOnly != true" id="viewToggle">
       <md-button class="md-toggle" v-bind:class="{ 'md-primary md-raised':  gutter}" v-on:click="gutter = true">
         {{$lang.buttons.card}}
@@ -258,6 +269,11 @@
 
   .clear-date-picker{
     margin-top: 7px;
+  }
+
+  .items-per-page-picker{
+    margin-left: 7px;
+    float:right;
   }
 
   .md-layout {
