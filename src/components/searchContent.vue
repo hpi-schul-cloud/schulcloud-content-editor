@@ -12,21 +12,7 @@
     </div>
 
     <div class="md-layout">
-      <div class="md-layout-item">
-        <v-select placeholder="Provider" v-model="selectedProviders" multiple :on-change="loadContent"
-        :options="['Khan Academy', 'Anderer Provider']"></v-select>
-      </div>
-
-      <div class="md-layout-item date-picker">
-        <date-range-picker
-          start-date="01/07/2017"
-          :end-date="today()"
-          format="DD/MM/YYYY"
-          @get-dates="setCreatedDateRange">
-        </date-range-picker>
-        <span class="clear-date-picker" v-on:click="clearDatePicker">
-                <md-icon>delete</md-icon></span>
-      </div>
+      <search-filter @newFilter="updateFilter"></search-filter>
     </div>
 
     <div v-if="readOnly != true" id="viewToggle">
@@ -64,9 +50,8 @@
 
 <script>
   import contentCard from './contentCard.vue';
+  import filter from './filter.vue';
   import pagination from './paginationTemplate.vue';
-  import dateRangePicker from 'vue-daterange-picker';
-  import vueSelect from 'vue-select';
   /* load contentTableRow async */
   const contentTableRow = () => import(
     /* webpackChunkName: "contentTableRow" */ './contentTableRow.vue'
@@ -76,20 +61,19 @@
   export default {
     components: {
       contentCard,
+      'search-filter': filter,
       pagination,
       'contentRow': contentTableRow,
-      'date-range-picker': dateRangePicker,
-      'v-select': vueSelect,
     },
     name: 'contentList',
     props: ['readOnly'],
     data() {
       return {
         data: [],
-        createdDateRange: {start: undefined, end: undefined},
-        selectedProviders: [],
         gutter: true,
         searchQuery: '',
+        apiFilterQuery: {},
+        urlQuery: {},
         pagination: {
           page: 1,
           itemsPerPage: 12,
@@ -104,12 +88,13 @@
       };
     },
     created() {
-      let query = qs.parse(location.search);
-      if (query.q) {
-        this.searchQuery = query.q;
-      }
-      if (query.p) {
-        this.pagination.page = parseInt(query.p);
+      if(this.$router){
+        this.searchQuery = this.$route.query.q || "";
+        this.pagination.page = parseInt(this.$route.query.p) || 1;
+      }else{
+        let query = qs.parse(location.search) ||{};
+        this.searchQuery = query.q || "";
+        this.pagination.page = parseInt(query.p) ||1;
       }
       this.loadContent();
       window.onhashchange = this.urlChangeHandler;
@@ -120,7 +105,9 @@
         this.loadContent();
       },
       updateURL(newQuery) {
-        if (history.pushState) {
+        if(this.$router){
+          this.$router.push({ query: newQuery })
+        } else if (history.pushState) {
           var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + "?" + qs.stringify(newQuery);
           window.history.pushState({path: newurl}, '', newurl);
         }
@@ -128,24 +115,14 @@
       loadContent() {
         // clear data to show "loading state"
         this.data = [];
-
-        // pagination for request
-        const page = this.pagination.page || 1;
-
-        // query for search request
-        const searchString = this.searchQuery || "";
+        const page = this.pagination.page || 1;       // pagination for request
+        const searchString = this.searchQuery || "";  // query for search request
 
         // set unique url
-        if(this.$router){
-            this.$router.push({ query: { ...this.$route.query, q: searchString }});
-            this.$router.push({ query: { ...this.$route.query, p: page }});
-        }else{
-            let query = qs.parse(location.search);
-            query.q = searchString;
-            query.p = page;
-            this.updateURL(query);
-        }
-
+        this.urlQuery.q = searchString;
+        this.urlQuery.p = page;
+        this.updateURL(this.urlQuery);
+            
         // build request path and fetch new data
         let searchQuery = {
           $limit: this.pagination.itemsPerPage,
@@ -154,8 +131,10 @@
         };
 
         // TODO redo
-        const path = (searchString.length == 0) ? this.$config.API.getPath + "?" + qs.stringify(this.getFilterQuery())
-          : (this.$config.API.searchPath + "?" + qs.stringify(searchQuery));
+        const queryString = qs.stringify(Object.assign(searchQuery, this.apiFilterQuery));
+        const path = (searchString.length == 0) ? 
+                        (this.$config.API.getPath)
+                      : (this.$config.API.searchPath + "?" + queryString);
         this.$http.get(this.$config.API.baseUrl + this.$config.API.port + path, {
           headers: {
             "Authorization": "Bearer " + localStorage.getItem('jwt')
@@ -173,12 +152,8 @@
       urlChangeHandler() {
         // handle url changes
         if(this.$router){
-            if(this.searchQuery != this.$route.query.q){
-                this.searchQuery = this.$route.query.q;
-            }
-            if(this.pagination.page != parseInt(this.$route.query.p)){
-                this.pagination.page = parseInt(this.$route.query.p);
-            }
+            this.searchQuery = this.$route.query.q;
+            this.pagination.page = parseInt(this.$route.query.p);
         }else{
             let query = qs.parse(location.search);
             if (this.searchQuery != query.q) {
@@ -189,42 +164,10 @@
             }
         }
       },
-      getFilterQuery() {
-        let filterQuery = {};
-
-        if (this.createdDateRange.start && this.createdDateRange.end) {
-          let startDate = new Date(this.createdDateRange.start);
-          let endDate = new Date(this.createdDateRange.end);
-
-          filterQuery["createdAt[$gte]"] = startDate.getTime();
-          filterQuery["createdAt[$lte]"] = endDate.getTime();
-        }
-
-        if (this.selectedProviders.length != 0) {
-          filterQuery["providerName[$in]"] = this.selectedProviders;
-        }
-
-        return filterQuery;
-      },
-      setCreatedDateRange(range) {
-        this.createdDateRange.start = range.startDate;
-        this.createdDateRange.end = range.endDate;
+      updateFilter(newApiQuery, newUrlQuery){
+        this.apiFilterQuery = newApiQuery;
+        this.urlQuery = newUrlQuery;
         this.loadContent();
-      },
-      today() {
-        let date = new Date();
-        let month = date.getMonth() + 1;
-        let day = date.getDate();
-        let year = date.getFullYear();
-
-        return day + "/" + month + "/" + year;
-      },
-      clearDatePicker() {
-        this.createdDateRange.start = null;
-        this.createdDateRange.end = null;
-
-        this.$el.querySelector('.start-date').value = '-';
-        this.$el.querySelector('.end-date').value = '-';
       },
       deleteEntry(id){
         this.data.forEach((entry, index) => {
@@ -237,7 +180,9 @@
     watch: {
       searchQuery: function (to, from) {
         if (to != from) {
-          this.pagination.page = 1;
+          if(from != ""){
+            this.pagination.page = 1;
+          }
           this.loadContent();
         }
       },
@@ -245,7 +190,12 @@
         if (to != from) {
           this.loadContent();
         }
-      }
+      },
+      selectedProviders: function (to, from) {
+        if (to != from) {
+          this.loadContent();
+        }
+      },
     },
   };
 </script>

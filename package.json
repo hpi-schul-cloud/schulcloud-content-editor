@@ -1,6 +1,6 @@
 {
   "name": "schul-cloud-content-client",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Schul-Cloud Content",
   "author": "adrianjost <homepage@hackedit.de>",
   "private": true,
@@ -11,7 +11,7 @@
     },
     {
       "path": "./dist/static/**/[0-9]*.js",
-      "maxSize": "100 KB"
+      "maxSize": "30 KB"
     },
     {
       "path": "./dist/static/**/!([0-9])*.js",
@@ -39,11 +39,9 @@
     "vue": "^2.5.9",
     "vue-config": "^1.0.0",
     "vue-cookies": "^1.5.4",
-    "vue-daterange-picker": "^1.2.5",
     "vue-material": "beta",
     "vue-resource": "^1.3.5",
     "vue-router": "^3.0.1",
-    "vue-select": "^2.4.0",
     "vue-tippy": "^2.0.5",
     "vuejs-localization": "^1.0.3"
   },
