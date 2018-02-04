@@ -1,6 +1,6 @@
 <template>
     <div class="filter">
-      <md-chip v-for="chip in activeFilter" v-model="activeFilter" :key="chip[0]" v-on:click="visibleProvider = chip[0]" @md-delete="removeFilter(chip[0])" md-clickable md-deletable>{{ chip[1].displayString }}</md-chip>
+      <md-chip v-for="chip in activeFilter" v-model="activeFilter" :key="chip[0]" v-on:click="visibleProvider = chip[0]" @md-delete.stop="removeFilter(chip[0])" md-clickable md-deletable>{{ chip[1].displayString }}</md-chip>
       
       <md-menu md-direction="bottom-end">
         <md-button md-menu-trigger><md-icon><i class="material-icons">add</i></md-icon> FILTER HINZUFÜGEN</md-button>
@@ -10,7 +10,7 @@
         </md-menu-content>
       </md-menu>
       
-      <provider-filter-dialog @set="setFilter" @cancle="cancle" identifier="provider" v-bind:active="visibleProvider == 'provider'"/>
+      <provider-filter-dialog  @set="setFilter" @cancle="cancle" identifier="provider" v-bind:active="visibleProvider == 'provider'"/>
       <createdat-filter-dialog @set="setFilter" @cancle="cancle" identifier="createdat" v-bind:active="visibleProvider == 'createdat'"/>
   </div>
 </template>
@@ -29,7 +29,6 @@ export default {
     'createdat-filter-dialog': createdAtFilterDialog,
   },
   name: 'searchFilter',
-  /*props: ['config'],*/
   data() {
     return {
       visibleProvider: "",
@@ -39,26 +38,26 @@ export default {
   methods: {
     setFilter(identifier, filterData){
       this.visibleProvider = '';
-      // deep copy
-      filterData = JSON.parse(JSON.stringify(filterData));
+
+      filterData = JSON.parse(JSON.stringify(filterData)); // deep copy
       
       this.removeFilter(identifier);
       this.activeFilter.push([identifier, filterData]);
     },
     removeFilter(key){
-      //delete this.activeFilter[key];
       this.activeFilter = this.activeFilter.filter(item => { return item[0] != key; })
-      // TODO: prevent showing modal again
     },
     cancle(){
       this.visibleProvider = '';
     },
     sendNewQuery(){
       let apiQuery = {}
+      let urlQuery = {}
       this.activeFilter.forEach(value => {
-        Object.assign(apiQuery, value[1].apiQuery);
+        Object.assign(apiQuery, value[1].apiQUery);
+        Object.assign(urlQuery, value[1].urlQuery);
       }, {} );
-      this.$emit('newFilter', apiQuery);
+      this.$emit('newFilter', apiQuery, urlQuery);
     },
     isApplied(identifier){
       return this.activeFilter.map(i=>{return i[0];}).includes(identifier);

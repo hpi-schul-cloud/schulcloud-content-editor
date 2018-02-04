@@ -72,7 +72,8 @@
         data: [],
         gutter: true,
         searchQuery: '',
-        filterQuery: {},
+        apiFilterQuery: {},
+        urlQuery: {},
         pagination: {
           page: 1,
           itemsPerPage: 12,
@@ -87,12 +88,13 @@
       };
     },
     created() {
-      let query = qs.parse(location.search);
-      if (query.q) {
-        this.searchQuery = query.q;
-      }
-      if (query.p) {
-        this.pagination.page = parseInt(query.p);
+      if(this.$router){
+        this.searchQuery = this.$route.query.q || "";
+        this.pagination.page = parseInt(this.$route.query.p) || 1;
+      }else{
+        let query = qs.parse(location.search) ||{};
+        this.searchQuery = query.q || "";
+        this.pagination.page = parseInt(query.p) ||1;
       }
       this.loadContent();
       window.onhashchange = this.urlChangeHandler;
@@ -103,7 +105,10 @@
         this.loadContent();
       },
       updateURL(newQuery) {
-        if (history.pushState) {
+        if(this.$router){
+          console.log("push", newQuery);
+          this.$router.push({ query: newQuery })
+        } else if (history.pushState) {
           var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + "?" + qs.stringify(newQuery);
           window.history.pushState({path: newurl}, '', newurl);
         }
@@ -115,16 +120,10 @@
         const searchString = this.searchQuery || "";  // query for search request
 
         // set unique url
-        if(this.$router){
-            this.$router.push({ query: { ...this.$route.query, q: searchString }});
-            this.$router.push({ query: { ...this.$route.query, p: page }});
-        }else{
-            let query = qs.parse(location.search);
-            query.q = searchString;
-            query.p = page;
-            this.updateURL(query);
-        }
-
+        this.urlQuery.q = searchString;
+        this.urlQuery.p = page;
+        this.updateURL(this.urlQuery);
+            
         // build request path and fetch new data
         let searchQuery = {
           $limit: this.pagination.itemsPerPage,
@@ -133,7 +132,7 @@
         };
 
         // TODO redo
-        const queryString = qs.stringify(Object.assign(searchQuery, this.filterQuery));
+        const queryString = qs.stringify(Object.assign(searchQuery, this.apiFilterQuery));
         const path = (searchString.length == 0) ? 
                         (this.$config.API.getPath)
                       : (this.$config.API.searchPath + "?" + queryString);
@@ -154,12 +153,8 @@
       urlChangeHandler() {
         // handle url changes
         if(this.$router){
-            if(this.searchQuery != this.$route.query.q){
-                this.searchQuery = this.$route.query.q;
-            }
-            if(this.pagination.page != parseInt(this.$route.query.p)){
-                this.pagination.page = parseInt(this.$route.query.p);
-            }
+            this.searchQuery = this.$route.query.q;
+            this.pagination.page = parseInt(this.$route.query.p);
         }else{
             let query = qs.parse(location.search);
             if (this.searchQuery != query.q) {
@@ -170,9 +165,9 @@
             }
         }
       },
-      updateFilter(newFilter){
-        console.log("newFilter",newFilter);
-        this.filterQuery = newFilter;
+      updateFilter(newApiQuery, newUrlQuery){
+        this.apiFilterQuery = newApiQuery;
+        this.urlQuery = newUrlQuery;
         this.loadContent();
       },
       deleteEntry(id){
@@ -186,7 +181,9 @@
     watch: {
       searchQuery: function (to, from) {
         if (to != from) {
-          this.pagination.page = 1;
+          if(from != ""){
+            this.pagination.page = 1;
+          }
           this.loadContent();
         }
       },
