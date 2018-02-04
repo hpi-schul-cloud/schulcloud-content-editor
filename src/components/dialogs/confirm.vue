@@ -1,6 +1,6 @@
 <template>  
     <md-dialog-confirm
-      :md-active.sync="config.active"
+      :md-active.sync="isActive"
       :md-title="config.title || 'Agree/Disagree?'"
       :md-content="config.content"
       :md-confirm-text="config.confirm || 'Agree'"
@@ -13,6 +13,11 @@
   export default {
     name: 'DialogConfirm',
     props: ['config'],
+    data() {
+      return {
+        isActive: false,
+      };
+    },
     methods: {
       onConfirm () {
         this.$emit('confirm');
@@ -26,6 +31,12 @@
             this.config.onCancle();
         }
       }
-    }
+    },
+    watch:{
+      'config.active': function(to, from){
+        console.log("changed active", to);
+        this.isActive = to;
+      },
+    },
   }
 </script>

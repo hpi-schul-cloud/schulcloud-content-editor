@@ -1,5 +1,5 @@
 <template>
-  <form id="contentForm" @submit.prevent="validateBeforeSubmit">
+  <form id="contentForm" @submit.prevent="validateBeforeSubmit" @change="itemChanged" v-bind:class="{ changed: isDirty }">
     <td>
         <md-field :class="{'md-input-invalid': errors.has('title')}">
           <md-input v-model="contentData.title" type="text"></md-input>
@@ -57,6 +57,7 @@ export default {
   props: ['contentData'],
   data() {
     return {
+      isDirty: false,
       dialog: {
         active:  false,
         title:   this.$lang.edit.dialog.title,
@@ -67,39 +68,56 @@ export default {
     };
   },
   methods: {
-    required(item){
-        return (item && item != '');
+    required(item) {
+      return (item && item != '');
     },
-    isUrl(item){
-        return (item.match(/[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/gi))
+    isUrl(item) {
+      return (item.match(/[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/gi))
     },
-    maxLength(text, length){
-        return (text.length <= length);
+    maxLength(text, length) {
+      return (text.length <= length);
     },
     validateBeforeSubmit() {
-        if (this.isUrl(this.contentData.url) && this.required(this.contentData.title)) {
-          alert('Form Submitted!');
-          this.submitContent();
-          return;
-        }
-        alert('Correct the errors!');
+      if (this.isUrl(this.contentData.url) && this.required(this.contentData.title)) {
+        alert('Form Submitted!');
+        this.submitContent();
+        return;
+      }
+      alert('Correct the errors!');
     },
     submitContent: function (event) {
-        if(this.$route.params.id){
-            this.$http.patch(this.$config.API.baseUrl + this.$config.API.pushPort + this.$config.API.pushContentPath + this.contentData._id, this.contentData, {
-                headers: {"Authorization" : "Bearer " + localStorage.getItem('jwt')},
-            });
-        }else{
-            this.$http.post(this.$config.API.baseUrl + this.$config.API.pushPort + this.$config.API.pushContentPath, this.contentData, {
-                headers: {"Authorization" : "Bearer " + localStorage.getItem('jwt')},
-            });
-        }
+      this.clearItemChanged();
+
+      if (this.$route.params.id) {
+        this.$http.patch(this.$config.API.baseUrl + this.$config.API.pushPort + this.$config.API.pushContentPath + this.contentData._id, this.contentData, {
+          headers: {"Authorization": "Bearer " + localStorage.getItem('jwt')},
+        });
+      } else {
+        this.$http.post(this.$config.API.baseUrl + this.$config.API.pushPort + this.$config.API.pushContentPath, this.contentData, {
+          headers: {"Authorization": "Bearer " + localStorage.getItem('jwt')},
+        });
+      }
+    },
+    itemChanged() {
+      this.isDirty = true;
+    },
+    clearItemChanged() {
+      this.isDirty = false;
     },
     deleteContent() {
-        /* TODO - send async delete */
-        this.$emit('delete', this.contentData._id);
+      this.clearItemChanged();
+      /* TODO - send async delete */
+      this.$emit('delete', this.contentData._id);
     },
   },
+  watch: {
+    'data.contentCategory': function() {
+      this.itemChanged();
+    },
+    'data.licenses': function() {
+      this.itemChanged();
+    }
+  }
 };
 </script>
 
@@ -123,5 +141,9 @@ form{
             margin: 0;
         }
     }
+}
+
+.changed {
+  background-color: lightgoldenrodyellow;
 }
 </style>
