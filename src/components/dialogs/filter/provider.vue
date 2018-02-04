@@ -1,10 +1,10 @@
 <template>  
     <md-dialog :md-active.sync="isActive">
-      <md-dialog-title>Filter nach Providern</md-dialog-title>
+      <md-dialog-title>{{$lang.filter.provider.modal_title}}</md-dialog-title>
 
       <div id="provider-picker">
         <md-field>
-          <label for="selectedProviders">Provider</label>
+          <label for="selectedProviders">{{$lang.filter.provider.placeholder}}</label>
           <md-select v-model="selectedProviders" id="selectedProviders" md-dense> <!-- multiple> -->
             <md-option value="">kein Provider</md-option>
             <md-option value="Khan Academy">Khan Academy</md-option>
@@ -16,8 +16,8 @@
       </div>
 
       <md-dialog-actions>
-        <md-button @click="onCancle">CANCLE</md-button>
-        <md-button class="md-primary" @click="onConfirm">APPLY</md-button>
+        <md-button @click="onCancle">{{$lang.buttons.cancel}}</md-button>
+        <md-button class="md-primary" @click="onConfirm">{{$lang.buttons.add}}</md-button>
       </md-dialog-actions>
     </md-dialog>
 </template>
@@ -33,6 +33,9 @@ export default {
       apiQuery: {},
       urlQuery: {},
     };
+  },
+  created: function(){
+    this.$parent.$on('reset', this.resetProviders);
   },
   methods: {
     onConfirm () {
@@ -56,7 +59,12 @@ export default {
     },
     onCancle () {
       this.$emit('cancle');
-    }
+    },
+    resetProviders(key){
+      if(key == this.identifier){
+        this.selectedProviders = '';
+      }
+    },
   },
   watch:{
     active: function(to, from){

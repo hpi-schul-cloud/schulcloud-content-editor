@@ -106,7 +106,6 @@
       },
       updateURL(newQuery) {
         if(this.$router){
-          console.log("push", newQuery);
           this.$router.push({ query: newQuery })
         } else if (history.pushState) {
           var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + "?" + qs.stringify(newQuery);

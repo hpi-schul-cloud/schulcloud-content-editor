@@ -1,16 +1,16 @@
 <template>
     <div class="filter">
-      <md-chip v-for="chip in activeFilter" v-model="activeFilter" :key="chip[0]" v-on:click="visibleProvider = chip[0]" @md-delete.stop="removeFilter(chip[0])" md-clickable md-deletable>{{ chip[1].displayString }}</md-chip>
+      <md-chip v-for="chip in activeFilter" v-model="activeFilter" :key="chip[0]" v-on:click="visibleProvider = chip[0]" @md-delete.stop="removeFilter(chip[0], true)" md-clickable md-deletable>{{ chip[1].displayString }}</md-chip>
       
       <md-menu md-direction="bottom-end">
         <md-button md-menu-trigger><md-icon><i class="material-icons">add</i></md-icon> FILTER HINZUFÜGEN</md-button>
         <md-menu-content>
-          <md-menu-item v-if="!isApplied('provider')" v-on:click="visibleProvider = 'provider'">Provider</md-menu-item>
-          <md-menu-item v-if="!isApplied('createdat')"  v-on:click="visibleProvider = 'createdat'">Erstellt am</md-menu-item>
+          <md-menu-item v-if="!isApplied('provider')"  v-on:click="visibleProvider = 'provider'">Provider</md-menu-item>
+          <md-menu-item v-if="!isApplied('createdat')" v-on:click="visibleProvider = 'createdat'">Erstellt am</md-menu-item>
         </md-menu-content>
       </md-menu>
       
-      <provider-filter-dialog  @set="setFilter" @cancle="cancle" identifier="provider" v-bind:active="visibleProvider == 'provider'"/>
+      <provider-filter-dialog  @set="setFilter" @cancle="cancle" identifier="provider"  v-bind:active="visibleProvider == 'provider'" />
       <createdat-filter-dialog @set="setFilter" @cancle="cancle" identifier="createdat" v-bind:active="visibleProvider == 'createdat'"/>
   </div>
 </template>
@@ -40,12 +40,15 @@ export default {
       this.visibleProvider = '';
 
       filterData = JSON.parse(JSON.stringify(filterData)); // deep copy
-      
-      this.removeFilter(identifier);
+
+      this.removeFilter(identifier, false);
       this.activeFilter.push([identifier, filterData]);
     },
-    removeFilter(key){
+    removeFilter(key, emit){
       this.activeFilter = this.activeFilter.filter(item => { return item[0] != key; })
+      if(emit){
+        this.$emit('reset', key);
+      }
     },
     cancle(){
       this.visibleProvider = '';
@@ -54,7 +57,7 @@ export default {
       let apiQuery = {}
       let urlQuery = {}
       this.activeFilter.forEach(value => {
-        Object.assign(apiQuery, value[1].apiQUery);
+        Object.assign(apiQuery, value[1].apiQuery);
         Object.assign(urlQuery, value[1].urlQuery);
       }, {} );
       this.$emit('newFilter', apiQuery, urlQuery);

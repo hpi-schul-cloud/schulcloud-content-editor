@@ -1,20 +1,20 @@
 <template>  
     <md-dialog :md-active.sync="isActive">
-      <md-dialog-title>Erstellt am</md-dialog-title>
+      <md-dialog-title>{{$lang.filter.createdAt.modal_title}}</md-dialog-title>
 
       <div id="provider-picker">
-        <md-datepicker v-model="createdDateRange.from">
-          <label>From</label>
+        <md-datepicker v-model="createdDateRange.from" :md-disabled-dates="disabledFromDates">
+          <label>{{$lang.filter.createdAt.from}}</label>
         </md-datepicker>
         
-        <md-datepicker v-model="createdDateRange.to">
-          <label>To</label>
+        <md-datepicker v-model="createdDateRange.to" :md-disabled-dates="disabledToDates">
+          <label>{{$lang.filter.createdAt.to}}</label>
         </md-datepicker>
       </div>
 
       <md-dialog-actions>
-        <md-button @click="onCancle">CANCLE</md-button>
-        <md-button class="md-primary" @click="onConfirm">APPLY</md-button>
+        <md-button @click="onCancle">{{$lang.buttons.cancel}}</md-button>
+        <md-button class="md-primary" @click="onConfirm">{{$lang.buttons.add}}</md-button>
       </md-dialog-actions>
     </md-dialog>
 </template>
@@ -27,15 +27,18 @@ export default {
     return {
       isActive: false,
       createdDateRange: {
-        from: "",
-        to: "",
+        from: undefined,
+        to:undefined,
       },
       apiQuery: {},
       urlQuery: {},
     };
   },
+  created: function(){
+    this.$parent.$on('reset', this.resetDates);
+  },
   methods: {
-    onConfirm () {
+    onConfirm() {
       let displayString;
       let fromString;
       let toString;
@@ -49,8 +52,9 @@ export default {
         }else{
           delete this.apiQuery['createdAt[$gte]'];
           delete this.urlQuery['createdAtFrom'];
+          fromString = '∞'
         }
-        if(this.createdDateRange.from){
+        if(this.createdDateRange.to){
           let to = new Date(this.createdDateRange.to);
           this.apiQuery['createdAt[$lte]'] = this.createdDateRange.to; // endDate
           this.urlQuery['createdAtTo'] = this.createdDateRange.to;
@@ -58,9 +62,10 @@ export default {
         }else{
           delete this.apiQuery['createdAt[$gte]'];
           delete this.urlQuery['createdAtTo'];
+          toString = '∞'
         }
         
-        displayString = (fromString || '~') + " - " + (toString || '~');
+        displayString = fromString + " - " + toString;
       }else{
         this.apiQuery = {}
         displayString = null,
@@ -74,17 +79,53 @@ export default {
     },
     onCancle () {
       this.$emit('cancle');
+    },
+    resetDates(key){
+      if(key == this.identifier){
+        this.createdDateRange.from = undefined;
+        this.createdDateRange.to = undefined;
+      }
+    },
+    disabledFromDates: date => {
+      const today = new Date();
+      return  (today < date);
+
+      // not working
+      const earlier = !((this.createdDateRange||{}).to && (this.createdDateRange.to) > date);
+      return (earlier && (today < date));
+    },
+    disabledToDates: date => {
+      const today = new Date();
+      return  (today < date);
+
+      // not working
+      const later = !((this.createdDateRange||{}).from && (this.createdDateRange.from > date));
+      return (later && (today < date));
+    },
+    orderDated() {
+      const a = this.createdDateRange.from;
+      const b = this.createdDateRange.to;
+      if(a && b){
+        this.createdDateRange.from = Math.min(a,b);
+        this.createdDateRange.to = Math.max(a,b);
+      }
     }
   },
   watch:{
-    active: function(to, from){
+    active: function(to){
       this.isActive = to;
     },
     isActive: function(to){
       if(to == false){
         this.onCancle();
       }
-    }
+    },
+    'createdDateRange.from': function(){
+      this.orderDated();
+    },
+    'createdDateRange.to': function(){
+      this.orderDated();
+    },
   },
   computed: {
       firstDayOfAWeek: {
