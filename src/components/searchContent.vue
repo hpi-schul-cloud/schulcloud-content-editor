@@ -202,6 +202,11 @@
           this.loadContent();
         }
       },
+      'pagination.itemsPerPage': function (to, from) {
+        if (to != from) {
+          this.loadContent();
+        }
+      },
       selectedProviders: function (to, from) {
         if (to != from) {
           this.loadContent();

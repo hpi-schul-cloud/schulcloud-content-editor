@@ -142,17 +142,6 @@ export default {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  &:after{
-    background: linear-gradient(-3deg, var(--md-theme-default-accent) 15%, #fff 15%);
-    display: block;
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    content: "";
-    right: 0;
-    left: 0;
-    z-index: -999;
-  }
 }
 
 main {
