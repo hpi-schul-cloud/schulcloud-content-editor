@@ -100,3 +100,18 @@ export default {
     margin: 0 auto;
 }
 </style>
+<style lang="scss">
+#app {
+  &:after{
+    background: linear-gradient(-3deg, var(--md-theme-default-accent) 15%, #fff 15%);
+    display: block;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    content: "";
+    right: 0;
+    left: 0;
+    z-index: -999;
+  }
+}
+</style>
