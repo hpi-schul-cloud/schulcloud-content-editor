@@ -9,13 +9,12 @@
 import welcomeMessage from './welcomeMessage.vue';
 /* load searchContent async */
 const searchContent = () => import(
-    /* webpackChunkName: "searchContent" */ './searchContent.vue'
-);
+  /* webpackChunkName: "searchContent" */ './searchContent.vue');
 
 export default {
   components: {
     'app-searchContent': searchContent,
-    'app-welcomeMessage': welcomeMessage
+    'app-welcomeMessage': welcomeMessage,
   },
   name: 'overview',
 };

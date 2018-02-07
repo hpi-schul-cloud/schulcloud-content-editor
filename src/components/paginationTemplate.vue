@@ -18,8 +18,8 @@ export default {
   props: ['config'],
   data() {
     return {
-      pageString: "1",  // needed to display current page (only strings allowed for v-model)
-      maxPages: "1",
+      pageString: '1', // needed to display current page (only strings allowed for v-model)
+      maxPages: '1',
     };
   },
   created() {
@@ -27,26 +27,26 @@ export default {
     this.calcMaxPages();
   },
   methods: {
-    calcMaxPages(){
-        this.maxPages = (Math.ceil(this.config.totalEntrys/this.config.itemsPerPage)||1).toString();
-    }
+    calcMaxPages() {
+      this.maxPages = (Math.ceil(this.config.totalEntrys / this.config.itemsPerPage) || 1).toString();
+    },
   },
-  watch:{
-    'config.totalEntrys': function(to, from){
-        this.calcMaxPages();
+  watch: {
+    'config.totalEntrys': function (to, from) {
+      this.calcMaxPages();
     },
-    'config.itemsPerPage': function(to, from){
-        this.calcMaxPages();
+    'config.itemsPerPage': function (to, from) {
+      this.calcMaxPages();
     },
-    'config.page': function(to, from){
-        if(this.config.scroll){window.scroll(this.config.scroll);}
-        this.pageString = this.config.page.toString();
-        this.$emit('pageChanged', this.config.page);
+    'config.page': function (to, from) {
+      if (this.config.scroll) { window.scroll(this.config.scroll); }
+      this.pageString = this.config.page.toString();
+      this.$emit('pageChanged', this.config.page);
     },
-    'pageString': function(to, from){
-        if(this.pageString){
-            this.config.page = Number.parseInt(this.pageString);
-        }
+    pageString(to, from) {
+      if (this.pageString) {
+        this.config.page = Number.parseInt(this.pageString);
+      }
     },
   },
 };

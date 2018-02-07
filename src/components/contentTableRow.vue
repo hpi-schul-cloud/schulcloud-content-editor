@@ -42,12 +42,12 @@
 <script>
 import Vue from 'vue';
 import VeeValidate from 'vee-validate';
+
 Vue.use(VeeValidate);
 
 /* load confirmDialog async */
 const confirmDialog = () => import(
-    /* webpackChunkName: "confirmDialog" */ './dialogs/confirm.vue'
-);
+  /* webpackChunkName: "confirmDialog" */ './dialogs/confirm.vue');
 
 export default {
   components: {
@@ -59,11 +59,11 @@ export default {
     return {
       isDirty: false,
       dialog: {
-        active:  false,
-        title:   this.$lang.edit.dialog.title,
+        active: false,
+        title: this.$lang.edit.dialog.title,
         content: this.$lang.edit.dialog.content,
         confirm: this.$lang.edit.dialog.confirm,
-        cancle:  this.$lang.edit.dialog.cancle,
+        cancle: this.$lang.edit.dialog.cancle,
       },
     };
   },
@@ -72,7 +72,7 @@ export default {
       return (item && item != '');
     },
     isUrl(item) {
-      return (item.match(/[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/gi))
+      return (item.match(/[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/gi));
     },
     maxLength(text, length) {
       return (text.length <= length);
@@ -85,16 +85,16 @@ export default {
       }
       alert('Correct the errors!');
     },
-    submitContent: function (event) {
+    submitContent(event) {
       this.clearItemChanged();
 
       if (this.$route.params.id) {
         this.$http.patch(this.$config.API.baseUrl + this.$config.API.pushPort + this.$config.API.pushContentPath + this.contentData._id, this.contentData, {
-          headers: {"Authorization": "Bearer " + localStorage.getItem('jwt')},
+          headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` },
         });
       } else {
         this.$http.post(this.$config.API.baseUrl + this.$config.API.pushPort + this.$config.API.pushContentPath, this.contentData, {
-          headers: {"Authorization": "Bearer " + localStorage.getItem('jwt')},
+          headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` },
         });
       }
     },
@@ -111,13 +111,13 @@ export default {
     },
   },
   watch: {
-    'data.contentCategory': function() {
+    'data.contentCategory': function () {
       this.itemChanged();
     },
-    'data.licenses': function() {
+    'data.licenses': function () {
       this.itemChanged();
-    }
-  }
+    },
+  },
 };
 </script>
 

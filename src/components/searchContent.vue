@@ -60,29 +60,29 @@
 </template>
 
 <script>
-import contentCard from "./contentCard.vue";
-import filter from "./filter.vue";
-import pagination from "./paginationTemplate.vue";
+import contentCard from './contentCard.vue';
+import filter from './filter.vue';
+import pagination from './paginationTemplate.vue';
 /* load contentTableRow async */
 const contentTableRow = () =>
-  import(/* webpackChunkName: "contentTableRow" */ "./contentTableRow.vue");
-const qs = require("query-string");
+  import(/* webpackChunkName: "contentTableRow" */ './contentTableRow.vue');
+const qs = require('query-string');
 
 export default {
   components: {
     contentCard,
-    "search-filter": filter,
+    'search-filter': filter,
     pagination,
-    contentRow: contentTableRow
+    contentRow: contentTableRow,
   },
-  name: "contentList",
-  props: ["readOnly"],
+  name: 'contentList',
+  props: ['readOnly'],
   data() {
     return {
       data: [],
       gutter: true,
       tableEnabled: false,
-      searchQuery: "",
+      searchQuery: '',
       apiFilterQuery: {},
       urlQuery: {},
       pagination: {
@@ -93,18 +93,18 @@ export default {
         scroll: {
           top: 0,
           left: 0,
-          behavior: "smooth"
-        }
-      }
+          behavior: 'smooth',
+        },
+      },
     };
   },
   created() {
     if (this.$router) {
-      this.searchQuery = this.$route.query.q || "";
+      this.searchQuery = this.$route.query.q || '';
       this.pagination.page = parseInt(this.$route.query.p) || 1;
     } else {
-      let query = qs.parse(location.search) || {};
-      this.searchQuery = query.q || "";
+      const query = qs.parse(location.search) || {};
+      this.searchQuery = query.q || '';
       this.pagination.page = parseInt(query.p) || 1;
     }
     this.loadContent();
@@ -119,20 +119,20 @@ export default {
       if (this.$router) {
         this.$router.push({ query: newQuery });
       } else if (history.pushState) {
-        var newurl =
-          window.location.protocol +
-          "//" +
-          window.location.host +
-          window.location.pathname +
-          "?" +
-          qs.stringify(newQuery);
-        window.history.pushState({ path: newurl }, "", newurl);
+        const newurl =
+          `${window.location.protocol
+          }//${
+            window.location.host
+          }${window.location.pathname
+          }?${
+            qs.stringify(newQuery)}`;
+        window.history.pushState({ path: newurl }, '', newurl);
       }
     },
     loadContent() {
       // clear data to show "loading state"
       const page = this.pagination.page || 1; // pagination for request
-      const searchString = this.searchQuery || ""; // query for search request
+      const searchString = this.searchQuery || ''; // query for search request
 
       // set unique url
       this.urlQuery.q = searchString;
@@ -140,31 +140,29 @@ export default {
       this.updateURL(this.urlQuery);
 
       // build request path and fetch new data
-      let searchQuery = {
+      const searchQuery = {
         $limit: this.pagination.itemsPerPage,
         $skip: this.pagination.itemsPerPage * (page - 1),
-        "_all[$match]": searchString
+        '_all[$match]': searchString,
       };
 
       // TODO redo
-      const queryString = qs.stringify(
-        Object.assign(searchQuery, this.apiFilterQuery)
-      );
+      const queryString = qs.stringify(Object.assign(searchQuery, this.apiFilterQuery));
       const path =
         searchString.length == 0
           ? this.$config.API.getPath
-          : this.$config.API.searchPath + "?" + queryString;
+          : `${this.$config.API.searchPath}?${queryString}`;
       this.$http
         .get(this.$config.API.baseUrl + this.$config.API.port + path, {
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("jwt")
-          }
+            Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+          },
         })
-        .then(response => {
+        .then((response) => {
           this.data = response.data.data;
           this.pagination.totalEntrys = response.data.total;
         })
-        .catch(e => {
+        .catch((e) => {
           console.error(e);
         });
     },
@@ -174,7 +172,7 @@ export default {
         this.searchQuery = this.$route.query.q;
         this.pagination.page = parseInt(this.$route.query.p);
       } else {
-        let query = qs.parse(location.search);
+        const query = qs.parse(location.search);
         if (this.searchQuery != query.q) {
           this.searchQuery = query.q;
         }
@@ -194,33 +192,33 @@ export default {
           this.data.splice(index, 1);
         }
       });
-    }
+    },
   },
   watch: {
-    searchQuery: function(to, from) {
+    searchQuery(to, from) {
       if (to != from) {
-        if (from != "") {
+        if (from != '') {
           this.pagination.page = 1;
         }
         this.loadContent();
       }
     },
-    "pagination.page": function(to, from) {
+    'pagination.page': function (to, from) {
       if (to != from) {
         this.loadContent();
       }
     },
-    "pagination.itemsPerPage": function(to, from) {
+    'pagination.itemsPerPage': function (to, from) {
       if (to != from) {
         this.loadContent();
       }
     },
-    selectedProviders: function(to, from) {
+    selectedProviders(to, from) {
       if (to != from) {
         this.loadContent();
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

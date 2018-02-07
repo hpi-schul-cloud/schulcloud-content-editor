@@ -17,12 +17,10 @@
 
 <script>
 const providerFilterDialog = () => import(
-  /* webpackChunkName: "providerFilterDialog" */ './dialogs/filter/provider.vue'
-);
+  /* webpackChunkName: "providerFilterDialog" */ './dialogs/filter/provider.vue');
 const createdAtFilterDialog = () => import(
-  /* webpackChunkName: "createdAtFilterDialog" */ './dialogs/filter/date.vue'
-);
-  
+  /* webpackChunkName: "createdAtFilterDialog" */ './dialogs/filter/date.vue');
+
 export default {
   components: {
     'provider-filter-dialog': providerFilterDialog,
@@ -31,12 +29,12 @@ export default {
   name: 'searchFilter',
   data() {
     return {
-      visibleProvider: "",
+      visibleProvider: '',
       activeFilter: [],
     };
   },
   methods: {
-    setFilter(identifier, filterData){
+    setFilter(identifier, filterData) {
       this.visibleProvider = '';
 
       filterData = JSON.parse(JSON.stringify(filterData)); // deep copy
@@ -44,30 +42,30 @@ export default {
       this.removeFilter(identifier, false);
       this.activeFilter.push([identifier, filterData]);
     },
-    removeFilter(key, emit){
-      this.activeFilter = this.activeFilter.filter(item => { return item[0] != key; })
-      if(emit){
+    removeFilter(key, emit) {
+      this.activeFilter = this.activeFilter.filter(item => item[0] != key);
+      if (emit) {
         this.$emit('reset', key);
       }
     },
-    cancle(){
+    cancle() {
       this.visibleProvider = '';
     },
-    sendNewQuery(){
-      let apiQuery = {}
-      let urlQuery = {}
-      this.activeFilter.forEach(value => {
+    sendNewQuery() {
+      const apiQuery = {};
+      const urlQuery = {};
+      this.activeFilter.forEach((value) => {
         Object.assign(apiQuery, value[1].apiQuery);
         Object.assign(urlQuery, value[1].urlQuery);
-      }, {} );
+      }, {});
       this.$emit('newFilter', apiQuery, urlQuery);
     },
-    isApplied(identifier){
-      return this.activeFilter.map(i=>{return i[0];}).includes(identifier);
-    }
+    isApplied(identifier) {
+      return this.activeFilter.map(i => i[0]).includes(identifier);
+    },
   },
-  watch:{
-    activeFilter: function(to, from){
+  watch: {
+    activeFilter(to, from) {
       this.sendNewQuery();
     },
   },

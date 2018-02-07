@@ -11,8 +11,8 @@
     name: 'welcomeMessage',
     data() {
       return {
-        isFirstView: true
-      }
+        isFirstView: true,
+      };
     },
     created() {
       const viewedString = 'alreadyViewed';
