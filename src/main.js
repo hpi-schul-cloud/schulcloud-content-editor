@@ -24,6 +24,7 @@ VueLang.requireAll(require.context('./lang', true, /\.js$/));
 Vue.use(VueLang, {default:'de'});
 
 Vue.config.silent = false;
+Vue.config.performance = true;
 Vue.config.productionTip = false;
 
 /* eslint-disable no-new */
