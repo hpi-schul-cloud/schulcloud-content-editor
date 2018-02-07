@@ -8,10 +8,10 @@ import VueMaterial from "vue-material";
 import "vue-material/dist/vue-material.min.css";
 Vue.use(VueMaterial);
 
-import VueCookies from "vue-cookies"
+import VueCookies from "vue-cookies";
 Vue.use(VueCookies);
 
-import VueResource from "vue-resource"
+import VueResource from "vue-resource";
 Vue.use(VueResource);
 
 import VueConfig from "vue-config";
