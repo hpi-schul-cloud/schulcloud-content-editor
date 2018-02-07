@@ -35,8 +35,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "pretty-quick",
-      "pre-push": "pretty-quick"
+      "pre-commit": "pretty-quick"
     }
   },
   "dependencies": {
