@@ -30,8 +30,13 @@
     "lint": "eslint --ext .js,.vue src",
     "test": "bundlesize",
     "travis": "npm run build --report && npm run export && bundlesize",
-    "pretty-quick": "pretty-quick --staged",
-    "precommit": "pretty-quick --staged"
+    "pretty-quick": "pretty-quick --staged"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick",
+      "pre-push": "pretty-quick"
+    }
   },
   "dependencies": {
     "babel-runtime": "^6.26.0",
