@@ -28,13 +28,13 @@ export default {
       isActive: false,
       createdDateRange: {
         from: undefined,
-        to:undefined,
+        to: undefined,
       },
       apiQuery: {},
       urlQuery: {},
     };
   },
-  created: function(){
+  created() {
     this.$parent.$on('reset', this.resetDates);
   },
   methods: {
@@ -42,99 +42,99 @@ export default {
       let displayString;
       let fromString;
       let toString;
-      
-      if(this.createdDateRange.from || this.createdDateRange.to){
-        if(this.createdDateRange.from){
-          let from = new Date(this.createdDateRange.from);
+
+      if (this.createdDateRange.from || this.createdDateRange.to) {
+        if (this.createdDateRange.from) {
+          const from = new Date(this.createdDateRange.from);
           this.apiQuery['createdAt[$gte]'] = this.createdDateRange.from; // startDate
-          this.urlQuery['createdAtFrom'] = this.createdDateRange.from;
-          fromString = from.getDate()+'.'+(from.getMonth()+1)+'.'+from.getFullYear();
-        }else{
+          this.urlQuery.createdAtFrom = this.createdDateRange.from;
+          fromString = `${from.getDate()}.${from.getMonth() + 1}.${from.getFullYear()}`;
+        } else {
           delete this.apiQuery['createdAt[$gte]'];
-          delete this.urlQuery['createdAtFrom'];
-          fromString = '∞'
+          delete this.urlQuery.createdAtFrom;
+          fromString = '∞';
         }
-        if(this.createdDateRange.to){
-          let to = new Date(this.createdDateRange.to);
+        if (this.createdDateRange.to) {
+          const to = new Date(this.createdDateRange.to);
           this.apiQuery['createdAt[$lte]'] = this.createdDateRange.to; // endDate
-          this.urlQuery['createdAtTo'] = this.createdDateRange.to;
-          toString = to.getDate()+'.'+(to.getMonth()+1)+'.'+to.getFullYear();
-        }else{
+          this.urlQuery.createdAtTo = this.createdDateRange.to;
+          toString = `${to.getDate()}.${to.getMonth() + 1}.${to.getFullYear()}`;
+        } else {
           delete this.apiQuery['createdAt[$gte]'];
-          delete this.urlQuery['createdAtTo'];
-          toString = '∞'
+          delete this.urlQuery.createdAtTo;
+          toString = '∞';
         }
-        
-        displayString = fromString + " - " + toString;
-      }else{
-        this.apiQuery = {}
+
+        displayString = `${fromString} - ${toString}`;
+      } else {
+        this.apiQuery = {};
         displayString = null,
-        this.urlQuery = {}
+        this.urlQuery = {};
       }
       this.$emit('set', this.identifier, {
         apiQuery: this.apiQuery,
         urlQuery: this.urlQuery,
-        displayString: displayString,
+        displayString,
       });
     },
-    onCancle () {
+    onCancle() {
       this.$emit('cancle');
     },
-    resetDates(key){
-      if(key == this.identifier){
+    resetDates(key) {
+      if (key == this.identifier) {
         this.createdDateRange.from = undefined;
         this.createdDateRange.to = undefined;
       }
     },
-    disabledFromDates: date => {
+    disabledFromDates: (date) => {
       const today = new Date();
-      return  (today < date);
+      return (today < date);
 
       // not working
-      const earlier = !((this.createdDateRange||{}).to && (this.createdDateRange.to) > date);
+      const earlier = !((this.createdDateRange || {}).to && (this.createdDateRange.to) > date);
       return (earlier && (today < date));
     },
-    disabledToDates: date => {
+    disabledToDates: (date) => {
       const today = new Date();
-      return  (today < date);
+      return (today < date);
 
       // not working
-      const later = !((this.createdDateRange||{}).from && (this.createdDateRange.from > date));
+      const later = !((this.createdDateRange || {}).from && (this.createdDateRange.from > date));
       return (later && (today < date));
     },
     orderDated() {
       const a = this.createdDateRange.from;
       const b = this.createdDateRange.to;
-      if(a && b){
-        this.createdDateRange.from = Math.min(a,b);
-        this.createdDateRange.to = Math.max(a,b);
+      if (a && b) {
+        this.createdDateRange.from = Math.min(a, b);
+        this.createdDateRange.to = Math.max(a, b);
       }
-    }
+    },
   },
-  watch:{
-    active: function(to){
+  watch: {
+    active(to) {
       this.isActive = to;
     },
-    isActive: function(to){
-      if(to == false){
+    isActive(to) {
+      if (to == false) {
         this.onCancle();
       }
     },
-    'createdDateRange.from': function(){
+    'createdDateRange.from': function () {
       this.orderDated();
     },
-    'createdDateRange.to': function(){
+    'createdDateRange.to': function () {
       this.orderDated();
     },
   },
   computed: {
-      firstDayOfAWeek: {
-        get () {
-          return 1
-        }
-      }
-    }
-}
+    firstDayOfAWeek: {
+      get() {
+        return 1;
+      },
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

@@ -30,8 +30,7 @@
 import login from './components/login.vue';
 /* load hpiFooter async */
 const hpiFooter = () => import(
-    /* webpackChunkName: "hpiFooter" */ './components/hpi-footer.vue'
-);
+  /* webpackChunkName: "hpiFooter" */ './components/hpi-footer.vue');
 
 export default {
   components: {
@@ -48,11 +47,11 @@ export default {
   },
   methods: {
     logout() {
-        localStorage.removeItem("jwt");
-        localStorage.removeItem("userInfo");
-        this.$cookies.remove("jwt");
-        window.location.href = "/";
-    }
+      localStorage.removeItem('jwt');
+      localStorage.removeItem('userInfo');
+      this.$cookies.remove('jwt');
+      window.location.href = '/';
+    },
   },
 };
 </script>
