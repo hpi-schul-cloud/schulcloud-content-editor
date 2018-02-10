@@ -34,18 +34,13 @@
 
             <md-field>
               <label for="license">{{$lang.edit.form.license}}</label>
-              <md-select v-model="data.licenses" id="license" multiple name="license">
-                <md-option value="GPL">GPL</md-option>
-                <md-option value="MIT">MIT</md-option>
-                <md-option value="CC BY-SA">CC BY-SA</md-option>
-                <md-option value="CC BY-NC-SA (KA default)">CC BY-NC-SA (KA default)</md-option>
-                <md-option value="Standard Youtube">Standard Youtube</md-option>
-              </md-select>
+              <md-input v-model="data.licenses" name="license"></md-input>
             </md-field>
 
             <md-field>
               <label for="contentCategory">{{$lang.edit.form.categorie}}</label>
               <md-select v-model="data.contentCategory" name="contentCategory" id="contentCategory">
+                <md-option value=""></md-option>
                 <md-option value="atomic">Atomic</md-option>
                 <md-option value="interactive">Interactive</md-option>
               </md-select>
@@ -82,11 +77,11 @@ Vue.use(VueTippy);
 
 /* load contentCard async */
 const contentCard = () => import(
-    /* webpackChunkName: "contentCard" */ './contentCard.vue'
+    /* webpackChunkName: "contentCard" */ '@/components/base/contentCard.vue'
 );
 /* load confirmDialog async */
 const confirmDialog = () => import(
-    /* webpackChunkName: "confirmDialog" */ './dialogs/confirm.vue'
+    /* webpackChunkName: "confirmDialog" */ '@/components/dialogs/confirm.vue'
 );
 export default {
   components: {
@@ -192,7 +187,7 @@ export default {
     width: 100%;
   }
   textarea{
-    min-height: 8rem !important;
+    min-height: 12rem !important;
   }
   .md-card-actions{
     .delete{

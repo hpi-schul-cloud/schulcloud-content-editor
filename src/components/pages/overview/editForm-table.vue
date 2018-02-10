@@ -14,18 +14,13 @@
     </td>
     <td class="hide-s">
         <md-field>
-          <md-select v-model="contentData.licenses" id="license" multiple name="license">
-            <md-option value="GPL">GPL</md-option>
-            <md-option value="MIT">MIT</md-option>
-            <md-option value="CC BY-SA">CC BY-SA</md-option>
-            <md-option value="CC BY-NC-SA (KA default)">CC BY-NC-SA (KA default)</md-option>
-            <md-option value="Standard Youtube">Standard Youtube</md-option>
-          </md-select>
+          <md-input v-model="contentData.licenses" name="license"></md-input>
         </md-field>
     </td>
     <td class="hide-m">
         <md-field>
           <md-select v-model="contentData.contentCategory" name="contentCategory" id="contentCategory">
+            <md-option value=""></md-option>
             <md-option value="atomic">Atomic</md-option>
             <md-option value="interactive">Interactive</md-option>
           </md-select>
@@ -45,9 +40,7 @@ import VeeValidate from 'vee-validate';
 Vue.use(VeeValidate);
 
 /* load confirmDialog async */
-const confirmDialog = () => import(
-    /* webpackChunkName: "confirmDialog" */ './dialogs/confirm.vue'
-);
+const confirmDialog = () => import( /* webpackChunkName: "confirmDialog" */ '@/components/dialogs/confirm.vue' );
 
 export default {
   components: {

@@ -1,7 +1,7 @@
 <template>
   <footer>
     <div>© 2018 Schul-Cloud </div>
-    <img src="../assets/hpi-logo.png" width="235" height="44">
+    <img src="@/assets/hpi-logo.png" width="235" height="44">
     <div>
         <a href="https://schul-cloud.org/impressum">Impressum</a>
         <span> - </span>

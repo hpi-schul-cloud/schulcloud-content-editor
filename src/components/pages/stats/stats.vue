@@ -7,7 +7,6 @@
     <md-card-content>
       <section>
         <div class="md-subheading">{{$lang.stats.article}}: {{totalContent}}</div>
-        
       </section>
       <section>
         <div class="md-subheading">{{$lang.stats.most_clicked}}:</div>
@@ -25,7 +24,7 @@
 <script>
 /* load contentTableRow async */
 const contentCard = () => import(
-    /* webpackChunkName: "contentCard" */ './contentCard.vue'
+    /* webpackChunkName: "contentCard" */ '@/components/base/contentCard.vue'
 );
 
 const qs = require('query-string');

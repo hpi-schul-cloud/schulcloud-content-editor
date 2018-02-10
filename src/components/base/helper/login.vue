@@ -8,12 +8,12 @@
       <form id="loginForm" @submit.prevent="validateBeforeSubmit">
         <md-field :class="{'md-input-invalid': errors.has('url')}">
           <label>{{$lang.login.username}}</label>
-          <md-input v-model="login.username" v-validate name="username" data-vv-rules="required"></md-input>
+          <md-input v-model="login.username" name="username" required></md-input>
           <span class="md-error">{{errors.first('username')}}</span>
         </md-field>
         <md-field md-has-password :class="{'md-input-invalid': errors.has('url')}">
           <label>{{$lang.login.password}}</label>
-          <md-input v-model="login.password" v-validate name="password" type="password" data-vv-rules="required"></md-input>
+          <md-input v-model="login.password" name="password" type="password" required></md-input>
           <span class="md-error">{{errors.first('password')}}</span>
         </md-field>
         <a :href="this.$config.API.baseUrl + this.$config.API.pwRecoveryPath">{{$lang.login.forgot_password}}?</a>
@@ -27,10 +27,6 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import VeeValidate from 'vee-validate';
-Vue.use(VeeValidate);
-
 const jwtTool = require('jsonwebtoken');
 
 export default {
@@ -51,13 +47,9 @@ export default {
   },
   methods: {
     validateBeforeSubmit() {
-      this.$validator.validateAll().then((result) => {
-        if (result) {
-          this.getToken();
-          return;
-        }
-        alert('Correct the errors!');
-      });
+      if(this.login.username != '' && this.login.password != ''){
+        return this.getToken();
+      }
     },
     getToken: function(){
         this.$http.post(this.$config.API.baseUrl + this.$config.API.port + this.$config.API.authPath, this.login)

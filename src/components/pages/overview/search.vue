@@ -30,7 +30,7 @@
       <md-button class="md-toggle" v-bind:class="{ 'md-primary md-raised':  gutter}" v-on:click="gutter = true">
         {{$lang.buttons.card}}
       </md-button>
-      <md-button class="md-toggle" v-bind:class="{ 'md-primary md-raised': !gutter}" v-on:click="gutter = false">
+      <md-button class="md-toggle" v-bind:class="{ 'md-primary md-raised': !gutter}" v-on:click="gutter = false; tableEnabled = true">
         {{$lang.buttons.list}}
       </md-button>
     </div>
@@ -39,7 +39,7 @@
         <contentCard v-bind:data="item" v-bind:readOnly="readOnly" class="height-100"></contentCard>
       </div>
     </div>
-    <table v-else-if="readOnly != true">
+    <table v-show="!gutter" v-if="tableEnabled && readOnly != true">
       <thead>
       <tr>
         <th>{{$lang.edit.form.title}}</th>
@@ -48,7 +48,7 @@
         <th class="hide-m">{{$lang.edit.form.categorie}}</th>
       </tr>
       </thead>
-      <contentRow v-for="item in data" v-bind:contentData="item" @delete="deleteEntry"></contentRow>
+      <contentRow v-for="item in data" :key="item._id + '#table'" v-bind:contentData="item" @delete="deleteEntry"></contentRow>
     </table>
     <md-empty-state v-if="data.length == 0" class="md-primary"
                     md-icon="error_outline"
@@ -60,13 +60,11 @@
 </template>
 
 <script>
-  import contentCard from './contentCard.vue';
+  import contentCard from '@/components/base/contentCard.vue';
+  import pagination from '@/components/base/helper/pagination.vue';
   import filter from './filter.vue';
-  import pagination from './paginationTemplate.vue';
-  /* load contentTableRow async */
-  const contentTableRow = () => import(
-    /* webpackChunkName: "contentTableRow" */ './contentTableRow.vue'
-  );
+  const contentTableRow = () => import( /* webpackChunkName: "contentTableRow" */ './editForm-table.vue' );
+
   const qs = require('query-string');
 
   export default {
