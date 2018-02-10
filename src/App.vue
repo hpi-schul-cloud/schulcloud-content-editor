@@ -19,8 +19,10 @@
     </div>
     </header>
     <main class="page-container container-fluid-max">
-        <router-view v-if="jwt"></router-view>
-        <app-login v-else></app-login>
+        <transition name="fade" mode="out-in" appear>
+          <router-view v-if="jwt"></router-view>
+        </transition>
+        <app-login v-if="!jwt"></app-login>
         <app-footer></app-footer>
     </main>
   </div>
@@ -186,5 +188,13 @@ header{
 }
 .md-menu-content{
   z-index: 9999;
+}
+
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.3s
+}
+.fade-enter, .fade-leave-active {
+  opacity: 0
 }
 </style>
