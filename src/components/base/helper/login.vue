@@ -47,7 +47,7 @@ export default {
   },
   methods: {
     validateBeforeSubmit() {
-      if(this.login.username != '' && this.login.password != ''){
+      if (this.login.username != '' && this.login.password != '') {
         return this.getToken();
       }
     },

@@ -38,9 +38,10 @@
 import Vue from 'vue';
 
 import VeeValidate from 'vee-validate';
+
 Vue.use(VeeValidate);
 
-const confirmDialog = () => import( /* webpackChunkName: "confirmDialog" */ '@/components/dialogs/confirm.vue' );
+const confirmDialog = () => import(/* webpackChunkName: "confirmDialog" */ '@/components/dialogs/confirm.vue');
 
 export default {
   components: {

@@ -63,160 +63,161 @@
   import contentCard from '@/components/base/contentCard.vue';
   import pagination from '@/components/base/helper/pagination.vue';
   import filter from './filter.vue';
-  const contentTableRow = () => import( /* webpackChunkName: "contentTableRow" */ './editForm-table.vue' );
+
+  const contentTableRow = () => import(/* webpackChunkName: "contentTableRow" */ './editForm-table.vue');
 
   const qs = require('query-string');
 
 export default {
   components: {
-    contentCard,
-    'search-filter': filter,
-    pagination,
-    contentRow: contentTableRow,
+      contentCard,
+      'search-filter': filter,
+      pagination,
+      contentRow: contentTableRow,
   },
   name: 'contentList',
   props: ['readOnly'],
   data() {
-    return {
-      data: [],
-      gutter: true,
-      tableEnabled: false,
-      searchQuery: '',
-      apiFilterQuery: {},
-      urlQuery: {},
-      pagination: {
-        page: 1,
-        itemsPerPage: 12,
-        totalEntrys: 0,
-        buttonRange: 2,
-        scroll: {
-          top: 0,
-          left: 0,
-          behavior: 'smooth',
+      return {
+        data: [],
+        gutter: true,
+        tableEnabled: false,
+        searchQuery: '',
+        apiFilterQuery: {},
+        urlQuery: {},
+        pagination: {
+          page: 1,
+          itemsPerPage: 12,
+          totalEntrys: 0,
+          buttonRange: 2,
+          scroll: {
+            top: 0,
+            left: 0,
+            behavior: 'smooth',
+          },
         },
-      },
-    };
+      };
   },
   created() {
-    if (this.$router) {
-      this.searchQuery = this.$route.query.q || '';
-      this.pagination.page = parseInt(this.$route.query.p) || 1;
-    } else {
-      const query = qs.parse(location.search) || {};
-      this.searchQuery = query.q || '';
-      this.pagination.page = parseInt(query.p) || 1;
-    }
-    this.loadContent();
-    window.onhashchange = this.urlChangeHandler;
+      if (this.$router) {
+        this.searchQuery = this.$route.query.q || '';
+        this.pagination.page = parseInt(this.$route.query.p) || 1;
+      } else {
+        const query = qs.parse(location.search) || {};
+        this.searchQuery = query.q || '';
+        this.pagination.page = parseInt(query.p) || 1;
+      }
+      this.loadContent();
+      window.onhashchange = this.urlChangeHandler;
   },
   methods: {
-    pageChanged(page) {
-      this.pagination.page = page;
-      this.loadContent();
-    },
-    updateURL(newQuery) {
-      if (this.$router) {
-        this.$router.push({ query: newQuery });
-      } else if (history.pushState) {
-        const newurl =
+      pageChanged(page) {
+        this.pagination.page = page;
+        this.loadContent();
+      },
+      updateURL(newQuery) {
+        if (this.$router) {
+          this.$router.push({ query: newQuery });
+        } else if (history.pushState) {
+          const newurl =
           `${window.location.protocol
           }//${
             window.location.host
           }${window.location.pathname
           }?${
             qs.stringify(newQuery)}`;
-        window.history.pushState({ path: newurl }, '', newurl);
-      }
-    },
-    loadContent() {
+          window.history.pushState({ path: newurl }, '', newurl);
+        }
+      },
+      loadContent() {
       // clear data to show "loading state"
-      const page = this.pagination.page || 1; // pagination for request
-      const searchString = this.searchQuery || ''; // query for search request
+        const page = this.pagination.page || 1; // pagination for request
+        const searchString = this.searchQuery || ''; // query for search request
 
-      // set unique url
-      this.urlQuery.q = searchString;
-      this.urlQuery.p = page;
-      this.updateURL(this.urlQuery);
+        // set unique url
+        this.urlQuery.q = searchString;
+        this.urlQuery.p = page;
+        this.updateURL(this.urlQuery);
 
-      // build request path and fetch new data
-      const searchQuery = {
-        $limit: this.pagination.itemsPerPage,
-        $skip: this.pagination.itemsPerPage * (page - 1),
-        '_all[$match]': searchString,
-      };
+        // build request path and fetch new data
+        const searchQuery = {
+          $limit: this.pagination.itemsPerPage,
+          $skip: this.pagination.itemsPerPage * (page - 1),
+          '_all[$match]': searchString,
+        };
 
-      // TODO redo
-      const queryString = qs.stringify(Object.assign(searchQuery, this.apiFilterQuery));
-      const path =
+        // TODO redo
+        const queryString = qs.stringify(Object.assign(searchQuery, this.apiFilterQuery));
+        const path =
         searchString.length == 0
           ? this.$config.API.getPath
           : `${this.$config.API.searchPath}?${queryString}`;
-      this.$http
-        .get(this.$config.API.baseUrl + this.$config.API.port + path, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('jwt')}`,
-          },
-        })
-        .then((response) => {
-          this.data = response.data.data;
-          this.pagination.totalEntrys = response.data.total;
-        })
-        .catch((e) => {
-          console.error(e);
-        });
-    },
-    urlChangeHandler() {
+        this.$http
+          .get(this.$config.API.baseUrl + this.$config.API.port + path, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+            },
+          })
+          .then((response) => {
+            this.data = response.data.data;
+            this.pagination.totalEntrys = response.data.total;
+          })
+          .catch((e) => {
+            console.error(e);
+          });
+      },
+      urlChangeHandler() {
       // handle url changes
-      if (this.$router) {
-        this.searchQuery = this.$route.query.q;
-        this.pagination.page = parseInt(this.$route.query.p);
-      } else {
-        const query = qs.parse(location.search);
-        if (this.searchQuery != query.q) {
-          this.searchQuery = query.q;
+        if (this.$router) {
+          this.searchQuery = this.$route.query.q;
+          this.pagination.page = parseInt(this.$route.query.p);
+        } else {
+          const query = qs.parse(location.search);
+          if (this.searchQuery != query.q) {
+            this.searchQuery = query.q;
+          }
+          if (this.pagination.page != parseInt(query.p)) {
+            this.pagination.page = parseInt(query.p);
+          }
         }
-        if (this.pagination.page != parseInt(query.p)) {
-          this.pagination.page = parseInt(query.p);
-        }
-      }
-    },
-    updateFilter(newApiQuery, newUrlQuery) {
-      this.apiFilterQuery = newApiQuery;
-      this.urlQuery = newUrlQuery;
-      this.loadContent();
-    },
-    deleteEntry(id) {
-      this.data.forEach((entry, index) => {
-        if (entry._id == id) {
-          this.data.splice(index, 1);
-        }
-      });
-    },
+      },
+      updateFilter(newApiQuery, newUrlQuery) {
+        this.apiFilterQuery = newApiQuery;
+        this.urlQuery = newUrlQuery;
+        this.loadContent();
+      },
+      deleteEntry(id) {
+        this.data.forEach((entry, index) => {
+          if (entry._id == id) {
+            this.data.splice(index, 1);
+          }
+        });
+      },
   },
   watch: {
-    searchQuery(to, from) {
-      if (to != from) {
-        if (from != '') {
-          this.pagination.page = 1;
+      searchQuery(to, from) {
+        if (to != from) {
+          if (from != '') {
+            this.pagination.page = 1;
+          }
+          this.loadContent();
         }
-        this.loadContent();
-      }
-    },
-    'pagination.page': function (to, from) {
-      if (to != from) {
-        this.loadContent();
-      }
-    },
-    'pagination.itemsPerPage': function (to, from) {
-      if (to != from) {
-        this.loadContent();
-      }
-    },
-    selectedProviders(to, from) {
-      if (to != from) {
-        this.loadContent();
-      }
-    },
+      },
+      'pagination.page': function (to, from) {
+        if (to != from) {
+          this.loadContent();
+        }
+      },
+      'pagination.itemsPerPage': function (to, from) {
+        if (to != from) {
+          this.loadContent();
+        }
+      },
+      selectedProviders(to, from) {
+        if (to != from) {
+          this.loadContent();
+        }
+      },
   },
 };
 </script>

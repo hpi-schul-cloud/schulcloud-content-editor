@@ -38,7 +38,7 @@
 
 <script>
 /* load confirmDialog async */
-const confirmDialog = () => import( /* webpackChunkName: "confirmDialog" */ '@/components/dialogs/confirm.vue' );
+const confirmDialog = () => import(/* webpackChunkName: "confirmDialog" */ '@/components/dialogs/confirm.vue');
 
 export default {
   components: {

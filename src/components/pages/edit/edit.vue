@@ -72,13 +72,15 @@
 import Vue from 'vue';
 
 import VeeValidate from 'vee-validate';
+
 Vue.use(VeeValidate);
 
 import VueTippy from 'vue-tippy';
+
 Vue.use(VueTippy);
 
-const contentCard = () => import( /* webpackChunkName: "contentCard" */ '@/components/base/contentCard.vue' );
-const confirmDialog = () => import( /* webpackChunkName: "confirmDialog" */ '@/components/dialogs/confirm.vue' );
+const contentCard = () => import(/* webpackChunkName: "contentCard" */ '@/components/base/contentCard.vue');
+const confirmDialog = () => import(/* webpackChunkName: "confirmDialog" */ '@/components/dialogs/confirm.vue');
 
 export default {
   components: {
