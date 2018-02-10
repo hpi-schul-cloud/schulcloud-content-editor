@@ -6,15 +6,13 @@
 
     <md-card-content>
       <form id="loginForm" @submit.prevent="validateBeforeSubmit">
-        <md-field :class="{'md-input-invalid': errors.has('url')}">
+        <md-field>
           <label>{{$lang.login.username}}</label>
           <md-input v-model="login.username" name="username" required></md-input>
-          <span class="md-error">{{errors.first('username')}}</span>
         </md-field>
-        <md-field md-has-password :class="{'md-input-invalid': errors.has('url')}">
+        <md-field md-has-password>
           <label>{{$lang.login.password}}</label>
           <md-input v-model="login.password" name="password" type="password" required></md-input>
-          <span class="md-error">{{errors.first('password')}}</span>
         </md-field>
         <a :href="this.$config.API.baseUrl + this.$config.API.pwRecoveryPath">{{$lang.login.forgot_password}}?</a>
       </form>

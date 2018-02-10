@@ -22,6 +22,7 @@
           <md-option value=12>12</md-option>
           <md-option value=24>24</md-option>
           <md-option value=48>48</md-option>
+          <md-option value=48>96</md-option>
         </md-select>
       </md-field>
     </div>
