@@ -42,26 +42,26 @@ const confirmDialog = () => import( /* webpackChunkName: "confirmDialog" */ '@/c
 
 export default {
   components: {
-      confirmDialog,
+    confirmDialog,
   },
   props: ['data', 'readOnly'],
   name: 'contentForm',
   data() {
-      return {
-        dialog: {
-          active: false,
-          title:   this.$lang.contentCard.dialog.title,
-          content: this.$lang.contentCard.dialog.content,
-          confirm: this.$lang.contentCard.dialog.confirm,
-          cancle:  this.$lang.contentCard.dialog.cancle,
-        }
-      };
-    },
-    methods: {
-      onConfirm () {
-        window.open(this.$config.API.baseUrl + this.$config.API.redirectPath + this.data._id, '_blank');
+    return {
+      dialog: {
+        active: false,
+        title: this.$lang.contentCard.dialog.title,
+        content: this.$lang.contentCard.dialog.content,
+        confirm: this.$lang.contentCard.dialog.confirm,
+        cancle: this.$lang.contentCard.dialog.cancle,
       },
-    }
+    };
+  },
+  methods: {
+    onConfirm() {
+      window.open(this.$config.API.baseUrl + this.$config.API.redirectPath + this.data._id, '_blank');
+    },
+  },
 };
 </script>
 

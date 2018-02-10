@@ -23,9 +23,7 @@
 
 <script>
 /* load contentTableRow async */
-const contentCard = () => import(
-    /* webpackChunkName: "contentCard" */ '@/components/base/contentCard.vue'
-);
+const contentCard = () => import( /* webpackChunkName: "contentCard" */ '@/components/base/contentCard.vue' );
 
 const qs = require('query-string');
 
@@ -45,40 +43,42 @@ export default {
     this.getMostClicked();
   },
   methods: {
-    getTotalContent(){
-        this.$http.get( this.$config.API.baseUrl + this.$config.API.port + this.$config.API.getPath,{headers: {
-            "Authorization" : "Bearer " + localStorage.getItem('jwt')
-          }
-        })
-        .then(response => {
+    getTotalContent() {
+      this.$http.get(this.$config.API.baseUrl + this.$config.API.port + this.$config.API.getPath, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+        },
+      })
+        .then((response) => {
           // JSON responses are automatically parsed.
           this.totalContent = response.data.total;
         })
-        .catch(e => {
-          this.errors.push(e)
-        })
+        .catch((e) => {
+          this.errors.push(e);
+        });
     },
-    getMostClicked(){
-      //apiQuery
-      let apiQuery = {
-        "$sort[clickCount]": -1,
-        $limit: 3
+    getMostClicked() {
+      // apiQuery
+      const apiQuery = {
+        '$sort[clickCount]': -1,
+        $limit: 3,
       };
-      console.log(qs.stringify(apiQuery))
-      const path = this.$config.API.getPath + "?" + qs.stringify(apiQuery);
-      this.$http.get(this.$config.API.baseUrl + this.$config.API.port + path, {headers: {
-          "Authorization" : "Bearer " + localStorage.getItem('jwt')
-        }
+      console.log(qs.stringify(apiQuery));
+      const path = `${this.$config.API.getPath}?${qs.stringify(apiQuery)}`;
+      this.$http.get(this.$config.API.baseUrl + this.$config.API.port + path, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+        },
       })
-      .then(response => {
+        .then((response) => {
         // JSON responses are automatically parsed.
-        this.mostClickedContent = response.data.data;
-      })
-      .catch(e => {
-        this.errors.push(e)
-      })
-    }
-  }
+          this.mostClickedContent = response.data.data;
+        })
+        .catch((e) => {
+          this.errors.push(e);
+        });
+    },
+  },
 };
 
 </script>

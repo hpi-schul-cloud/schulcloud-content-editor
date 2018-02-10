@@ -70,19 +70,16 @@
 
 <script>
 import Vue from 'vue';
+
 import VeeValidate from 'vee-validate';
 Vue.use(VeeValidate);
+
 import VueTippy from 'vue-tippy';
 Vue.use(VueTippy);
 
-/* load contentCard async */
-const contentCard = () => import(
-    /* webpackChunkName: "contentCard" */ '@/components/base/contentCard.vue'
-);
-/* load confirmDialog async */
-const confirmDialog = () => import(
-    /* webpackChunkName: "confirmDialog" */ '@/components/dialogs/confirm.vue'
-);
+const contentCard = () => import( /* webpackChunkName: "contentCard" */ '@/components/base/contentCard.vue' );
+const confirmDialog = () => import( /* webpackChunkName: "confirmDialog" */ '@/components/dialogs/confirm.vue' );
+
 export default {
   components: {
     contentCard,
@@ -92,84 +89,84 @@ export default {
   data() {
     return {
       data: {
-            "providerName": "",
-            "url": "",
-            "title": "",
-            "description": "",
-            "thumbnail": "",
-            "contentCategory": "",
-            "licenses": [],
-            "tags": [],
+        providerName: '',
+        url: '',
+        title: '',
+        description: '',
+        thumbnail: '',
+        contentCategory: '',
+        licenses: [],
+        tags: [],
       },
       dialog: {
         active: false,
-        title:   this.$lang.edit.dialog.title,
+        title: this.$lang.edit.dialog.title,
         content: this.$lang.edit.dialog.content,
         confirm: this.$lang.edit.dialog.confirm,
-        cancle:  this.$lang.edit.dialog.cancle,
-      }
+        cancle: this.$lang.edit.dialog.cancle,
+      },
     };
   },
   methods: {
     loadContent() {
-      if(this.$route.params.id){
-        this.$http.get( this.$config.API.baseUrl + this.$config.API.port + this.$config.API.getPath + this.$route.params.id ,{headers: {
-            "Authorization" : "Bearer " + localStorage.getItem('jwt')
-          }
+      if (this.$route.params.id) {
+        this.$http.get(this.$config.API.baseUrl + this.$config.API.port + this.$config.API.getPath + this.$route.params.id, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+          },
         })
-        .then(response => {
+          .then((response) => {
           // JSON responses are automatically parsed.
-          this.data = response.data;
-        })
-        .catch(e => {
-          this.errors.push(e)
-        })
-      }else{
-        this.data = {tags:[]};
+            this.data = response.data;
+          })
+          .catch((e) => {
+            this.errors.push(e);
+          });
+      } else {
+        this.data = { tags: [] };
       }
     },
     validateBeforeSubmit() {
       this.$validator.validateAll().then((result) => {
         if (result) {
           this.submitContent();
-          return;
         }
       });
     },
-    submitContent: function (event) {
-        const d = this.data;
-        const newData = {
-                "providerName": d.providerName,
-                "url": d.url,
-                "title": d.title,
-                "description": d.description,
-                "thumbnail": d.thumbnail,
-                "contentCategory": d.contentCategory,
-                "licenses": d.licenses,
-                "tags": d.tags
-            };
-        if(this.$route.params.id){
-            axios.patch( this.$config.API.baseUrl + this.$config.API.pushPort + this.$config.API.pushContentPath + this.$route.params.id, newData, {
-                headers: {"Authorization" : "Bearer " + localStorage.getItem('jwt')},
-            });
-        }else{
-            axios.post( this.$config.API.baseUrl + this.$config.API.pushPort + this.$config.API.pushContentPath, newData, {
-                headers: {"Authorization" : "Bearer " + localStorage.getItem('jwt')},
-            });
-        }
+    submitContent(event) {
+      const d = this.data;
+      const newData = {
+        providerName: d.providerName,
+        url: d.url,
+        title: d.title,
+        description: d.description,
+        thumbnail: d.thumbnail,
+        contentCategory: d.contentCategory,
+        licenses: d.licenses,
+        tags: d.tags,
+      };
+      if (this.$route.params.id) {
+        axios.patch(this.$config.API.baseUrl + this.$config.API.pushPort + this.$config.API.pushContentPath + this.$route.params.id, newData, {
+          headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` },
+        });
+      } else {
+        axios.post(this.$config.API.baseUrl + this.$config.API.pushPort + this.$config.API.pushContentPath, newData, {
+          headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` },
+        });
+      }
     },
     deleteContent() {
-        window.alert('deleted content')
-        this.$router.push({ path: '/' })
+      window.alert('deleted content');
+      this.$router.push({ path: '/' });
     },
   },
   created() {
-      this.loadContent();
+    this.loadContent();
   },
-  watch:{
-    '$route' (to, from){
+  watch: {
+    $route(to, from) {
       this.loadContent();
-    }
+    },
   },
 };
 </script>

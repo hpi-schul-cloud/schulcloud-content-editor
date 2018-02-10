@@ -19,24 +19,24 @@
       };
     },
     methods: {
-      onConfirm () {
+      onConfirm() {
         this.$emit('confirm');
-        if(this.config.onConfirm){
-            this.config.onConfirm();
+        if (this.config.onConfirm) {
+          this.config.onConfirm();
         }
       },
-      onCancel () {
+      onCancel() {
         this.$emit('cancle');
-        if(this.config.onCancle){
-            this.config.onCancle();
+        if (this.config.onCancle) {
+          this.config.onCancle();
         }
-      }
+      },
     },
-    watch:{
-      'config.active': function(to, from){
-        console.log("changed active", to);
+    watch: {
+      'config.active': function (to, from) {
+        console.log('changed active', to);
         this.isActive = to;
       },
     },
-  }
+  };
 </script>

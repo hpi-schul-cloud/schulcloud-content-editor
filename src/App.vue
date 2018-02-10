@@ -28,13 +28,9 @@
 
 <script>
 /* load login async */
-const login = () => import(
-    /* webpackChunkName: "login" */ './components/base/helper/login.vue'
-);
+const login = () => import( /* webpackChunkName: "login" */ './components/base/helper/login.vue' );
 /* load hpiFooter async */
-const hpiFooter = () => import(
-    /* webpackChunkName: "hpiFooter" */ './components/base/footer.vue'
-);
+const hpiFooter = () => import( /* webpackChunkName: "hpiFooter" */ './components/base/footer.vue' );
 
 export default {
   components: {
@@ -51,11 +47,11 @@ export default {
   },
   methods: {
     logout() {
-        localStorage.removeItem("jwt");
-        localStorage.removeItem("userInfo");
-        this.$cookies.remove("jwt");
-        window.location.href = "/";
-    }
+      localStorage.removeItem('jwt');
+      localStorage.removeItem('userInfo');
+      this.$cookies.remove('jwt');
+      window.location.href = '/';
+    },
   },
 };
 </script>

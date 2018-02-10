@@ -29,24 +29,24 @@ export default {
   data() {
     return {
       isActive: false,
-      selectedProviders: '', //[]
+      selectedProviders: '', // []
       apiQuery: {},
       urlQuery: {},
     };
   },
-  created: function(){
+  created() {
     this.$parent.$on('reset', this.resetProviders);
   },
   methods: {
-    onConfirm () {
+    onConfirm() {
       let displayString;
-      
+
       if (this.selectedProviders.length != 0) {
         // this.apiQuery["providerName[$in]"] = this.selectedProviders; // corret but api seems broken
-        this.apiQuery["providerName[$match]"] = this.selectedProviders;
-        this.urlQuery = {provider: this.selectedProviders}; //.reduce((prev, curr) => prev +','+ curr )}
-        displayString = 'Provider: ' + this.selectedProviders; //.reduce((prev, curr) => prev +', '+ curr );
-      }else{
+        this.apiQuery['providerName[$match]'] = this.selectedProviders;
+        this.urlQuery = { provider: this.selectedProviders }; // .reduce((prev, curr) => prev +','+ curr )}
+        displayString = `Provider: ${this.selectedProviders}`; // .reduce((prev, curr) => prev +', '+ curr );
+      } else {
         this.apiQuery = {};
         this.urlQuery = {};
         displayString = null;
@@ -54,29 +54,29 @@ export default {
       this.$emit('set', this.identifier, {
         apiQuery: this.apiQuery,
         urlQuery: this.urlQuery,
-        displayString: displayString,
+        displayString,
       });
     },
-    onCancle () {
+    onCancle() {
       this.$emit('cancle');
     },
-    resetProviders(key){
-      if(key == this.identifier){
+    resetProviders(key) {
+      if (key == this.identifier) {
         this.selectedProviders = '';
       }
     },
   },
-  watch:{
-    active: function(to, from){
+  watch: {
+    active(to, from) {
       this.isActive = to;
     },
-    isActive: function(to){
-      if(to == false){
+    isActive(to) {
+      if (to == false) {
         this.onCancle();
       }
-    }
+    },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
