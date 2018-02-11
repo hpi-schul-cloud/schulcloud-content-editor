@@ -39,7 +39,7 @@
     "vue-config": "^1.0.0",
     "vue-cookies": "^1.5.4",
     "vue-material": "beta",
-    "vue-nprogress": "^0.1.5",
+    "vue-progressbar": "^0.7.3",
     "vue-resource": "^1.3.5",
     "vue-router": "^3.0.1",
     "vue-tippy": "^2.0.5",

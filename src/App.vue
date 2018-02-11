@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <vue-progress-bar></vue-progress-bar>
     <header class="md-elevation-1 md-primary"><div class="container-fluid-max">
       <md-toolbar md-elevation="0" class="md-primary">
         <router-link to="/" style="flex: 1">
@@ -12,7 +13,6 @@
       </md-toolbar>
     </div>
     </header>
-    <nprogress-container></nprogress-container>
     <main class="page-container container-fluid-max">
         <router-view v-if="jwt"></router-view>
         <app-login v-else></app-login>
@@ -22,14 +22,24 @@
 
 <script>
 import login from './components/login.vue';
-import NprogressContainer from "../node_modules/vue-nprogress/src/NprogressContainer.vue";
 
 export default {
   components: {
-    NprogressContainer,
     'app-login': login,
   },
   name: 'app',
+  created() {
+    this.$Progress.start()
+
+    this.$router.beforeEach((to, from, next) => {
+      this.$Progress.start()
+      next()
+    });
+
+    this.$router.afterEach((to, from) => {
+      this.$Progress.finish()
+    });
+  },
   data() {
     return {
       title: 'Schul-Cloud Content',
