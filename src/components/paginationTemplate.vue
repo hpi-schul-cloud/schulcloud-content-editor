@@ -1,14 +1,14 @@
 <template>
     <div class="pagination">
-        <md-button v-if="config.page == 1" class="md-icon-button" disabled><md-icon>arrow_back</md-icon></md-button>
-        <md-button v-else class="md-icon-button" v-on:click="config.page -= 1"><md-icon>arrow_back</md-icon></md-button>
+        <md-button v-if="config.page == 1" class="md-icon-button md-raised" disabled><md-icon>arrow_back</md-icon></md-button>
+        <md-button v-else class="md-icon-button md-raised" v-on:click="config.page -= 1"><md-icon>arrow_back</md-icon></md-button>
 
-        <md-button id="pageNumber" class="md-button md-primary">
+        <md-button id="pageNumber" class="md-button md-primary md-raised">
               <input type="number" v-model.lazy="pageString" min="1" :max="maxPages"></input>
         </md-button>
 
-        <md-button v-if="config.page == maxPages" class="md-icon-button" disabled><md-icon>arrow_forward</md-icon></md-button>
-        <md-button v-else class="md-icon-button" v-on:click="config.page += 1"><md-icon>arrow_forward</md-icon></md-button>
+        <md-button v-if="config.page == maxPages" class="md-icon-button md-raised" disabled><md-icon>arrow_forward</md-icon></md-button>
+        <md-button v-else class="md-icon-button md-raised" v-on:click="config.page += 1"><md-icon>arrow_forward</md-icon></md-button>
   </div>
 </template>
 
@@ -18,8 +18,8 @@ export default {
   props: ['config'],
   data() {
     return {
-      pageString: "1",  // needed to display current page (only strings allowed for v-model)
-      maxPages: "1",
+      pageString: '1', // needed to display current page (only strings allowed for v-model)
+      maxPages: '1',
     };
   },
   created() {
@@ -27,26 +27,26 @@ export default {
     this.calcMaxPages();
   },
   methods: {
-    calcMaxPages(){
-        this.maxPages = (Math.ceil(this.config.totalEntrys/this.config.itemsPerPage)||1).toString();
-    }
+    calcMaxPages() {
+      this.maxPages = (Math.ceil(this.config.totalEntrys / this.config.itemsPerPage) || 1).toString();
+    },
   },
-  watch:{
-    'config.totalEntrys': function(to, from){
-        this.calcMaxPages();
+  watch: {
+    'config.totalEntrys': function (to, from) {
+      this.calcMaxPages();
     },
-    'config.itemsPerPage': function(to, from){
-        this.calcMaxPages();
+    'config.itemsPerPage': function (to, from) {
+      this.calcMaxPages();
     },
-    'config.page': function(to, from){
-        if(this.config.scroll){window.scroll(this.config.scroll);}
-        this.pageString = this.config.page.toString();
-        this.$emit('pageChanged', this.config.page);
+    'config.page': function (to, from) {
+      if (this.config.scroll) { window.scroll(this.config.scroll); }
+      this.pageString = this.config.page.toString();
+      this.$emit('pageChanged', this.config.page);
     },
-    'pageString': function(to, from){
-        if(this.pageString){
-            this.config.page = Number.parseInt(this.pageString);
-        }
+    pageString(to, from) {
+      if (this.pageString) {
+        this.config.page = Number.parseInt(this.pageString);
+      }
     },
   },
 };
@@ -55,10 +55,14 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+.md-button{
+    margin: 0 8px;
+}
 .paginationWrapper{
     width: 100%;
 }
 .pagination{
+    margin-top: 2rem;
     display: block;
     width: 100%;
     text-align:center

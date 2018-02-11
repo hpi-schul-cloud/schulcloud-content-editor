@@ -7,17 +7,14 @@
 
 <script>
 import welcomeMessage from './welcomeMessage.vue';
-import contentStats from './contentStats.vue';
 /* load searchContent async */
 const searchContent = () => import(
-    /* webpackChunkName: "searchContent" */ './searchContent.vue'
-);
+  /* webpackChunkName: "searchContent" */ './searchContent.vue');
 
 export default {
   components: {
-    'app-contentStats': contentStats,
     'app-searchContent': searchContent,
-    'app-welcomeMessage': welcomeMessage
+    'app-welcomeMessage': welcomeMessage,
   },
   name: 'overview',
 };

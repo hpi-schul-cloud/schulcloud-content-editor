@@ -29,7 +29,10 @@
 <script>
 import Vue from 'vue';
 import VeeValidate from 'vee-validate';
+
 Vue.use(VeeValidate);
+
+const jwtTool = require('jsonwebtoken');
 
 export default {
   name: 'login',
@@ -37,31 +40,17 @@ export default {
     return {
       login: {
         username: '',
-        password: ''
-      }
+        password: '',
+      },
     };
   },
   created() {
-    if(this.$cookies.get('jwt')){
-        localStorage.setItem("jwt", this.$cookies.get('jwt'));
-        this.$router.go();
+    if (this.$cookies.get('jwt')) {
+      localStorage.setItem('jwt', this.$cookies.get('jwt'));
+      this.$router.go();
     }
   },
   methods: {
-    getToken: function(){
-        this.$http.post(this.$config.API.baseUrl + this.$config.API.port + this.$config.API.authPath, this.login)
-        .then(response => {
-          // JSON responses are automatically parsed.
-          const jwt = response.data.accessToken;
-          localStorage.setItem("jwt", jwt);
-          this.$cookies.set('jwt', jwt, new Date(Date.now() + 30 * 24 * 60 * 60 * 1000))
-          this.$router.go();
-        })
-        .catch(e => {
-            alert("Login gescheitert!");
-            console.error(e);
-        })
-    },
     validateBeforeSubmit() {
       this.$validator.validateAll().then((result) => {
         if (result) {
@@ -70,8 +59,37 @@ export default {
         }
         alert('Correct the errors!');
       });
-    }
-  }
+    },
+    getToken() {
+      this.$http.post(this.$config.API.baseUrl + this.$config.API.port + this.$config.API.authPath, this.login)
+        .then((response) => {
+          // JSON responses are automatically parsed.
+          const jwt = response.data.accessToken;
+          localStorage.setItem('jwt', jwt);
+          this.$cookies.set('jwt', jwt, new Date(Date.now() + 30 * 24 * 60 * 60 * 1000));
+          this.getUserInfo(jwt);
+        })
+        .catch((e) => {
+          alert('Login gescheitert!');
+          console.error(e);
+        });
+    },
+    getUserInfo(jwt) {
+      const payload = (jwtTool.decode(jwt, { complete: true }) || {}).payload;
+      this.$http.get(this.$config.API.baseUrl + this.$config.API.port + this.$config.API.userInfoPath + payload.userId, {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      })
+        .then((response) => {
+          localStorage.setItem('userInfo', JSON.stringify(response.data));
+          this.$router.go();
+        })
+        .catch((e) => {
+          console.error(e);
+        });
+    },
+  },
 };
 
 </script>
@@ -81,5 +99,20 @@ export default {
 #login-card{
     max-width: 600px;
     margin: 0 auto;
+}
+</style>
+<style lang="scss">
+#app {
+  &:after{
+    background: linear-gradient(-3deg, var(--md-theme-default-accent) 15%, #fff 15%);
+    display: block;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    content: "";
+    right: 0;
+    left: 0;
+    z-index: -999;
+  }
 }
 </style>

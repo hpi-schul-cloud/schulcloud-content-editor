@@ -8,20 +8,25 @@ import VueProgressBar from 'vue-progressbar'
 import 'vue-material/dist/vue-material.min.css'
 Vue.use(VueMaterial);
 
-import VueCookies from 'vue-cookies'
+import VueCookies from 'vue-cookies';
+
 Vue.use(VueCookies);
 
-import VueResource from 'vue-resource'
+import VueResource from 'vue-resource';
+
 Vue.use(VueResource);
 
-import VueConfig from 'vue-config'
+import VueConfig from 'vue-config';
+
 const configFile = require('./config');
+
 const configs = configFile.configs;
 Vue.use(VueConfig, configs);
 
 const VueLang = require('vuejs-localization');
+
 VueLang.requireAll(require.context('./lang', true, /\.js$/));
-Vue.use(VueLang, {default:'de'});
+Vue.use(VueLang, { default: 'de' });
 
 const options = {
   color: '#ffffff',
@@ -40,6 +45,7 @@ const options = {
 Vue.use(VueProgressBar, options);
 
 Vue.config.silent = false;
+Vue.config.performance = true;
 Vue.config.productionTip = false;
 
 /* eslint-disable no-new */
