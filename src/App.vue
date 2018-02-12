@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <vue-progress-bar></vue-progress-bar>
     <header class="md-elevation-1 md-primary"><div class="container-fluid-max">
       <md-toolbar md-elevation="0" class="md-primary">
         <router-link to="/" style="flex: 1">
@@ -40,6 +41,18 @@ export default {
     'app-footer': hpiFooter,
   },
   name: 'app',
+  created() {
+    this.$Progress.start()
+
+    this.$router.beforeEach((to, from, next) => {
+      this.$Progress.start()
+      next()
+    });
+
+    this.$router.afterEach((to, from) => {
+      this.$Progress.finish()
+    });
+  },
   data() {
     return {
       title: 'Schul-Cloud Content',
