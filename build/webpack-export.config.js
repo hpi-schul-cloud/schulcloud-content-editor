@@ -3,6 +3,10 @@ const utils = require('./utils')
 const webpack = require('webpack')
 const vueLoaderConfig = require('./vue-loader.conf')
 
+function resolve (dir) {
+  return path.join(__dirname, '..', dir)
+}
+
 module.exports = {
   entry: './src/exportSearch.js',
   output: {
@@ -12,7 +16,8 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.vue'],
     alias: {
-      'vue$': 'vue/dist/vue.common.js'
+      'vue$': 'vue/dist/vue.common.js',
+      '@': resolve('src')
     }
   },
   module: {
