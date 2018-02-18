@@ -37,7 +37,8 @@
       </md-button>
     </div>
     <div md-gutter v-show="gutter" class="grid">
-      <div class="card-wrapper grid-xs-12 grid-s-6 grid-m-6 grid-l-4 grid-xl-3 height-100" v-for="item in data" :key="item._id  + '#card'">
+      <div class="card-wrapper grid-xs-12 grid-s-6 grid-m-6 grid-l-4 grid-xl-3 height-100" v-for="item in data"
+           :key="item._id  + '#card'">
         <contentCard v-bind:data="item" v-bind:readOnly="readOnly" class="height-100"></contentCard>
       </div>
     </div>
@@ -50,7 +51,8 @@
         <th class="hide-m">{{$lang.edit.form.categorie}}</th>
       </tr>
       </thead>
-      <contentRow v-for="item in data" :key="item._id + '#table'" v-bind:contentData="item" @delete="deleteEntry"></contentRow>
+      <contentRow v-for="item in data" :key="item._id + '#table'" v-bind:contentData="item"
+                  @delete="deleteEntry"></contentRow>
     </table>
     <md-empty-state v-if="data.length == 0" class="md-primary"
                     md-icon="error_outline"
@@ -70,16 +72,16 @@
 
   const qs = require('query-string');
 
-export default {
-  components: {
+  export default {
+    components: {
       contentCard,
       'search-filter': filter,
       pagination,
       contentRow: contentTableRow,
-  },
-  name: 'contentList',
-  props: ['readOnly'],
-  data() {
+    },
+    name: 'contentList',
+    props: ['readOnly'],
+    data() {
       return {
         data: [],
         gutter: true,
@@ -99,8 +101,8 @@ export default {
           },
         },
       };
-  },
-  created() {
+    },
+    created() {
       if (this.$router) {
         this.searchQuery = this.$route.query.q || '';
         this.pagination.page = parseInt(this.$route.query.p) || 1;
@@ -111,28 +113,28 @@ export default {
       }
       this.loadContent();
       window.onhashchange = this.urlChangeHandler;
-  },
-  methods: {
+    },
+    methods: {
       pageChanged(page) {
         this.pagination.page = page;
         this.loadContent();
       },
       updateURL(newQuery) {
         if (this.$router) {
-          this.$router.push({ query: newQuery });
+          this.$router.push({query: newQuery});
         } else if (history.pushState) {
           const newurl =
-          `${window.location.protocol
-          }//${
-            window.location.host
-          }${window.location.pathname
-          }?${
-            qs.stringify(newQuery)}`;
-          window.history.pushState({ path: newurl }, '', newurl);
+            `${window.location.protocol
+              }//${
+              window.location.host
+              }${window.location.pathname
+              }?${
+              qs.stringify(newQuery)}`;
+          window.history.pushState({path: newurl}, '', newurl);
         }
       },
       loadContent() {
-      // clear data to show "loading state"
+        // clear data to show "loading state"
         const page = this.pagination.page || 1; // pagination for request
         const searchString = this.searchQuery || ''; // query for search request
 
@@ -150,9 +152,9 @@ export default {
 
         const queryString = qs.stringify(Object.assign(searchQuery, this.apiFilterQuery));
         const path =
-        searchString.length == 0
-          ? this.$config.API.getPath
-          : `${this.$config.API.searchPath}?${queryString}`;
+          searchString.length == 0
+            ? this.$config.API.getPath
+            : `${this.$config.API.searchPath}?${queryString}`;
         this.$http
           .get(this.$config.API.baseUrl + this.$config.API.port + path, {
             headers: {
@@ -168,7 +170,7 @@ export default {
           });
       },
       urlChangeHandler() {
-      // handle url changes
+        // handle url changes
         if (this.$router) {
           this.searchQuery = this.$route.query.q;
           this.pagination.page = parseInt(this.$route.query.p);
@@ -194,8 +196,8 @@ export default {
           }
         });
       },
-  },
-  watch: {
+    },
+    watch: {
       searchQuery(to, from) {
         if (to != from) {
           if (from != '') {
@@ -219,83 +221,83 @@ export default {
           this.loadContent();
         }
       },
-  },
-};
+    },
+  };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
-.date-picker {
-  display: inline-flex;
-}
-
-.clear-date-picker {
-  margin-top: 7px;
-}
-
-.items-per-page-picker {
-  margin-left: 7px;
-  float: right;
-}
-
-.md-layout {
-  width: 100%;
-  margin-bottom: 5px;
-}
-
-.md-layout-item {
-  margin-right: 5px;
-}
-
-.grid {
-  clear: both;
-}
-
-.card-wrapper {
-  padding: 5px;
-  box-sizing: border-box;
-}
-
-table {
-  width: 100%;
-}
-
-#viewToggle {
-  margin-top: 16px;
-  float: right;
-  .md-button {
-    margin: 0;
+  .date-picker {
+    display: inline-flex;
   }
-}
 
-#search-input {
-  font-size: 1.75em !important;
-  margin-top: 16px;
-  float: left;
-  width: calc(100% - 200px);
-  margin-bottom: 16px;
-  #search-query-input {
-    display: inline-block;
-    font-size: 1em;
-    line-height: 1em;
+  .clear-date-picker {
+    margin-top: 7px;
+  }
+
+  .items-per-page-picker {
+    margin-left: 7px;
+    float: right;
+  }
+
+  .md-layout {
     width: 100%;
-    max-width: 500px;
-    padding: 0;
-    margin: 0;
-    margin-left: 5px;
-    outline: none;
-    background: transparent;
-    border: none;
-    color: inherit;
-    border-bottom: 1px solid grey;
-    &:focus {
-      color: var(--md-theme-default-primary);
-      border-bottom: 1px solid var(--md-theme-default-primary);
+    margin-bottom: 5px;
+  }
+
+  .md-layout-item {
+    margin-right: 5px;
+  }
+
+  .grid {
+    clear: both;
+  }
+
+  .card-wrapper {
+    padding: 5px;
+    box-sizing: border-box;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  #viewToggle {
+    margin-top: 16px;
+    float: right;
+    .md-button {
+      margin: 0;
     }
   }
-  #resultHeadline {
-    font-size: 1rem;
-    display: block;
+
+  #search-input {
+    font-size: 1.75em !important;
+    margin-top: 16px;
+    float: left;
+    width: calc(100% - 200px);
+    margin-bottom: 16px;
+    #search-query-input {
+      display: inline-block;
+      font-size: 1em;
+      line-height: 1em;
+      width: 100%;
+      max-width: 500px;
+      padding: 0;
+      margin: 0;
+      margin-left: 5px;
+      outline: none;
+      background: transparent;
+      border: none;
+      color: inherit;
+      border-bottom: 1px solid grey;
+      &:focus {
+        color: var(--md-theme-default-primary);
+        border-bottom: 1px solid var(--md-theme-default-primary);
+      }
+    }
+    #resultHeadline {
+      font-size: 1rem;
+      display: block;
+    }
   }
-}
 </style>

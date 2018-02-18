@@ -9,15 +9,15 @@ Vue.use(Router);
 
 export default new Router({
   routes: [
-    { path: '/', name: 'main', component: overviewPage },
-    { path: '/stats', name: 'stats', component: statsPage },
-    { path: '/create', name: 'create', component: editPage },
-    { path: '/edit/:id', name: 'edit', component: editPage },
+    {path: '/', name: 'main', component: overviewPage},
+    {path: '/stats', name: 'stats', component: statsPage},
+    {path: '/create', name: 'create', component: editPage},
+    {path: '/edit/:id', name: 'edit', component: editPage},
   ],
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
       return savedPosition;
     }
-    return { x: 0, y: 0 };
+    return {x: 0, y: 0};
   },
 });

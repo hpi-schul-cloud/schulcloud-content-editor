@@ -1,12 +1,12 @@
-<template>  
-    <md-dialog-confirm
-      :md-active.sync="isActive"
-      :md-title="config.title || 'Agree/Disagree?'"
-      :md-content="config.content"
-      :md-confirm-text="config.confirm || 'Agree'"
-      :md-cancel-text="config.cancle || 'Disagree'"
-      @md-cancel="onCancel"
-      @md-confirm="onConfirm" />
+<template>
+  <md-dialog-confirm
+    :md-active.sync="isActive"
+    :md-title="config.title || 'Agree/Disagree?'"
+    :md-content="config.content"
+    :md-confirm-text="config.confirm || 'Agree'"
+    :md-cancel-text="config.cancle || 'Disagree'"
+    @md-cancel="onCancel"
+    @md-confirm="onConfirm"/>
 </template>
 
 <script>

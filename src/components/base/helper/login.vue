@@ -25,83 +25,83 @@
 </template>
 
 <script>
-export default {
-  name: 'login',
-  data() {
-    return {
-      login: {
-        username: '',
-        password: '',
-      },
-    };
-  },
-  created() {
-    if (this.$cookies.get('jwt')) {
-      localStorage.setItem('jwt', this.$cookies.get('jwt'));
-      this.$router.go();
-    }
-  },
-  methods: {
-    validateBeforeSubmit() {
-      if (this.login.username != '' && this.login.password != '') {
-        return this.getToken();
+  export default {
+    name: 'login',
+    data() {
+      return {
+        login: {
+          username: '',
+          password: '',
+        },
+      };
+    },
+    created() {
+      if (this.$cookies.get('jwt')) {
+        localStorage.setItem('jwt', this.$cookies.get('jwt'));
+        this.$router.go();
       }
     },
-    getToken() {
-      this.$http.post(this.$config.API.baseUrl + this.$config.API.port + this.$config.API.authPath, this.login)
-        .then((response) => {
-          // JSON responses are automatically parsed.
-          const jwt = response.data.accessToken;
-          localStorage.setItem('jwt', jwt);
-          this.$cookies.set('jwt', jwt, new Date(Date.now() + 30 * 24 * 60 * 60 * 1000));
-          this.getUserInfo(jwt);
+    methods: {
+      validateBeforeSubmit() {
+        if (this.login.username != '' && this.login.password != '') {
+          return this.getToken();
+        }
+      },
+      getToken() {
+        this.$http.post(this.$config.API.baseUrl + this.$config.API.port + this.$config.API.authPath, this.login)
+          .then((response) => {
+            // JSON responses are automatically parsed.
+            const jwt = response.data.accessToken;
+            localStorage.setItem('jwt', jwt);
+            this.$cookies.set('jwt', jwt, new Date(Date.now() + 30 * 24 * 60 * 60 * 1000));
+            this.getUserInfo(jwt);
+          })
+          .catch((e) => {
+            alert('Login fehlgeschlagen!');
+            console.error(e);
+          });
+      },
+      getUserInfo(jwt) {
+        const base64Url = jwt.split('.')[1];
+        const base64 = base64Url.replace('-', '+').replace('_', '/');
+        const payload = JSON.parse(window.atob(base64));
+        this.$http.get(this.$config.API.baseUrl + this.$config.API.port + this.$config.API.userInfoPath + payload.userId, {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
         })
-        .catch((e) => {
-          alert('Login fehlgeschlagen!');
-          console.error(e);
-        });
+          .then((response) => {
+            localStorage.setItem('userInfo', JSON.stringify(response.data));
+            this.$router.go();
+          })
+          .catch((e) => {
+            console.error(e);
+          });
+      },
     },
-    getUserInfo(jwt) {
-      const base64Url = jwt.split('.')[1];
-      const base64 = base64Url.replace('-', '+').replace('_', '/');
-      const payload = JSON.parse(window.atob(base64));
-      this.$http.get(this.$config.API.baseUrl + this.$config.API.port + this.$config.API.userInfoPath + payload.userId, {
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-        },
-      })
-        .then((response) => {
-          localStorage.setItem('userInfo', JSON.stringify(response.data));
-          this.$router.go();
-        })
-        .catch((e) => {
-          console.error(e);
-        });
-    },
-  },
-};
+  };
 
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-#login-card{
+  #login-card {
     max-width: 600px;
     margin: 0 auto;
-}
+  }
 </style>
 <style lang="scss">
-#app {
-  &:after{
-    background: linear-gradient(-3deg, var(--md-theme-default-accent) 15%, #fff 15%);
-    display: block;
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    content: "";
-    right: 0;
-    left: 0;
-    z-index: -999;
+  #app {
+    &:after {
+      background: linear-gradient(-3deg, var(--md-theme-default-accent) 15%, #fff 15%);
+      display: block;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      content: "";
+      right: 0;
+      left: 0;
+      z-index: -999;
+    }
   }
-}
 </style>

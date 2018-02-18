@@ -6,17 +6,15 @@ import router from './router';
 import VueMaterial from 'vue-material'
 import VueProgressBar from 'vue-progressbar'
 import 'vue-material/dist/vue-material.min.css'
-Vue.use(VueMaterial);
-
 import VueCookies from 'vue-cookies';
+import VueResource from 'vue-resource';
+import VueConfig from 'vue-config';
+
+Vue.use(VueMaterial);
 
 Vue.use(VueCookies);
 
-import VueResource from 'vue-resource';
-
 Vue.use(VueResource);
-
-import VueConfig from 'vue-config';
 
 const configFile = require('./config');
 
@@ -26,7 +24,7 @@ Vue.use(VueConfig, configs);
 const VueLang = require('vuejs-localization');
 
 VueLang.requireAll(require.context('./lang', true, /\.js$/));
-Vue.use(VueLang, { default: 'de' });
+Vue.use(VueLang, {default: 'de'});
 
 const options = {
   color: '#ffffff',
@@ -53,5 +51,5 @@ new Vue({
   el: '#app',
   router,
   template: '<App/>',
-  components: { App },
+  components: {App},
 }).$mount("#app");
