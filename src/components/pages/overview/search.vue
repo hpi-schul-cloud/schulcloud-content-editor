@@ -32,7 +32,7 @@
         {{$lang.buttons.card}}
       </md-button>
       <md-button class="md-toggle" v-bind:class="{ 'md-primary md-raised': !gutter}"
-                 v-on:click="gutter = false tableEnabled = true">
+                 v-on:click="gutter = false; tableEnabled = true">
         {{$lang.buttons.list}}
       </md-button>
     </div>
