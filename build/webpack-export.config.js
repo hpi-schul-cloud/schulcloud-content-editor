@@ -1,7 +1,7 @@
-const path = require('path')
-const utils = require('./utils')
-const webpack = require('webpack')
-const vueLoaderConfig = require('./vue-loader.conf')
+const path = require('path');
+const utils = require('./utils');
+const webpack = require('webpack');
+const vueLoaderConfig = require('./vue-loader.conf');
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
@@ -80,7 +80,7 @@ module.exports = {
       },
     ]
   }
-}
+};
 
 if (process.env.NODE_ENV === 'production') {
   module.exports.devtool = '#source-map';

@@ -42,10 +42,10 @@ export default {
   },
   name: 'app',
   created() {
-    this.$Progress.start()
+    this.$Progress.start();
 
     this.$router.beforeEach((to, from, next) => {
-      this.$Progress.start()
+      this.$Progress.start();
       next()
     });
 

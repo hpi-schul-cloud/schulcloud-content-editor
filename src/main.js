@@ -40,7 +40,7 @@ const options = {
   autoRevert: true,
   location: 'top',
   inverse: false
-}
+};
 
 Vue.use(VueProgressBar, options);
 
