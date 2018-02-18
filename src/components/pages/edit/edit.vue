@@ -15,7 +15,13 @@
             </md-field>
 
             <md-field :class="{'md-input-invalid': errors.has('description')}">
-              <label>{{$lang.edit.form.description}} <span v-tippy :title="$lang.edit.form.description_tooltip"><md-icon>help</md-icon></span></label>
+              <label>
+                {{$lang.edit.form.description}}
+                <span>
+                  <md-icon>help</md-icon>
+                  <md-tooltip md-direction="right">{{$lang.edit.form.description_tooltip}}</md-tooltip>
+                </span>
+              </label>
               <md-textarea v-model="data.description" v-validate name="description" data-vv-rules="max:500" maxlength="500"></md-textarea>
               <span class="md-error">{{errors.first('description')}}</span>
             </md-field>
@@ -27,7 +33,12 @@
             </md-field>
 
             <md-field :class="{'md-input-invalid': errors.has('thumbnail')}">
-              <label>{{$lang.edit.form.thumbnail_url}} <span v-tippy :title="$lang.edit.form.thumbnail_url_tooptip"><md-icon>help</md-icon></span></label>
+              <label>{{$lang.edit.form.thumbnail_url}}
+                <span>
+                  <md-icon>help</md-icon>
+                  <md-tooltip md-direction="right">{{$lang.edit.form.thumbnail_url_tooptip}}</md-tooltip>
+                </span>
+              </label>
               <md-input v-model="data.thumbnail" v-validate name="thumbnail" data-vv-rules="url"></md-input>
               <span class="md-error">{{errors.first('thumbnail')}}</span>
             </md-field>
@@ -40,7 +51,7 @@
             <md-field>
               <label for="contentCategory">{{$lang.edit.form.categorie}}</label>
               <md-select v-model="data.contentCategory" name="contentCategory" id="contentCategory">
-                <md-option value=""></md-option>
+                <md-option value="">/</md-option>
                 <md-option value="atomic">Atomic</md-option>
                 <md-option value="interactive">Interactive</md-option>
               </md-select>
@@ -70,14 +81,9 @@
 
 <script>
 import Vue from 'vue';
-
 import VeeValidate from 'vee-validate';
 
 Vue.use(VeeValidate);
-
-import VueTippy from 'vue-tippy';
-
-Vue.use(VueTippy);
 
 const contentCard = () => import(/* webpackChunkName: "contentCard" */ '@/components/base/contentCard.vue');
 const confirmDialog = () => import(/* webpackChunkName: "confirmDialog" */ '@/components/dialogs/confirm.vue');

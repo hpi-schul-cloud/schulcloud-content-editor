@@ -17,7 +17,7 @@
         <a :href="this.$config.API.baseUrl + this.$config.API.pwRecoveryPath">{{$lang.login.forgot_password}}?</a>
       </form>
     </md-card-content>
-      
+
     <md-card-actions>
       <md-button class="md-primary" type="submit" form="loginForm">{{$lang.buttons.login}}</md-button>
     </md-card-actions>
@@ -25,8 +25,6 @@
 </template>
 
 <script>
-const jwtTool = require('jsonwebtoken');
-
 export default {
   name: 'login',
   data() {
@@ -59,12 +57,14 @@ export default {
           this.getUserInfo(jwt);
         })
         .catch((e) => {
-          alert('Login gescheitert!');
+          alert('Login fehlgeschlagen!');
           console.error(e);
         });
     },
     getUserInfo(jwt) {
-      const payload = (jwtTool.decode(jwt, { complete: true }) || {}).payload;
+      const base64Url = jwt.split('.')[1];
+      const base64 = base64Url.replace('-', '+').replace('_', '/');
+      const payload = JSON.parse(window.atob(base64));
       this.$http.get(this.$config.API.baseUrl + this.$config.API.port + this.$config.API.userInfoPath + payload.userId, {
         headers: {
           Authorization: `Bearer ${jwt}`,

@@ -147,7 +147,6 @@ export default {
           '_all[$match]': searchString,
         };
 
-        // TODO redo
         const queryString = qs.stringify(Object.assign(searchQuery, this.apiFilterQuery));
         const path =
         searchString.length == 0

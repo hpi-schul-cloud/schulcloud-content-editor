@@ -57,13 +57,12 @@ export default {
     return {
       title: 'Schul-Cloud Content',
       jwt: localStorage.getItem('jwt'),
-      userInfo: JSON.parse(localStorage.getItem('userInfo')),
+      userInfo: JSON.parse(localStorage.getItem('userInfo'))||{},
     };
   },
   methods: {
     logout() {
-      localStorage.removeItem('jwt');
-      localStorage.removeItem('userInfo');
+      localStorage.clear();
       this.$cookies.remove('jwt');
       window.location.href = '/';
     },
