@@ -14,6 +14,8 @@ npm install
 
 ## Build & Development
 
+Before you start developing, please read the [wiki](https://github.com/schul-cloud/schulcloud-content-editor/issues/82)!
+
 ``` bash
 # serve with hot reload at localhost:8080
 npm run dev
