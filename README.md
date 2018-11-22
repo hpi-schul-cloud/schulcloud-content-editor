@@ -1,5 +1,7 @@
 # Schul-Cloud Content-Editor ![Travis Status](https://travis-ci.org/schul-cloud/schulcloud-content-editor.svg?branch=master)
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/schul-cloud/schulcloud-content-editor.svg)](https://greenkeeper.io/)
+
 > Build with [Vue.js](https://vuejs.org)
 
 ## Setup
