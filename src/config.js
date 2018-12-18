@@ -2,8 +2,8 @@
 module.exports = {
   configs: {
     API: {
-      baseUrl: 'https://schul-cloud.org',
-      port: ':8080',
+      baseUrl: 'http://localhost',
+      port: ':3030',
       pushPort: ':4040',
       authPath: '/authentication',
       pwRecoveryPath: '/login?recovery=true',

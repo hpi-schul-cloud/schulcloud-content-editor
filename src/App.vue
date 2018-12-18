@@ -8,6 +8,9 @@
             <h2 class="cloud-logo md-title" style="flex: 1">{{title}}</h2>
           </router-link>
           <div v-if="jwt">
+            <router-link to="/hosting">
+              <md-button>{{$lang.buttons.hosting}}</md-button>
+            </router-link>
             <router-link to="/create">
               <md-button>{{$lang.buttons.create}}</md-button>
             </router-link>
