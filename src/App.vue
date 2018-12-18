@@ -164,7 +164,9 @@
   }
 
   #app {
-    padding: 90px 0 15px;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -172,12 +174,12 @@
 
   main {
     margin: 0 auto !important;
-    padding: 0 15px;
+    padding: 0;
+    max-width: 100% !important;
   }
 
   header {
     width: 100vw;
-    position: fixed;
     top: 0;
     left: 0;
     z-index: 999;

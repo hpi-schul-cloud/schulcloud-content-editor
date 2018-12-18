@@ -1,25 +1,27 @@
 <template>
-  <md-card class="card-content">
-    <md-card-header>
-      <span class="md-title">{{$lang.stats.title}}</span>
-    </md-card-header>
+  <div class="wrapper">
+    <md-card class="card-content">
+      <md-card-header>
+        <span class="md-title">{{$lang.stats.title}}</span>
+      </md-card-header>
 
-    <md-card-content>
-      <section>
-        <div class="md-subheading">{{$lang.stats.article}}: {{totalContent}}</div>
-      </section>
-      <section>
-        <div class="md-subheading">{{$lang.stats.most_clicked}}:</div>
-        <div md-gutter class="grid">
-          <div class="card-wrapper grid-xs-12 grid-s-6 grid-m-6 grid-l-4 grid-xl-4 height-100"
-               v-for="item in mostClickedContent">
-            <b>{{$lang.stats.clicks}}: {{item.clickCount}}</b>
-            <app-contentCard v-bind:data="item" class="height-100"></app-contentCard>
+      <md-card-content>
+        <section>
+          <div class="md-subheading">{{$lang.stats.article}}: {{totalContent}}</div>
+        </section>
+        <section>
+          <div class="md-subheading">{{$lang.stats.most_clicked}}:</div>
+          <div md-gutter class="grid">
+            <div class="card-wrapper grid-xs-12 grid-s-6 grid-m-6 grid-l-4 grid-xl-4 height-100"
+                v-for="item in mostClickedContent">
+              <b>{{$lang.stats.clicks}}: {{item.clickCount}}</b>
+              <app-contentCard v-bind:data="item" class="height-100"></app-contentCard>
+            </div>
           </div>
-        </div>
-      </section>
-    </md-card-content>
-  </md-card>
+        </section>
+      </md-card-content>
+    </md-card>
+  </div>
 </template>
 
 <script>
@@ -88,5 +90,8 @@
 <style lang="scss" scoped>
   .md-subheading {
     font-size: 1.25em;
+  }
+  .wrapper {
+    margin: 30px 5% 0 5%;
   }
 </style>
