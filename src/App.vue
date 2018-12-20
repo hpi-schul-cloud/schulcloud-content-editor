@@ -167,6 +167,7 @@
     display: flex;
     flex-direction: column;
     padding: 0;
+    max-height: 100vh;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -176,6 +177,7 @@
     margin: 0 auto !important;
     padding: 0;
     max-width: 100% !important;
+    display: contents;
   }
 
   header {
