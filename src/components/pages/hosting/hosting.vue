@@ -1,5 +1,5 @@
 <template>
-    <iframe class="iframe" src="http://localhost/index.php/apps/files/?headless=true" name="nextloud-iFrame" title="Nextcloud"></iframe>
+    <iframe class="iframe" src="https://nextcloud.com/?wordfence_syncAttackData=1545147387.7765" name="nextloud-iFrame" title="Nextcloud"></iframe>
 </template>
 
 <script>
