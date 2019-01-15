@@ -14,6 +14,7 @@ module.exports = {
     thumbnail_url_tooptip: 'Geben Sie optional eine URL zu einem Titelbild für den Inhalt an.',
     tags: 'Tags',
     max: 'max.',
+    mimetype: 'Verwendeter MIME-Type'
   },
   dialog: {
     title: 'Inhalt löschen?',

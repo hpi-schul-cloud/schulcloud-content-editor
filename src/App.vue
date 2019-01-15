@@ -8,6 +8,9 @@
             <h2 class="cloud-logo md-title" style="flex: 1">{{title}}</h2>
           </router-link>
           <div v-if="jwt">
+            <router-link to="/hosting">
+              <md-button>{{$lang.buttons.hosting}}</md-button>
+            </router-link>
             <router-link to="/create">
               <md-button>{{$lang.buttons.create}}</md-button>
             </router-link>
@@ -161,7 +164,10 @@
   }
 
   #app {
-    padding: 90px 0 15px;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    max-height: 100vh;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -169,12 +175,13 @@
 
   main {
     margin: 0 auto !important;
-    padding: 0 15px;
+    padding: 0;
+    max-width: 100% !important;
+    display: contents;
   }
 
   header {
     width: 100vw;
-    position: fixed;
     top: 0;
     left: 0;
     z-index: 999;

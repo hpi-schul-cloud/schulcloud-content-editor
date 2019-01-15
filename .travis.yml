@@ -1,7 +1,6 @@
 language: node_js
 node_js:
-  - "node"
-  - "7"
+  - "lts/*"
 script:
   - npm run travis
   - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)

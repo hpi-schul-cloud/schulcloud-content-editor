@@ -12,7 +12,7 @@
         <div class="md-subheading">{{$lang.stats.most_clicked}}:</div>
         <div md-gutter class="grid">
           <div class="card-wrapper grid-xs-12 grid-s-6 grid-m-6 grid-l-4 grid-xl-4 height-100"
-               v-for="item in mostClickedContent">
+              v-for="item in mostClickedContent">
             <b>{{$lang.stats.clicks}}: {{item.clickCount}}</b>
             <app-contentCard v-bind:data="item" class="height-100"></app-contentCard>
           </div>
@@ -64,7 +64,6 @@
           '$sort[clickCount]': -1,
           $limit: 3,
         };
-        console.log(qs.stringify(apiQuery));
         const path = `${this.$config.API.getPath}?${qs.stringify(apiQuery)}`;
         this.$http.get(this.$config.API.baseUrl + this.$config.API.port + path, {
           headers: {
@@ -88,5 +87,8 @@
 <style lang="scss" scoped>
   .md-subheading {
     font-size: 1.25em;
+  }
+  .card-content {
+    margin: 30px 5% 0 5%;
   }
 </style>

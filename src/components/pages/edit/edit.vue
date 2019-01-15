@@ -22,8 +22,7 @@
                   <md-tooltip md-direction="right">{{$lang.edit.form.description_tooltip}}</md-tooltip>
                 </span>
               </label>
-              <md-textarea v-model="data.description" v-validate name="description" data-vv-rules="max:500"
-                           maxlength="500"></md-textarea>
+              <md-textarea v-model="data.description" v-validate name="description" data-vv-rules="max:500" maxlength="500"></md-textarea>
               <span class="md-error">{{errors.first('description')}}</span>
             </md-field>
 
@@ -44,10 +43,10 @@
               <span class="md-error">{{errors.first('thumbnail')}}</span>
             </md-field>
 
-            <md-field>
-              <label for="license">{{$lang.edit.form.license}}</label>
-              <md-input v-model="data.licenses" name="license"></md-input>
-            </md-field>
+            <section>
+              <md-chips id="license" v-model="data.licenses" :md-max="10"
+                        :md-placeholder="($lang.edit.form.license)+'... ('+($lang.edit.form.max)+' 10)'"></md-chips>
+            </section>
 
             <md-field>
               <label for="contentCategory">{{$lang.edit.form.categorie}}</label>
@@ -55,6 +54,21 @@
                 <md-option value="">/</md-option>
                 <md-option value="atomic">Atomic</md-option>
                 <md-option value="interactive">Interactive</md-option>
+              </md-select>
+            </md-field>
+
+            <md-field>
+              <label for="contentMimetype">{{$lang.edit.form.mimetype}}</label>
+              <md-select v-model="data.mimeType" name="contentCategory" id="contentMimetype">
+                <md-option value="application">application</md-option>
+                <md-option value="audio">audio</md-option>
+                <md-option value="example">example</md-option>
+                <md-option value="image">image</md-option>
+                <md-option value="message">message</md-option>
+                <md-option value="model">model</md-option>
+                <md-option value="multipart">multipart</md-option>
+                <md-option value="text">text</md-option>
+                <md-option value="video">video</md-option>
               </md-select>
             </md-field>
 
@@ -106,7 +120,7 @@
           description: '',
           thumbnail: '',
           contentCategory: '',
-          licenses: [],
+          licenses: ["Test License"],
           tags: [],
         },
         dialog: {
@@ -116,6 +130,7 @@
           confirm: this.$lang.edit.dialog.confirm,
           cancle: this.$lang.edit.dialog.cancle,
         },
+        userInfo: JSON.parse(localStorage.getItem('userInfo')) || {},
       };
     },
     methods: {
@@ -134,7 +149,7 @@
               this.errors.push(e);
             });
         } else {
-          this.data = {tags: []};
+          this.data = {tags: [], licenses: [], providerName: this.userInfo.displayName.toString()};
         }
       },
       validateBeforeSubmit() {
@@ -155,20 +170,37 @@
           contentCategory: d.contentCategory,
           licenses: d.licenses,
           tags: d.tags,
+          mimeType: d.mimeType,
         };
+        let request;
         if (this.$route.params.id) {
-          axios.patch(this.$config.API.baseUrl + this.$config.API.pushPort + this.$config.API.pushContentPath + this.$route.params.id, newData, {
-            headers: {Authorization: `Bearer ${localStorage.getItem('jwt')}`},
-          });
+          request = this.$http
+          .patch(this.$config.API.baseUrl + this.$config.API.pushPort + this.$config.API.pushContentPath + this.$route.params.id, newData, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+            },
+          })
         } else {
-          axios.post(this.$config.API.baseUrl + this.$config.API.pushPort + this.$config.API.pushContentPath, newData, {
-            headers: {Authorization: `Bearer ${localStorage.getItem('jwt')}`},
-          });
+          newData.originId = Date.now().toString();
+          request = this.$http
+          .post(this.$config.API.baseUrl + this.$config.API.pushPort + this.$config.API.pushContentPath, newData, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+            },
+          })
         }
+        request.then((response) => {
+            this.$router.push({path: '/'});
+          });
       },
       deleteContent() {
-        window.alert('deleted content');
-        this.$router.push({path: '/'});
+        this.$http.delete(this.$config.API.baseUrl + this.$config.API.pushPort + this.$config.API.pushContentPath + this.$route.params.id, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+            },
+          }).then((response) => {
+            this.$router.push({path: '/'});
+          });
       },
     },
     created() {
@@ -184,6 +216,9 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+  .container-fluid {
+    padding: 30px 5% 0 5%;
+  }
   .gutter > div {
     padding: 5px;
   }
