@@ -34,7 +34,6 @@
     },
     watch: {
       'config.active': function (to, from) {
-        console.log('changed active', to);
         this.isActive = to;
       },
     },

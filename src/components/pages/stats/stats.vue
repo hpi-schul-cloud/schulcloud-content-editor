@@ -64,7 +64,6 @@
           '$sort[clickCount]': -1,
           $limit: 3,
         };
-        console.log(qs.stringify(apiQuery));
         const path = `${this.$config.API.getPath}?${qs.stringify(apiQuery)}`;
         this.$http.get(this.$config.API.baseUrl + this.$config.API.port + path, {
           headers: {
