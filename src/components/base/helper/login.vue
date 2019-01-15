@@ -58,7 +58,7 @@
           })
           .catch((e) => {
             alert('Login fehlgeschlagen!');
-            console.error(e);
+            console.error(e); // eslint-disable-line no-console
           });
       },
       getUserInfo(jwt) {
@@ -75,7 +75,7 @@
             this.$router.go();
           })
           .catch((e) => {
-            console.error(e);
+            console.error(e); // eslint-disable-line no-console
           });
       },
     },

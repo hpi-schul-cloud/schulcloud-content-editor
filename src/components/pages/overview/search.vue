@@ -166,7 +166,7 @@
             this.pagination.totalEntrys = response.data.total;
           })
           .catch((e) => {
-            console.error(e);
+            console.error(e); // eslint-disable-line no-console
           });
       },
       urlChangeHandler() {
