@@ -120,7 +120,7 @@
           description: '',
           thumbnail: '',
           contentCategory: '',
-          licenses: ["MIT bUlLShIt"],
+          licenses: ["Test License"],
           tags: [],
         },
         dialog: {
