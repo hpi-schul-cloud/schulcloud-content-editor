@@ -6,6 +6,7 @@ module.exports = {
   create: 'erstellen',
   delete: 'löschen',
   edit: 'bearbeiten',
+  hosting: 'hosting',
   list: 'Liste',
   login: 'Anmelden',
   logout: 'Abmelden',

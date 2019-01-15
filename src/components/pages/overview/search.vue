@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="wrapper">
     <!--<md-field id="search-input">
         <label>{{$lang.searchContent.search_for}}</label>
         <md-input v-model="searchQuery"></md-input>
@@ -226,7 +226,10 @@
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="scss">
+<style lang="scss" scoped>
+  .wrapper {
+    margin: 30px 5% 0 5%;
+  }
   .date-picker {
     display: inline-flex;
   }

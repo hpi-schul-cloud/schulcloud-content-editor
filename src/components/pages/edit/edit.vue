@@ -23,7 +23,7 @@
                 </span>
               </label>
               <md-textarea v-model="data.description" v-validate name="description" data-vv-rules="max:500"
-                           maxlength="500"></md-textarea>
+                          maxlength="500"></md-textarea>
               <span class="md-error">{{errors.first('description')}}</span>
             </md-field>
 
@@ -184,6 +184,9 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+  .container-fluid {
+    padding: 30px 5% 0 5%;
+  }
   .gutter > div {
     padding: 5px;
   }
