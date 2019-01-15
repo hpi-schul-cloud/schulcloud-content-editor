@@ -154,7 +154,6 @@
       },
       validateBeforeSubmit() {
         this.$validator.validateAll().then((result) => {
-          console.log(result);
           if (result) {
             this.submitContent();
           }
