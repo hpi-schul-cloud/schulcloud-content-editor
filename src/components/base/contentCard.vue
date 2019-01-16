@@ -1,71 +1,98 @@
 ﻿<template>
   <article>
-    <md-card class="card-content height-100">
-      <md-card-media md-ratio="16:9">
-        <img :src="(data.thumbnail||'https://placeholdit.co//i/320x180?bg=CCC&fc=000&text=Platzhalter')"
-             :alt="'Thumbnail for ~' + data.title + '~'">
-      </md-card-media>
+    <MdCard class="card-content height-100">
+      <MdCardMedia md-ratio="16:9">
+        <img
+          :src="(data.thumbnail||'https://placeholdit.co//i/320x180?bg=CCC&fc=000&text=Platzhalter')"
+          :alt="'Thumbnail for ~' + data.title + '~'"
+        >
+      </MdCardMedia>
 
-      <md-card-header>
-
-        <h2 class="md-title">{{data.title||"Titel"}}</h2>
+      <MdCardHeader>
+        <h2 class="md-title">
+          {{ data.title||"Titel" }}
+        </h2>
         <div class="md-subhead">
           <div class="tags">
-            <md-icon>label</md-icon>
-            <span v-for="tag in (data.tags||[]).slice(0,this.$config.card.displayedTags)">
-                {{ tag }},
-              </span>
+            <MdIcon>label</MdIcon>
+            <span
+              v-for="(tag, index) in (data.tags||[]).slice(0,this.$config.card.displayedTags)"
+              :key="`${index}-${tag}`"
+            >
+              {{ tag }},
+            </span>
           </div>
         </div>
-      </md-card-header>
+      </MdCardHeader>
 
-      <md-card-content>
+      <MdCardContent>
         {{ (data.description||"Beschreibung...").substring(0, 300) }}{{ ((data.description||"").length>300)?'...':'' }}
-      </md-card-content>
+      </MdCardContent>
 
-      <md-card-actions>
+      <MdCardActions>
         <div class="providerName">
-          {{ data.providerName}}
+          {{ data.providerName }}
         </div>
-        <md-button v-if="data._id" v-bind:class="{'md-primary': readOnly}" @click="dialog.active = true">
-          {{$lang.buttons.open}}
-        </md-button>
-        <router-link v-if="readOnly != true" :to="{path: '/edit/' + data._id}">
-          <md-button class="md-primary">{{$lang.buttons.edit}}</md-button>
-        </router-link>
-      </md-card-actions>
-    </md-card>
-    <confirmDialog v-bind:config="dialog" @confirm="onConfirm"/>
+        <MdButton
+          v-if="data._id"
+          :class="{'md-primary': readOnly}"
+          @click="dialog.active = true"
+        >
+          {{ $lang.buttons.open }}
+        </MdButton>
+        <RouterLink
+          v-if="readOnly != true"
+          :to="{path: '/edit/' + data._id}"
+        >
+          <MdButton class="md-primary">
+            {{ $lang.buttons.edit }}
+          </MdButton>
+        </RouterLink>
+      </MdCardActions>
+    </MdCard>
+    <ConfirmDialog
+      :config="dialog"
+      @confirm="onConfirm"
+    />
   </article>
 </template>
 
 <script>
   /* load confirmDialog async */
-  const confirmDialog = () => import(/* webpackChunkName: "confirmDialog" */ '@/components/dialogs/confirm.vue');
+const ConfirmDialog = () => import(/* webpackChunkName: "confirmDialog" */ '@/components/dialogs/confirm.vue');
 
-  export default {
-    components: {
-      confirmDialog,
-    },
-    props: ['data', 'readOnly'],
-    name: 'contentForm',
-    data() {
-      return {
-        dialog: {
-          active: false,
-          title: this.$lang.contentCard.dialog.title,
-          content: this.$lang.contentCard.dialog.content,
-          confirm: this.$lang.contentCard.dialog.confirm,
-          cancle: this.$lang.contentCard.dialog.cancle,
-        },
-      };
-    },
-    methods: {
-      onConfirm() {
-        window.open(this.$config.API.baseUrl + this.$config.API.redirectPath + this.data._id, '_blank');
-      },
-    },
-  };
+export default {
+	name: 'ContentForm',
+	components: {
+		ConfirmDialog,
+	},
+	props: {
+		data: {
+			type: Object,
+			required: true
+		},
+		readOnly: {
+			type: Boolean,
+			default: false
+		}
+	},
+	data() {
+		return {
+			dialog: {
+				active: false,
+				title: this.$lang.contentCard.dialog.title,
+				content: this.$lang.contentCard.dialog.content,
+				confirm: this.$lang.contentCard.dialog.confirm,
+				cancle: this.$lang.contentCard.dialog.cancle,
+			},
+		};
+	},
+	methods: {
+		onConfirm() {
+			window.open(this.$config.API.baseUrl + this.$config.API.redirectPath + this.data._id, '_blank');
+		},
+	},
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

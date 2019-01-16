@@ -1,65 +1,94 @@
 <template>
   <div class="pagination">
-    <md-button v-if="config.page == 1" class="md-icon-button md-raised" disabled>
-      <md-icon>arrow_back</md-icon>
-    </md-button>
-    <md-button v-else class="md-icon-button md-raised" v-on:click="config.page -= 1">
-      <md-icon>arrow_back</md-icon>
-    </md-button>
+    <MdButton
+      v-if="config.page == 1"
+      class="md-icon-button md-raised"
+      disabled
+    >
+      <MdIcon>arrow_back</MdIcon>
+    </MdButton>
+    <MdButton
+      v-else
+      class="md-icon-button md-raised"
+      @click="config.page -= 1"
+    >
+      <MdIcon>arrow_back</MdIcon>
+    </MdButton>
 
-    <md-button id="pageNumber" class="md-button md-primary md-raised">
-      <input type="number" v-model.lazy="pageString" min="1" :max="maxPages"></input>
-    </md-button>
+    <MdButton
+      id="pageNumber"
+      class="md-button md-primary md-raised"
+    >
+      <input
+        v-model.lazy="pageString"
+        type="number"
+        min="1"
+        :max="maxPages"
+      >
+    </MdButton>
 
-    <md-button v-if="config.page == maxPages" class="md-icon-button md-raised" disabled>
-      <md-icon>arrow_forward</md-icon>
-    </md-button>
-    <md-button v-else class="md-icon-button md-raised" v-on:click="config.page += 1">
-      <md-icon>arrow_forward</md-icon>
-    </md-button>
+    <MdButton
+      v-if="config.page == maxPages"
+      class="md-icon-button md-raised"
+      disabled
+    >
+      <MdIcon>arrow_forward</MdIcon>
+    </MdButton>
+    <MdButton
+      v-else
+      class="md-icon-button md-raised"
+      @click="config.page += 1"
+    >
+      <MdIcon>arrow_forward</MdIcon>
+    </MdButton>
   </div>
 </template>
 
 <script>
-  export default {
-    name: 'pagination',
-    props: ['config'],
-    data() {
-      return {
-        pageString: '1', // needed to display current page (only strings allowed for v-model)
-        maxPages: '1',
-      };
-    },
-    created() {
-      this.pageString = this.config.page.toString();
-      this.calcMaxPages();
-    },
-    methods: {
-      calcMaxPages() {
-        this.maxPages = (Math.ceil(this.config.totalEntrys / this.config.itemsPerPage) || 1).toString();
-      },
-    },
-    watch: {
-      'config.totalEntrys': function (to, from) {
-        this.calcMaxPages();
-      },
-      'config.itemsPerPage': function (to, from) {
-        this.calcMaxPages();
-      },
-      'config.page': function (to, from) {
-        if (this.config.scroll) {
-          window.scroll(this.config.scroll);
-        }
-        this.pageString = this.config.page.toString();
-        this.$emit('pageChanged', this.config.page);
-      },
-      pageString(to, from) {
-        if (this.pageString) {
-          this.config.page = Number.parseInt(this.pageString);
-        }
-      },
-    },
-  };
+export default {
+	name: 'Pagination',
+	props: {
+		config: {
+			type: Object,
+			required: true
+		},
+	},
+	data() {
+		return {
+			pageString: '1', // needed to display current page (only strings allowed for v-model)
+			maxPages: '1',
+		};
+	},
+	watch: {
+		'config.totalEntrys': function () {
+			this.calcMaxPages();
+		},
+		'config.itemsPerPage': function () {
+			this.calcMaxPages();
+		},
+		'config.page': function () {
+			if (this.config.scroll) {
+				window.scroll(this.config.scroll);
+			}
+			this.pageString = this.config.page.toString();
+			this.$emit('pageChanged', this.config.page);
+		},
+		pageString(to) {
+			if (to) {
+				this.config.page = Number.parseInt(this.pageString);
+			}
+		},
+	},
+	created() {
+		this.pageString = this.config.page.toString();
+		this.calcMaxPages();
+	},
+	methods: {
+		calcMaxPages() {
+			this.maxPages = (Math.ceil(this.config.totalEntrys / this.config.itemsPerPage) || 1).toString();
+		},
+	},
+};
 
 </script>
 

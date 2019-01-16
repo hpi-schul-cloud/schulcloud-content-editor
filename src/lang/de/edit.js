@@ -1,5 +1,5 @@
 // welcome.js
-module.exports = {
+export default {
   title_create: 'Inhalt erstellen',
   title_edit: 'Inhalt bearbeiten',
   livepreview: 'Livevorschau',

@@ -1,4 +1,4 @@
 // welcome.js
-module.exports = {
+export default {
   message: 'Willkommen im Schul-Cloud Content Editor',
 };

@@ -1,39 +1,26 @@
-// http://eslint.org/docs/user-guide/configuring
-
 module.exports = {
-  root: true,
-  parser: 'babel-eslint',
-  parserOptions: {
-    sourceType: 'module'
-  },
-  env: {
-    browser: true,
-  },
-  extends: 'airbnb-base',
-  // required to lint *.vue files
-  plugins: [
-    'html'
+	"root": true,
+	"env": {
+		"node": true
+	},
+  extends: [
+    // add more generic rulesets here, such as:
+    // 'eslint:recommended',
+    'plugin:vue/recommended'
   ],
-  // check if imports actually resolve
-  'settings': {
-    'import/resolver': {
-      'webpack': {
-        'config': 'build/webpack.base.conf.js'
-      }
-    }
-  },
-  // add your custom rules here
-  'rules': {
-    // don't require .vue extension when importing
-    'import/extensions': ['error', 'always', {
-      'js': 'never',
-      'vue': 'never'
-    }],
-    // allow optionalDependencies
-    'import/no-extraneous-dependencies': ['error', {
-      'optionalDependencies': ['test/unit/index.js']
-    }],
-    // allow debugger during development
-    'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0
-  }
-};
+  rules: {
+    // override/add rules settings here, such as:
+		// 'vue/no-unused-vars': 'error'
+		"vue/component-name-in-template-casing": ["error", "PascalCase", { // https://vuejs.github.io/eslint-plugin-vue/rules/component-name-in-template-casing.html
+			"ignores": []
+		}],
+		"vue/script-indent": ["error", "tab", { // https://vuejs.github.io/eslint-plugin-vue/rules/script-indent.html
+			"baseIndent": 0,
+			"switchCase": 0,
+			"ignores": []
+		}]
+	},
+	"parserOptions": {
+		"parser": "babel-eslint"
+	}
+}

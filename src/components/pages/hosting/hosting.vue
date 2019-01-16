@@ -1,11 +1,15 @@
 <template>
-    <iframe class="iframe" src="http://localhost/index.php/apps/files/?headless=true" title="headless nextcloud"></iframe>
+  <iframe
+    class="iframe"
+    src="http://localhost/index.php/apps/files/?headless=true"
+    title="headless nextcloud"
+  />
 </template>
 
 <script>
-  export default {
-    name: 'hostingPage',
-  };
+export default {
+	name: 'HostingPage',
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

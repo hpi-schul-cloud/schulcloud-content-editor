@@ -1,83 +1,111 @@
 <template>
   <div id="app">
-    <vue-progress-bar></vue-progress-bar>
+    <vue-progress-bar /> <!-- eslint-disable-line -->
     <header class="md-elevation-1 md-primary">
       <div class="container-fluid-max">
-        <md-toolbar md-elevation="0" class="md-primary">
-          <router-link to="/" style="flex: 1">
-            <h2 class="cloud-logo md-title" style="flex: 1">{{title}}</h2>
-          </router-link>
+        <MdToolbar
+          md-elevation="0"
+          class="md-primary"
+        >
+          <RouterLink
+            to="/"
+            style="flex: 1"
+          >
+            <h2
+              class="cloud-logo md-title"
+              style="flex: 1"
+            >
+              {{ title }}
+            </h2>
+          </RouterLink>
           <div v-if="jwt">
-            <router-link to="/hosting">
-              <md-button>{{$lang.buttons.hosting}}</md-button>
-            </router-link>
-            <router-link to="/create">
-              <md-button>{{$lang.buttons.create}}</md-button>
-            </router-link>
-            <router-link to="/stats">
-              <md-button>{{$lang.buttons.stats}}</md-button>
-            </router-link>
-            <md-menu md-direction="bottom-end" :md-align-trigger="true">
-              <md-button id="userName" md-menu-trigger>{{userInfo.displayName}}
-                <md-icon><i class="material-icons">arrow_drop_down</i></md-icon>
-              </md-button>
-              <md-menu-content>
-                <md-menu-item v-on:click="logout">{{$lang.buttons.logout}}</md-menu-item>
-              </md-menu-content>
-            </md-menu>
+            <RouterLink to="/hosting">
+              <MdButton>{{ $lang.buttons.hosting }}</MdButton>
+            </RouterLink>
+            <RouterLink to="/create">
+              <MdButton>{{ $lang.buttons.create }}</MdButton>
+            </RouterLink>
+            <RouterLink to="/stats">
+              <MdButton>{{ $lang.buttons.stats }}</MdButton>
+            </RouterLink>
+            <MdMenu
+              md-direction="bottom-end"
+              :md-align-trigger="true"
+            >
+              <MdButton
+                id="userName"
+                md-menu-trigger
+              >
+                {{ userInfo.displayName }}
+                <MdIcon>
+                  <i class="material-icons">
+                    arrow_drop_down
+                  </i>
+                </MdIcon>
+              </MdButton>
+              <MdMenuContent>
+                <MdMenuItem @click="logout">
+                  {{ $lang.buttons.logout }}
+                </MdMenuItem>
+              </MdMenuContent>
+            </MdMenu>
           </div>
-        </md-toolbar>
+        </MdToolbar>
       </div>
     </header>
     <main class="page-container container-fluid-max">
-      <transition name="fade" mode="out-in" appear>
-        <router-view v-if="jwt"></router-view>
-      </transition>
-      <app-login v-if="!jwt"></app-login>
-      <app-footer></app-footer>
+      <Transition
+        name="fade"
+        mode="out-in"
+        appear
+      >
+        <RouterView v-if="jwt" />
+      </Transition>
+      <AppLogin v-if="!jwt" />
+      <AppFooter />
     </main>
   </div>
 </template>
 
 <script>
   /* load login async */
-  const login = () => import(/* webpackChunkName: "login" */ './components/base/helper/login.vue');
-  /* load hpiFooter async */
-  const hpiFooter = () => import(/* webpackChunkName: "hpiFooter" */ './components/base/footer.vue');
+const login = () => import(/* webpackChunkName: "login" */ './components/base/helper/login.vue');
+/* load hpiFooter async */
+const hpiFooter = () => import(/* webpackChunkName: "hpiFooter" */ './components/base/footer.vue');
 
-  export default {
-    components: {
-      'app-login': login,
-      'app-footer': hpiFooter,
-    },
-    name: 'app',
-    created() {
-      this.$Progress.start();
+export default {
+	name: 'App',
+	components: {
+		'AppLogin': login,
+		'AppFooter': hpiFooter,
+	},
+	data() {
+		return {
+			title: 'Schul-Cloud Content',
+			jwt: localStorage.getItem('jwt'),
+			userInfo: JSON.parse(localStorage.getItem('userInfo')) || {},
+		};
+	},
+	created() {
+		this.$Progress.start();
 
-      this.$router.beforeEach((to, from, next) => {
-        this.$Progress.start();
-        next()
-      });
+		this.$router.beforeEach((to, from, next) => {
+			this.$Progress.start();
+			next()
+		});
 
-      this.$router.afterEach((to, from) => {
-        this.$Progress.finish()
-      });
-    },
-    data() {
-      return {
-        title: 'Schul-Cloud Content',
-        jwt: localStorage.getItem('jwt'),
-        userInfo: JSON.parse(localStorage.getItem('userInfo')) || {},
-      };
-    },
-    methods: {
-      logout() {
-        localStorage.clear();
-        this.$cookies.remove('jwt');
-        window.location.href = '/';
-      },
-    },
-  };
+		this.$router.afterEach(() => {
+			this.$Progress.finish()
+		});
+	},
+	methods: {
+		logout() {
+			localStorage.clear();
+			this.$cookies.remove('jwt');
+			window.location.href = '/';
+		},
+	},
+};
 </script>
 
 

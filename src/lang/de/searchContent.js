@@ -1,5 +1,5 @@
 // login.js
-module.exports = {
+export default {
   search_for: 'Suche nach',
   searchResults_for: 'Suchergebnisse für',
   nothing_found: 'keine Ergebnisse gefunden',

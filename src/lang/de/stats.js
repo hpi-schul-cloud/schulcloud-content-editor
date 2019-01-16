@@ -1,5 +1,5 @@
 // login.js
-module.exports = {
+export default {
   title: 'Statistik',
   article: 'Artikel',
   most_clicked: 'Meistgeklickter Content',
