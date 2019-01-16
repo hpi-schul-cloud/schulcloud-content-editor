@@ -1,5 +1,5 @@
 // login.js
-module.exports = {
+export default {
   title: 'Login',
   username: 'Benutzername',
   password: 'Passwort',

@@ -1,5 +1,5 @@
 // login.js
-module.exports = {
+export default {
   provider: {
     modal_title: 'Provider',
     placeholder: 'Provider wählen',

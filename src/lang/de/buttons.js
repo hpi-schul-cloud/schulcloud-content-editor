@@ -1,5 +1,5 @@
 // buttons.js
-module.exports = {
+export default {
   add: 'hinzufügen',
   cancel: 'abbrechen',
   card: 'Karte',

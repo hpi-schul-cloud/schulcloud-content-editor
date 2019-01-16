@@ -112,7 +112,7 @@ export default {
 <style lang="scss" scoped>
   #login-card {
     max-width: 600px;
-    margin: 0 auto;
+    margin: 1em auto;
   }
 </style>
 <style lang="scss">
