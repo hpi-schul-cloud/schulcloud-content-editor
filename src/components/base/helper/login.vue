@@ -73,7 +73,7 @@ export default {
 			}
 		},
 		getToken() {
-			this.$http.post(this.$config.API.baseUrl + this.$config.API.port + this.$config.API.authPath, this.login)
+			this.$http.post(this.$config.API.serverServerUrl + this.$config.API.authPath, this.login)
 				.then((response) => {
 					// JSON responses are automatically parsed.
 					const jwt = response.data.accessToken;
@@ -90,7 +90,7 @@ export default {
 			const base64Url = jwt.split('.')[1];
 			const base64 = base64Url.replace('-', '+').replace('_', '/');
 			const payload = JSON.parse(window.atob(base64));
-			this.$http.get(this.$config.API.baseUrl + this.$config.API.port + this.$config.API.userInfoPath + payload.userId, {
+			this.$http.get(this.$config.API.serverServerUrl + this.$config.API.userInfoPath + payload.userId, {
 				headers: {
 					Authorization: `Bearer ${jwt}`,
 				},

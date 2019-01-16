@@ -234,10 +234,10 @@ export default {
 			const queryString = qs.stringify(Object.assign(searchQuery, this.apiFilterQuery));
 			const path =
 				searchString.length == 0
-					? this.$config.API.getPath
-					: `${this.$config.API.searchPath}?${queryString}`;
+					? this.$config.API.getContentPath
+					: `${this.$config.API.searchContentPath}?${queryString}`;
 			this.$http
-				.get(this.$config.API.baseUrl + this.$config.API.port + path, {
+				.get(this.$config.API.serverServerUrl + path, {
 					headers: {
 						Authorization: `Bearer ${localStorage.getItem('jwt')}`,
 					},

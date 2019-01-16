@@ -1,17 +1,16 @@
 // mymodule.js
-module.exports = {
+export default {
   configs: {
     API: {
-      baseUrl: 'http://localhost',
-      port: ':3030',
-      pushPort: ':4040',
+      serverServerUrl: process.env.VUE_APP_SERVER_SERVER_URL || 'http://localhost:3030',
+      contentServerUrl: process.env.VUE_APP_CONTENT_SERVER_URL || 'http://localhost:4040',
       authPath: '/authentication',
       pwRecoveryPath: '/login?recovery=true',
-      getPath: '/content/resources/',
-      searchPath: '/content/search/',
-      pushContentPath: '/resources/',
-      redirectPath: '/content/redirect/',
       userInfoPath: '/users/',
+      getContentPath: '/content/resources/',
+      pushContentPath: '/resources/',
+      searchContentPath: '/content/search/',
+      viewContentPath: '/content/redirect/',
     },
     card: {
       displayedTags: 9,
