@@ -89,7 +89,7 @@ export default {
 	},
 	methods: {
 		onConfirm() {
-			window.open(this.$config.API.baseUrl + this.$config.API.redirectPath + this.data._id, '_blank');
+			window.open(this.$config.API.baseUrl + this.$config.API.viewContentPath + this.data._id, '_blank');
 		},
 	},
 };

@@ -18,7 +18,7 @@ Vue.use(VueCookies);
 Vue.use(VueResource);
 
 const configFile = require('./config');
-Vue.use(VueConfig, configFile.configs);
+Vue.use(VueConfig, configFile.default.configs);
 
 const VueLang = require('vuejs-localization');
 

@@ -134,11 +134,11 @@ export default {
 			this.clearItemChanged();
 
 			if (this.$route.params.id) {
-				this.$http.patch(this.$config.API.baseUrl + this.$config.API.pushPort + this.$config.API.pushContentPath + this.contentData._id, this.contentData, {
+				this.$http.patch(this.$config.API.contentServerUrl + this.$config.API.pushContentPath + this.contentData._id, this.contentData, {
 					headers: {Authorization: `Bearer ${localStorage.getItem('jwt')}`},
 				});
 			} else {
-				this.$http.post(this.$config.API.baseUrl + this.$config.API.pushPort + this.$config.API.pushContentPath, this.contentData, {
+				this.$http.post(this.$config.API.contentServerUrl + this.$config.API.pushContentPath, this.contentData, {
 					headers: {Authorization: `Bearer ${localStorage.getItem('jwt')}`},
 				});
 			}
@@ -151,7 +151,7 @@ export default {
 		},
 		deleteContent() {
 			this.clearItemChanged();
-			this.$http.delete(this.$config.API.baseUrl + this.$config.API.pushPort + this.$config.API.pushContentPath + this.contentData._id, {
+			this.$http.delete(this.$config.API.contentServerUrl + this.$config.API.pushContentPath + this.contentData._id, {
 				headers: {
 					Authorization: `Bearer ${localStorage.getItem('jwt')}`,
 				},

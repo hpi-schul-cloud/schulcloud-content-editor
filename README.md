@@ -47,3 +47,12 @@ npm run test
 # run lint & run build & check bundlesize
 npm run travis
 ```
+
+## Deployment
+### NODE_ENV during build
+
+node-env | default | info
+--- | --- | ---
+VUE_APP_PUBLIC_PATH | / | [link](https://cli.vuejs.org/guide/deployment.html#github-pages)
+VUE_APP_SERVER_SERVER_URL | http://localhost:3030 | URL to [schulcloud-server](https://github.com/schul-cloud/schulcloud-server)
+VUE_APP_CONTENT_SERVER_URL | http://localhost:4040 | URL to [schulcloud-content](https://github.com/schul-cloud/schulcloud-content)

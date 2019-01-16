@@ -261,7 +261,7 @@ export default {
 	methods: {
 		loadContent() {
 			if (this.$route.params.id) {
-				this.$http.get(this.$config.API.baseUrl + this.$config.API.port + this.$config.API.getPath + this.$route.params.id, {
+				this.$http.get(this.$config.API.serverServerUrl + this.$config.API.getContentPath + this.$route.params.id, {
 					headers: {
 						Authorization: `Bearer ${localStorage.getItem('jwt')}`,
 					},
@@ -300,7 +300,7 @@ export default {
 			let request;
 			if (this.$route.params.id) {
 				request = this.$http
-					.patch(this.$config.API.baseUrl + this.$config.API.pushPort + this.$config.API.pushContentPath + this.$route.params.id, newData, {
+					.patch(this.$config.API.contentServerUrl + this.$config.API.pushContentPath + this.$route.params.id, newData, {
 						headers: {
 							Authorization: `Bearer ${localStorage.getItem('jwt')}`,
 						},
@@ -308,7 +308,7 @@ export default {
 			} else {
 				newData.originId = Date.now().toString();
 				request = this.$http
-					.post(this.$config.API.baseUrl + this.$config.API.pushPort + this.$config.API.pushContentPath, newData, {
+					.post(this.$config.API.contentServerUrl + this.$config.API.pushContentPath, newData, {
 						headers: {
 							Authorization: `Bearer ${localStorage.getItem('jwt')}`,
 						},
@@ -319,7 +319,7 @@ export default {
 			});
 		},
 		deleteContent() {
-			this.$http.delete(this.$config.API.baseUrl + this.$config.API.pushPort + this.$config.API.pushContentPath + this.$route.params.id, {
+			this.$http.delete(this.$config.API.contentServerUrl + this.$config.API.pushContentPath + this.$route.params.id, {
 				headers: {
 					Authorization: `Bearer ${localStorage.getItem('jwt')}`,
 				},

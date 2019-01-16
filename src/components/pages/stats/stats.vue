@@ -60,7 +60,7 @@ export default {
 	},
 	methods: {
 		getTotalContent() {
-			this.$http.get(this.$config.API.baseUrl + this.$config.API.port + this.$config.API.getPath, {
+			this.$http.get(this.$config.API.serverServerUrl + this.$config.API.getContentPath, {
 				headers: {
 					Authorization: `Bearer ${localStorage.getItem('jwt')}`,
 				},
@@ -79,8 +79,8 @@ export default {
 				'$sort[clickCount]': -1,
 				$limit: 3,
 			};
-			const path = `${this.$config.API.getPath}?${qs.stringify(apiQuery)}`;
-			this.$http.get(this.$config.API.baseUrl + this.$config.API.port + path, {
+			const path = `${this.$config.API.getContentPath}?${qs.stringify(apiQuery)}`;
+			this.$http.get(this.$config.API.serverServerUrl + path, {
 				headers: {
 					Authorization: `Bearer ${localStorage.getItem('jwt')}`,
 				},
