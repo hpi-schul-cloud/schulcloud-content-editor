@@ -1,59 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Schul-Cloud Content</title>
-    <link rel="icon" type="image/png" sizes="48x48" href="<%= htmlWebpackPlugin.files.publicPath %>static/img/logo/favicon-48.png">
-    <link rel="icon" type="image/png" sizes="36x36" href="<%= htmlWebpackPlugin.files.publicPath %>static/img/logo/favicon-36.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="<%= htmlWebpackPlugin.files.publicPath %>static/img/logo/favicon-32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="<%= htmlWebpackPlugin.files.publicPath %>static/img/logo/favicon-16.png">
-    <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="preload" as="style" onload="this.rel='stylesheet'">
-    <script>
-    window.onload = function(){
-        const lazyloads =
-            document.querySelectorAll('noscript.lazyload');
-        // This container is the HTML parser
-        const container = document.createElement('div');
-        Array.from(lazyloads).forEach(lazyload => {
-            const parent = lazyload.parentNode;
-            container.innerHTML = lazyload.textContent;
-            Array.from(container.children)
-                .forEach(n =>
-                    parent.insertBefore(n, lazyload)
-                );
-        });
-    }
-    </script>
-    <!--[if IE]><link rel="shortcut icon" href="/static/img/icons/favicon.ico"><![endif]-->
-    <!-- Add to home screen for Android and modern mobile browsers -->
-    <link rel="manifest" href="<%= htmlWebpackPlugin.files.publicPath %>static/manifest.json">
-    <meta name="theme-color" content="#B10438"/>
-    <!-- Add to home screen for Safari on iOS -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content="schul-cloud content-editor">
-    <link rel="apple-touch-icon" href="<%= htmlWebpackPlugin.files.publicPath %>static/img/logo/app-icon-152.png">
-    <link rel="mask-icon" href="<%= htmlWebpackPlugin.files.publicPath %>static/img/logo/safari-pinned-tab.svg" color="#B10438">
-    <!-- Add to home screen for Windows -->
-    <meta name="msapplication-TileImage" content="<%= htmlWebpackPlugin.files.publicPath %>static/img/logo/mstile-150x150.png">
-    <meta name="msapplication-TileColor" content="#B10438">
-    <% for (var chunk of webpack.chunks) {
-        for (var file of chunk.files) {
-          if (file.match(/\.(js|css)$/)) { %>
-    <link rel="<%= chunk.initial?'preload':'prefetch' %>" href="<%= htmlWebpackPlugin.files.publicPath + file %>" as="<%= file.match(/\.css$/)?'style':'script' %>"><% }}} %>
-  </head>
-  <body>
-    <noscript>
-      Please enable Javascript!
-    </noscript>
-    <div id="app"></div>
-    <!-- Todo: only include in production -->
-    <%= htmlWebpackPlugin.options.serviceWorkerLoader %>
-    <!-- built files will be auto injected -->
-    <noscript class="lazyload">
-        <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
-    </noscript>
-  </body>
-</html>
+<!DOCTYPE html><html lang=de-DE><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1"><!--[if IE]><link rel="icon" type="image/png" sizes="48x48" href="/schulcloud-content-editor/img/logo/favicon-48.png"><![endif]--><link rel=icon type=image/png sizes=36x36 href=/schulcloud-content-editor/img/logo/favicon-36.png><link rel=icon type=image/png sizes=32x32 href=/schulcloud-content-editor/img/logo/favicon-32.png><link rel=icon type=image/png sizes=16x16 href=/schulcloud-content-editor/img/logo/favicon-16.png><title>schulcloud-content-editor</title><link href="//fonts.googleapis.com/icon?family=Material+Icons" rel=preload as=style onload="this.rel='stylesheet'"><script>window.onload = function(){
+          const lazyloads =
+              document.querySelectorAll('noscript.lazyload');
+          // This container is the HTML parser
+          const container = document.createElement('div');
+          Array.from(lazyloads).forEach(lazyload => {
+              const parent = lazyload.parentNode;
+              container.innerHTML = lazyload.textContent;
+              Array.from(container.children)
+                  .forEach(n =>
+                      parent.insertBefore(n, lazyload)
+                  );
+          });
+      }</script><link href=/schulcloud-content-editor/css/ContentCard.6a7806bc.css rel=prefetch><link href=/schulcloud-content-editor/css/edit.f508b1b1.css rel=prefetch><link href=/schulcloud-content-editor/css/hosting.3ad82e81.css rel=prefetch><link href=/schulcloud-content-editor/css/hpiFooter.ea62eb32.css rel=prefetch><link href=/schulcloud-content-editor/css/login.64d3ab26.css rel=prefetch><link href=/schulcloud-content-editor/css/search.76e10e8d.css rel=prefetch><link href=/schulcloud-content-editor/css/stats.88ed0b2c.css rel=prefetch><link href=/schulcloud-content-editor/css/welcomeMessage.2bec7b63.css rel=prefetch><link href=/schulcloud-content-editor/js/ConfirmDialog.d6efc6c6.js rel=prefetch><link href=/schulcloud-content-editor/js/ContentCard.be1c337f.js rel=prefetch><link href=/schulcloud-content-editor/js/edit.f08e5e27.js rel=prefetch><link href=/schulcloud-content-editor/js/edit~search.8e69ddf6.js rel=prefetch><link href=/schulcloud-content-editor/js/hosting.1e534f82.js rel=prefetch><link href=/schulcloud-content-editor/js/hpiFooter.f4a74a28.js rel=prefetch><link href=/schulcloud-content-editor/js/login.57739204.js rel=prefetch><link href=/schulcloud-content-editor/js/overview.e314d537.js rel=prefetch><link href=/schulcloud-content-editor/js/search.f3a2af2b.js rel=prefetch><link href=/schulcloud-content-editor/js/stats.3d8db6b4.js rel=prefetch><link href=/schulcloud-content-editor/js/welcomeMessage.7848b2a1.js rel=prefetch><link href=/schulcloud-content-editor/css/app.cc89e85e.css rel=preload as=style><link href=/schulcloud-content-editor/css/chunk-vendors.0ed27ee7.css rel=preload as=style><link href=/schulcloud-content-editor/js/app.1bcf7c8e.js rel=preload as=script><link href=/schulcloud-content-editor/js/chunk-vendors.36d93fa5.js rel=preload as=script><link href=/schulcloud-content-editor/css/chunk-vendors.0ed27ee7.css rel=stylesheet><link href=/schulcloud-content-editor/css/app.cc89e85e.css rel=stylesheet><link rel=icon type=image/png sizes=32x32 href=/schulcloud-content-editor/img/icons/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/schulcloud-content-editor/img/icons/favicon-16x16.png><link rel=manifest href=/schulcloud-content-editor/manifest.json><meta name=theme-color content=#4DBA87><meta name=apple-mobile-web-app-capable content=no><meta name=apple-mobile-web-app-status-bar-style content=default><meta name=apple-mobile-web-app-title content=schulcloud-content-editor><link rel=apple-touch-icon href=/schulcloud-content-editor/img/icons/apple-touch-icon-152x152.png><link rel=mask-icon href=/schulcloud-content-editor/img/icons/safari-pinned-tab.svg color=#4DBA87><meta name=msapplication-TileImage content=/schulcloud-content-editor/img/icons/msapplication-icon-144x144.png><meta name=msapplication-TileColor content=#000000></head><body><noscript><strong>We're sorry but schulcloud-content-editor doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript><div id=app></div><noscript class=lazyload><link rel=stylesheet href="//fonts.googleapis.com/icon?family=Material+Icons"></noscript><script src=/schulcloud-content-editor/js/chunk-vendors.36d93fa5.js></script><script src=/schulcloud-content-editor/js/app.1bcf7c8e.js></script></body></html>
