@@ -53,14 +53,16 @@
 </template>
 
 <script>
-const providerFilterDialog = () => import(/* webpackChunkName: "providerFilterDialog" */ '@/components/dialogs/filter/provider.vue');
-const createdAtFilterDialog = () => import(/* webpackChunkName: "createdAtFilterDialog" */ '@/components/dialogs/filter/date.vue');
+import ProviderFilterDialog from '@/components/dialogs/filter/provider.vue'
+import CreatedatFilterDialog from '@/components/dialogs/filter/date.vue'
+
+
 
 export default {
 	name: 'SearchFilter',
 	components: {
-		'ProviderFilterDialog': providerFilterDialog,
-		'CreatedatFilterDialog': createdAtFilterDialog,
+		ProviderFilterDialog,
+		CreatedatFilterDialog
 	},
 	data() {
 		return {

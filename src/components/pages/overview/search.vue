@@ -122,19 +122,19 @@
 </template>
 
 <script>
-import contentCard from '@/components/base/contentCard.vue';
-import pagination from '@/components/base/helper/pagination.vue';
-
-const contentTableRow = () => import(/* webpackChunkName: "contentTableRow" */ './editForm-table.vue');
-
+import ContentCard from '@/components/base/contentCard.vue';
+import Pagination from '@/components/base/helper/pagination.vue';
+import SearchFilter from './filter.vue';
+import ContentRow from './editForm-table.vue';
 const qs = require('query-string');
 
 export default {
 	name: 'ContentList',
 	components: {
-		contentCard,
-		pagination,
-		contentRow: contentTableRow,
+		ContentCard,
+		Pagination,
+		ContentRow,
+		SearchFilter,
 	},
 	props: {
 		readOnly: {

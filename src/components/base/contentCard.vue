@@ -59,12 +59,12 @@
 
 <script>
   /* load confirmDialog async */
-const confirmDialog = () => import(/* webpackChunkName: "confirmDialog" */ '@/components/dialogs/confirm.vue');
+const ConfirmDialog = () => import(/* webpackChunkName: "confirmDialog" */ '@/components/dialogs/confirm.vue');
 
 export default {
 	name: 'ContentForm',
 	components: {
-		confirmDialog,
+		ConfirmDialog,
 	},
 	props: {
 		data: {

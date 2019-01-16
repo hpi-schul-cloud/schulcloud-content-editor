@@ -219,14 +219,14 @@ import VeeValidate from 'vee-validate';
 
 Vue.use(VeeValidate);
 
-const contentCard = () => import(/* webpackChunkName: "contentCard" */ '@/components/base/contentCard.vue');
-const confirmDialog = () => import(/* webpackChunkName: "confirmDialog" */ '@/components/dialogs/confirm.vue');
+const ContentCard = () => import(/* webpackChunkName: "ContentCard" */ '@/components/base/contentCard.vue');
+const ConfirmDialog = () => import(/* webpackChunkName: "ConfirmDialog" */ '@/components/dialogs/confirm.vue');
 
 export default {
 	name: 'ContentForm',
 	components: {
-		contentCard,
-		confirmDialog,
+		ContentCard,
+		ConfirmDialog,
 	},
 	data() {
 		return {

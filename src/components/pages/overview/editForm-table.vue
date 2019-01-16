@@ -1,5 +1,5 @@
 <template>
-  <form
+  <tr
     id="contentForm"
     :class="{ changed: isDirty }"
     @submit.prevent="validateBeforeSubmit"
@@ -67,7 +67,7 @@
         <MdIcon>save</MdIcon>
       </MdButton>
     </td>
-  </form>
+  </tr>
 </template>
 
 <script>
@@ -77,12 +77,12 @@ import VeeValidate from 'vee-validate';
 
 Vue.use(VeeValidate);
 
-const confirmDialog = () => import(/* webpackChunkName: "confirmDialog" */ '@/components/dialogs/confirm.vue');
+const ConfirmDialog = () => import(/* webpackChunkName: "ConfirmDialog" */ '@/components/dialogs/confirm.vue');
 
 export default {
 	name: 'ContentTableRow',
 	components: {
-		confirmDialog,
+		ConfirmDialog,
 	},
 	props: {
 		contentData: {
@@ -151,7 +151,13 @@ export default {
 		},
 		deleteContent() {
 			this.clearItemChanged();
-			/* TODO - send async delete */
+			this.$http.delete(this.$config.API.baseUrl + this.$config.API.pushPort + this.$config.API.pushContentPath + this.contentData._id, {
+				headers: {
+					Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+				},
+			}).then(() => {
+				this.$router.push({path: '/'});
+			});
 			this.$emit('delete', this.contentData._id);
 		},
 	},
@@ -160,27 +166,27 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  form {
-    display: table-row;
-    td {
-      vertical-align: top;
-      padding: 0 8px;
-      .md-field {
-        margin-top: 0;
-        padding-top: 0;
-        min-height: initial;
-      }
-      &:last-of-type {
-        width: 80px;
-        white-space: nowrap;
-      }
-      .md-button {
-        margin: 0;
-      }
+form {
+  display: contents;
+  td {
+    vertical-align: top;
+    padding: 0 8px;
+    .md-field {
+      margin-top: 0;
+      padding-top: 0;
+      min-height: initial;
+    }
+    &:last-of-type {
+      width: 80px;
+      white-space: nowrap;
+    }
+    .md-button {
+      margin: 0;
     }
   }
+}
 
-  .changed {
-    background-color: lightgoldenrodyellow;
-  }
+.changed {
+  background-color: lightgoldenrodyellow;
+}
 </style>

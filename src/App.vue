@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <VueProgressBar />
+    <vue-progress-bar /> <!-- eslint-disable-line -->
     <header class="md-elevation-1 md-primary">
       <div class="container-fluid-max">
         <MdToolbar

@@ -52,7 +52,7 @@ export default {
 	props: {
 		identifier: {
 			type: String,
-			default: this._uid.toString()
+			default: ""
 		},
 		active: {
 			type: Boolean

@@ -12,8 +12,8 @@ const search = () => import(/* webpackChunkName: "search" */ './search.vue');
 export default {
 	name: 'Overview',
 	components: {
-		'appSearch': search,
-		'appWelcomeMessage': welcomeMessage,
+		'AppSearch': search,
+		'AppWelcomeMessage': welcomeMessage,
 	},
 };
 </script>
