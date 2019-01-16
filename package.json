@@ -9,10 +9,11 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "test:unit": "vue-cli-service test:unit",
-    "travis": "npm run lint && npm run build && bundlesize"
+    "travis": "npm run lint && npm run build"
   },
   "dependencies": {
     "babel-runtime": "^6.26.0",
+    "node-pre-gyp": "^0.12.0",
     "query-string": "^6.2.0",
     "register-service-worker": "^1.5.2",
     "vee-validate": "^2.1.5",
@@ -32,7 +33,6 @@
     "@vue/cli-plugin-unit-jest": "^3.3.0",
     "@vue/cli-service": "^3.3.0",
     "@vue/test-utils": "^1.0.0-beta.20",
-    "bundlesize": "0.17.1",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.6.0",
@@ -76,26 +76,8 @@
     ],
     "testURL": "http://localhost/"
   },
-  "bundlesize": [
-    {
-      "path": "./dist/service-worker.js",
-      "maxSize": "10 KB"
-    },
-    {
-      "path": "./dist/static/**/[0-9]*.js",
-      "maxSize": "30 KB"
-    },
-    {
-      "path": "./dist/static/**/!([0-9])*.js",
-      "maxSize": "500 KB"
-    },
-    {
-      "path": "./dist/static/**/*.css",
-      "maxSize": "50 KB"
-    }
-  ],
   "engines": {
-    "node": ">= 10.0.0",
+    "node": ">= 10.15.0",
     "npm": ">= 3.0.0"
   },
   "gitHooks": {
