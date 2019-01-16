@@ -11,7 +11,7 @@ cache:
     - node_modules
 deploy:
   provider: pages
-  local-dir: "/dist"
+  local-dir: "dist"
   allow-empty-commit: true
   skip-cleanup: true
   github-token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
