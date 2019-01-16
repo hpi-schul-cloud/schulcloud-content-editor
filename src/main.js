@@ -9,6 +9,7 @@ import 'vue-material/dist/vue-material.min.css'
 import VueCookies from 'vue-cookies';
 import VueResource from 'vue-resource';
 import VueConfig from 'vue-config';
+import './registerServiceWorker'
 
 Vue.use(VueMaterial);
 

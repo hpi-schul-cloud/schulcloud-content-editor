@@ -1,36 +1,20 @@
 {
   "name": "schulcloud-content-editor",
   "version": "0.4.0",
+  "private": true,
   "description": "Schul-Cloud Content Editor",
   "author": "adrianjost <homepage@hackedit.de>",
-  "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "test:unit": "vue-cli-service test:unit"
+    "test:unit": "vue-cli-service test:unit",
+    "travis": "npm run lint && npm run build && bundlesize"
   },
-  "bundlesize": [
-    {
-      "path": "./dist/service-worker.js",
-      "maxSize": "10 KB"
-    },
-    {
-      "path": "./dist/static/**/[0-9]*.js",
-      "maxSize": "30 KB"
-    },
-    {
-      "path": "./dist/static/**/!([0-9])*.js",
-      "maxSize": "500 KB"
-    },
-    {
-      "path": "./dist/static/**/*.css",
-      "maxSize": "50 KB"
-    }
-  ],
   "dependencies": {
     "babel-runtime": "^6.26.0",
     "query-string": "^6.2.0",
+    "register-service-worker": "^1.5.2",
     "vee-validate": "^2.1.5",
     "vue": "^2.5.9",
     "vue-config": "^1.0.0",
@@ -44,9 +28,11 @@
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.3.0",
     "@vue/cli-plugin-eslint": "^3.3.0",
+    "@vue/cli-plugin-pwa": "^3.3.0",
     "@vue/cli-plugin-unit-jest": "^3.3.0",
     "@vue/cli-service": "^3.3.0",
     "@vue/test-utils": "^1.0.0-beta.20",
+    "bundlesize": "0.17.1",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.6.0",
@@ -56,10 +42,6 @@
     "node-sass": "^4.9.0",
     "sass-loader": "^7.0.1",
     "vue-template-compiler": "^2.5.21"
-  },
-  "engines": {
-    "node": ">= 10.0.0",
-    "npm": ">= 3.0.0"
   },
   "postcss": {
     "plugins": {
@@ -93,6 +75,28 @@
       "**/tests/unit/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)"
     ],
     "testURL": "http://localhost/"
+  },
+  "bundlesize": [
+    {
+      "path": "./dist/service-worker.js",
+      "maxSize": "10 KB"
+    },
+    {
+      "path": "./dist/static/**/[0-9]*.js",
+      "maxSize": "30 KB"
+    },
+    {
+      "path": "./dist/static/**/!([0-9])*.js",
+      "maxSize": "500 KB"
+    },
+    {
+      "path": "./dist/static/**/*.css",
+      "maxSize": "50 KB"
+    }
+  ],
+  "engines": {
+    "node": ">= 10.0.0",
+    "npm": ">= 3.0.0"
   },
   "gitHooks": {
     "pre-commit": "lint-staged"
