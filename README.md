@@ -12,21 +12,28 @@ git clone https://github.com/schul-cloud/schulcloud-content-editor.git
 
 # install dependencies
 npm install
+
+# install vue-cli
+npm install -g @vue/cli
 ```
 
 ## Build & Development
 
-Before you start developing, please read the [wiki](https://github.com/schul-cloud/schulcloud-content-editor/issues/82)!
+We definietly recommend using the vue-cli.
+ >`$ vue ui`
 
+Then import the project and use all the awesome features.
+
+But if you really like your console feel free to use:
 ``` bash
 # serve with hot reload at localhost:8080
-npm run dev
+npm run serve
 
 # build for production with minification
 npm run build
 
-# build for production and view the bundle analyzer report
-npm run build --report
+# run tests
+npm run test
 ```
 
 For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).

@@ -1,30 +1,39 @@
 <template>
-  <md-card v-if="isFirstView" class="card-content" id="welcomeCard">
-    <md-card-header>
-      <h2 id="welcomeMessage" class="md-title">{{$lang.welcome.message}}</h2>
-    </md-card-header>
-  </md-card>
+  <MdCard
+    v-if="isFirstView"
+    id="welcomeCard"
+    class="card-content"
+  >
+    <MdCardHeader>
+      <h2
+        id="welcomeMessage"
+        class="md-title"
+      >
+        {{ $lang.welcome.message }}
+      </h2>
+    </MdCardHeader>
+  </MdCard>
 </template>
 
 <script>
-  export default {
-    name: 'welcomeMessage',
-    data() {
-      return {
-        isFirstView: true,
-      };
-    },
-    created() {
-      const viewedString = 'alreadyViewed';
-      const alreadyViewed = sessionStorage.getItem(viewedString);
-      if (alreadyViewed) {
-        this.isFirstView = false;
-        return;
-      }
+export default {
+	name: 'WelcomeMessage',
+	data() {
+		return {
+			isFirstView: true,
+		};
+	},
+	created() {
+		const viewedString = 'alreadyViewed';
+		const alreadyViewed = sessionStorage.getItem(viewedString);
+		if (alreadyViewed) {
+			this.isFirstView = false;
+			return;
+		}
 
-      sessionStorage.setItem(viewedString, true);
-    },
-  };
+		sessionStorage.setItem(viewedString, true);
+	},
+};
 
 </script>
 

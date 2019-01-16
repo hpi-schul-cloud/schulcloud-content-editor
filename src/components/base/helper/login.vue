@@ -1,85 +1,110 @@
 <template>
-  <md-card id="login-card" class="card-content">
-    <md-card-header>
-      <h2 class="md-title">{{$lang.login.title}}</h2>
-    </md-card-header>
+  <MdCard
+    id="login-card"
+    class="card-content"
+  >
+    <MdCardHeader>
+      <h2 class="md-title">
+        {{ $lang.login.title }}
+      </h2>
+    </MdCardHeader>
 
-    <md-card-content>
-      <form id="loginForm" @submit.prevent="validateBeforeSubmit">
-        <md-field>
-          <label>{{$lang.login.username}}</label>
-          <md-input v-model="login.username" name="username" required></md-input>
-        </md-field>
-        <md-field md-has-password>
-          <label>{{$lang.login.password}}</label>
-          <md-input v-model="login.password" name="password" type="password" required></md-input>
-        </md-field>
-        <a :href="this.$config.API.baseUrl + this.$config.API.pwRecoveryPath">{{$lang.login.forgot_password}}?</a>
+    <MdCardContent>
+      <form
+        id="loginForm"
+        @submit.prevent="validateBeforeSubmit"
+      >
+        <MdField>
+          <label>{{ $lang.login.username }}</label>
+          <MdInput
+            v-model="login.username"
+            name="username"
+            required
+          />
+        </MdField>
+        <MdField md-has-password>
+          <label>{{ $lang.login.password }}</label>
+          <MdInput
+            v-model="login.password"
+            name="password"
+            type="password"
+            required
+          />
+        </MdField>
+        <a :href="this.$config.API.baseUrl + this.$config.API.pwRecoveryPath">
+          {{ $lang.login.forgot_password }}?
+        </a>
       </form>
-    </md-card-content>
+    </MdCardContent>
 
-    <md-card-actions>
-      <md-button class="md-primary" type="submit" form="loginForm">{{$lang.buttons.login}}</md-button>
-    </md-card-actions>
-  </md-card>
+    <MdCardActions>
+      <MdButton
+        class="md-primary"
+        type="submit"
+        form="loginForm"
+      >
+        {{ $lang.buttons.login }}
+      </MdButton>
+    </MdCardActions>
+  </MdCard>
 </template>
 
 <script>
-  export default {
-    name: 'login',
-    data() {
-      return {
-        login: {
-          username: '',
-          password: '',
-        },
-      };
-    },
-    created() {
-      if (this.$cookies.get('jwt')) {
-        localStorage.setItem('jwt', this.$cookies.get('jwt'));
-        this.$router.go();
-      }
-    },
-    methods: {
-      validateBeforeSubmit() {
-        if (this.login.username != '' && this.login.password != '') {
-          return this.getToken();
-        }
-      },
-      getToken() {
-        this.$http.post(this.$config.API.baseUrl + this.$config.API.port + this.$config.API.authPath, this.login)
-          .then((response) => {
-            // JSON responses are automatically parsed.
-            const jwt = response.data.accessToken;
-            localStorage.setItem('jwt', jwt);
-            this.$cookies.set('jwt', jwt, new Date(Date.now() + 30 * 24 * 60 * 60 * 1000));
-            this.getUserInfo(jwt);
-          })
-          .catch((e) => {
-            alert('Login fehlgeschlagen!');
-            console.error(e); // eslint-disable-line no-console
-          });
-      },
-      getUserInfo(jwt) {
-        const base64Url = jwt.split('.')[1];
-        const base64 = base64Url.replace('-', '+').replace('_', '/');
-        const payload = JSON.parse(window.atob(base64));
-        this.$http.get(this.$config.API.baseUrl + this.$config.API.port + this.$config.API.userInfoPath + payload.userId, {
-          headers: {
-            Authorization: `Bearer ${jwt}`,
-          },
-        })
-          .then((response) => {
-            localStorage.setItem('userInfo', JSON.stringify(response.data));
-            this.$router.go();
-          })
-          .catch((e) => {
-            console.error(e); // eslint-disable-line no-console
-          });
-      },
-    },
-  };
+export default {
+	name: 'Login',
+	data() {
+		return {
+			login: {
+				username: '',
+				password: '',
+			},
+		};
+	},
+	created() {
+		if (this.$cookies.get('jwt')) {
+			localStorage.setItem('jwt', this.$cookies.get('jwt'));
+			this.$router.go();
+		}
+	},
+	methods: {
+		validateBeforeSubmit() {
+			if (this.login.username != '' && this.login.password != '') {
+				return this.getToken();
+			}
+		},
+		getToken() {
+			this.$http.post(this.$config.API.baseUrl + this.$config.API.port + this.$config.API.authPath, this.login)
+				.then((response) => {
+					// JSON responses are automatically parsed.
+					const jwt = response.data.accessToken;
+					localStorage.setItem('jwt', jwt);
+					this.$cookies.set('jwt', jwt, new Date(Date.now() + 30 * 24 * 60 * 60 * 1000));
+					this.getUserInfo(jwt);
+				})
+				.catch((e) => {
+					alert('Login fehlgeschlagen!');
+					console.error(e); // eslint-disable-line no-console
+				});
+		},
+		getUserInfo(jwt) {
+			const base64Url = jwt.split('.')[1];
+			const base64 = base64Url.replace('-', '+').replace('_', '/');
+			const payload = JSON.parse(window.atob(base64));
+			this.$http.get(this.$config.API.baseUrl + this.$config.API.port + this.$config.API.userInfoPath + payload.userId, {
+				headers: {
+					Authorization: `Bearer ${jwt}`,
+				},
+			})
+				.then((response) => {
+					localStorage.setItem('userInfo', JSON.stringify(response.data));
+					this.$router.go();
+				})
+				.catch((e) => {
+					console.error(e); // eslint-disable-line no-console
+				});
+		},
+	},
+};
 
 </script>
 

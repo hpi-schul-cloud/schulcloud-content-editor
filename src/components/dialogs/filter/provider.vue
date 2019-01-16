@@ -1,82 +1,114 @@
 <template>
-  <md-dialog :md-active.sync="isActive">
-    <md-dialog-title>{{$lang.filter.provider.modal_title}}</md-dialog-title>
+  <MdDialog :md-active.sync="isActive">
+    <MdDialogTitle>{{ $lang.filter.provider.modal_title }}</MdDialogTitle>
 
     <div id="provider-picker">
-      <md-field>
-        <label for="selectedProviders">{{$lang.filter.provider.placeholder}}</label>
-        <md-select v-model="selectedProviders" id="selectedProviders" md-dense> <!-- multiple> -->
-          <md-option value="">kein Provider</md-option>
-          <md-option value="Khan Academy">Khan Academy</md-option>
-          <md-option value="Serlo">Serlo</md-option>
-          <md-option value="Youtube">Youtube</md-option>
-          <md-option value="LEIFI Physik">LEIFI Physik</md-option>
-        </md-select>
-      </md-field>
+      <MdField>
+        <label for="selectedProviders">
+          {{ $lang.filter.provider.placeholder }}
+        </label>
+        <MdSelect
+          id="selectedProviders"
+          v-model="selectedProviders"
+          md-dense
+        >
+          <!-- multiple> -->
+          <MdOption value="">
+            kein Provider
+          </MdOption>
+          <MdOption value="Khan Academy">
+            Khan Academy
+          </MdOption>
+          <MdOption value="Serlo">
+            Serlo
+          </MdOption>
+          <MdOption value="Youtube">
+            Youtube
+          </MdOption>
+          <MdOption value="LEIFI Physik">
+            LEIFI Physik
+          </MdOption>
+        </MdSelect>
+      </MdField>
     </div>
 
-    <md-dialog-actions>
-      <md-button @click="onCancle">{{$lang.buttons.cancel}}</md-button>
-      <md-button class="md-primary" @click="onConfirm">{{$lang.buttons.add}}</md-button>
-    </md-dialog-actions>
-  </md-dialog>
+    <MdDialogActions>
+      <MdButton @click="onCancle">
+        {{ $lang.buttons.cancel }}
+      </MdButton>
+      <MdButton
+        class="md-primary"
+        @click="onConfirm"
+      >
+        {{ $lang.buttons.add }}
+      </MdButton>
+    </MdDialogActions>
+  </MdDialog>
 </template>
 
 <script>
-  export default {
-    name: 'DialogConfirm',
-    props: ['identifier', 'active'],
-    data() {
-      return {
-        isActive: false,
-        selectedProviders: '', // []
-        apiQuery: {},
-        urlQuery: {},
-      };
-    },
-    created() {
-      this.$parent.$on('reset', this.resetProviders);
-    },
-    methods: {
-      onConfirm() {
-        let displayString;
+export default {
+	name: 'DialogConfirm',
+	props: {
+		identifier: {
+			type: String,
+			default: this._uid.toString()
+		},
+		active: {
+			type: Boolean
+		}
+	},
+	data() {
+		return {
+			isActive: false,
+			selectedProviders: '', // []
+			apiQuery: {},
+			urlQuery: {},
+		};
+	},
+	watch: {
+		active(to) {
+			this.isActive = to;
+		},
+		isActive(to) {
+			if (to == false) {
+				this.onCancle();
+			}
+		},
+	},
+	created() {
+		this.$parent.$on('reset', this.resetProviders);
+	},
+	methods: {
+		onConfirm() {
+			let displayString;
 
-        if (this.selectedProviders.length != 0) {
-          // this.apiQuery["providerName[$in]"] = this.selectedProviders; // corret but api seems broken
-          this.apiQuery['providerName[$match]'] = this.selectedProviders;
-          this.urlQuery = {provider: this.selectedProviders}; // .reduce((prev, curr) => prev +','+ curr )}
-          displayString = `Provider: ${this.selectedProviders}`; // .reduce((prev, curr) => prev +', '+ curr );
-        } else {
-          this.apiQuery = {};
-          this.urlQuery = {};
-          displayString = null;
-        }
-        this.$emit('set', this.identifier, {
-          apiQuery: this.apiQuery,
-          urlQuery: this.urlQuery,
-          displayString,
-        });
-      },
-      onCancle() {
-        this.$emit('cancle');
-      },
-      resetProviders(key) {
-        if (key == this.identifier) {
-          this.selectedProviders = '';
-        }
-      },
-    },
-    watch: {
-      active(to, from) {
-        this.isActive = to;
-      },
-      isActive(to) {
-        if (to == false) {
-          this.onCancle();
-        }
-      },
-    },
-  };
+			if (this.selectedProviders.length != 0) {
+				// this.apiQuery["providerName[$in]"] = this.selectedProviders; // corret but api seems broken
+				this.apiQuery['providerName[$match]'] = this.selectedProviders;
+				this.urlQuery = {provider: this.selectedProviders}; // .reduce((prev, curr) => prev +','+ curr )}
+				displayString = `Provider: ${this.selectedProviders}`; // .reduce((prev, curr) => prev +', '+ curr );
+			} else {
+				this.apiQuery = {};
+				this.urlQuery = {};
+				displayString = null;
+			}
+			this.$emit('set', this.identifier, {
+				apiQuery: this.apiQuery,
+				urlQuery: this.urlQuery,
+				displayString,
+			});
+		},
+		onCancle() {
+			this.$emit('cancle');
+		},
+		resetProviders(key) {
+			if (key == this.identifier) {
+				this.selectedProviders = '';
+			}
+		},
+	},
+};
 </script>
 
 <style lang="scss" scoped>
