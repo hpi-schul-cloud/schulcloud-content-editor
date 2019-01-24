@@ -63,6 +63,15 @@
                         :md-placeholder="($lang.edit.form.tags)+'... ('+($lang.edit.form.max)+' 10)'"></md-chips>
             </section>
           </form>
+          <h2>File Upload:</h2>
+          <file-pond
+            name="test"
+            ref="pond"
+            label-idle="Drop files here"
+            allow-multiple="false"
+            accepted-file-types="image/jpeg, image/png"
+            v-on:init="handleFilePondInit"
+          />
         </md-card-content>
         <md-card-actions>
           <md-button class="delete" v-if="$route.params.id" @click="dialog.active = true">{{$lang.buttons.delete}}
@@ -91,10 +100,29 @@
   const contentCard = () => import(/* webpackChunkName: "contentCard" */ '@/components/base/contentCard.vue');
   const confirmDialog = () => import(/* webpackChunkName: "confirmDialog" */ '@/components/dialogs/confirm.vue');
 
+  // Import Vue FilePond and its plugins
+  import vueFilePond, { setOptions } from "vue-filepond";
+  import "filepond/dist/filepond.min.css";
+  import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css";
+  import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
+  import FilePondPluginImagePreview from "filepond-plugin-image-preview";
+
+  const FilePond = vueFilePond(
+    FilePondPluginFileValidateType,
+    FilePondPluginImagePreview
+  );
+
+  setOptions({
+    server: {
+      process: "http://localhost:3000/process"
+    }
+  });
+
   export default {
     components: {
       contentCard,
       confirmDialog,
+      FilePond
     },
     name: 'contentForm',
     data() {
@@ -119,6 +147,9 @@
       };
     },
     methods: {
+      handleFilePondInit: function() {
+        console.log("FilePond has initialized");
+      },
       loadContent() {
         if (this.$route.params.id) {
           this.$http.get(this.$config.API.baseUrl + this.$config.API.port + this.$config.API.getPath + this.$route.params.id, {
