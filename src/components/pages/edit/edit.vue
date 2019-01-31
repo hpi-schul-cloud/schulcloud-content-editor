@@ -173,6 +173,7 @@
             </section>
           </form>
         </MdCardContent>
+        <FileUpload />
         <MdCardActions>
           <MdButton
             v-if="$route.params.id"
@@ -221,12 +222,14 @@ Vue.use(VeeValidate);
 
 const ContentCard = () => import(/* webpackChunkName: "ContentCard" */ '@/components/base/contentCard.vue');
 const ConfirmDialog = () => import(/* webpackChunkName: "ConfirmDialog" */ '@/components/dialogs/confirm.vue');
+const FileUpload = () => import(/* webpackChunkName: "FileUpload" */ '@/components/base/upload.vue');
 
 export default {
 	name: 'ContentForm',
 	components: {
 		ContentCard,
 		ConfirmDialog,
+		FileUpload
 	},
 	data() {
 		return {
