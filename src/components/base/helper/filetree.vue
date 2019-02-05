@@ -5,7 +5,7 @@
       v-for="item in folder"
       :key="item.id"
     >
-      <li>
+      <li :class="{validEntry: !isDeleted[item.id], strikethrough: isDeleted[item.id]}">
         <span v-if="item.type=='folder'">
           <i class="material-icons">
             folder_open
@@ -18,6 +18,22 @@
         </span>
         <span class="fileName">
           {{ item.name }}
+        </span>
+        <span
+          class="close"
+          @click="deleteEntry($event, item.id)"
+        >
+          <i class="material-icons">
+            close
+          </i>
+        </span>
+        <span
+          class="restore"
+          @click="restoreEntry($event, item.id)"
+        >
+          <i class="material-icons">
+            restore_page
+          </i>
         </span>
       </li>
       <Filetree
@@ -33,6 +49,26 @@ export default {
 	name: 'Filetree',
 	props: {
 		folder: Array
+	},
+	data: () => {
+		return {
+			isDeleted: []
+		}
+	},
+	methods: {
+		deleteEntry (event, id) {
+			/*event.target.closest('.validEntry').classList.add('strikethrough');
+      event.target.closest('.strikethrough'). classList.remove('validEntry');*/
+			this.isDeleted[id] = true;
+			this.$forceUpdate();
+		},
+		restoreEntry (event, id) {
+			this.isDeleted[id] = false;
+			this.$forceUpdate();
+
+			/*event.target.closest('.strikethrough').classList.add('validEntry');
+      event.target.closest('.validEntry'). classList.remove('strikethrough');*/
+		}
 	}
 }
 </script>
@@ -45,9 +81,15 @@ export default {
       display: flex;
       list-style-type: none;
 
+      &:hover {
+        cursor: pointer;
+        background: #eee;
+      }
+
       span {
-        display: inline-block;
-        margin-right: .2em;
+        display: flex;
+        align-items: center;
+        margin: .2em .2em .2em 0;
 
         .material-icons {
           font-size: 20px;
@@ -56,6 +98,30 @@ export default {
 
       .fileName {
         flex: 1;
+      }
+
+      .close {
+        display: none;
+      }
+
+      .restore {
+        display: none;
+      }
+    }
+
+    .validEntry:hover .close {
+      display: flex;
+    }
+
+    .strikethrough {
+      color: red;
+
+      &:hover .restore {
+        display: flex;
+      }
+
+      .fileName {
+        text-decoration: line-through;
       }
     }
   }

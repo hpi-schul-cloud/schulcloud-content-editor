@@ -70,8 +70,7 @@ export default {
 	},
 	data() {
 		return {
-			dragging: false,
-			testArray: this.filetree
+			dragging: false
 		}
 	}
 }
