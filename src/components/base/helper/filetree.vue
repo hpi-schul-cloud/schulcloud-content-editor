@@ -40,7 +40,7 @@
         v-if="item.type=='folder'"
         :folder="item.objects"
         :value="value"
-        :is-parent-deleted="isParentDeleted"
+        :is-parent-deleted="isParentDeleted || isDeleted[item.id]"
       />
     </ul>
   </div>
@@ -48,55 +48,62 @@
 
 <script>
 export default {
-	name: 'Filetree',
-	props: {
-		folder: Array,
-		value: Object,
-		isParentDeleted: Boolean
-	},
-	data: () => {
-		return {
-			isDeleted: []
-		}
-	},
-	watch: {
-		isParentDeleted: function (from, to) {
-			if (to == true) {
-				this.deleteEntry()
-			} else {
-
-			}
-		}
-	},
-	methods: {
-		deleteEntry (item) {
-			/* console.log(item.id);
+  name: 'Filetree',
+  props: {
+    folder: {
+      type: Array,
+      required: true
+    },
+    value: {
+      type: Object,
+      required: true
+    },
+    isParentDeleted: Boolean
+  },
+  data: () => {
+    return {
+      isDeleted: {}
+    }
+  },
+  watch: {
+    isParentDeleted: function (to, from) {
+      if(to === from){ return; }
+      if (to === true) {
+        this.folder.forEach((item) => {
+          this.deleteEntry(item);
+        });
+      } else {
+        this.folder.forEach((item) => {
+          this.restoreEntry(item);
+        });
+      }
+    }
+  },
+  methods: {
+    deleteEntry (item) {
+      this.value['deleted'].push(item.id);
+      /*if(item.type === "file"){
+      }*/
       this.isDeleted[item.id] = true;
       this.$forceUpdate();
-      console.log(this.isDeleted);
-      if (item.type =='folder'){
-        item.objects.forEach((child)=>{
-          this.deleteEntry(event, child);
-          this.$forceUpdate();
-        })
+      this.$emit('input', this.value);
+    },
+    restoreEntry (item) {
+      console.log("restore...", item);
+
+      let deltedArray = this.value['deleted'];
+      deltedArray.splice(deltedArray.indexOf(item.id), 1);
+      /*if(item.type === "file"){
       }*/
-			console.log(this.value['deleted']);
-			this.value['deleted'].push(item.id);
-			this.$forceUpdate();
-			console.log(this.value['deleted']);
-			this.$emit('input', this.value);
-			this.isParentDeleted = true;
-		},
-		restoreEntry (event, item) {
-			let deltedArray = this.value['deleted']
-			console.log(deltedArray);
-			deltedArray.splice(deltedArray.indexOf(item.id), 1);
-			console.log(deltedArray);
-			this.$forceUpdate();
-			this.$emit('input', this.value);
-			this.isParentDeleted = false;
-		}
-	}
+
+      this.isDeleted[item.id] = false;
+      console.log(deltedArray);
+
+      console.log("restored!");
+      this.$forceUpdate();
+      this.$emit('input', this.value);
+    }
+  }
 }
 </script>
 

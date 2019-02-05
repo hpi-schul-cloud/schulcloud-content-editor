@@ -16,8 +16,8 @@
       <h4>Your uploaded Filetree: </h4>
       <Filetree
         v-model="state"
-        :folder="this.filetree"
-        is-parent-deleted="false"
+        :folder="filetree"
+        :is-parent-deleted="false"
       />
     </div>
   </div>

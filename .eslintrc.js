@@ -14,11 +14,11 @@ module.exports = {
 		"vue/component-name-in-template-casing": ["error", "PascalCase", { // https://vuejs.github.io/eslint-plugin-vue/rules/component-name-in-template-casing.html
 			"ignores": []
 		}],
-		"vue/script-indent": ["error", "tab", { // https://vuejs.github.io/eslint-plugin-vue/rules/script-indent.html
+		/*"vue/script-indent": ["error", "tab", { // https://vuejs.github.io/eslint-plugin-vue/rules/script-indent.html
 			"baseIndent": 0,
 			"switchCase": 0,
 			"ignores": []
-		}]
+		}]*/
 	},
 	"parserOptions": {
 		"parser": "babel-eslint"
