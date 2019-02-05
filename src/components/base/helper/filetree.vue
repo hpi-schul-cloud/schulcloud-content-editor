@@ -39,6 +39,7 @@
       <Filetree
         v-if="item.type=='folder'"
         :folder="item.objects"
+        :class="{strikethrough: isDeleted[item.id]}"
       />
     </ul>
   </div>
@@ -57,17 +58,12 @@ export default {
 	},
 	methods: {
 		deleteEntry (event, id) {
-			/*event.target.closest('.validEntry').classList.add('strikethrough');
-      event.target.closest('.strikethrough'). classList.remove('validEntry');*/
 			this.isDeleted[id] = true;
 			this.$forceUpdate();
 		},
 		restoreEntry (event, id) {
 			this.isDeleted[id] = false;
 			this.$forceUpdate();
-
-			/*event.target.closest('.strikethrough').classList.add('validEntry');
-      event.target.closest('.validEntry'). classList.remove('strikethrough');*/
 		}
 	}
 }
