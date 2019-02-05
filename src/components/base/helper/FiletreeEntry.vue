@@ -1,0 +1,91 @@
+<template>
+  <div :class="{entry: true, deleted: isDeleted}">
+    <span>
+      <i class="material-icons">
+        {{ icon }}
+      </i>
+    </span>
+    <span class="fileName">
+      {{ name }}
+    </span>
+    <span
+      v-if="!isDeleted"
+      class="delete"
+      @click="$emit('delete', id)"
+    >
+      <i class="material-icons">
+        close
+      </i>
+    </span>
+    <span
+      v-else
+      class="restore"
+      @click="$emit('restore', id)"
+    >
+      <i class="material-icons">
+        restore_page
+      </i>
+    </span>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "FiletreeEntry",
+  props: {
+    icon: {
+      type: String,
+      default: "insert_drive_file" // folder_open
+    },
+    name: {
+      type: String,
+      required: true
+    },
+    id: {
+      type: String,
+      required: true
+    },
+    isDeleted: {
+      type: Boolean,
+      default: false
+    }
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+.entry{
+  display: flex;
+  flex-wrap: nowrap;
+
+  span{
+    display: flex;
+    align-items: center;
+    margin: .2em .2em .2em 0;
+  }
+  .delete{
+    display: none;
+  }
+  &:hover {
+    cursor: pointer;
+    background: #eee;
+    .delete{
+      display: flex;
+    }
+  }
+}
+.fileName{
+  flex: 1;
+}
+
+.material-icons {
+  font-size: 20px;
+}
+
+.deleted {
+  color: red;
+  .fileName {
+    text-decoration: line-through;
+  }
+}
+</style>

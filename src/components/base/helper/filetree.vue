@@ -2,55 +2,53 @@
 <template>
   <div>
     <ul
-      v-for="item in folder"
+      v-for="item in folderEntries"
       :key="item.id"
     >
-      <li :class="{validEntry: !value['deleted'].includes(item.id), strikethrough: value['deleted'].includes(item.id)}">
-        <span v-if="item.type=='folder'">
-          <i class="material-icons">
-            folder_open
-          </i>
-        </span>
-        <span v-if="item.type=='file'">
-          <i class="material-icons">
-            insert_drive_file
-          </i>
-        </span>
-        <span class="fileName">
-          {{ item.name }}
-        </span>
-        <span
-          class="close"
-          @click="deleteEntry(item)"
-        >
-          <i class="material-icons">
-            close
-          </i>
-        </span>
-        <span
-          class="restore"
-          @click="restoreEntry(item)"
-        >
-          <i class="material-icons">
-            restore_page
-          </i>
-        </span>
+      <li v-if="item.type === 'file'">
+        <FiletreeEntry
+          :id="item.id"
+          icon="insert_drive_file"
+          :name="item.name"
+          :is-deleted="deletedObjects.includes(item.id)"
+          @delete="deleteFile"
+          @restore="restoreFile"
+        />
       </li>
-      <Filetree
-        v-if="item.type=='folder'"
-        :folder="item.objects"
-        :value="value"
-        :is-parent-deleted="isParentDeleted || isDeleted[item.id]"
-      />
+
+      <template v-if="item.type === 'folder'">
+        <li>
+          <FiletreeEntry
+            :id="item.id"
+            icon="folder_open"
+            :name="item.name"
+            :is-deleted="deletedObjects.includes(item.id)"
+            @delete="deleteFolder"
+            @restore="restoreFolder"
+          />
+        </li>
+        <li>
+          <Filetree
+            v-if="item.type=='folder'"
+            :folder-entries="item.objects"
+            :value="value"
+            :is-deleted="deletedObjects.includes(item.id)"
+          />
+        </li>
+      </template>
     </ul>
   </div>
 </template>
 
 <script>
+import FiletreeEntry from "./FiletreeEntry.vue"
 export default {
   name: 'Filetree',
+  components:{
+    FiletreeEntry
+  },
   props: {
-    folder: {
+    folderEntries: {
       type: Array,
       required: true
     },
@@ -58,105 +56,101 @@ export default {
       type: Object,
       required: true
     },
-    isParentDeleted: Boolean
+    isDeleted: {
+      type: Boolean,
+      default: false
+    }
   },
   data: () => {
     return {
-      isDeleted: {}
+      deletedObjects: []
     }
   },
   watch: {
-    isParentDeleted: function (to, from) {
+    isDeleted: function (to, from) {
       if(to === from){ return; }
+      console.log("isDeleted changed", to)
       if (to === true) {
-        this.folder.forEach((item) => {
-          this.deleteEntry(item);
+        console.log("delete items", this.folderEntries);
+        this.folderEntries.forEach((item) => {
+          if(item.type === "file"){
+            this.deleteFile(item.id);
+          }
+          if(item.type === "folder"){
+            this.deleteFolder(item.id);
+          }
         });
       } else {
-        this.folder.forEach((item) => {
-          this.restoreEntry(item);
+        console.log("restore items", this.folderEntries);
+        this.folderEntries.forEach((item) => {
+          if(item.type === "file"){
+            this.restoreFile(item.id);
+          }
+          if(item.type === "folder"){
+            this.restoreFolder(item.id);
+          }
         });
       }
+      console.log("updated objects", this.deletedObjects);
     }
   },
   methods: {
+
+    deleteFile(id){
+      this.deletedObjects.push(id);
+    },
+    restoreFile(id){
+      this.deletedObjects.splice(this.deletedObjects.indexOf(id), 1);
+    },
+
+    deleteFolder(id){
+      this.deletedObjects.push(id);
+    },
+    restoreFolder(id){
+      this.deletedObjects.splice(this.deletedObjects.indexOf(id), 1);
+    },
+/*
+
+    updateParentDeletedHandler(value){
+      this.isParentDeleted = value;
+      this.$emit("isParentDeleted", value);
+    },
     deleteEntry (item) {
-      this.value['deleted'].push(item.id);
-      /*if(item.type === "file"){
-      }*/
-      this.isDeleted[item.id] = true;
+      if(item.type === "file"){
+        this.value['deleted'].push(item.id);
+      }
+      this.deletedObjects[item.id] = true;
       this.$forceUpdate();
       this.$emit('input', this.value);
     },
     restoreEntry (item) {
       console.log("restore...", item);
 
-      let deltedArray = this.value['deleted'];
-      deltedArray.splice(deltedArray.indexOf(item.id), 1);
-      /*if(item.type === "file"){
-      }*/
+      this.$emit("updateParentDeleted", false);
 
-      this.isDeleted[item.id] = false;
+      let deltedArray = this.value['deleted'];
+      if(item.type === "file"){
+        deltedArray.splice(deltedArray.indexOf(item.id), 1);
+      }
+
+      this.deletedObjects[item.id] = false;
       console.log(deltedArray);
 
       console.log("restored!");
       this.$forceUpdate();
       this.$emit('input', this.value);
     }
+  */
   }
 }
 </script>
 
 <style lang="scss" scoped>
-  ul {
-    margin: 0;
-
-    li {
-      display: flex;
-      list-style-type: none;
-
-      &:hover {
-        cursor: pointer;
-        background: #eee;
-      }
-
-      span {
-        display: flex;
-        align-items: center;
-        margin: .2em .2em .2em 0;
-
-        .material-icons {
-          font-size: 20px;
-        }
-      }
-
-      .fileName {
-        flex: 1;
-      }
-
-      .close {
-        display: none;
-      }
-
-      .restore {
-        display: none;
-      }
-    }
-
-    .validEntry:hover .close {
-      display: flex;
-    }
-
-    .strikethrough {
-      color: red;
-
-      &:hover .restore {
-        display: flex;
-      }
-
-      .fileName {
-        text-decoration: line-through;
-      }
-    }
+ul {
+  margin: 0;
+  padding-left: 1.5rem;
+  li {
+    list-style-type: none;
   }
+}
 </style>

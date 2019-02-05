@@ -16,7 +16,7 @@
       <h4>Your uploaded Filetree: </h4>
       <Filetree
         v-model="state"
-        :folder="filetree"
+        :folder-entries="filetree"
         :is-parent-deleted="false"
       />
     </div>
@@ -24,7 +24,7 @@
 </template>
 
 <script>
-const Filetree = () => import(/* webpackChunkName: "filetree" */ '@/components/base/helper/filetree.vue');
+const Filetree = () => import(/* webpackChunkName: "filetree" */ '@/components/base/helper/Filetree.vue');
 
 export default {
 	name: 'Upload',
