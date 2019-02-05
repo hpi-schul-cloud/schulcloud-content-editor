@@ -5,7 +5,7 @@
       v-for="item in folder"
       :key="item.id"
     >
-      <li :class="{validEntry: !isDeleted[item.id], strikethrough: isDeleted[item.id]}">
+      <li :class="{validEntry: !value['deleted'].includes(item.id), strikethrough: value['deleted'].includes(item.id)}">
         <span v-if="item.type=='folder'">
           <i class="material-icons">
             folder_open
@@ -21,7 +21,7 @@
         </span>
         <span
           class="close"
-          @click="deleteEntry($event, item.id)"
+          @click="deleteEntry(item)"
         >
           <i class="material-icons">
             close
@@ -29,7 +29,7 @@
         </span>
         <span
           class="restore"
-          @click="restoreEntry($event, item.id)"
+          @click="restoreEntry(item)"
         >
           <i class="material-icons">
             restore_page
@@ -39,7 +39,8 @@
       <Filetree
         v-if="item.type=='folder'"
         :folder="item.objects"
-        :class="{strikethrough: isDeleted[item.id]}"
+        :value="value"
+        :is-parent-deleted="isParentDeleted"
       />
     </ul>
   </div>
@@ -49,21 +50,51 @@
 export default {
 	name: 'Filetree',
 	props: {
-		folder: Array
+		folder: Array,
+		value: Object,
+		isParentDeleted: Boolean
 	},
 	data: () => {
 		return {
 			isDeleted: []
 		}
 	},
+	watch: {
+		isParentDeleted: function (from, to) {
+			if (to == true) {
+				this.deleteEntry()
+			} else {
+
+			}
+		}
+	},
 	methods: {
-		deleteEntry (event, id) {
-			this.isDeleted[id] = true;
+		deleteEntry (item) {
+			/* console.log(item.id);
+      this.isDeleted[item.id] = true;
+      this.$forceUpdate();
+      console.log(this.isDeleted);
+      if (item.type =='folder'){
+        item.objects.forEach((child)=>{
+          this.deleteEntry(event, child);
+          this.$forceUpdate();
+        })
+      }*/
+			console.log(this.value['deleted']);
+			this.value['deleted'].push(item.id);
 			this.$forceUpdate();
+			console.log(this.value['deleted']);
+			this.$emit('input', this.value);
+			this.isParentDeleted = true;
 		},
-		restoreEntry (event, id) {
-			this.isDeleted[id] = false;
+		restoreEntry (event, item) {
+			let deltedArray = this.value['deleted']
+			console.log(deltedArray);
+			deltedArray.splice(deltedArray.indexOf(item.id), 1);
+			console.log(deltedArray);
 			this.$forceUpdate();
+			this.$emit('input', this.value);
+			this.isParentDeleted = false;
 		}
 	}
 }
