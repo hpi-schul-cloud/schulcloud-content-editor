@@ -1,5 +1,5 @@
 <template>
-  <div :class="{entry: true, deleted: isDeleted}">
+  <div :class="{entry: true, deleted: isDeleted, 'read-only': readOnly}">
     <span>
       <i class="material-icons">
         {{ icon }}
@@ -8,24 +8,26 @@
     <span class="fileName">
       {{ name }}
     </span>
-    <span
-      v-if="!isDeleted"
-      class="delete"
-      @click="$emit('delete', id)"
-    >
-      <i class="material-icons">
-        close
-      </i>
-    </span>
-    <span
-      v-else
-      class="restore"
-      @click="$emit('restore', id)"
-    >
-      <i class="material-icons">
-        restore_page
-      </i>
-    </span>
+    <template v-if="!readOnly">
+      <span
+        v-if="!isDeleted"
+        class="delete"
+        @click="$emit('delete', id)"
+      >
+        <i class="material-icons">
+          close
+        </i>
+      </span>
+      <span
+        v-else
+        class="restore"
+        @click="$emit('restore', id)"
+      >
+        <i class="material-icons">
+          restore_page
+        </i>
+      </span>
+    </template>
   </div>
 </template>
 
@@ -44,6 +46,10 @@ export default {
     id: {
       type: String,
       required: true
+    },
+    readOnly: {
+      type: Boolean,
+      default: false
     },
     isDeleted: {
       type: Boolean,
@@ -66,7 +72,7 @@ export default {
   .delete{
     display: none;
   }
-  &:hover {
+  &:not(.read-only):hover {
     cursor: pointer;
     background: #eee;
     .delete{

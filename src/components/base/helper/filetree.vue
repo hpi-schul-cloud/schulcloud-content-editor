@@ -11,6 +11,7 @@
           icon="insert_drive_file"
           :name="item.name"
           :is-deleted="deletedObjects.includes(item.id)"
+          :read-only="isParentDeleted"
           @delete="deleteFile"
           @restore="restoreFile"
         />
@@ -23,6 +24,7 @@
             icon="folder_open"
             :name="item.name"
             :is-deleted="deletedObjects.includes(item.id)"
+            :read-only="isParentDeleted"
             @delete="deleteFolder"
             @restore="restoreFolder"
           />
@@ -32,7 +34,8 @@
             v-if="item.type=='folder'"
             :folder-entries="item.objects"
             :value="value"
-            :is-deleted="deletedObjects.includes(item.id)"
+            :is-parent-deleted="deletedObjects.includes(item.id)"
+            @restoreFromDeletedFolder="handleRestoreFromDeletedFolder(item.id)"
           />
         </li>
       </template>
@@ -56,10 +59,10 @@ export default {
       type: Object,
       required: true
     },
-    isDeleted: {
+    isParentDeleted: {
       type: Boolean,
       default: false
-    }
+    },
   },
   data: () => {
     return {
@@ -67,9 +70,9 @@ export default {
     }
   },
   watch: {
-    isDeleted: function (to, from) {
+    isParentDeleted: function (to, from) {
       if(to === from){ return; }
-      console.log("isDeleted changed", to)
+      console.log("isParentDeleted changed", to)
       if (to === true) {
         console.log("delete items", this.folderEntries);
         this.folderEntries.forEach((item) => {
@@ -97,50 +100,22 @@ export default {
   methods: {
 
     deleteFile(id){
-      this.deletedObjects.push(id);
+      if(this.deletedObjects.indexOf(id) === -1){
+        this.deletedObjects.push(id);
+      }
     },
     restoreFile(id){
       this.deletedObjects.splice(this.deletedObjects.indexOf(id), 1);
     },
 
     deleteFolder(id){
-      this.deletedObjects.push(id);
+      if(this.deletedObjects.indexOf(id) === -1){
+        this.deletedObjects.push(id);
+      }
     },
     restoreFolder(id){
       this.deletedObjects.splice(this.deletedObjects.indexOf(id), 1);
     },
-/*
-
-    updateParentDeletedHandler(value){
-      this.isParentDeleted = value;
-      this.$emit("isParentDeleted", value);
-    },
-    deleteEntry (item) {
-      if(item.type === "file"){
-        this.value['deleted'].push(item.id);
-      }
-      this.deletedObjects[item.id] = true;
-      this.$forceUpdate();
-      this.$emit('input', this.value);
-    },
-    restoreEntry (item) {
-      console.log("restore...", item);
-
-      this.$emit("updateParentDeleted", false);
-
-      let deltedArray = this.value['deleted'];
-      if(item.type === "file"){
-        deltedArray.splice(deltedArray.indexOf(item.id), 1);
-      }
-
-      this.deletedObjects[item.id] = false;
-      console.log(deltedArray);
-
-      console.log("restored!");
-      this.$forceUpdate();
-      this.$emit('input', this.value);
-    }
-  */
   }
 }
 </script>
