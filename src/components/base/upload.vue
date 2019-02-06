@@ -19,8 +19,7 @@
 </template>
 
 <script>
-const Filetree = () =>
-	import(/* webpackChunkName: "filetree" */ "@/components/base/helper/Filetree.vue");
+import Filetree from "./helper/FiletreeEntry.vue";
 
 export default {
 	name: "Upload",
