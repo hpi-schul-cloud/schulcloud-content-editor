@@ -7,7 +7,7 @@
 			<MdIcon>arrow_back</MdIcon>
 		</MdButton>
 
-		<MdButton id="pageNumber" class="md-button md-primary md-raised">
+		<MdButton id="page-number" class="md-button md-primary md-raised">
 			<input v-model.lazy="pageString" type="number" min="1" :max="maxPages" />
 		</MdButton>
 
@@ -79,10 +79,6 @@ export default {
 	margin: 0 8px;
 }
 
-.paginationWrapper {
-	width: 100%;
-}
-
 .pagination {
 	display: block;
 	width: 100%;
@@ -90,7 +86,7 @@ export default {
 	text-align: center;
 }
 
-#pageNumber {
+#page-number {
 	height: 40px;
 	padding: 0;
 	margin: 0;

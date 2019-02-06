@@ -1,9 +1,7 @@
 <template>
-	<MdCard v-if="isFirstView" id="welcomeCard" class="card-content">
+	<MdCard v-if="isFirstView" id="welcome-card" class="card-content">
 		<MdCardHeader>
-			<h2 id="welcomeMessage" class="md-title">
-				{{ $lang.welcome.message }}
-			</h2>
+			<h2 id="welcome-message" class="md-title">{{ $lang.welcome.message }}</h2>
 		</MdCardHeader>
 	</MdCard>
 </template>
@@ -31,11 +29,11 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-#welcomeMessage {
+#welcome-message {
 	text-align: center;
 }
 
-#welcomeCard {
+#welcome-card {
 	background-color: rgba(211, 211, 211, 0.5);
 }
 </style>

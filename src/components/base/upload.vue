@@ -1,5 +1,5 @@
 <template>
-	<div class="uploadWrapper">
+	<div class="upload-wrapper">
 		<div
 			id="dropzone"
 			:class="{ 'dropzone-over': dragging }"
@@ -81,7 +81,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.uploadWrapper {
+.upload-wrapper {
 	padding: 16px;
 	#dropzone {
 		display: flex;

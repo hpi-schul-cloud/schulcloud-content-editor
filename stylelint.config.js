@@ -25,8 +25,6 @@ module.exports = {
 		// Limit the number of universal selectors in a selector,
 		// to avoid very slow selectors
 		"selector-max-universal": 1,
-		// Disallow allow global element/type selectors in scoped modules
-		"selector-max-type": [1, { ignore: ["child", "descendant", "compounded"] }],
 		// ===
 		// PRETTIER
 		// ===

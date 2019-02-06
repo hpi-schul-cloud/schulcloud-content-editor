@@ -312,8 +312,8 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 .container-fluid {
-	padding: 30px 16px;
 	max-width: 1000px;
+	padding: 30px 16px;
 }
 .gutter > div {
 	padding: 5px;

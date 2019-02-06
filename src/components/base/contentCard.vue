@@ -12,9 +12,7 @@
 			</MdCardMedia>
 
 			<MdCardHeader>
-				<h2 class="md-title">
-					{{ data.title || "Titel" }}
-				</h2>
+				<h2 class="md-title">{{ data.title || "Titel" }}</h2>
 				<div class="md-subhead">
 					<div class="tags">
 						<MdIcon>label</MdIcon>
@@ -24,9 +22,8 @@
 								this.$config.card.displayedTags
 							)"
 							:key="`${index}-${tag}`"
+							>{{ tag }},</span
 						>
-							{{ tag }},
-						</span>
 					</div>
 				</div>
 			</MdCardHeader>
@@ -37,20 +34,15 @@
 			</MdCardContent>
 
 			<MdCardActions>
-				<div class="providerName">
-					{{ data.providerName }}
-				</div>
+				<div class="provider-name">{{ data.providerName }}</div>
 				<MdButton
 					v-if="data._id"
 					:class="{ 'md-primary': readOnly }"
 					@click="dialog.active = true"
+					>{{ $lang.buttons.open }}</MdButton
 				>
-					{{ $lang.buttons.open }}
-				</MdButton>
 				<RouterLink v-if="readOnly != true" :to="{ path: '/edit/' + data._id }">
-					<MdButton class="md-primary">
-						{{ $lang.buttons.edit }}
-					</MdButton>
+					<MdButton class="md-primary">{{ $lang.buttons.edit }}</MdButton>
 				</RouterLink>
 			</MdCardActions>
 		</MdCard>
@@ -132,7 +124,7 @@ export default {
 		right: 0;
 		bottom: 0;
 		left: 0;
-		.providerName {
+		.provider-name {
 			position: absolute;
 			left: 16px;
 		}

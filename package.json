@@ -11,7 +11,7 @@
 		"lint:stylelint": "stylelint --fix",
 		"lint:prettier": "prettier --write --loglevel warn",
 		"lint:all:eslint": "yarn lint:eslint --ext .js,.vue .",
-		"lint:all:stylelint": "yarn lint:stylelint \"deactivate/**/*.{vue,sass,scss,css}\"",
+		"lint:all:stylelint": "yarn lint:stylelint \"**/*.{vue,sass,scss,css}\"",
 		"lint:all:prettier": "yarn lint:prettier \"**/*.{js,json,css,scss,vue,html,md}\"",
 		"lint": "run-s lint:all:*",
 		"test:unit": "vue-cli-service test:unit",

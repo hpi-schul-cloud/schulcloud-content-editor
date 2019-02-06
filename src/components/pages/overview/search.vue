@@ -3,16 +3,18 @@
 		<!--<md-field id="search-input">
         <label>{{$lang.searchContent.search_for}}</label>
         <md-input v-model="searchQuery"></md-input>
-    </md-field>-->
+		</md-field>-->
 		<div id="search-input">
 			<input
 				id="search-query-input"
 				v-model.lazy="searchQuery"
 				:placeholder="$lang.searchContent.search_for + '...'"
-			/><br />
-			<span v-if="searchQuery" id="resultHeadline">
+			/>
+			<br />
+			<span v-if="searchQuery" id="result-headline">
 				<b>{{ pagination.totalEntrys }}</b>
-				{{ $lang.searchContent.searchResults_for }} <b>"{{ searchQuery }}"</b>
+				{{ $lang.searchContent.searchResults_for }}
+				<b>"{{ searchQuery }}"</b>
 			</span>
 		</div>
 
@@ -22,38 +24,25 @@
 
 		<div class="md-layout-item items-per-page-picker">
 			<MdField>
-				<label for="itemsPerPage">
-					{{ $lang.searchContent.items_per_page }}
-				</label>
-				<MdSelect
-					id="itemsPerPage"
-					v-model.number="pagination.itemsPerPage"
-					name="itemsPerPage"
-				>
-					<MdOption value="12">
-						12
-					</MdOption>
-					<MdOption value="24">
-						24
-					</MdOption>
-					<MdOption value="48">
-						48
-					</MdOption>
-					<MdOption value="48">
-						96
-					</MdOption>
+				<label for="itemsPerPage">{{
+					$lang.searchContent.items_per_page
+				}}</label>
+				<MdSelect v-model.number="pagination.itemsPerPage" name="itemsPerPage">
+					<MdOption value="12">12</MdOption>
+					<MdOption value="24">24</MdOption>
+					<MdOption value="48">48</MdOption>
+					<MdOption value="48">96</MdOption>
 				</MdSelect>
 			</MdField>
 		</div>
 
-		<div v-if="readOnly != true" id="viewToggle">
+		<div v-if="readOnly != true" id="view-toggle">
 			<MdButton
 				class="md-toggle"
 				:class="{ 'md-primary md-raised': gutter }"
 				@click="gutter = true"
+				>{{ $lang.buttons.card }}</MdButton
 			>
-				{{ $lang.buttons.card }}
-			</MdButton>
 			<MdButton
 				class="md-toggle"
 				:class="{ 'md-primary md-raised': !gutter }"
@@ -61,9 +50,8 @@
 					gutter = false;
 					tableEnabled = true;
 				"
+				>{{ $lang.buttons.list }}</MdButton
 			>
-				{{ $lang.buttons.list }}
-			</MdButton>
 		</div>
 		<div v-show="gutter" md-gutter class="grid">
 			<div
@@ -79,12 +67,8 @@
 				<tr>
 					<th>{{ $lang.edit.form.title }}</th>
 					<th>{{ $lang.edit.form.url }}</th>
-					<th class="hide-s">
-						{{ $lang.edit.form.license }}
-					</th>
-					<th class="hide-m">
-						{{ $lang.edit.form.categorie }}
-					</th>
+					<th class="hide-s">{{ $lang.edit.form.license }}</th>
+					<th class="hide-m">{{ $lang.edit.form.categorie }}</th>
 				</tr>
 			</thead>
 			<ContentRow
@@ -303,7 +287,7 @@ table {
 	width: 100%;
 }
 
-#viewToggle {
+#view-toggle {
 	float: right;
 	margin-top: 16px;
 	.md-button {
@@ -336,7 +320,7 @@ table {
 			border-bottom: 1px solid var(--md-theme-default-primary);
 		}
 	}
-	#resultHeadline {
+	#result-headline {
 		display: block;
 		font-size: 1rem;
 	}

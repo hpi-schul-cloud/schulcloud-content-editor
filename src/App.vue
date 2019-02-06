@@ -16,16 +16,16 @@
 							<MdButton>{{ $lang.buttons.stats }}</MdButton>
 						</RouterLink>
 						<MdMenu md-direction="bottom-end" :md-align-trigger="true">
-							<MdButton id="userName" md-menu-trigger>
+							<MdButton id="user-name" md-menu-trigger>
 								{{ userInfo.displayName }}
 								<MdIcon>
 									<i class="material-icons">arrow_drop_down</i>
 								</MdIcon>
 							</MdButton>
 							<MdMenuContent>
-								<MdMenuItem @click="logout">{{
-									$lang.buttons.logout
-								}}</MdMenuItem>
+								<MdMenuItem @click="logout">
+									{{ $lang.buttons.logout }}
+								</MdMenuItem>
 							</MdMenuContent>
 						</MdMenu>
 					</div>
@@ -165,8 +165,8 @@ export default {
 }
 
 @for $i from 0 through 10 {
-	.height-#{$i*10} {
-		height: percentage($i/10);
+	.height-#{$i * 10} {
+		height: percentage($i / 10);
 	}
 }
 
@@ -204,7 +204,7 @@ header {
 	.md-button {
 		margin: 0;
 	}
-	#userName {
+	#user-name {
 		.md-icon {
 			width: 1em;
 			min-width: 1em;

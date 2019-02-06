@@ -8,32 +8,24 @@
 			md-deletable
 			@click="visibleProvider = chip[0]"
 			@md-delete.stop="removeFilter(chip[0], true)"
+			>{{ chip[1].displayString }}</MdChip
 		>
-			{{ chip[1].displayString }}
-		</MdChip>
 
 		<MdMenu md-direction="bottom-end">
 			<MdButton md-menu-trigger>
-				<MdIcon>
-					<i class="material-icons">
-						add
-					</i>
-				</MdIcon>
-				FILTER HINZUFÜGEN
+				<MdIcon> <i class="material-icons">add</i> </MdIcon>FILTER HINZUFÜGEN
 			</MdButton>
 			<MdMenuContent>
 				<MdMenuItem
 					v-if="!isApplied('provider')"
 					@click="visibleProvider = 'provider'"
+					>Provider</MdMenuItem
 				>
-					Provider
-				</MdMenuItem>
 				<MdMenuItem
 					v-if="!isApplied('createdat')"
 					@click="visibleProvider = 'createdat'"
+					>Erstellt am</MdMenuItem
 				>
-					Erstellt am
-				</MdMenuItem>
 			</MdMenuContent>
 		</MdMenu>
 
@@ -106,6 +98,3 @@ export default {
 	},
 };
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="scss" scoped></style>

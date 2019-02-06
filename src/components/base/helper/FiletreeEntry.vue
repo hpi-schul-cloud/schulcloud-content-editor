@@ -1,23 +1,15 @@
 <template>
 	<div :class="{ entry: true, deleted: isDeleted, 'read-only': readOnly }">
 		<span>
-			<i class="material-icons">
-				{{ icon }}
-			</i>
+			<i class="material-icons">{{ icon }}</i>
 		</span>
-		<span class="fileName">
-			{{ name }}
-		</span>
+		<span class="file-name">{{ name }}</span>
 		<template v-if="!readOnly">
 			<span v-if="!isDeleted" class="delete" @click="$emit('delete', id)">
-				<i class="material-icons">
-					close
-				</i>
+				<i class="material-icons">close</i>
 			</span>
 			<span v-else class="restore" @click="$emit('restore', id)">
-				<i class="material-icons">
-					restore_page
-				</i>
+				<i class="material-icons">restore_page</i>
 			</span>
 		</template>
 	</div>
@@ -72,7 +64,7 @@ export default {
 		}
 	}
 }
-.fileName {
+.file-name {
 	flex: 1;
 }
 
@@ -82,7 +74,7 @@ export default {
 
 .deleted {
 	color: red;
-	.fileName {
+	.file-name {
 		text-decoration: line-through;
 	}
 }
