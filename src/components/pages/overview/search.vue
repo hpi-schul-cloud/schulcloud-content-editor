@@ -1,135 +1,119 @@
 <template>
-  <div class="wrapper">
-    <!--<md-field id="search-input">
+	<div class="wrapper">
+		<!--<md-field id="search-input">
         <label>{{$lang.searchContent.search_for}}</label>
         <md-input v-model="searchQuery"></md-input>
     </md-field>-->
-    <div id="search-input">
-      <input
-        id="search-query-input"
-        v-model.lazy="searchQuery"
-        :placeholder="$lang.searchContent.search_for + '...'"
-      ><br>
-      <span
-        v-if="searchQuery"
-        id="resultHeadline"
-      >
-        <b>{{ pagination.totalEntrys }}</b> {{ $lang.searchContent.searchResults_for }} <b>"{{ searchQuery }}"</b>
-      </span>
-    </div>
+		<div id="search-input">
+			<input
+				id="search-query-input"
+				v-model.lazy="searchQuery"
+				:placeholder="$lang.searchContent.search_for + '...'"
+			/><br />
+			<span v-if="searchQuery" id="resultHeadline">
+				<b>{{ pagination.totalEntrys }}</b>
+				{{ $lang.searchContent.searchResults_for }} <b>"{{ searchQuery }}"</b>
+			</span>
+		</div>
 
-    <div class="md-layout">
-      <SearchFilter @newFilter="updateFilter" />
-    </div>
+		<div class="md-layout">
+			<SearchFilter @newFilter="updateFilter" />
+		</div>
 
-    <div class="md-layout-item items-per-page-picker">
-      <MdField>
-        <label for="itemsPerPage">
-          {{ $lang.searchContent.items_per_page }}
-        </label>
-        <MdSelect
-          id="itemsPerPage"
-          v-model.number="pagination.itemsPerPage"
-          name="itemsPerPage"
-        >
-          <MdOption value="12">
-            12
-          </MdOption>
-          <MdOption value="24">
-            24
-          </MdOption>
-          <MdOption value="48">
-            48
-          </MdOption>
-          <MdOption value="48">
-            96
-          </MdOption>
-        </MdSelect>
-      </MdField>
-    </div>
+		<div class="md-layout-item items-per-page-picker">
+			<MdField>
+				<label for="itemsPerPage">
+					{{ $lang.searchContent.items_per_page }}
+				</label>
+				<MdSelect
+					id="itemsPerPage"
+					v-model.number="pagination.itemsPerPage"
+					name="itemsPerPage"
+				>
+					<MdOption value="12">
+						12
+					</MdOption>
+					<MdOption value="24">
+						24
+					</MdOption>
+					<MdOption value="48">
+						48
+					</MdOption>
+					<MdOption value="48">
+						96
+					</MdOption>
+				</MdSelect>
+			</MdField>
+		</div>
 
-    <div
-      v-if="readOnly != true"
-      id="viewToggle"
-    >
-      <MdButton
-        class="md-toggle"
-        :class="{ 'md-primary md-raised': gutter}"
-        @click="gutter = true"
-      >
-        {{ $lang.buttons.card }}
-      </MdButton>
-      <MdButton
-        class="md-toggle"
-        :class="{ 'md-primary md-raised': !gutter}"
-        @click="gutter = false; tableEnabled = true"
-      >
-        {{ $lang.buttons.list }}
-      </MdButton>
-    </div>
-    <div
-      v-show="gutter"
-      md-gutter
-      class="grid"
-    >
-      <div
-        v-for="item in data"
-        :key="item._id + '#card'"
-        class="card-wrapper grid-xs-12 grid-s-6 grid-m-6 grid-l-4 grid-xl-3 height-100"
-      >
-        <ContentCard
-          :data="item"
-          :read-only="readOnly"
-          class="height-100"
-        />
-      </div>
-    </div>
-    <table
-      v-show="!gutter"
-      v-if="tableEnabled && readOnly != true"
-    >
-      <thead>
-        <tr>
-          <th>{{ $lang.edit.form.title }}</th>
-          <th>{{ $lang.edit.form.url }}</th>
-          <th class="hide-s">
-            {{ $lang.edit.form.license }}
-          </th>
-          <th class="hide-m">
-            {{ $lang.edit.form.categorie }}
-          </th>
-        </tr>
-      </thead>
-      <ContentRow
-        v-for="item in data"
-        :key="item._id + '#table'"
-        :content-data="item"
-        @delete="deleteEntry"
-      />
-    </table>
-    <MdEmptyState
-      v-if="data.length == 0"
-      class="md-primary"
-      md-icon="error_outline"
-      :md-label="$lang.searchContent.nothing_found"
-      :md-description="$lang.searchContent.nothing_found_help"
-    />
-    <Pagination
-      :config="pagination"
-      @pageChanged="pageChanged"
-    />
-  </div>
+		<div v-if="readOnly != true" id="viewToggle">
+			<MdButton
+				class="md-toggle"
+				:class="{ 'md-primary md-raised': gutter }"
+				@click="gutter = true"
+			>
+				{{ $lang.buttons.card }}
+			</MdButton>
+			<MdButton
+				class="md-toggle"
+				:class="{ 'md-primary md-raised': !gutter }"
+				@click="
+					gutter = false;
+					tableEnabled = true;
+				"
+			>
+				{{ $lang.buttons.list }}
+			</MdButton>
+		</div>
+		<div v-show="gutter" md-gutter class="grid">
+			<div
+				v-for="item in data"
+				:key="item._id + '#card'"
+				class="card-wrapper grid-xs-12 grid-s-6 grid-m-6 grid-l-4 grid-xl-3 height-100"
+			>
+				<ContentCard :data="item" :read-only="readOnly" class="height-100" />
+			</div>
+		</div>
+		<table v-show="!gutter" v-if="tableEnabled && readOnly != true">
+			<thead>
+				<tr>
+					<th>{{ $lang.edit.form.title }}</th>
+					<th>{{ $lang.edit.form.url }}</th>
+					<th class="hide-s">
+						{{ $lang.edit.form.license }}
+					</th>
+					<th class="hide-m">
+						{{ $lang.edit.form.categorie }}
+					</th>
+				</tr>
+			</thead>
+			<ContentRow
+				v-for="item in data"
+				:key="item._id + '#table'"
+				:content-data="item"
+				@delete="deleteEntry"
+			/>
+		</table>
+		<MdEmptyState
+			v-if="data.length == 0"
+			class="md-primary"
+			md-icon="error_outline"
+			:md-label="$lang.searchContent.nothing_found"
+			:md-description="$lang.searchContent.nothing_found_help"
+		/>
+		<Pagination :config="pagination" @pageChanged="pageChanged" />
+	</div>
 </template>
 
 <script>
-import ContentCard from '@/components/base/contentCard.vue';
-import Pagination from '@/components/base/helper/pagination.vue';
-import SearchFilter from './filter.vue';
-import ContentRow from './editForm-table.vue';
-const qs = require('query-string');
+import ContentCard from "@/components/base/contentCard.vue";
+import Pagination from "@/components/base/helper/pagination.vue";
+import SearchFilter from "./filter.vue";
+import ContentRow from "./editForm-table.vue";
+const qs = require("query-string");
 
 export default {
-	name: 'ContentList',
+	name: "ContentList",
 	components: {
 		ContentCard,
 		Pagination,
@@ -138,15 +122,15 @@ export default {
 	},
 	props: {
 		readOnly: {
-			type: Boolean
-		}
+			type: Boolean,
+		},
 	},
 	data() {
 		return {
 			data: [],
 			gutter: true,
 			tableEnabled: false,
-			searchQuery: '',
+			searchQuery: "",
 			apiFilterQuery: {},
 			urlQuery: {},
 			pagination: {
@@ -157,7 +141,7 @@ export default {
 				scroll: {
 					top: 0,
 					left: 0,
-					behavior: 'smooth',
+					behavior: "smooth",
 				},
 			},
 		};
@@ -165,18 +149,18 @@ export default {
 	watch: {
 		searchQuery(to, from) {
 			if (to != from) {
-				if (from != '') {
+				if (from != "") {
 					this.pagination.page = 1;
 				}
 				this.loadContent();
 			}
 		},
-		'pagination.page': function (to, from) {
+		"pagination.page": function(to, from) {
 			if (to != from) {
 				this.loadContent();
 			}
 		},
-		'pagination.itemsPerPage': function (to, from) {
+		"pagination.itemsPerPage": function(to, from) {
 			if (to != from) {
 				this.pagination.page = 1;
 				this.loadContent();
@@ -185,11 +169,11 @@ export default {
 	},
 	created() {
 		if (this.$router) {
-			this.searchQuery = this.$route.query.q || '';
+			this.searchQuery = this.$route.query.q || "";
 			this.pagination.page = parseInt(this.$route.query.p) || 1;
 		} else {
 			const query = qs.parse(location.search) || {};
-			this.searchQuery = query.q || '';
+			this.searchQuery = query.q || "";
 			this.pagination.page = parseInt(query.p) || 1;
 		}
 		this.loadContent();
@@ -202,22 +186,18 @@ export default {
 		},
 		updateURL(newQuery) {
 			if (this.$router) {
-				this.$router.push({query: newQuery});
+				this.$router.push({ query: newQuery });
 			} else if (history.pushState) {
-				const newurl =
-					`${window.location.protocol
-					}//${
-						window.location.host
-					}${window.location.pathname
-					}?${
-						qs.stringify(newQuery)}`;
-				window.history.pushState({path: newurl}, '', newurl);
+				const newurl = `${window.location.protocol}//${window.location.host}${
+					window.location.pathname
+				}?${qs.stringify(newQuery)}`;
+				window.history.pushState({ path: newurl }, "", newurl);
 			}
 		},
 		loadContent() {
 			// clear data to show "loading state"
 			const page = this.pagination.page || 1; // pagination for request
-			const searchString = this.searchQuery || ''; // query for search request
+			const searchString = this.searchQuery || ""; // query for search request
 
 			// set unique url
 			this.urlQuery.q = searchString;
@@ -228,10 +208,12 @@ export default {
 			const searchQuery = {
 				$limit: this.pagination.itemsPerPage,
 				$skip: this.pagination.itemsPerPage * (page - 1),
-				'_all[$match]': searchString,
+				"_all[$match]": searchString,
 			};
 
-			const queryString = qs.stringify(Object.assign(searchQuery, this.apiFilterQuery));
+			const queryString = qs.stringify(
+				Object.assign(searchQuery, this.apiFilterQuery)
+			);
 			const path =
 				searchString.length == 0
 					? this.$config.API.getContentPath
@@ -239,7 +221,7 @@ export default {
 			this.$http
 				.get(this.$config.API.serverServerUrl + path, {
 					headers: {
-						Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+						Authorization: `Bearer ${localStorage.getItem("jwt")}`,
 					},
 				})
 				.then((response) => {
@@ -283,80 +265,80 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  .wrapper {
-    margin: 30px 5% 0 5%;
-  }
-  .date-picker {
-    display: inline-flex;
-  }
+.wrapper {
+	margin: 30px 5% 0 5%;
+}
+.date-picker {
+	display: inline-flex;
+}
 
-  .clear-date-picker {
-    margin-top: 7px;
-  }
+.clear-date-picker {
+	margin-top: 7px;
+}
 
-  .items-per-page-picker {
-    margin-left: 7px;
-    float: right;
-  }
+.items-per-page-picker {
+	float: right;
+	margin-left: 7px;
+}
 
-  .md-layout {
-    width: 100%;
-    margin-bottom: 5px;
-  }
+.md-layout {
+	width: 100%;
+	margin-bottom: 5px;
+}
 
-  .md-layout-item {
-    margin-right: 5px;
-  }
+.md-layout-item {
+	margin-right: 5px;
+}
 
-  .grid {
-    clear: both;
-  }
+.grid {
+	clear: both;
+}
 
-  .card-wrapper {
-    padding: 5px;
-    box-sizing: border-box;
-  }
+.card-wrapper {
+	box-sizing: border-box;
+	padding: 5px;
+}
 
-  table {
-    width: 100%;
-  }
+table {
+	width: 100%;
+}
 
-  #viewToggle {
-    margin-top: 16px;
-    float: right;
-    .md-button {
-      margin: 0;
-    }
-  }
+#viewToggle {
+	float: right;
+	margin-top: 16px;
+	.md-button {
+		margin: 0;
+	}
+}
 
-  #search-input {
-    font-size: 1.75em !important;
-    margin-top: 16px;
-    float: left;
-    width: calc(100% - 200px);
-    margin-bottom: 16px;
-    #search-query-input {
-      display: inline-block;
-      font-size: 1em;
-      line-height: 1em;
-      width: 100%;
-      max-width: 500px;
-      padding: 0;
-      margin: 0;
-      margin-left: 5px;
-      outline: none;
-      background: transparent;
-      border: none;
-      color: inherit;
-      border-bottom: 1px solid grey;
-      &:focus {
-        color: var(--md-theme-default-primary);
-        border-bottom: 1px solid var(--md-theme-default-primary);
-      }
-    }
-    #resultHeadline {
-      font-size: 1rem;
-      display: block;
-    }
-  }
+#search-input {
+	float: left;
+	width: calc(100% - 200px);
+	margin-top: 16px;
+	margin-bottom: 16px;
+	font-size: 1.75em !important;
+	#search-query-input {
+		display: inline-block;
+		width: 100%;
+		max-width: 500px;
+		padding: 0;
+		margin: 0;
+		margin-left: 5px;
+		font-size: 1em;
+		line-height: 1em;
+		color: inherit;
+		background: transparent;
+		border: none;
+		border-bottom: 1px solid grey;
+		outline: none;
+		&:focus {
+			color: var(--md-theme-default-primary);
+			border-bottom: 1px solid var(--md-theme-default-primary);
+		}
+	}
+	#resultHeadline {
+		display: block;
+		font-size: 1rem;
+	}
+}
 </style>

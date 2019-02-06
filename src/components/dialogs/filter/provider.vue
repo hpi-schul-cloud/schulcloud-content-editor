@@ -1,67 +1,60 @@
 <template>
-  <MdDialog :md-active.sync="isActive">
-    <MdDialogTitle>{{ $lang.filter.provider.modal_title }}</MdDialogTitle>
+	<MdDialog :md-active.sync="isActive">
+		<MdDialogTitle>{{ $lang.filter.provider.modal_title }}</MdDialogTitle>
 
-    <div id="provider-picker">
-      <MdField>
-        <label for="selectedProviders">
-          {{ $lang.filter.provider.placeholder }}
-        </label>
-        <MdSelect
-          id="selectedProviders"
-          v-model="selectedProviders"
-          md-dense
-        >
-          <!-- multiple> -->
-          <MdOption value="">
-            kein Provider
-          </MdOption>
-          <MdOption value="Khan Academy">
-            Khan Academy
-          </MdOption>
-          <MdOption value="Serlo">
-            Serlo
-          </MdOption>
-          <MdOption value="Youtube">
-            Youtube
-          </MdOption>
-          <MdOption value="LEIFI Physik">
-            LEIFI Physik
-          </MdOption>
-        </MdSelect>
-      </MdField>
-    </div>
+		<div id="provider-picker">
+			<MdField>
+				<label for="selectedProviders">
+					{{ $lang.filter.provider.placeholder }}
+				</label>
+				<MdSelect id="selectedProviders" v-model="selectedProviders" md-dense>
+					<!-- multiple> -->
+					<MdOption value="">
+						kein Provider
+					</MdOption>
+					<MdOption value="Khan Academy">
+						Khan Academy
+					</MdOption>
+					<MdOption value="Serlo">
+						Serlo
+					</MdOption>
+					<MdOption value="Youtube">
+						Youtube
+					</MdOption>
+					<MdOption value="LEIFI Physik">
+						LEIFI Physik
+					</MdOption>
+				</MdSelect>
+			</MdField>
+		</div>
 
-    <MdDialogActions>
-      <MdButton @click="onCancle">
-        {{ $lang.buttons.cancel }}
-      </MdButton>
-      <MdButton
-        class="md-primary"
-        @click="onConfirm"
-      >
-        {{ $lang.buttons.add }}
-      </MdButton>
-    </MdDialogActions>
-  </MdDialog>
+		<MdDialogActions>
+			<MdButton @click="onCancle">
+				{{ $lang.buttons.cancel }}
+			</MdButton>
+			<MdButton class="md-primary" @click="onConfirm">
+				{{ $lang.buttons.add }}
+			</MdButton>
+		</MdDialogActions>
+	</MdDialog>
 </template>
 
 <script>
 export default {
-	name: 'DialogConfirm',
+	name: "DialogConfirm",
 	props: {
 		identifier: {
 			type: String,
-			default: ""
+			default: "",
 		},
 		active: {
-			type: Boolean
-		}
+			type: Boolean,
+		},
 	},
 	data() {
 		return {
 			isActive: false,
-			selectedProviders: '', // []
+			selectedProviders: "", // []
 			apiQuery: {},
 			urlQuery: {},
 		};
@@ -77,7 +70,7 @@ export default {
 		},
 	},
 	created() {
-		this.$parent.$on('reset', this.resetProviders);
+		this.$parent.$on("reset", this.resetProviders);
 	},
 	methods: {
 		onConfirm() {
@@ -85,26 +78,26 @@ export default {
 
 			if (this.selectedProviders.length != 0) {
 				// this.apiQuery["providerName[$in]"] = this.selectedProviders; // corret but api seems broken
-				this.apiQuery['providerName[$match]'] = this.selectedProviders;
-				this.urlQuery = {provider: this.selectedProviders}; // .reduce((prev, curr) => prev +','+ curr )}
+				this.apiQuery["providerName[$match]"] = this.selectedProviders;
+				this.urlQuery = { provider: this.selectedProviders }; // .reduce((prev, curr) => prev +','+ curr )}
 				displayString = `Provider: ${this.selectedProviders}`; // .reduce((prev, curr) => prev +', '+ curr );
 			} else {
 				this.apiQuery = {};
 				this.urlQuery = {};
 				displayString = null;
 			}
-			this.$emit('set', this.identifier, {
+			this.$emit("set", this.identifier, {
 				apiQuery: this.apiQuery,
 				urlQuery: this.urlQuery,
 				displayString,
 			});
 		},
 		onCancle() {
-			this.$emit('cancle');
+			this.$emit("cancle");
 		},
 		resetProviders(key) {
 			if (key == this.identifier) {
-				this.selectedProviders = '';
+				this.selectedProviders = "";
 			}
 		},
 	},
@@ -112,7 +105,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  #provider-picker {
-    padding: 16px;
-  }
+#provider-picker {
+	padding: 16px;
+}
 </style>
