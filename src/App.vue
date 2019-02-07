@@ -1,7 +1,8 @@
 <template>
 	<div id="app">
-		<VueProgressBar />
-		<!-- eslint-disable-line -->
+		<!-- eslint-disable -->
+		<vue-progress-bar />
+		<!--eslint-enable-->
 		<header class="md-elevation-1 md-primary">
 			<div class="container-fluid-max">
 				<MdToolbar md-elevation="0" class="md-primary">
@@ -23,9 +24,9 @@
 								</MdIcon>
 							</MdButton>
 							<MdMenuContent>
-								<MdMenuItem @click="logout">
-									{{ $lang.buttons.logout }}
-								</MdMenuItem>
+								<MdMenuItem @click="logout">{{
+									$lang.buttons.logout
+								}}</MdMenuItem>
 							</MdMenuContent>
 						</MdMenu>
 					</div>
