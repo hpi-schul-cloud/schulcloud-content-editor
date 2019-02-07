@@ -5,7 +5,7 @@
 				<img
 					:src="
 						data.thumbnail ||
-							'https://placeholdit.co//i/320x180?bg=CCC&fc=000&text=Platzhalter'
+							'data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=='
 					"
 					:alt="'Thumbnail for ~' + data.title + '~'"
 				/>

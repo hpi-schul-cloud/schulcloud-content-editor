@@ -24,9 +24,9 @@
 
 		<div class="md-layout-item items-per-page-picker">
 			<MdField>
-				<label for="itemsPerPage">{{
-					$lang.searchContent.items_per_page
-				}}</label>
+				<label for="itemsPerPage">
+					{{ $lang.searchContent.items_per_page }}
+				</label>
 				<MdSelect v-model.number="pagination.itemsPerPage" name="itemsPerPage">
 					<MdOption value="12">12</MdOption>
 					<MdOption value="24">24</MdOption>

@@ -3,135 +3,46 @@
 		<div class="grid-xl-8 grid-s-12">
 			<MdCard>
 				<MdCardHeader>
-					<div v-if="$route.params.id" class="md-title">{{
-						$lang.edit.title_edit
-					}}</div>
+					<div v-if="$route.params.id" class="md-title">
+						{{ $lang.edit.title_edit }}
+					</div>
 					<div v-else class="md-title">{{ $lang.edit.title_create }}</div>
 				</MdCardHeader>
 				<MdCardContent>
 					<form id="contentForm" @submit.prevent="validateBeforeSubmit">
-						<MdField :class="{ 'md-input-invalid': errors.has('title') }">
-							<label>{{ $lang.edit.form.title }}</label>
-							<MdInput
-								v-model="data.title"
-								v-validate
-								type="text"
-								name="title"
-								data-vv-rules="required"
-							/>
-							<span class="md-error">{{ errors.first("title") }}</span>
-						</MdField>
-
-						<MdField :class="{ 'md-input-invalid': errors.has('description') }">
-							<label>
-								{{ $lang.edit.form.description }}
-								<span>
-									<MdIcon>help</MdIcon>
-									<MdTooltip md-direction="right">{{
-										$lang.edit.form.description_tooltip
-									}}</MdTooltip>
-								</span>
-							</label>
-							<MdTextarea
-								v-model="data.description"
-								v-validate
-								name="description"
-								data-vv-rules="max:500"
-								maxlength="500"
-							/>
-							<span class="md-error">{{ errors.first("description") }}</span>
-						</MdField>
-
-						<MdField :class="{ 'md-input-invalid': errors.has('url') }">
-							<label>{{ $lang.edit.form.url }}</label>
-							<MdInput
-								v-model="data.url"
-								v-validate
-								name="url"
-								data-vv-rules="required|url"
-							/>
-							<span class="md-error">{{ errors.first("url") }}</span>
-						</MdField>
-
-						<MdField :class="{ 'md-input-invalid': errors.has('thumbnail') }">
-							<label>
-								{{ $lang.edit.form.thumbnail_url }}
-								<span>
-									<MdIcon>help</MdIcon>
-									<MdTooltip md-direction="right">{{
-										$lang.edit.form.thumbnail_url_tooptip
-									}}</MdTooltip>
-								</span>
-							</label>
-							<MdInput
-								v-model="data.thumbnail"
-								v-validate
-								name="thumbnail"
-								data-vv-rules="url"
-							/>
-							<span class="md-error">{{ errors.first("thumbnail") }}</span>
-						</MdField>
-
-						<section>
-							<MdChips
-								id="license"
-								v-model="data.licenses"
-								:md-max="10"
-								:md-placeholder="
-									$lang.edit.form.license +
-										'... (' +
-										$lang.edit.form.max +
-										' 10)'
-								"
-							/>
-						</section>
-
-						<MdField>
-							<label for="contentCategory">{{
-								$lang.edit.form.categorie
-							}}</label>
-							<MdSelect
-								id="contentCategory"
-								v-model="data.contentCategory"
-								name="contentCategory"
-							>
-								<MdOption value>/</MdOption>
-								<MdOption value="atomic">Atomic</MdOption>
-								<MdOption value="interactive">Interactive</MdOption>
-							</MdSelect>
-						</MdField>
-
-						<MdField>
-							<label for="contentMimetype">{{
-								$lang.edit.form.mimetype
-							}}</label>
-							<MdSelect
-								id="contentMimetype"
-								v-model="data.mimeType"
-								name="contentCategory"
-							>
-								<MdOption value="application">application</MdOption>
-								<MdOption value="audio">audio</MdOption>
-								<MdOption value="example">example</MdOption>
-								<MdOption value="image">image</MdOption>
-								<MdOption value="message">message</MdOption>
-								<MdOption value="model">model</MdOption>
-								<MdOption value="multipart">multipart</MdOption>
-								<MdOption value="text">text</MdOption>
-								<MdOption value="video">video</MdOption>
-							</MdSelect>
-						</MdField>
-
-						<section>
-							<MdChips
-								id="tags"
-								v-model="data.tags"
-								:md-max="10"
-								:md-placeholder="
-									$lang.edit.form.tags + '... (' + $lang.edit.form.max + ' 10)'
-								"
-							/>
-						</section>
+						{{ data }}
+						<ContentTitle
+							v-model="data.title"
+							v-validate
+							data-vv-name="title"
+							data-vv-rules="required"
+							:error="errors.first('title')"
+						/>
+						<ContentDescription
+							v-model="data.description"
+							v-validate
+							data-vv-name="description"
+							data-vv-rules="max:500"
+							:error="errors.first('description')"
+						/>
+						<ContentUrl
+							v-model="data.url"
+							v-validate
+							data-vv-name="url"
+							data-vv-rules="required|url"
+							:error="errors.first('url')"
+						/>
+						<ContentUrlThumbnail
+							v-model="data.thumbnail"
+							v-validate
+							data-vv-name="thumbnail"
+							data-vv-rules="url"
+							:error="errors.first('thumbnail')"
+						/>
+						<ContentLicense v-model="data.licenses" />
+						<ContentCategory v-model="data.categorie" />
+						<ContentMimetype v-model="data.mimeType" />
+						<ContentTags v-model="data.tags" />
 					</form>
 				</MdCardContent>
 				<FileUpload />
@@ -146,9 +57,13 @@
 					<MdButton style="color: initial;" @click="$router.go(-1)">{{
 						$lang.buttons.cancel
 					}}</MdButton>
-					<MdButton class="md-primary" type="submit" form="contentForm">{{
-						$lang.buttons.save
-					}}</MdButton>
+					<MdButton
+						class="md-primary"
+						type="submit"
+						form="contentForm"
+						:disabled="!isFormValid"
+						>{{ $lang.buttons.save }}</MdButton
+					>
 				</MdCardActions>
 			</MdCard>
 		</div>
@@ -167,18 +82,36 @@ import VeeValidate from "vee-validate";
 
 Vue.use(VeeValidate);
 
-const ContentCard = () =>
-	import(/* webpackChunkName: "ContentCard" */ "@/components/base/contentCard.vue");
+import ContentCard from "@/components/base/contentCard.vue";
+
 const ConfirmDialog = () =>
 	import(/* webpackChunkName: "ConfirmDialog" */ "@/components/dialogs/confirm.vue");
-const FileUpload = () =>
-	import(/* webpackChunkName: "FileUpload" */ "@/components/base/upload.vue");
+
+import ContentTitle from "@/components/inputs/ContentTitle.vue";
+import ContentDescription from "@/components/inputs/ContentDescription.vue";
+import ContentUrl from "@/components/inputs/ContentUrl.vue";
+import ContentUrlThumbnail from "@/components/inputs/ContentUrlThumbnail.vue";
+import ContentLicense from "@/components/inputs/ContentLicense.vue";
+import ContentCategory from "@/components/inputs/ContentCategory.vue";
+import ContentMimetype from "@/components/inputs/ContentMimetype.vue";
+import ContentTags from "@/components/inputs/ContentTags.vue";
+
+import FileUpload from "@/components/base/upload.vue";
 
 export default {
 	name: "ContentForm",
 	components: {
 		ContentCard,
 		ConfirmDialog,
+		ContentTitle,
+		ContentDescription,
+		ContentUrl,
+		ContentUrlThumbnail,
+		ContentLicense,
+		ContentCategory,
+		ContentMimetype,
+		ContentTags,
+
 		FileUpload,
 	},
 	data() {
@@ -202,6 +135,11 @@ export default {
 			},
 			userInfo: JSON.parse(localStorage.getItem("userInfo")) || {},
 		};
+	},
+	computed: {
+		isFormValid() {
+			return Object.keys(this.fields).every((key) => this.fields[key].valid);
+		},
 	},
 	watch: {
 		$route() {
@@ -232,20 +170,12 @@ export default {
 					.catch((e) => {
 						this.errors.push(e);
 					});
-			} else {
-				this.data = {
-					tags: [],
-					licenses: [],
-					providerName: this.userInfo.displayName.toString(),
-				};
 			}
 		},
 		validateBeforeSubmit() {
-			this.$validator.validateAll().then((result) => {
-				if (result) {
-					this.submitContent();
-				}
-			});
+			if (this.isFormValid) {
+				this.submitContent();
+			}
 		},
 		submitContent() {
 			const d = this.data;

@@ -9,6 +9,7 @@ function loadView(path) {
 Vue.use(Router);
 
 export default new Router({
+	mode: "history",
 	routes: [
 		{ path: "/", name: "main", component: loadView("overview/overview.vue") },
 		{ path: "/stats", name: "stats", component: loadView("stats/stats.vue") },
