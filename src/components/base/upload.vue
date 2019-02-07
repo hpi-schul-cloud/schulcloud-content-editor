@@ -7,7 +7,7 @@
 			@dragleave="dragging = false"
 			>Drag your files here!</div
 		>
-		<div id="filetree" ref="filetree">
+		<div id="filetree">
 			<h4>Your uploaded Filetree:</h4>
 			<Filetree
 				v-model="state"
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import Filetree from "./helper/FiletreeEntry.vue";
+import Filetree from "./helper/Filetree.vue";
 
 export default {
 	name: "Upload",

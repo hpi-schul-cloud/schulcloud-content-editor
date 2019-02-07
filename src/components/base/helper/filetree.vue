@@ -6,10 +6,10 @@
 					:id="item.id"
 					icon="insert_drive_file"
 					:name="item.name"
-					:is-deleted="deletedObjects.includes(item.id)"
+					:is-deleted="deletedEntries.includes(item.id)"
 					:read-only="isParentDeleted"
-					@delete="deleteFile"
-					@restore="restoreFile"
+					@delete="deleteEntry"
+					@restore="restoreEntry"
 				/>
 			</li>
 
@@ -19,10 +19,10 @@
 						:id="item.id"
 						icon="folder_open"
 						:name="item.name"
-						:is-deleted="deletedObjects.includes(item.id)"
+						:is-deleted="deletedEntries.includes(item.id)"
 						:read-only="isParentDeleted"
-						@delete="deleteFolder"
-						@restore="restoreFolder"
+						@delete="deleteEntry"
+						@restore="restoreEntry"
 					/>
 				</li>
 				<li>
@@ -30,7 +30,7 @@
 						v-if="item.type == 'folder'"
 						:folder-entries="item.objects"
 						:value="value"
-						:is-parent-deleted="deletedObjects.includes(item.id)"
+						:is-parent-deleted="deletedEntries.includes(item.id)"
 						@restoreFromDeletedFolder="handleRestoreFromDeletedFolder(item.id)"
 					/>
 				</li>
@@ -62,7 +62,7 @@ export default {
 	},
 	data: () => {
 		return {
-			deletedObjects: [],
+			deletedEntries: [],
 		};
 	},
 	watch: {
@@ -73,41 +73,32 @@ export default {
 			if (to === true) {
 				this.folderEntries.forEach((item) => {
 					if (item.type === "file") {
-						this.deleteFile(item.id);
+						this.deleteEntry(item.id);
 					}
 					if (item.type === "folder") {
-						this.deleteFolder(item.id);
+						this.deleteEntry(item.id);
 					}
 				});
 			} else {
 				this.folderEntries.forEach((item) => {
 					if (item.type === "file") {
-						this.restoreFile(item.id);
+						this.restoreEntry(item.id);
 					}
 					if (item.type === "folder") {
-						this.restoreFolder(item.id);
+						this.restoreEntry(item.id);
 					}
 				});
 			}
 		},
 	},
 	methods: {
-		deleteFile(id) {
-			if (this.deletedObjects.indexOf(id) === -1) {
-				this.deletedObjects.push(id);
+		deleteEntry(id) {
+			if (this.deletedEntries.indexOf(id) === -1) {
+				this.deletedEntries.push(id);
 			}
 		},
-		restoreFile(id) {
-			this.deletedObjects.splice(this.deletedObjects.indexOf(id), 1);
-		},
-
-		deleteFolder(id) {
-			if (this.deletedObjects.indexOf(id) === -1) {
-				this.deletedObjects.push(id);
-			}
-		},
-		restoreFolder(id) {
-			this.deletedObjects.splice(this.deletedObjects.indexOf(id), 1);
+		restoreEntry(id) {
+			this.deletedEntries.splice(this.deletedEntries.indexOf(id), 1);
 		},
 	},
 };
