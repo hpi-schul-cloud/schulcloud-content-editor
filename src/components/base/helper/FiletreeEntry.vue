@@ -1,5 +1,15 @@
 <template>
-	<div :class="{ entry: true, deleted: isDeleted, 'read-only': readOnly }">
+	<div
+		:class="{
+			entry: true,
+			deleted: isDeleted,
+			'read-only': readOnly,
+			dragover: isDragover,
+		}"
+		@dragover="handleDragover"
+		@dragleave="handleDragleave"
+		@drop="handleDrop"
+	>
 		<span>
 			<i class="material-icons">{{ icon }}</i>
 		</span>
@@ -16,8 +26,11 @@
 </template>
 
 <script>
+import upload from "./upload.js";
+
 export default {
 	name: "FiletreeEntry",
+	mixins: [upload],
 	props: {
 		icon: {
 			type: String,
@@ -38,6 +51,37 @@ export default {
 		isDeleted: {
 			type: Boolean,
 			default: false,
+		},
+		allowUpload: {
+			type: Boolean,
+			default: false,
+		},
+		path: {
+			type: String,
+			default: "/",
+		},
+	},
+	data() {
+		return {
+			isDragover: false,
+		};
+	},
+	created() {
+		this.setPathPrefix(this.path);
+	},
+	methods: {
+		handleDrop(event) {
+			if (this.allowUpload) {
+				this.dropFile(event);
+			}
+		},
+		handleDragover(event) {
+			event.preventDefault();
+			this.isDragover = true;
+		},
+		handleDragleave(event) {
+			event.preventDefault();
+			this.isDragover = false;
 		},
 	},
 };
@@ -77,5 +121,8 @@ export default {
 	.file-name {
 		text-decoration: line-through;
 	}
+}
+.dragover {
+	background: #faa;
 }
 </style>

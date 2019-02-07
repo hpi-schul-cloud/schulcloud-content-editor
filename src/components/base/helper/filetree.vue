@@ -21,6 +21,8 @@
 						:name="item.name"
 						:is-deleted="deletedEntries.includes(item.id)"
 						:read-only="isParentDeleted"
+						:allow-upload="true"
+						:path="path + '/' + item.id"
 						@delete="deleteEntry"
 						@restore="restoreEntry"
 					/>
@@ -30,6 +32,7 @@
 						v-if="item.type == 'folder'"
 						:folder-entries="item.objects"
 						:value="value"
+						:path="path + '/' + item.id"
 						:is-parent-deleted="deletedEntries.includes(item.id)"
 						@restoreFromDeletedFolder="handleRestoreFromDeletedFolder(item.id)"
 					/>
@@ -58,6 +61,10 @@ export default {
 		isParentDeleted: {
 			type: Boolean,
 			default: false,
+		},
+		path: {
+			type: String,
+			default: "",
 		},
 	},
 	data: () => {
