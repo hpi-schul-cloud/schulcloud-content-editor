@@ -20,40 +20,31 @@ function PromiseFile(item) {
 }
 
 export default {
-	data() {
-		return {
-			pathPrefix: "",
-		};
-	},
 	methods: {
-		async traverseFiles(item) {
+		async traverseFiles(item, prefix) {
 			if (item.isFile) {
 				// read file
 				const fileId = await PromiseFile(item).then((file) => {
-					return this.uploadFile(file, item.fullPath);
+					return this.uploadFile(file, prefix + item.fullPath);
 				});
 				return { id: fileId, name: item.name, type: "file" };
 			} else if (item.isDirectory) {
 				const entries = await PromiseReader(item);
 				const objects = await Promise.all(
 					entries.map(async (entry) => {
-						return this.traverseFiles(entry);
+						return this.traverseFiles(entry, prefix);
 					})
 				);
 				return {
+					id: prefix + item.fullPath,
 					name: item.name,
 					type: "folder",
 					objects,
 				};
 			}
 		},
-		setPathPrefix(prefix) {
-			this.pathPrefix = prefix;
-		},
-		async uploadFile(file, path) {
-			let url = `http://localhost:4040/files/upload?path=${
-				this.pathPrefix
-			}${path}`;
+		async uploadFile(file, filepath) {
+			let url = `http://localhost:4040/files/upload?path=${filepath}`;
 			let formData = new FormData();
 			formData.append("file", file);
 
@@ -98,14 +89,12 @@ export default {
 				xhr.send(formData);
 			});
 		},
-		dropFile(event) {
-			event.preventDefault();
+		dropFile(event, prefix) {
 			return Promise.all(
 				Array.from(event.dataTransfer.items).map(async (rawItem) => {
 					let item = rawItem.webkitGetAsEntry();
 					if (item) {
-						const a = await this.traverseFiles(item);
-						return a;
+						return await this.traverseFiles(item, prefix);
 					}
 				})
 			);

@@ -1,15 +1,18 @@
 <template>
 	<div>
-		<ul v-for="item in folderEntries" :key="item.id || item.name">
-			<li>
+		<ul v-for="item in folderEntries" :key="item.id">
+			<li
+				:class="{ 'list-item': true, 'is-folder': item.type === 'folder' }"
+				@dragover.prevent="handleDragover"
+				@dragleave.prevent="handleDragleave"
+				@drop.prevent="handleDrop($event, path, item)"
+			>
 				<FiletreeEntry
-					:id="item.id || path + '/' + item.name"
+					:id="item.id"
 					:icon="item.type === 'file' ? 'insert_drive_file' : 'folder_open'"
 					:name="item.name"
 					:is-deleted="deletedEntries.includes(item.id)"
 					:read-only="isParentDeleted"
-					:allow-upload="item.type === 'folder'"
-					:path="path + '/' + item.id"
 					@delete="deleteEntry"
 					@restore="restoreEntry"
 				/>
@@ -19,7 +22,7 @@
 					v-if="item.type == 'folder'"
 					:folder-entries="item.objects"
 					:value="value"
-					:path="path + '/' + item.id"
+					:path="path + '/' + item.name"
 					:is-parent-deleted="deletedEntries.includes(item.id)"
 				/>
 			</li>
@@ -29,11 +32,14 @@
 
 <script>
 import FiletreeEntry from "./FiletreeEntry.vue";
+import upload from "./upload.js";
+
 export default {
 	name: "Filetree",
 	components: {
 		FiletreeEntry,
 	},
+	mixins: [upload],
 	props: {
 		folderEntries: {
 			type: Array,
@@ -52,7 +58,7 @@ export default {
 			default: "",
 		},
 	},
-	data: () => {
+	data() {
 		return {
 			deletedEntries: [],
 		};
@@ -82,6 +88,29 @@ export default {
 		restoreEntry(id) {
 			this.deletedEntries.splice(this.deletedEntries.indexOf(id), 1);
 		},
+		handleDrop(event, prefix, item) {
+			//console.log(event);
+			if (item.type === "folder") {
+				// TODO check if it a folder
+				this.dropFile(event, prefix + item.name).then((res) => {
+					console.log("Upload result:", res); // eslint-disable-line no-console
+				});
+			}
+			this.handleDragleave(event);
+		},
+		handleDragover(event) {
+			const wrapper = event.target.closest(".list-item");
+			if (Array.from(wrapper.classList).includes("is-folder")) {
+				wrapper.classList.add("dragover");
+			}
+		},
+		handleDragleave(event) {
+			const wrapper = event.target.closest(".list-item");
+			if (Array.from(wrapper.classList).includes("is-folder")) {
+				wrapper.classList.remove("dragover");
+			}
+			//console.log(event.target);
+		},
 	},
 };
 </script>
@@ -92,6 +121,11 @@ ul {
 	margin: 0;
 	li {
 		list-style-type: none;
+		transition: background-color 0.1s linear 0.1s;
+		&.dragover {
+			background-color: rgb(154, 243, 191);
+			transition: background-color 0.1s linear;
+		}
 	}
 }
 </style>
