@@ -87,7 +87,6 @@ export default {
 				return; // shouldn't be possible
 				//return console.warn("deleting this item shouldn't be possible");
 			} else if (item.state === "new") {
-				// TODO remove from filetree
 				this.value.saved.splice(this.value.saved.indexOf(id), 1);
 				this.filetree.splice(itemIndex, 1);
 			} else {

@@ -1,8 +1,7 @@
 export default {
 	methods: {
-		//this.value.saved.push(leave.id);
 		traverseTree(tree, callback) {
-			if (typeof tree === "object") {
+			if (!Array.isArray(tree)) {
 				tree = callback(tree);
 				if (tree.type === "folder") {
 					tree.objects = this.traverseTree(tree.objects, callback);
@@ -25,7 +24,7 @@ export default {
 		},
 		recursiveSave(tree) {
 			this.traverseTree(tree, (leave) => {
-				if (leave.type === "file") {
+				if (leave.type === "file" && !this.value.saved.includes(leave.id)) {
 					this.value.saved.push(leave.id);
 				}
 				return leave;
@@ -49,48 +48,19 @@ export default {
 					srcTree.push(newNode);
 				} else {
 					// merge
-					srcTree[indexInSrc].state = "updated";
+					if (srcTree[indexInSrc].state !== "new") {
+						srcTree[indexInSrc].state = "updated";
+					}
 					if (srcTree[indexInSrc].type === "folder") {
-						// recursive
+						// recursive for folders
 						srcTree[indexInSrc].objects = this.mergeIntoTree(
 							srcTree[indexInSrc].objects,
 							newNode.objects
 						);
-					} else {
-						newNode.state = "updated";
-						srcTree[indexInSrc] = newNode;
 					}
 				}
 			});
-			this.$forceUpdate();
-
 			return srcTree;
-
-			// upload implementation
-			/*
-			const newFiletree = JSON.parse(JSON.stringify(this.filetree.slice(0))); // create copy
-			newItemsTree = this.markAllTreeItemsAsNew(newItemsTree);
-			newItemsTree.forEach((newItem) => {
-				const existingItemIndex = newFiletree.findIndex(
-					(item) => item.id === newItem.id
-				);
-				if (existingItemIndex === -1) {
-					newItem.state = "new";
-					newFiletree.push(newItem);
-				} else {
-					newFiletree[existingItemIndex].state = "updated"; // TODO do recursive for folders
-					// TODO maybe this needs to be implemented inside filetree as well.
-				}
-			});
-
-			// Filetree implementation
-
-			newItemsTree = this.markAllTreeItemsAsNew(newItemsTree);
-			// create copy
-			const newfiletree = this.filetree.slice(0);
-			newItemsTree.forEach((newItem) => {
-				newfiletree[itemIndex].objects.push(newItem);
-			});*/
 		},
 	},
 };
