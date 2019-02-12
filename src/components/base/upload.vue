@@ -5,14 +5,14 @@
 			:class="{ 'dropzone-over': dragging }"
 			@dragover.prevent="handleDragover"
 			@dragleave.prevent="handleDragleave"
-			@drop.prevent="handleDrop"
+			@drop.prevent="handleDropEvent"
 			>Drag your files here!</div
 		>
 		<div id="filetree">
 			<h4>Your uploaded Filetree:</h4>
 			<Filetree
-				v-model="state"
-				:folder-entries="filetree"
+				v-model="value"
+				:filetree="filetree"
 				:is-parent-deleted="false"
 			/>
 		</div>
@@ -30,7 +30,7 @@ export default {
 	},
 	mixins: [upload],
 	props: {
-		state: {
+		value: {
 			type: Object,
 			default: () => ({ deleted: [], saved: [] }),
 		},
@@ -52,16 +52,21 @@ export default {
 				if (leave.type === "folder") {
 					leave.objects = this.markAllTreeItemsAsNew(leave.objects);
 				}
+				if (leave.type === "file") {
+					this.value.saved.push(leave.id);
+				}
 				return leave;
 			});
 		},
-		handleDrop(event, prefix, item) {
+		handleDropEvent(event) {
 			// TODO add contentId prefix
-			return this.dropFile(event, "/").then((newItems) => {
-				newItems = this.markAllTreeItemsAsNew(newItems);
-				newItems.forEach((newItem) => {
-					this.filetree.push(newItem);
+			return this.dropFile(event, "/").then((newItemsTree) => {
+				const newFiletree = JSON.parse(JSON.stringify(this.filetree.slice(0))); // create copy
+				newItemsTree = this.markAllTreeItemsAsNew(newItemsTree);
+				newItemsTree.forEach((newItem) => {
+					newFiletree.push(newItem);
 				});
+				this.$emit("update:filetree", newFiletree);
 			});
 		},
 		handleDragover(event) {

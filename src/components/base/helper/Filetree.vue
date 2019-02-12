@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<ul v-for="item in folderEntries" :key="item.id">
+		<ul v-for="item in filetree" :key="item.id">
 			<li
 				:class="{
 					'list-item': true,
@@ -8,14 +8,14 @@
 				}"
 				@dragover.prevent="handleDragover"
 				@dragleave.prevent="handleDragleave"
-				@drop.prevent="handleDrop($event, path, item)"
+				@drop.prevent="handleDropEvent($event, path, item)"
 			>
 				<FiletreeEntry
 					:id="item.id"
 					:icon="item.type === 'file' ? 'insert_drive_file' : 'folder_open'"
 					:name="item.name"
 					:is-new="item.isNew"
-					:is-deleted="deletedEntries.includes(item.id)"
+					:is-deleted="value.deleted.includes(item.id)"
 					:read-only="isParentDeleted"
 					@delete="deleteEntry"
 					@restore="restoreEntry"
@@ -24,10 +24,10 @@
 			<li v-if="item.type === 'folder'">
 				<Filetree
 					v-if="item.type == 'folder'"
-					:folder-entries.sync="item.objects"
+					:filetree.sync="item.objects"
 					:value="value"
 					:path="path + '/' + item.name"
-					:is-parent-deleted="deletedEntries.includes(item.id)"
+					:is-parent-deleted="value.deleted.includes(item.id)"
 				/>
 			</li>
 		</ul>
@@ -45,7 +45,7 @@ export default {
 	},
 	mixins: [upload],
 	props: {
-		folderEntries: {
+		filetree: {
 			type: Array,
 			required: true,
 		},
@@ -62,22 +62,17 @@ export default {
 			default: "",
 		},
 	},
-	data() {
-		return {
-			deletedEntries: [],
-		};
-	},
 	watch: {
 		isParentDeleted: function(to, from) {
 			if (to === from) {
 				return;
 			}
 			if (to === true) {
-				this.folderEntries.forEach((item) => {
+				this.filetree.forEach((item) => {
 					this.deleteEntry(item.id);
 				});
 			} else {
-				this.folderEntries.forEach((item) => {
+				this.filetree.forEach((item) => {
 					this.restoreEntry(item.id);
 				});
 			}
@@ -85,12 +80,18 @@ export default {
 	},
 	methods: {
 		deleteEntry(id) {
-			if (this.deletedEntries.indexOf(id) === -1) {
-				this.deletedEntries.push(id);
+			const itemIndex = this.value.deleted.indexOf(id);
+			if (itemIndex !== -1) {
+				return; // already in list
+			}
+			if (this.filetree.isNew) {
+				this.value.saved.splice(this.value.saved.indexOf(id), 1);
+			} else {
+				this.value.deleted.push(id);
 			}
 		},
 		restoreEntry(id) {
-			this.deletedEntries.splice(this.deletedEntries.indexOf(id), 1);
+			this.value.deleted.splice(this.value.deleted.indexOf(id), 1);
 		},
 		markAllTreeItemsAsNew(tree) {
 			return tree.map((leave) => {
@@ -98,28 +99,30 @@ export default {
 				if (leave.type === "folder") {
 					leave.objects = this.markAllTreeItemsAsNew(leave.objects);
 				}
+				if (leave.type === "file") {
+					this.value.saved.push(leave.id);
+				}
 				return leave;
 			});
 		},
-		handleDrop(event, prefix, item) {
+		handleDropEvent(event, prefix, item) {
 			if (item.type === "folder") {
 				this.dropFile(event, prefix + "/" + item.name).then((newItemsTree) => {
-					const itemIndex = this.folderEntries.findIndex(
+					const itemIndex = this.filetree.findIndex(
 						(folderItem) => folderItem.id === item.id
 					);
 					if (itemIndex < 0) {
-						// ERROR
 						return;
 					}
 
 					newItemsTree = this.markAllTreeItemsAsNew(newItemsTree);
 					// create copy
-					const newFolderEntries = this.folderEntries.slice(0);
+					const newfiletree = this.filetree.slice(0);
 
 					newItemsTree.forEach((newItem) => {
-						newFolderEntries[itemIndex].objects.push(newItem);
+						newfiletree[itemIndex].objects.push(newItem);
 					});
-					this.$emit("update:folder-entries", newFolderEntries);
+					this.$emit("update:filetree", newfiletree);
 				});
 			}
 			this.handleDragleave(event);

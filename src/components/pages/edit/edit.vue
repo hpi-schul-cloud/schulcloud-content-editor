@@ -45,7 +45,7 @@
 						<ContentTags v-model="data.tags" />
 					</form>
 				</MdCardContent>
-				<FileUpload :filetree.sync="filetree" />
+				<FileUpload v-model="data.files" :filetree.sync="filetree" />
 				<MdCardActions>
 					<MdButton
 						v-if="$route.params.id"
@@ -128,6 +128,7 @@ export default {
 				contentCategory: "",
 				licenses: ["Test License"],
 				tags: [],
+				files: { deleted: [], saved: [] },
 			},
 			dialog: {
 				active: false,
