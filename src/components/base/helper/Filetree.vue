@@ -2,7 +2,10 @@
 	<div>
 		<ul v-for="item in folderEntries" :key="item.id">
 			<li
-				:class="{ 'list-item': true, 'is-folder': item.type === 'folder' }"
+				:class="{
+					'list-item': true,
+					'is-folder': item.type === 'folder',
+				}"
 				@dragover.prevent="handleDragover"
 				@dragleave.prevent="handleDragleave"
 				@drop.prevent="handleDrop($event, path, item)"
@@ -11,6 +14,7 @@
 					:id="item.id"
 					:icon="item.type === 'file' ? 'insert_drive_file' : 'folder_open'"
 					:name="item.name"
+					:is-new="item.isNew"
 					:is-deleted="deletedEntries.includes(item.id)"
 					:read-only="isParentDeleted"
 					@delete="deleteEntry"
@@ -88,9 +92,18 @@ export default {
 		restoreEntry(id) {
 			this.deletedEntries.splice(this.deletedEntries.indexOf(id), 1);
 		},
+		markAllTreeItemsAsNew(tree) {
+			return tree.map((leave) => {
+				leave.isNew = true;
+				if (leave.type === "folder") {
+					leave.objects = this.markAllTreeItemsAsNew(leave.objects);
+				}
+				return leave;
+			});
+		},
 		handleDrop(event, prefix, item) {
 			if (item.type === "folder") {
-				this.dropFile(event, prefix + "/" + item.name).then((newItems) => {
+				this.dropFile(event, prefix + "/" + item.name).then((newItemsTree) => {
 					const itemIndex = this.folderEntries.findIndex(
 						(folderItem) => folderItem.id === item.id
 					);
@@ -99,10 +112,11 @@ export default {
 						return;
 					}
 
+					newItemsTree = this.markAllTreeItemsAsNew(newItemsTree);
 					// create copy
 					const newFolderEntries = this.folderEntries.slice(0);
 
-					newItems.forEach((newItem) => {
+					newItemsTree.forEach((newItem) => {
 						newFolderEntries[itemIndex].objects.push(newItem);
 					});
 					this.$emit("update:folder-entries", newFolderEntries);
@@ -121,7 +135,6 @@ export default {
 			if (Array.from(wrapper.classList).includes("is-folder")) {
 				wrapper.classList.remove("dragover");
 			}
-			//console.log(event.target);
 		},
 	},
 };

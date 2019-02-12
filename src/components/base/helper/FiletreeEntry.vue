@@ -4,6 +4,7 @@
 			entry: true,
 			deleted: isDeleted,
 			'read-only': readOnly,
+			'is-new': isNew,
 		}"
 	>
 		<span>
@@ -45,6 +46,10 @@ export default {
 			type: Boolean,
 			default: false,
 		},
+		isNew: {
+			type: Boolean,
+			default: false,
+		},
 	},
 };
 </script>
@@ -53,7 +58,7 @@ export default {
 .entry {
 	display: flex;
 	flex-wrap: nowrap;
-
+	color: #333;
 	span {
 		display: flex;
 		align-items: center;
@@ -83,5 +88,8 @@ export default {
 	.file-name {
 		text-decoration: line-through;
 	}
+}
+.is-new {
+	color: #00ad00;
 }
 </style>

@@ -27,7 +27,11 @@ export default {
 				const fileId = await PromiseFile(item).then((file) => {
 					return this.uploadFile(file, prefix + item.fullPath);
 				});
-				return { id: fileId, name: item.name, type: "file" };
+				return {
+					id: fileId,
+					name: item.name,
+					type: "file",
+				};
 			} else if (item.isDirectory) {
 				const entries = await PromiseReader(item);
 				const objects = await Promise.all(

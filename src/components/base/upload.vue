@@ -45,9 +45,20 @@ export default {
 		};
 	},
 	methods: {
+		markAllTreeItemsAsNew(tree) {
+			// TODO duplicate of Filetree.vue
+			return tree.map((leave) => {
+				leave.isNew = true;
+				if (leave.type === "folder") {
+					leave.objects = this.markAllTreeItemsAsNew(leave.objects);
+				}
+				return leave;
+			});
+		},
 		handleDrop(event, prefix, item) {
 			// TODO add contentId prefix
 			return this.dropFile(event, "/").then((newItems) => {
+				newItems = this.markAllTreeItemsAsNew(newItems);
 				newItems.forEach((newItem) => {
 					this.filetree.push(newItem);
 				});
