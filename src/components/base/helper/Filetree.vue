@@ -36,13 +36,14 @@
 <script>
 import FiletreeEntry from "./FiletreeEntry.vue";
 import upload from "./upload.js";
+import filetree from "./filetree.js";
 
 export default {
 	name: "Filetree",
 	components: {
 		FiletreeEntry,
 	},
-	mixins: [upload],
+	mixins: [upload, filetree],
 	props: {
 		filetree: {
 			type: Array,
@@ -112,36 +113,25 @@ export default {
 			}
 			this.$forceUpdate();
 		},
-		markAllTreeItemsAsNew(tree) {
-			return tree.map((leave) => {
-				leave.state = "new";
-				if (leave.type === "folder") {
-					leave.objects = this.markAllTreeItemsAsNew(leave.objects);
-				}
-				if (leave.type === "file") {
-					this.value.saved.push(leave.id);
-				}
-				return leave;
-			});
-		},
 		handleDropEvent(event, prefix, item) {
 			if (item.type === "folder") {
 				this.dropFile(event, prefix + "/" + item.name).then((newItemsTree) => {
-					const itemIndex = this.filetree.findIndex(
-						(folderItem) => folderItem.id === item.id
+					const srcTree = JSON.parse(JSON.stringify(this.filetree.slice(0))); // TODO test if we can remove JSON... here
+					this.recursiveSave(newItemsTree);
+					const currentItemIndex = srcTree.findIndex(
+						(node) => node.id === item.id // TODO use name
 					);
-					if (itemIndex < 0) {
-						return;
+					if (currentItemIndex === -1) {
+						srcTree[currentItemIndex].objects.push(
+							this.recursiveSetState(newItemsTree, "new")
+						);
+					} else {
+						srcTree[currentItemIndex].objects = this.mergeIntoTree(
+							srcTree[currentItemIndex].objects,
+							newItemsTree
+						);
 					}
-
-					newItemsTree = this.markAllTreeItemsAsNew(newItemsTree);
-					// create copy
-					const newfiletree = this.filetree.slice(0);
-
-					newItemsTree.forEach((newItem) => {
-						newfiletree[itemIndex].objects.push(newItem);
-					});
-					this.$emit("update:filetree", newfiletree);
+					this.$emit("update:filetree", srcTree);
 				});
 			}
 			this.handleDragleave(event);

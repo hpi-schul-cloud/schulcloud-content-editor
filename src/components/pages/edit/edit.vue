@@ -158,26 +158,21 @@ export default {
 							name: "file 2.txt",
 						},
 						{
-							id: "folder1_id/folder2_id",
+							id: "5c62d92db597ab10e83955cc/folder 1/folder 2",
 							type: "folder",
 							name: "folder 2",
 							objects: [
 								{
-									id: "file3_id",
+									id: "5c62d92db597ab10e83955cc/folder 1/folder 2/file 3.txt",
 									type: "file",
-									name: "file 3",
+									name: "file 3.txt",
 								},
 								{
-									id: "file5_id",
+									id: "5c62d92db597ab10e83955cc/folder 1/folder 2/file 4.txt",
 									type: "file",
-									name: "file 5",
+									name: "file 4.txt",
 								},
 							],
-						},
-						{
-							id: "file4_id",
-							type: "file",
-							name: "file 4",
 						},
 					],
 				},

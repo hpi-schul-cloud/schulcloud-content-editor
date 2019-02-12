@@ -13,7 +13,7 @@
 			<Filetree
 				v-model="value"
 				:path="prefix"
-				:filetree="filetree"
+				:filetree.sync="filetree"
 				:is-parent-deleted="false"
 			/>
 		</div>
@@ -23,13 +23,14 @@
 <script>
 import Filetree from "./helper/Filetree.vue";
 import upload from "./helper/upload.js";
+import filetree from "./helper/filetree.js";
 
 export default {
 	name: "Upload",
 	components: {
 		Filetree,
 	},
-	mixins: [upload],
+	mixins: [upload, filetree],
 	props: {
 		value: {
 			type: Object,
@@ -50,36 +51,11 @@ export default {
 		};
 	},
 	methods: {
-		markAllTreeItemsAsNew(tree) {
-			// TODO duplicate of Filetree.vue
-			return tree.map((leave) => {
-				leave.state = "new";
-				if (leave.type === "folder") {
-					leave.objects = this.markAllTreeItemsAsNew(leave.objects);
-				}
-				if (leave.type === "file") {
-					this.value.saved.push(leave.id);
-				}
-				return leave;
-			});
-		},
 		handleDropEvent(event) {
 			return this.dropFile(event, this.prefix).then((newItemsTree) => {
-				const newFiletree = JSON.parse(JSON.stringify(this.filetree.slice(0))); // create copy
-				newItemsTree = this.markAllTreeItemsAsNew(newItemsTree);
-				newItemsTree.forEach((newItem) => {
-					const existingItemIndex = newFiletree.findIndex(
-						(item) => item.id === newItem.id
-					);
-					if (existingItemIndex === -1) {
-						newItem.state = "new";
-						newFiletree.push(newItem);
-					} else {
-						newFiletree[existingItemIndex].state = "updated"; // TODO do recursive for folders
-						// TODO maybe this needs to be implemented inside filetree as well.
-					}
-				});
-				this.$emit("update:filetree", newFiletree);
+				this.recursiveSave(newItemsTree);
+				const newTree = this.mergeIntoTree(this.filetree, newItemsTree);
+				return this.$emit("update:filetree", newTree);
 			});
 		},
 		handleDragover(event) {
