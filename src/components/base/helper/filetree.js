@@ -1,5 +1,8 @@
 export default {
 	methods: {
+		deepCopy(src) {
+			return JSON.parse(JSON.stringify(src));
+		},
 		traverseTree(tree, callback) {
 			if (!Array.isArray(tree)) {
 				tree = callback(tree);
@@ -38,7 +41,7 @@ export default {
 				out: [ { id: a, objects: [ {id: b, ... } ]} ]
 			*/
 			// create copy to remove observers
-			srcTree = JSON.parse(JSON.stringify(srcTree.slice(0))); // TODO test if we can remove JSON... here
+			srcTree = this.deepCopy(srcTree);
 
 			newTree.forEach((newNode) => {
 				const indexInSrc = srcTree.findIndex((item) => item.id === newNode.id);

@@ -115,7 +115,7 @@ export default {
 		handleDropEvent(event, prefix, item) {
 			if (item.type === "folder") {
 				this.dropFile(event, prefix + "/" + item.name).then((newItemsTree) => {
-					const srcTree = JSON.parse(JSON.stringify(this.filetree.slice(0))); // TODO test if we can remove JSON... here
+					const srcTree = this.deepCopy(this.filetree);
 					this.recursiveSave(newItemsTree);
 					const currentItemIndex = srcTree.findIndex(
 						(node) => node.id === item.id // TODO use name
@@ -135,17 +135,21 @@ export default {
 			}
 			this.handleDragleave(event);
 		},
-		handleDragover(event) {
+		wrappingFolder(event, callback) {
 			const wrapper = event.target.closest(".list-item");
 			if (Array.from(wrapper.classList).includes("is-folder")) {
-				wrapper.classList.add("dragover");
+				callback(wrapper);
 			}
 		},
+		handleDragover(event) {
+			this.wrappingFolder(event, (wrapper) => {
+				wrapper.classList.add("dragover");
+			});
+		},
 		handleDragleave(event) {
-			const wrapper = event.target.closest(".list-item");
-			if (Array.from(wrapper.classList).includes("is-folder")) {
+			this.wrappingFolder(event, (wrapper) => {
 				wrapper.classList.remove("dragover");
-			}
+			});
 		},
 	},
 };
