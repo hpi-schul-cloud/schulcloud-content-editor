@@ -40,6 +40,7 @@ export default {
 					name: "file 1",
 				},
 				{
+					id: "folder1_id",
 					type: "folder",
 					name: "folder 1",
 					objects: [
@@ -49,6 +50,7 @@ export default {
 							name: "file 2",
 						},
 						{
+							id: "folder1_id/folder2_id",
 							type: "folder",
 							name: "folder 2",
 							objects: [
