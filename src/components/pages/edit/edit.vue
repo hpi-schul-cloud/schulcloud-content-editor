@@ -148,14 +148,14 @@ export default {
 					name: "nvram",
 				},
 				{
-					id: "folder1_id",
+					id: "5c62d92db597ab10e83955cc/folder 1",
 					type: "folder",
 					name: "folder 1",
 					objects: [
 						{
-							id: "file2_id",
+							id: "5c62d92db597ab10e83955cc/folder 1/file 2.txt",
 							type: "file",
-							name: "file 2",
+							name: "file 2.txt",
 						},
 						{
 							id: "folder1_id/folder2_id",

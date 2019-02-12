@@ -53,7 +53,7 @@ export default {
 		markAllTreeItemsAsNew(tree) {
 			// TODO duplicate of Filetree.vue
 			return tree.map((leave) => {
-				leave.isNew = true;
+				leave.state = "new";
 				if (leave.type === "folder") {
 					leave.objects = this.markAllTreeItemsAsNew(leave.objects);
 				}
@@ -75,7 +75,8 @@ export default {
 						newItem.state = "new";
 						newFiletree.push(newItem);
 					} else {
-						newFiletree[existingItemIndex].state = "updated";
+						newFiletree[existingItemIndex].state = "updated"; // TODO do recursive for folders
+						// TODO maybe this needs to be implemented inside filetree as well.
 					}
 				});
 				this.$emit("update:filetree", newFiletree);
