@@ -20,7 +20,7 @@
 			<li v-if="item.type === 'folder'">
 				<Filetree
 					v-if="item.type == 'folder'"
-					:folder-entries="item.objects"
+					:folder-entries.sync="item.objects"
 					:value="value"
 					:path="path + '/' + item.name"
 					:is-parent-deleted="deletedEntries.includes(item.id)"
@@ -89,11 +89,23 @@ export default {
 			this.deletedEntries.splice(this.deletedEntries.indexOf(id), 1);
 		},
 		handleDrop(event, prefix, item) {
-			//console.log(event);
 			if (item.type === "folder") {
-				// TODO check if it a folder
-				this.dropFile(event, prefix + item.name).then((res) => {
-					console.log("Upload result:", res); // eslint-disable-line no-console
+				this.dropFile(event, prefix + "/" + item.name).then((newItems) => {
+					const itemIndex = this.folderEntries.findIndex(
+						(folderItem) => folderItem.id === item.id
+					);
+					if (itemIndex < 0) {
+						// ERROR
+						return;
+					}
+
+					// create copy
+					const newFolderEntries = this.folderEntries.slice(0);
+
+					newItems.forEach((newItem) => {
+						newFolderEntries[itemIndex].objects.push(newItem);
+					});
+					this.$emit("update:folder-entries", newFolderEntries);
 				});
 			}
 			this.handleDragleave(event);

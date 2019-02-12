@@ -3,8 +3,9 @@
 		<div
 			id="dropzone"
 			:class="{ 'dropzone-over': dragging }"
-			@dragenter="dragging = true"
-			@dragleave="dragging = false"
+			@dragover.prevent="handleDragover"
+			@dragleave.prevent="handleDragleave"
+			@drop.prevent="handleDrop"
 			>Drag your files here!</div
 		>
 		<div id="filetree">
@@ -20,12 +21,14 @@
 
 <script>
 import Filetree from "./helper/Filetree.vue";
+import upload from "./helper/upload.js";
 
 export default {
 	name: "Upload",
 	components: {
 		Filetree,
 	},
+	mixins: [upload],
 	props: {
 		state: {
 			type: Object,
@@ -33,48 +36,29 @@ export default {
 		},
 		filetree: {
 			type: Array,
-			default: () => [
-				{
-					id: "file1_id",
-					type: "file",
-					name: "file 1",
-				},
-				{
-					id: "folder1_id",
-					type: "folder",
-					name: "folder 1",
-					objects: [
-						{
-							id: "file2_id",
-							type: "file",
-							name: "file 2",
-						},
-						{
-							id: "folder1_id/folder2_id",
-							type: "folder",
-							name: "folder 2",
-							objects: [
-								{
-									id: "file3_id",
-									type: "file",
-									name: "file 3",
-								},
-							],
-						},
-						{
-							id: "file4_id",
-							type: "file",
-							name: "file 4",
-						},
-					],
-				},
-			],
+			default: () => [],
 		},
 	},
 	data() {
 		return {
 			dragging: false,
 		};
+	},
+	methods: {
+		handleDrop(event, prefix, item) {
+			// TODO add contentId prefix
+			return this.dropFile(event, "/").then((newItems) => {
+				newItems.forEach((newItem) => {
+					this.filetree.push(newItem);
+				});
+			});
+		},
+		handleDragover(event) {
+			this.dragging = true;
+		},
+		handleDragleave(event) {
+			this.dragging = false;
+		},
 	},
 };
 </script>

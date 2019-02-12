@@ -45,7 +45,7 @@
 						<ContentTags v-model="data.tags" />
 					</form>
 				</MdCardContent>
-				<FileUpload />
+				<FileUpload :filetree.sync="filetree" />
 				<MdCardActions>
 					<MdButton
 						v-if="$route.params.id"
@@ -134,6 +134,42 @@ export default {
 				cancle: this.$lang.edit.dialog.cancle,
 			},
 			userInfo: JSON.parse(localStorage.getItem("userInfo")) || {},
+			filetree: [
+				{
+					id: "file1_id",
+					type: "file",
+					name: "file 1",
+				},
+				{
+					id: "folder1_id",
+					type: "folder",
+					name: "folder 1",
+					objects: [
+						{
+							id: "file2_id",
+							type: "file",
+							name: "file 2",
+						},
+						{
+							id: "folder1_id/folder2_id",
+							type: "folder",
+							name: "folder 2",
+							objects: [
+								{
+									id: "file3_id",
+									type: "file",
+									name: "file 3",
+								},
+							],
+						},
+						{
+							id: "file4_id",
+							type: "file",
+							name: "file 4",
+						},
+					],
+				},
+			],
 		};
 	},
 	computed: {
