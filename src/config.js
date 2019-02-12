@@ -10,6 +10,7 @@ export default {
 			pwRecoveryPath: "/login?recovery=true",
 			userInfoPath: "/users/",
 			getContentPath: "/content/resources/",
+			postReserveId: "/reserved_Ids",
 			pushContentPath: "/resources/",
 			searchContentPath: "/content/search/",
 			viewContentPath: "/content/redirect/",

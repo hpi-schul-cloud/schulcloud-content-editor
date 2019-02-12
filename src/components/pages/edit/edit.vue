@@ -114,6 +114,9 @@ export default {
 
 		FileUpload,
 	},
+	props: {
+		editMode: Boolean,
+	},
 	data() {
 		return {
 			data: {
@@ -151,7 +154,7 @@ export default {
 	},
 	methods: {
 		loadContent() {
-			if (this.$route.params.id) {
+			if (this.editMode) {
 				this.$http
 					.get(
 						this.$config.API.serverServerUrl +
