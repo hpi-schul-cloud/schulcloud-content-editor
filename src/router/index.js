@@ -46,7 +46,7 @@ export default new Router({
 		},
 		{
 			path: "/:id/create",
-			name: "create",
+			name: "createWithID",
 			component: loadView("edit/edit.vue"),
 		},
 		{

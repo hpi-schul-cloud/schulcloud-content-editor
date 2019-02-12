@@ -37,7 +37,7 @@ const qs = require("query-string");
 export default {
 	name: "ContentStats",
 	components: {
-		appContentCard: contentCard,
+		AppContentCard: contentCard,
 	},
 	data() {
 		return {
