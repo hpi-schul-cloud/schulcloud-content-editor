@@ -41,7 +41,6 @@ export default {
 				},
 				{
 					type: "folder",
-					id: "folder_1",
 					name: "folder 1",
 					objects: [
 						{
@@ -50,7 +49,6 @@ export default {
 							name: "file 2",
 						},
 						{
-							id: "folder_2",
 							type: "folder",
 							name: "folder 2",
 							objects: [

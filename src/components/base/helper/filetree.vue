@@ -1,9 +1,9 @@
 <template>
 	<div>
-		<ul v-for="item in folderEntries" :key="item.id">
+		<ul v-for="item in folderEntries" :key="item.id || item.name">
 			<li>
 				<FiletreeEntry
-					:id="item.id"
+					:id="item.id || path + '/' + item.name"
 					:icon="item.type === 'file' ? 'insert_drive_file' : 'folder_open'"
 					:name="item.name"
 					:is-deleted="deletedEntries.includes(item.id)"

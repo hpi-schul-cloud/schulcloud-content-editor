@@ -72,7 +72,9 @@ export default {
 	methods: {
 		handleDrop(event) {
 			if (this.allowUpload) {
-				this.dropFile(event);
+				this.dropFile(event).then((res) => {
+					console.log("Upload result:", res); // eslint-disable-line no-console
+				});
 			}
 			this.isDragover = false;
 		},
