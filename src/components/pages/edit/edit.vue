@@ -45,7 +45,11 @@
 						<ContentTags v-model="data.tags" />
 					</form>
 				</MdCardContent>
-				<FileUpload v-model="data.files" :filetree.sync="filetree" />
+				<FileUpload
+					v-model="data.files"
+					:filetree.sync="filetree"
+					:prefix="$route.params.id"
+				/>
 				<MdCardActions>
 					<MdButton
 						v-if="$route.params.id"

@@ -12,6 +12,7 @@
 			<h4>Your uploaded Filetree:</h4>
 			<Filetree
 				v-model="value"
+				:path="prefix"
 				:filetree="filetree"
 				:is-parent-deleted="false"
 			/>
@@ -38,6 +39,10 @@ export default {
 			type: Array,
 			default: () => [],
 		},
+		prefix: {
+			type: String,
+			default: "",
+		},
 	},
 	data() {
 		return {
@@ -59,8 +64,7 @@ export default {
 			});
 		},
 		handleDropEvent(event) {
-			// TODO add contentId prefix
-			return this.dropFile(event, "/").then((newItemsTree) => {
+			return this.dropFile(event, this.prefix).then((newItemsTree) => {
 				const newFiletree = JSON.parse(JSON.stringify(this.filetree.slice(0))); // create copy
 				newItemsTree = this.markAllTreeItemsAsNew(newItemsTree);
 				newItemsTree.forEach((newItem) => {
