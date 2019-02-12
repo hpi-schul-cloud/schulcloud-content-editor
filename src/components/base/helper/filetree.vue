@@ -1,43 +1,28 @@
 <template>
 	<div>
 		<ul v-for="item in folderEntries" :key="item.id">
-			<li v-if="item.type === 'file'">
+			<li>
 				<FiletreeEntry
 					:id="item.id"
-					icon="insert_drive_file"
+					:icon="item.type === 'file' ? 'insert_drive_file' : 'folder_open'"
 					:name="item.name"
 					:is-deleted="deletedEntries.includes(item.id)"
 					:read-only="isParentDeleted"
+					:allow-upload="item.type === 'folder'"
+					:path="path + '/' + item.id"
 					@delete="deleteEntry"
 					@restore="restoreEntry"
 				/>
 			</li>
-
-			<template v-if="item.type === 'folder'">
-				<li>
-					<FiletreeEntry
-						:id="item.id"
-						icon="folder_open"
-						:name="item.name"
-						:is-deleted="deletedEntries.includes(item.id)"
-						:read-only="isParentDeleted"
-						:allow-upload="true"
-						:path="path + '/' + item.id"
-						@delete="deleteEntry"
-						@restore="restoreEntry"
-					/>
-				</li>
-				<li>
-					<Filetree
-						v-if="item.type == 'folder'"
-						:folder-entries="item.objects"
-						:value="value"
-						:path="path + '/' + item.id"
-						:is-parent-deleted="deletedEntries.includes(item.id)"
-						@restoreFromDeletedFolder="handleRestoreFromDeletedFolder(item.id)"
-					/>
-				</li>
-			</template>
+			<li v-if="item.type === 'folder'">
+				<Filetree
+					v-if="item.type == 'folder'"
+					:folder-entries="item.objects"
+					:value="value"
+					:path="path + '/' + item.id"
+					:is-parent-deleted="deletedEntries.includes(item.id)"
+				/>
+			</li>
 		</ul>
 	</div>
 </template>
@@ -79,21 +64,11 @@ export default {
 			}
 			if (to === true) {
 				this.folderEntries.forEach((item) => {
-					if (item.type === "file") {
-						this.deleteEntry(item.id);
-					}
-					if (item.type === "folder") {
-						this.deleteEntry(item.id);
-					}
+					this.deleteEntry(item.id);
 				});
 			} else {
 				this.folderEntries.forEach((item) => {
-					if (item.type === "file") {
-						this.restoreEntry(item.id);
-					}
-					if (item.type === "folder") {
-						this.restoreEntry(item.id);
-					}
+					this.restoreEntry(item.id);
 				});
 			}
 		},

@@ -74,15 +74,12 @@ export default {
 		},
 		dropFile(event) {
 			event.preventDefault();
-			dropzone.classList.remove("dragover");
-			let items = event.dataTransfer.items;
-			let i;
-			for (i = 0; i < items.length; i++) {
-				let item = items[i].webkitGetAsEntry();
+			Array.from(event.dataTransfer.items).forEach((rawItem) => {
+				let item = rawItem.webkitGetAsEntry();
 				if (item) {
 					this.traverseFiles(item);
 				}
-			}
+			});
 		},
 	},
 };

@@ -74,6 +74,7 @@ export default {
 			if (this.allowUpload) {
 				this.dropFile(event);
 			}
+			this.isDragover = false;
 		},
 		handleDragover(event) {
 			event.preventDefault();
