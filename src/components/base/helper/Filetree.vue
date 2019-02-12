@@ -14,8 +14,7 @@
 					:id="item.id"
 					:icon="item.type === 'file' ? 'insert_drive_file' : 'folder_open'"
 					:name="item.name"
-					:is-new="item.isNew"
-					:is-deleted="value.deleted.includes(item.id)"
+					:state="item.state"
 					:read-only="isParentDeleted"
 					@delete="deleteEntry"
 					@restore="restoreEntry"
@@ -80,22 +79,42 @@ export default {
 	},
 	methods: {
 		deleteEntry(id) {
-			const itemIndex = this.value.deleted.indexOf(id);
-			if (itemIndex !== -1) {
-				return; // already in list
-			}
-			if (this.filetree.isNew) {
+			const itemIndex = this.filetree.findIndex((item) => item.id === id);
+			const item = this.filetree[itemIndex];
+			// already in list
+			if (item.state === "deleted" || item.state === "updated") {
+				return; // shouldn't be possible
+				//return console.warn("deleting this item shouldn't be possible");
+			} else if (item.state === "new") {
+				// TODO remove from filetree
 				this.value.saved.splice(this.value.saved.indexOf(id), 1);
+				this.filetree.splice(itemIndex, 1);
 			} else {
+				// saved files
+				this.filetree[itemIndex].state = "deleted";
 				this.value.deleted.push(id);
 			}
+			this.$forceUpdate();
 		},
 		restoreEntry(id) {
-			this.value.deleted.splice(this.value.deleted.indexOf(id), 1);
+			const itemIndex = this.filetree.findIndex((item) => item.id === id);
+			const item = this.filetree[itemIndex];
+			if (item.state === "new") {
+				return; // shouldn't be possible
+			}
+			if (item.state === "updated") {
+				this.filetree[itemIndex].state = undefined;
+				this.value.saved.splice(this.value.saved.indexOf(id), 1);
+			}
+			if (item.state === "deleted") {
+				this.filetree[itemIndex].state = undefined;
+				this.value.deleted.splice(this.value.deleted.indexOf(id), 1);
+			}
+			this.$forceUpdate();
 		},
 		markAllTreeItemsAsNew(tree) {
 			return tree.map((leave) => {
-				leave.isNew = true;
+				leave.state = "new";
 				if (leave.type === "folder") {
 					leave.objects = this.markAllTreeItemsAsNew(leave.objects);
 				}

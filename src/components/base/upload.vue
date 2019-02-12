@@ -68,7 +68,15 @@ export default {
 				const newFiletree = JSON.parse(JSON.stringify(this.filetree.slice(0))); // create copy
 				newItemsTree = this.markAllTreeItemsAsNew(newItemsTree);
 				newItemsTree.forEach((newItem) => {
-					newFiletree.push(newItem);
+					const existingItemIndex = newFiletree.findIndex(
+						(item) => item.id === newItem.id
+					);
+					if (existingItemIndex === -1) {
+						newItem.state = "new";
+						newFiletree.push(newItem);
+					} else {
+						newFiletree[existingItemIndex].state = "updated";
+					}
 				});
 				this.$emit("update:filetree", newFiletree);
 			});

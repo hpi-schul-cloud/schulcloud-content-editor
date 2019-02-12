@@ -10,7 +10,6 @@
 				</MdCardHeader>
 				<MdCardContent>
 					<form id="contentForm" @submit.prevent="validateBeforeSubmit">
-						{{ data }}
 						<ContentTitle
 							v-model="data.title"
 							v-validate
@@ -144,9 +143,9 @@ export default {
 			userInfo: JSON.parse(localStorage.getItem("userInfo")) || {},
 			filetree: [
 				{
-					id: "file1_id",
+					id: "5c62d92db597ab10e83955cc/nvram",
 					type: "file",
-					name: "file 1",
+					name: "nvram",
 				},
 				{
 					id: "folder1_id",
@@ -167,6 +166,11 @@ export default {
 									id: "file3_id",
 									type: "file",
 									name: "file 3",
+								},
+								{
+									id: "file5_id",
+									type: "file",
+									name: "file 5",
 								},
 							],
 						},

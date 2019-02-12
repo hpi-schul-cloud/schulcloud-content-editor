@@ -2,9 +2,10 @@
 	<div
 		:class="{
 			entry: true,
-			deleted: isDeleted,
-			'read-only': readOnly,
-			'is-new': isNew,
+			readonly: readOnly,
+			'is-new': state === 'new',
+			'is-updated': state === 'updated',
+			'is-deleted': state === 'deleted',
 		}"
 	>
 		<span>
@@ -12,10 +13,18 @@
 		</span>
 		<span class="file-name">{{ name }}</span>
 		<template v-if="!readOnly">
-			<span v-if="!isDeleted" class="delete" @click="$emit('delete', id)">
+			<span
+				v-if="!state || state === 'new'"
+				class="btn-delete"
+				@click="$emit('delete', id)"
+			>
 				<i class="material-icons">close</i>
 			</span>
-			<span v-else class="restore" @click="$emit('restore', id)">
+			<span
+				v-if="['deleted', 'updated'].includes(state)"
+				class="restore"
+				@click="$emit('restore', id)"
+			>
 				<i class="material-icons">restore_page</i>
 			</span>
 		</template>
@@ -42,13 +51,9 @@ export default {
 			type: Boolean,
 			default: false,
 		},
-		isDeleted: {
-			type: Boolean,
-			default: false,
-		},
-		isNew: {
-			type: Boolean,
-			default: false,
+		state: {
+			type: String || Boolean,
+			default: "",
 		},
 	},
 };
@@ -64,13 +69,13 @@ export default {
 		align-items: center;
 		margin: 0.2em 0.2em 0.2em 0;
 	}
-	.delete {
+	.btn-delete {
 		display: none;
 	}
-	&:not(.read-only):hover {
+	&:not(.readonly):hover {
 		cursor: pointer;
 		background: #eee;
-		.delete {
+		.btn-delete {
 			display: flex;
 		}
 	}
@@ -83,13 +88,16 @@ export default {
 	font-size: 20px;
 }
 
-.deleted {
-	color: red;
+.is-deleted {
+	color: #f00;
 	.file-name {
 		text-decoration: line-through;
 	}
 }
+.is-updated {
+	color: #d90;
+}
 .is-new {
-	color: #00ad00;
+	color: #0a0;
 }
 </style>
