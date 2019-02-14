@@ -34,17 +34,17 @@ export default {
 				};
 			} else if (item.isDirectory) {
 				const entries = await PromiseReader(item);
-				const objects = await Promise.all(
+
+				return Promise.all(
 					entries.map(async (entry) => {
 						return this.traverseFiles(entry, prefix);
 					})
-				);
-				return {
+				).then((res) => ({
 					id: prefix + item.fullPath,
 					name: item.name,
 					type: "folder",
-					objects,
-				};
+					objects: res,
+				}));
 			}
 		},
 		async uploadFile(file, filepath) {

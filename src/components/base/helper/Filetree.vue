@@ -118,7 +118,7 @@ export default {
 					const srcTree = this.deepCopy(this.filetree);
 					this.recursiveSave(newItemsTree);
 					const currentItemIndex = srcTree.findIndex(
-						(node) => node.id === item.id // TODO use name
+						(node) => node.name === item.name
 					);
 					if (currentItemIndex === -1) {
 						srcTree[currentItemIndex].objects.push(
