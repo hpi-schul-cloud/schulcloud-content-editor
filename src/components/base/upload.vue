@@ -1,5 +1,6 @@
 <template>
 	<div class="upload-wrapper">
+		<Loader :state="loadingState" />
 		<div
 			id="dropzone"
 			:class="{ 'dropzone-over': dragging }"
@@ -15,6 +16,8 @@
 				:path="prefix"
 				:filetree.sync="filetree"
 				:is-parent-deleted="false"
+				@uploaded="adjustLoaderState('uploaded')"
+				@uploading="adjustLoaderState('uploading')"
 			/>
 		</div>
 	</div>
@@ -24,11 +27,13 @@
 import Filetree from "./helper/Filetree.vue";
 import upload from "./helper/upload.js";
 import filetree from "./helper/filetree.js";
+import Loader from "@/components/base/helper/loader.vue";
 
 export default {
 	name: "Upload",
 	components: {
 		Filetree,
+		Loader,
 	},
 	mixins: [upload, filetree],
 	props: {
@@ -48,15 +53,25 @@ export default {
 	data() {
 		return {
 			dragging: false,
+			loadingState: "uploaded",
 		};
 	},
 	methods: {
+		adjustLoaderState(state) {
+			this.loadingState = state;
+		},
 		handleDropEvent(event) {
-			return this.dropFile(event, this.prefix).then((newItemsTree) => {
-				this.recursiveSave(newItemsTree);
-				const newTree = this.mergeIntoTree(this.filetree, newItemsTree);
-				return this.$emit("update:filetree", newTree);
-			});
+			this.adjustLoaderState("uploading");
+			return this.dropFile(event, this.prefix)
+				.then((newItemsTree) => {
+					this.recursiveSave(newItemsTree);
+					const newTree = this.mergeIntoTree(this.filetree, newItemsTree);
+					return this.$emit("update:filetree", newTree);
+				})
+				.then((res) => {
+					this.adjustLoaderState("uploaded");
+					return res;
+				});
 		},
 		handleDragover(event) {
 			this.dragging = true;
@@ -70,6 +85,7 @@ export default {
 
 <style lang="scss" scoped>
 .upload-wrapper {
+	position: relative;
 	padding: 16px;
 	#dropzone {
 		display: flex;

@@ -27,6 +27,8 @@
 					:value="value"
 					:path="path + '/' + item.name"
 					:is-parent-deleted="value.deleted.includes(item.id)"
+					@uploaded="$emit('uploaded')"
+					@uploading="$emit('uploading')"
 				/>
 			</li>
 		</ul>
@@ -114,24 +116,29 @@ export default {
 		},
 		handleDropEvent(event, prefix, item) {
 			if (item.type === "folder") {
-				this.dropFile(event, prefix + "/" + item.name).then((newItemsTree) => {
-					const srcTree = this.deepCopy(this.filetree);
-					this.recursiveSave(newItemsTree);
-					const currentItemIndex = srcTree.findIndex(
-						(node) => node.name === item.name
-					);
-					if (currentItemIndex === -1) {
-						srcTree[currentItemIndex].objects.push(
-							this.recursiveSetState(newItemsTree, "new")
+				this.$emit("uploading");
+				this.dropFile(event, prefix + "/" + item.name)
+					.then((newItemsTree) => {
+						const srcTree = this.deepCopy(this.filetree);
+						this.recursiveSave(newItemsTree);
+						const currentItemIndex = srcTree.findIndex(
+							(node) => node.name === item.name
 						);
-					} else {
-						srcTree[currentItemIndex].objects = this.mergeIntoTree(
-							srcTree[currentItemIndex].objects,
-							newItemsTree
-						);
-					}
-					this.$emit("update:filetree", srcTree);
-				});
+						if (currentItemIndex === -1) {
+							srcTree[currentItemIndex].objects.push(
+								this.recursiveSetState(newItemsTree, "new")
+							);
+						} else {
+							srcTree[currentItemIndex].objects = this.mergeIntoTree(
+								srcTree[currentItemIndex].objects,
+								newItemsTree
+							);
+						}
+						this.$emit("update:filetree", srcTree);
+					})
+					.then(() => {
+						this.$emit("uploaded");
+					});
 			}
 			this.handleDragleave(event);
 		},
