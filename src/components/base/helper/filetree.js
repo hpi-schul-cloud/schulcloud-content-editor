@@ -44,7 +44,9 @@ export default {
 			srcTree = this.deepCopy(srcTree);
 
 			newTree.forEach((newNode) => {
-				const indexInSrc = srcTree.findIndex((item) => item.id === newNode.id);
+				const indexInSrc = srcTree.findIndex(
+					(item) => item.name === newNode.name
+				);
 				if (indexInSrc === -1) {
 					// new
 					this.recursiveSetState(newNode, "new");

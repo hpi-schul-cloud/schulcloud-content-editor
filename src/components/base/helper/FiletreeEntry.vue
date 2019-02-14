@@ -16,14 +16,14 @@
 			<span
 				v-if="!state || state === 'new'"
 				class="btn-delete"
-				@click="$emit('delete', id)"
+				@click="$emit('delete', id, name)"
 			>
 				<i class="material-icons">close</i>
 			</span>
 			<span
 				v-if="['deleted', 'updated'].includes(state)"
 				class="restore"
-				@click="$emit('restore', id)"
+				@click="$emit('restore', id, name)"
 			>
 				<i class="material-icons">restore_page</i>
 			</span>

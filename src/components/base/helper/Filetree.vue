@@ -69,18 +69,18 @@ export default {
 			}
 			if (to === true) {
 				this.filetree.forEach((item) => {
-					this.deleteEntry(item.id);
+					this.deleteEntry(item.id, item.name);
 				});
 			} else {
 				this.filetree.forEach((item) => {
-					this.restoreEntry(item.id);
+					this.restoreEntry(item.id, item.name);
 				});
 			}
 		},
 	},
 	methods: {
-		deleteEntry(id) {
-			const itemIndex = this.filetree.findIndex((item) => item.id === id);
+		deleteEntry(id, name) {
+			const itemIndex = this.filetree.findIndex((item) => item.name === name);
 			const item = this.filetree[itemIndex];
 			// already in list
 			if (item.state === "deleted" || item.state === "updated") {
@@ -96,8 +96,8 @@ export default {
 			}
 			this.$forceUpdate();
 		},
-		restoreEntry(id) {
-			const itemIndex = this.filetree.findIndex((item) => item.id === id);
+		restoreEntry(id, name) {
+			const itemIndex = this.filetree.findIndex((item) => item.name === name);
 			const item = this.filetree[itemIndex];
 			if (item.state === "new") {
 				return; // shouldn't be possible
