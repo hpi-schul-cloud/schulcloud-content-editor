@@ -9,6 +9,7 @@
 				@dragover.prevent="handleDragover"
 				@dragleave.prevent="handleDragleave"
 				@drop.prevent="handleDropEvent($event, path, item)"
+				@click="toggleExpansion(item)"
 			>
 				<FiletreeEntry
 					:id="item.id"
@@ -22,7 +23,7 @@
 			</li>
 			<li v-if="item.type === 'folder'">
 				<Filetree
-					v-if="item.type == 'folder'"
+					v-show="expandedFolders.includes(item.id)"
 					:filetree.sync="item.objects"
 					:value="value"
 					:path="path + '/' + item.name"
@@ -64,6 +65,11 @@ export default {
 			default: "",
 		},
 	},
+	data() {
+		return {
+			expandedFolders: [],
+		};
+	},
 	watch: {
 		isParentDeleted: function(to, from) {
 			if (to === from) {
@@ -81,6 +87,16 @@ export default {
 		},
 	},
 	methods: {
+		toggleExpansion({ id, type }) {
+			if (type !== "folder") {
+				return;
+			}
+			if (this.expandedFolders.includes(id)) {
+				this.expandedFolders.splice(this.expandedFolders.indexOf(id), 1);
+			} else {
+				this.expandedFolders.push(id);
+			}
+		},
 		deleteEntry(id, name) {
 			const itemIndex = this.filetree.findIndex((item) => item.name === name);
 			const item = this.filetree[itemIndex];
