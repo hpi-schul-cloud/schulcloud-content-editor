@@ -12,12 +12,13 @@
 		<div id="filetree">
 			<h4>Your uploaded Filetree:</h4>
 			<Filetree
-				v-model="value"
+				:value="value"
 				:path="prefix"
 				:filetree.sync="filetree"
 				:is-parent-deleted="false"
-				@uploaded="adjustLoaderState('uploaded')"
-				@uploading="adjustLoaderState('uploading')"
+				@update="$emit('update', $event)"
+				@uploaded="loadingState = 'idle'"
+				@uploading="loadingState = 'uploading'"
 			/>
 		</div>
 	</div>
@@ -27,7 +28,7 @@
 import Filetree from "./helper/Filetree.vue";
 import upload from "./helper/upload.js";
 import filetree from "./helper/filetree.js";
-import Loader from "@/components/base/helper/loader.vue";
+import Loader from "@/components/base/helper/UploadLoadingOverlay.vue";
 
 export default {
 	name: "Upload",
@@ -53,23 +54,21 @@ export default {
 	data() {
 		return {
 			dragging: false,
-			loadingState: "uploaded",
+			loadingState: "idle",
 		};
 	},
 	methods: {
-		adjustLoaderState(state) {
-			this.loadingState = state;
-		},
 		handleDropEvent(event) {
-			this.adjustLoaderState("uploading");
+			this.loadingState = "uploading";
 			return this.dropFile(event, this.prefix)
 				.then((newItemsTree) => {
 					this.recursiveSave(newItemsTree);
 					const newTree = this.mergeIntoTree(this.filetree, newItemsTree);
+					this.$emit("update", this.value);
 					return this.$emit("update:filetree", newTree);
 				})
 				.then((res) => {
-					this.adjustLoaderState("uploaded");
+					this.loadingState = "idle";
 					return res;
 				});
 		},
