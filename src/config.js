@@ -11,6 +11,7 @@ export default {
 			userInfoPath: "/users/",
 			getContentPath: "/content/resources/",
 			postReserveId: "/reserved_Ids",
+			getFiletreePath: "/files/filetree",
 			pushContentPath: "/resources/",
 			searchContentPath: "/content/search/",
 			viewContentPath: "/content/redirect/",

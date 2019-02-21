@@ -141,42 +141,7 @@ export default {
 				cancle: this.$lang.edit.dialog.cancle,
 			},
 			userInfo: JSON.parse(localStorage.getItem("userInfo")) || {},
-			filetree: [
-				{
-					id: "5c62d92db597ab10e83955cc/nvram",
-					type: "file",
-					name: "nvram",
-				},
-				{
-					id: "5c62d92db597ab10e83955cc/folder 1",
-					type: "folder",
-					name: "folder 1",
-					objects: [
-						{
-							id: "5c62d92db597ab10e83955cc/folder 1/file 2.txt",
-							type: "file",
-							name: "file 2.txt",
-						},
-						{
-							id: "5c62d92db597ab10e83955cc/folder 1/folder 2",
-							type: "folder",
-							name: "folder 2",
-							objects: [
-								{
-									id: "5c62d92db597ab10e83955cc/folder 1/folder 2/file 3.txt",
-									type: "file",
-									name: "file 3.txt",
-								},
-								{
-									id: "5c62d92db597ab10e83955cc/folder 1/folder 2/file 4.txt",
-									type: "file",
-									name: "file 4.txt",
-								},
-							],
-						},
-					],
-				},
-			],
+			filetree: [],
 		};
 	},
 	computed: {
@@ -191,6 +156,7 @@ export default {
 	},
 	created() {
 		this.loadContent();
+		this.loadFiletree();
 	},
 	methods: {
 		loadContent() {
@@ -209,6 +175,27 @@ export default {
 					.then((response) => {
 						// JSON responses are automatically parsed.
 						this.data = response.data;
+					})
+					.catch((e) => {
+						this.errors.push(e);
+					});
+			}
+		},
+		loadFiletree() {
+			if (this.editMode) {
+				this.$http
+					.get(
+						this.$config.API.contentServerUrl +
+							this.$config.API.getFiletreePath,
+						{
+							headers: {
+								Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+							},
+						}
+					)
+					.then((response) => {
+						// JSON responses are automatically parsed.
+						this.filetree = response.data[0].objects; // data[0] is folder of contentId
 					})
 					.catch((e) => {
 						this.errors.push(e);
