@@ -111,7 +111,7 @@ export default {
 			} else {
 				// save files
 				this.filetree[itemIndex].state = "deleted";
-				this.value.deleted.push(id);
+				this.value.delete.push(id);
 			}
 			this.$emit("update", this.value);
 			this.$forceUpdate();
@@ -128,7 +128,7 @@ export default {
 			}
 			if (item.state === "deleted") {
 				this.filetree[itemIndex].state = undefined;
-				this.value.deleted.splice(this.value.deleted.indexOf(id), 1);
+				this.value.delete.splice(this.value.delete.indexOf(id), 1);
 			}
 			this.$emit("update", this.value);
 			this.$forceUpdate();

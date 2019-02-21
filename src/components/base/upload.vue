@@ -40,7 +40,7 @@ export default {
 	props: {
 		value: {
 			type: Object,
-			default: () => ({ deleted: [], save: [] }),
+			default: () => ({ delete: [], save: [] }),
 		},
 		filetree: {
 			type: Array,

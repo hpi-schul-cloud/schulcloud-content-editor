@@ -3,9 +3,9 @@
 		<div class="grid-xl-8 grid-s-12">
 			<MdCard>
 				<MdCardHeader>
-					<div v-if="$route.params.id" class="md-title">
-						{{ $lang.edit.title_edit }}
-					</div>
+					<div v-if="$route.params.id" class="md-title">{{
+						$lang.edit.title_edit
+					}}</div>
 					<div v-else class="md-title">{{ $lang.edit.title_create }}</div>
 				</MdCardHeader>
 				<MdCardContent>
@@ -58,9 +58,9 @@
 						>{{ $lang.buttons.delete }}</MdButton
 					>
 					<ConfirmDialog :config="dialog" @confirm="deleteContent" />
-					<MdButton style="color: initial;" @click="$router.go(-1)">{{
-						$lang.buttons.cancel
-					}}</MdButton>
+					<MdButton style="color: initial;" @click="$router.go(-1)">
+						{{ $lang.buttons.cancel }}
+					</MdButton>
 					<MdButton
 						class="md-primary"
 						type="submit"
@@ -132,7 +132,7 @@ export default {
 				contentCategory: "",
 				licenses: ["Test License"],
 				tags: [],
-				files: { deleted: [], save: [] },
+				files: { delete: [], save: [] },
 			},
 			dialog: {
 				active: false,

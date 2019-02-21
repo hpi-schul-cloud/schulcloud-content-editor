@@ -70,7 +70,11 @@ export default {
 				xhr.addEventListener(
 					"load",
 					(res) => {
-						resolve(res.srcElement.responseText);
+						const response = JSON.parse(res.srcElement.responseText);
+						if (response.status !== 200) {
+							reject(response.message);
+						}
+						resolve(response.message);
 					},
 					false
 				);
