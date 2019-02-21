@@ -39,7 +39,7 @@
 							:error="errors.first('thumbnail')"
 						/>
 						<ContentLicense v-model="data.licenses" />
-						<ContentCategory v-model="data.categorie" />
+						<ContentCategory v-model="data.contentCategory" />
 						<ContentMimetype v-model="data.mimeType" />
 						<ContentTags v-model="data.tags" />
 						<FileUpload
@@ -124,7 +124,7 @@ export default {
 	data() {
 		return {
 			data: {
-				providerName: "",
+				providerName: "Cornelsen",
 				url: "",
 				title: "",
 				description: "",
@@ -223,7 +223,7 @@ export default {
 				files: d.files,
 			};
 			let request;
-			if (this.$route.params.id) {
+			if (this.editMode) {
 				request = this.$http.patch(
 					this.$config.API.contentServerUrl +
 						this.$config.API.pushContentPath +

@@ -9,9 +9,10 @@
 			name="contentCategory"
 			@input="$emit('input', $event)"
 		>
-			<MdOption value>/</MdOption>
 			<MdOption value="atomic">Atomic</MdOption>
-			<MdOption value="interactive">Interactive</MdOption>
+			<MdOption value="learning-object">Lernobjekt</MdOption>
+			<MdOption value="proven-learning-object">Bewährtes Lernobjekt</MdOption>
+			<MdOption value="tool">Tool</MdOption>
 		</MdSelect>
 	</MdField>
 </template>
