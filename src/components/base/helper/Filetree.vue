@@ -28,6 +28,7 @@
 					:value="value"
 					:path="path + '/' + item.name"
 					:is-parent-deleted="value.deleted.includes(item.id)"
+					@update="$emit('update', $event)"
 					@uploaded="$emit('uploaded')"
 					@uploading="$emit('uploading')"
 				/>
@@ -112,6 +113,7 @@ export default {
 				this.filetree[itemIndex].state = "deleted";
 				this.value.deleted.push(id);
 			}
+			this.$emit("update", this.value);
 			this.$forceUpdate();
 		},
 		restoreEntry(id, name) {
@@ -128,6 +130,7 @@ export default {
 				this.filetree[itemIndex].state = undefined;
 				this.value.deleted.splice(this.value.deleted.indexOf(id), 1);
 			}
+			this.$emit("update", this.value);
 			this.$forceUpdate();
 		},
 		handleDropEvent(event, prefix, item) {
@@ -150,6 +153,7 @@ export default {
 								newItemsTree
 							);
 						}
+						this.$emit("update", this.value);
 						this.$emit("update:filetree", srcTree);
 					})
 					.then(() => {

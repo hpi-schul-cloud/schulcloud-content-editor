@@ -8,16 +8,17 @@
 export default {
 	name: "Loader",
 	props: {
-		state: String,
-		validator: (value) => {
-			["uploading", "uploaded"].includes(value);
+		state: {
+			type: String,
+			required: true,
+			validator: (value) => ["uploading", "idle"].includes(value),
 		},
 	},
 	methods: {
 		getClass() {
 			return {
 				uploading: this.state === "uploading",
-				uploaded: this.state === "uploaded",
+				idle: this.state === "idle",
 			};
 		},
 	},
@@ -25,7 +26,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.uploaded {
+.idle {
 	z-index: -5;
 	opacity: 0;
 }

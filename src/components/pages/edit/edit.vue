@@ -3,9 +3,9 @@
 		<div class="grid-xl-8 grid-s-12">
 			<MdCard>
 				<MdCardHeader>
-					<div v-if="$route.params.id" class="md-title">
-						{{ $lang.edit.title_edit }}
-					</div>
+					<div v-if="$route.params.id" class="md-title">{{
+						$lang.edit.title_edit
+					}}</div>
 					<div v-else class="md-title">{{ $lang.edit.title_create }}</div>
 				</MdCardHeader>
 				<MdCardContent>
@@ -42,13 +42,14 @@
 						<ContentCategory v-model="data.categorie" />
 						<ContentMimetype v-model="data.mimeType" />
 						<ContentTags v-model="data.tags" />
+						<FileUpload
+							:value="data.files"
+							:filetree.sync="filetree"
+							:prefix="$route.params.id"
+							@update="data.files = $event"
+						/>
 					</form>
 				</MdCardContent>
-				<FileUpload
-					v-model="data.files"
-					:filetree.sync="filetree"
-					:prefix="$route.params.id"
-				/>
 				<MdCardActions>
 					<MdButton
 						v-if="$route.params.id"
@@ -57,9 +58,9 @@
 						>{{ $lang.buttons.delete }}</MdButton
 					>
 					<ConfirmDialog :config="dialog" @confirm="deleteContent" />
-					<MdButton style="color: initial;" @click="$router.go(-1)">{{
-						$lang.buttons.cancel
-					}}</MdButton>
+					<MdButton style="color: initial;" @click="$router.go(-1)">
+						{{ $lang.buttons.cancel }}
+					</MdButton>
 					<MdButton
 						class="md-primary"
 						type="submit"
@@ -219,6 +220,7 @@ export default {
 				licenses: d.licenses,
 				tags: d.tags,
 				mimeType: d.mimeType,
+				files: d.files,
 			};
 			let request;
 			if (this.$route.params.id) {
