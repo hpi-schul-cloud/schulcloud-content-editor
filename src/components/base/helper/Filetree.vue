@@ -106,10 +106,10 @@ export default {
 				return; // shouldn't be possible
 				//return console.warn("deleting this item shouldn't be possible");
 			} else if (item.state === "new") {
-				this.value.saved.splice(this.value.saved.indexOf(id), 1);
+				this.value.save.splice(this.value.save.indexOf(id), 1);
 				this.filetree.splice(itemIndex, 1);
 			} else {
-				// saved files
+				// save files
 				this.filetree[itemIndex].state = "deleted";
 				this.value.deleted.push(id);
 			}
@@ -124,7 +124,7 @@ export default {
 			}
 			if (item.state === "updated") {
 				this.filetree[itemIndex].state = undefined;
-				this.value.saved.splice(this.value.saved.indexOf(id), 1);
+				this.value.save.splice(this.value.save.indexOf(id), 1);
 			}
 			if (item.state === "deleted") {
 				this.filetree[itemIndex].state = undefined;

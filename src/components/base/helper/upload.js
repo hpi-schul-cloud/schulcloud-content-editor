@@ -85,6 +85,11 @@ export default {
 
 				xhr.open("post", url, true);
 				// Set appropriate headers
+
+				xhr.setRequestHeader(
+					"Authorization",
+					`Bearer ${localStorage.getItem("jwt")}`
+				);
 				xhr.setRequestHeader("X-File-Name", file.name);
 				xhr.setRequestHeader("X-File-Size", file.size);
 				xhr.setRequestHeader("X-File-Type", file.type);
