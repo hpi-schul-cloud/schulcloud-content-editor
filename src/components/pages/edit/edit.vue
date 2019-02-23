@@ -153,7 +153,7 @@ export default {
 				contentCategory: "",
 				licenses: ["Test License"],
 				tags: [],
-				files: { deleted: [], saved: [] },
+				files: { delete: [], save: [] },
 			},
 			dialog: {
 				active: false,
@@ -220,7 +220,8 @@ export default {
 				this.$http
 					.get(
 						this.$config.API.contentServerUrl +
-							this.$config.API.getFiletreePath,
+							this.$config.API.getFiletreePath +
+							this.$route.params.id,
 						{
 							headers: {
 								Authorization: `Bearer ${localStorage.getItem("jwt")}`,

@@ -27,8 +27,8 @@ export default {
 		},
 		recursiveSave(tree) {
 			this.traverseTree(tree, (leave) => {
-				if (leave.type === "file" && !this.value.saved.includes(leave.id)) {
-					this.value.saved.push(leave.id);
+				if (leave.type === "file" && !this.value.save.includes(leave.id)) {
+					this.value.save.push(leave.id);
 				}
 				return leave;
 			});
