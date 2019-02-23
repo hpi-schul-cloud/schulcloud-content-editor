@@ -8,6 +8,7 @@ export default {
 		url: "URL",
 		license: "Lizenz",
 		categorie: "Kategorie",
+		hosting: "Hosting",
 		description: "Beschreibung",
 		description_tooltip:
 			"Geben Sie Geben Sie eine Beschreibung für den Inhalt an.",
@@ -17,6 +18,7 @@ export default {
 		tags: "Tags",
 		max: "max.",
 		mimetype: "Verwendeter MIME-Type",
+		entrypointSelector: "Entrypoint",
 	},
 	dialog: {
 		title: "Inhalt löschen?",

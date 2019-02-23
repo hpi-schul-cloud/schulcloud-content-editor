@@ -3,13 +3,14 @@
 		<div class="grid-xl-8 grid-s-12">
 			<MdCard>
 				<MdCardHeader>
-					<div v-if="$route.params.id" class="md-title">{{
+					<div v-if="editMode" class="md-title">{{
 						$lang.edit.title_edit
 					}}</div>
 					<div v-else class="md-title">{{ $lang.edit.title_create }}</div>
 				</MdCardHeader>
 				<MdCardContent>
 					<form id="contentForm" @submit.prevent="validateBeforeSubmit">
+						<h3>Metadaten</h3>
 						<ContentTitle
 							v-model="data.title"
 							v-validate
@@ -24,13 +25,6 @@
 							data-vv-rules="max:500"
 							:error="errors.first('description')"
 						/>
-						<ContentUrl
-							v-model="data.url"
-							v-validate
-							data-vv-name="url"
-							data-vv-rules="required|url"
-							:error="errors.first('url')"
-						/>
 						<ContentUrlThumbnail
 							v-model="data.thumbnail"
 							v-validate
@@ -42,10 +36,33 @@
 						<ContentCategory v-model="data.contentCategory" />
 						<ContentMimetype v-model="data.mimeType" />
 						<ContentTags v-model="data.tags" />
+						<h3>Dateien</h3>
+						<ContentHosting v-model="hostingOption" />
+						<ContentUrl
+							v-show="hostingOption === 'hostedExternally'"
+							v-model="data.url"
+							v-validate
+							data-vv-name="url"
+							data-vv-rules="required|url"
+							:error="errors.first('url')"
+						/>
+						<ContentEntrypointSelector
+							v-show="hostingOption === 'hostedAtSchulcloud'"
+							v-model="data.url"
+							v-validate
+							data-vv-name="entrypointSelector"
+							data-vv-rules="required|url"
+							:error="errors.first('url')"
+							:disabled="filetree.length === 0"
+							:files="entrypointFiles"
+							:content-i-d="$route.params.id"
+						/>
 						<FileUpload
+							v-show="hostingOption === 'hostedAtSchulcloud'"
 							:value="data.files"
-							:filetree.sync="filetree"
+							:filetree="filetree"
 							:prefix="$route.params.id"
+							@update:filetree="handleFiletreeUpdate($event)"
 							@update="data.files = $event"
 						/>
 					</form>
@@ -99,6 +116,8 @@ import ContentLicense from "@/components/inputs/ContentLicense.vue";
 import ContentCategory from "@/components/inputs/ContentCategory.vue";
 import ContentMimetype from "@/components/inputs/ContentMimetype.vue";
 import ContentTags from "@/components/inputs/ContentTags.vue";
+import ContentHosting from "@/components/inputs/ContentHosting.vue";
+import ContentEntrypointSelector from "@/components/inputs/ContentEntrypointSelector.vue";
 
 import FileUpload from "@/components/base/upload.vue";
 
@@ -115,6 +134,8 @@ export default {
 		ContentCategory,
 		ContentMimetype,
 		ContentTags,
+		ContentHosting,
+		ContentEntrypointSelector,
 
 		FileUpload,
 	},
@@ -143,6 +164,8 @@ export default {
 			},
 			userInfo: JSON.parse(localStorage.getItem("userInfo")) || {},
 			filetree: [],
+			hostingOption: "",
+			entrypointFiles: [],
 		};
 	},
 	computed: {
@@ -160,6 +183,16 @@ export default {
 		this.loadFiletree();
 	},
 	methods: {
+		handleFiletreeUpdate(newFiletree) {
+			this.filetree = newFiletree;
+			this.entrypointFiles = this.filetree
+				.filter((file) => {
+					return file.type === "file";
+				})
+				.map((file) => {
+					return file.name;
+				});
+		},
 		loadContent() {
 			if (this.editMode) {
 				this.$http
@@ -283,6 +316,13 @@ export default {
 
 .md-card {
 	width: 100%;
+
+	h3 {
+		margin: 2.5em 0 0.5em 0;
+		&:first-of-type {
+			margin-top: 0;
+		}
+	}
 }
 
 .preview-wrapper {

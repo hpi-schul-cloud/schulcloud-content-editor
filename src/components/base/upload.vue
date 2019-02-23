@@ -9,7 +9,7 @@
 			@drop.prevent="handleDropEvent"
 			>Drag your files here!</div
 		>
-		<div v-if="filetree.length !== 0" id="filetree">
+		<div v-show="filetree.length !== 0" id="filetree">
 			<h4>Your uploaded Filetree:</h4>
 			<Filetree
 				:value="value"
