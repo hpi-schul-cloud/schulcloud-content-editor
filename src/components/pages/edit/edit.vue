@@ -208,10 +208,15 @@ export default {
 					)
 					.then((response) => {
 						// JSON responses are automatically parsed.
-						this.data = response.data;
+						this.data = response.body;
+						this.hostingOption = (this.data.url || "").startsWith(
+							this.$config.API.contentServerUrl + this.$config.API.hostingEntry
+						)
+							? "hostedAtSchulcloud"
+							: "hostedAtSchulcloud";
 					})
 					.catch((e) => {
-						this.errors.push(e);
+						this.errors.add(e);
 					});
 			}
 		},
@@ -233,7 +238,7 @@ export default {
 						this.filetree = response.data[0].objects; // data[0] is folder of contentId
 					})
 					.catch((e) => {
-						this.errors.push(e);
+						this.errors.add(e);
 					});
 			}
 		},

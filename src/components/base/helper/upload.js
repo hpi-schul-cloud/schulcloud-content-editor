@@ -90,16 +90,29 @@ export default {
 				xhr.open("post", url, true);
 				// Set appropriate headers
 
-				xhr.setRequestHeader(
-					"Authorization",
-					`Bearer ${localStorage.getItem("jwt")}`
-				);
-				xhr.setRequestHeader("X-File-Name", file.name);
-				xhr.setRequestHeader("X-File-Size", file.size);
-				xhr.setRequestHeader("X-File-Type", file.type);
+				[
+					["Authorization", `Bearer ${localStorage.getItem("jwt")}`],
+					["X-File-Name", file.name],
+					["X-File-Size", file.size],
+					["X-File-Type", file.type],
+				].forEach((header) => {
+					if (!header[0] || !header[1]) {
+						return;
+					}
+					header = header.map((str) =>
+						(str || "")
+							.toString()
+							.replace(
+								/[^A-Za-z 0-9 \.,\?""!@#\$%\^&\*\(\)-_=\+;:<>\/\\\|\}\{\[\]`~]*/g,
+								""
+							)
+					);
+					return xhr.setRequestHeader(header[0], header[1]);
+				});
 
 				// Send the file (doh)
 				xhr.send(formData);
+				//console.log(xhr);
 			});
 		},
 		dropFile(event, prefix) {
