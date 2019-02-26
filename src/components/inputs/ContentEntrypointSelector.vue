@@ -44,6 +44,7 @@ export default {
 		},
 		contentID: {
 			type: String,
+			default: "",
 		},
 	},
 };
