@@ -37,7 +37,7 @@
 						<ContentMimetype v-model="data.mimeType" />
 						<ContentTags v-model="data.tags" />
 						<h3>Dateien</h3>
-						<ContentHosting v-model="hostingOption" />
+						<ContentHostingProvider v-model="hostingOption" />
 						<ContentUrl
 							v-show="hostingOption === 'hostedExternally'"
 							v-model="data.url"
@@ -116,7 +116,7 @@ import ContentLicense from "@/components/inputs/ContentLicense.vue";
 import ContentCategory from "@/components/inputs/ContentCategory.vue";
 import ContentMimetype from "@/components/inputs/ContentMimetype.vue";
 import ContentTags from "@/components/inputs/ContentTags.vue";
-import ContentHosting from "@/components/inputs/ContentHosting.vue";
+import ContentHostingProvider from "@/components/inputs/ContentHostingProvider.vue";
 import ContentEntrypointSelector from "@/components/inputs/ContentEntrypointSelector.vue";
 
 import FileUpload from "@/components/base/upload.vue";
@@ -134,7 +134,7 @@ export default {
 		ContentCategory,
 		ContentMimetype,
 		ContentTags,
-		ContentHosting,
+		ContentHostingProvider,
 		ContentEntrypointSelector,
 
 		FileUpload,
