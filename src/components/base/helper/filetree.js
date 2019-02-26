@@ -65,7 +65,13 @@ export default {
 					}
 				}
 			});
-			return srcTree;
+			return srcTree.sort((a, b) =>
+				a.type === b.type
+					? a.name.localeCompare(b.name)
+					: a.type === "file"
+					? -1
+					: 1
+			);
 		},
 	},
 };
