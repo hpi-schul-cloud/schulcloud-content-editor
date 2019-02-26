@@ -15,6 +15,7 @@ export default {
 			pushContentPath: "/resources/",
 			searchContentPath: "/content/search/",
 			viewContentPath: "/content/redirect/",
+			hostingEntry: "/files/get/",
 		},
 		card: {
 			displayedTags: 9,

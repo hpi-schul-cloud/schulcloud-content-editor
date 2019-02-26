@@ -7,13 +7,19 @@
 			id="contentEntrypointSelector"
 			:value="value"
 			name="contentEntrypointSelector"
-			:disabled="disabled"
+			:disabled="disabled || !files.length"
 			@input="$emit('input', $event)"
 		>
 			<MdOption
 				v-for="file in files"
 				:key="file"
-				:value="'http://127.0.0.1:4040/files/get/' + contentID + '/' + file"
+				:value="
+					$config.API.contentServerUrl +
+						config.API.hostingEntry +
+						contentID +
+						'/' +
+						file
+				"
 				>{{ file }}</MdOption
 			>
 		</MdSelect>
@@ -28,9 +34,17 @@ export default {
 			default: "",
 			required: true,
 		},
-		disabled: Boolean,
-		files: Array,
-		contentID: String,
+		disabled: {
+			type: Boolean,
+			default: false,
+		},
+		files: {
+			type: Array,
+			default: () => [],
+		},
+		contentID: {
+			type: String,
+		},
 	},
 };
 </script>
