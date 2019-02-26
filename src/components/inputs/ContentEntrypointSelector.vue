@@ -15,7 +15,7 @@
 				:key="file"
 				:value="
 					$config.API.contentServerUrl +
-						config.API.hostingEntry +
+						$config.API.hostingEntry +
 						contentID +
 						'/' +
 						file

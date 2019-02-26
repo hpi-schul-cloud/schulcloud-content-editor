@@ -3,9 +3,9 @@ export default {
 	configs: {
 		API: {
 			serverServerUrl:
-				process.env.VUE_APP_SERVER_SERVER_URL || "http://localhost:3030",
+				process.env.VUE_APP_SERVER_SERVER_URL || "http://127.0.0.1:3030",
 			contentServerUrl:
-				process.env.VUE_APP_CONTENT_SERVER_URL || "http://localhost:4040",
+				process.env.VUE_APP_CONTENT_SERVER_URL || "http://127.0.0.1:4040",
 			authPath: "/authentication",
 			pwRecoveryPath: "/login?recovery=true",
 			userInfoPath: "/users/",

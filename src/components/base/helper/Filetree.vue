@@ -13,7 +13,13 @@
 			>
 				<FiletreeEntry
 					:id="item.id"
-					:icon="item.type === 'file' ? 'insert_drive_file' : 'folder_open'"
+					:icon="
+						item.type === 'file'
+							? 'insert_drive_file'
+							: expandedFolders.includes(item.id)
+							? 'folder_open'
+							: 'folder'
+					"
 					:name="item.name"
 					:state="item.state"
 					:read-only="isParentDeleted"
@@ -27,7 +33,7 @@
 					:filetree.sync="item.objects"
 					:value="value"
 					:path="path + '/' + item.name"
-					:is-parent-deleted="value.deleted.includes(item.id)"
+					:is-parent-deleted="value.delete.includes(item.id)"
 					@update="$emit('update', $event)"
 					@uploaded="$emit('uploaded')"
 					@uploading="$emit('uploading')"

@@ -36,7 +36,7 @@
 						<ContentCategory v-model="data.contentCategory" />
 						<ContentMimetype v-model="data.mimeType" />
 						<ContentTags v-model="data.tags" />
-						<h3>Dateien</h3>
+						<h3>Inhalte</h3>
 						<ContentHostingProvider v-model="hostingOption" />
 						<ContentUrl
 							v-show="hostingOption === 'hostedExternally'"

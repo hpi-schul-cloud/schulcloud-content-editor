@@ -84,7 +84,7 @@ export default {
 	methods: {
 		onConfirm() {
 			window.open(
-				this.$config.API.baseUrl +
+				this.$config.API.serverServerUrl +
 					this.$config.API.viewContentPath +
 					this.data._id,
 				"_blank"
