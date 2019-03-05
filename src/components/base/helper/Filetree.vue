@@ -22,7 +22,7 @@
 					"
 					:name="item.name"
 					:state="item.state"
-					:read-only="isParentDeleted"
+					:read-only="parentState === 'deleted'"
 					@delete="deleteEntry"
 					@restore="restoreEntry"
 				/>
@@ -33,7 +33,7 @@
 					:filetree.sync="item.objects"
 					:value="value"
 					:path="path + '/' + item.name"
-					:is-parent-deleted="value.delete.includes(item.id)"
+					:parent-state="item.state"
 					@update="$emit('update', $event)"
 					@uploaded="$emit('uploaded')"
 					@uploading="$emit('uploading')"
@@ -63,9 +63,9 @@ export default {
 			type: Object,
 			required: true,
 		},
-		isParentDeleted: {
-			type: Boolean,
-			default: false,
+		parentState: {
+			type: String,
+			default: "",
 		},
 		path: {
 			type: String,
@@ -78,15 +78,15 @@ export default {
 		};
 	},
 	watch: {
-		isParentDeleted: function(to, from) {
+		parentState: function(to, from) {
 			if (to === from) {
 				return;
 			}
-			if (to === true) {
+			if (to === "deleted") {
 				this.filetree.forEach((item) => {
 					this.deleteEntry(item.id, item.name);
 				});
-			} else {
+			} else if (!to) {
 				this.filetree.forEach((item) => {
 					this.restoreEntry(item.id, item.name);
 				});
@@ -130,7 +130,15 @@ export default {
 			}
 			if (item.state === "updated") {
 				this.filetree[itemIndex].state = undefined;
-				this.value.save.splice(this.value.save.indexOf(id), 1);
+
+				this.value.save
+					.filter((savedId) => {
+						let res = savedId.includes(id);
+						if (res) return true;
+					})
+					.forEach((elem) => {
+						this.value.save.splice(this.value.save.indexOf(elem), 1);
+					});
 			}
 			if (item.state === "deleted") {
 				this.filetree[itemIndex].state = undefined;

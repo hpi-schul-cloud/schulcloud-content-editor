@@ -15,7 +15,6 @@
 				:value="value"
 				:path="prefix"
 				:filetree.sync="filetree"
-				:is-parent-deleted="false"
 				@update="$emit('update', $event)"
 				@uploaded="loadingState = 'idle'"
 				@uploading="loadingState = 'uploading'"
