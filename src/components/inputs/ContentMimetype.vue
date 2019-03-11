@@ -1,34 +1,40 @@
 <template>
-	<MdField>
-		<label for="contentMimetype">
-			{{ $lang.edit.form.mimetype }}
-		</label>
-		<MdSelect
-			id="contentMimetype"
-			:value="value"
-			name="contentCategory"
-			@input="$emit('input', $event)"
-		>
-			<MdOption value="application">application</MdOption>
-			<MdOption value="audio">audio</MdOption>
-			<MdOption value="example">example</MdOption>
-			<MdOption value="image">image</MdOption>
-			<MdOption value="message">message</MdOption>
-			<MdOption value="model">model</MdOption>
-			<MdOption value="multipart">multipart</MdOption>
-			<MdOption value="text">text</MdOption>
-			<MdOption value="video">video</MdOption>
-		</MdSelect>
-	</MdField>
+	<Select
+		:label="$lang.edit.form.mimetype"
+		name="Mimetype"
+		:options="options"
+		:selected="value"
+		@input="$emit('input', $event)"
+	/>
 </template>
 
 <script>
+import Select from "@/components/base/select.vue";
+
 export default {
+	components: {
+		Select,
+	},
 	props: {
 		value: {
 			type: String,
 			default: "",
 		},
+	},
+	data() {
+		return {
+			options: [
+				{ key: "application", value: "application" },
+				{ key: "audio", value: "audio" },
+				{ key: "example", value: "example" },
+				{ key: "image", value: "image" },
+				{ key: "message", value: "message" },
+				{ key: "model", value: "model" },
+				{ key: "multipart", value: "multipart" },
+				{ key: "text", value: "text" },
+				{ key: "video", value: "video" },
+			],
+		};
 	},
 };
 </script>

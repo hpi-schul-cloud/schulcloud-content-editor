@@ -1,29 +1,35 @@
 <template>
-	<MdField>
-		<label for="contentCategory">
-			{{ $lang.edit.form.categorie }}
-		</label>
-		<MdSelect
-			id="contentCategory"
-			:value="value"
-			name="contentCategory"
-			@input="$emit('input', $event)"
-		>
-			<MdOption value="atomic">Atomic</MdOption>
-			<MdOption value="learning-object">Lernobjekt</MdOption>
-			<MdOption value="proven-learning-object">Bewährtes Lernobjekt</MdOption>
-			<MdOption value="tool">Tool</MdOption>
-		</MdSelect>
-	</MdField>
+	<Select
+		:label="$lang.edit.form.categorie"
+		name="Kategorie"
+		:options="options"
+		:selected="value"
+		@input="$emit('input', $event)"
+	/>
 </template>
 
 <script>
+import Select from "@/components/base/select.vue";
+
 export default {
+	components: {
+		Select,
+	},
 	props: {
 		value: {
 			type: String,
 			default: "",
 		},
+	},
+	data() {
+		return {
+			options: [
+				{ key: "atomic", value: "Atomic" },
+				{ key: "learning-object", value: "Lernobjekt" },
+				{ key: "proven-learning-object", value: "Bewährtes Lernobjekt" },
+				{ key: "tool", value: "Tool" },
+			],
+		};
 	},
 };
 </script>

@@ -1,33 +1,21 @@
 <template>
-	<MdField>
-		<label for="contentEntrypointSelector">
-			{{ $lang.edit.form.entrypointSelector }}
-		</label>
-		<MdSelect
-			id="contentEntrypointSelector"
-			:value="value"
-			name="contentEntrypointSelector"
-			:disabled="disabled || !files.length"
-			@input="$emit('input', $event)"
-		>
-			<MdOption
-				v-for="file in files"
-				:key="file"
-				:value="
-					$config.API.contentServerUrl +
-						$config.API.hostingEntry +
-						contentID +
-						'/' +
-						file
-				"
-				>{{ file }}</MdOption
-			>
-		</MdSelect>
-	</MdField>
+	<Select
+		:label="$lang.edit.form.entrypointSelector"
+		name="Entrypoint"
+		:options="getOptions()"
+		:selected="value"
+		:disabled="disabled || !files.length"
+		@input="$emit('input', $event)"
+	/>
 </template>
 
 <script>
+import Select from "@/components/base/select.vue";
+
 export default {
+	components: {
+		Select,
+	},
 	props: {
 		value: {
 			type: String,
@@ -45,6 +33,23 @@ export default {
 		contentID: {
 			type: String,
 			default: "",
+		},
+	},
+	methods: {
+		getOptions() {
+			let options = this.files.map((elem) => {
+				let obj = {};
+				const key =
+					$config.API.contentServerUrl +
+					$config.API.hostingEntry +
+					this.contentID +
+					"/" +
+					elem;
+				obj.key = key;
+				obj.value = elem;
+				return obj;
+			});
+			return options;
 		},
 	},
 };
