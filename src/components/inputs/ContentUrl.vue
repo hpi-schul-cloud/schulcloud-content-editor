@@ -1,13 +1,21 @@
 <template>
-	<MdField :class="{ 'md-invalid': !!error }">
-		<label>{{ $lang.edit.form.url }}</label>
-		<MdInput :value="value" name="url" @input="$emit('input', $event)" />
-		<span class="md-error">{{ error }}</span>
-	</MdField>
+	<CustomInput
+		name="url"
+		:value="value"
+		type="text"
+		:label="$lang.edit.form.url"
+		:error="error"
+		@input="$emit('input', $event)"
+	/>
 </template>
 
 <script>
+import CustomInput from "@/components/base/CustomInput.vue";
+
 export default {
+	components: {
+		CustomInput,
+	},
 	props: {
 		value: {
 			type: String,

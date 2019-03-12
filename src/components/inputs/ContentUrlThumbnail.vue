@@ -1,21 +1,21 @@
 <template>
-	<MdField :class="{ 'md-invalid': !!error }">
-		<label>
-			{{ $lang.edit.form.thumbnail_url }}
-			<span>
-				<MdIcon>help</MdIcon>
-				<MdTooltip md-direction="right">
-					{{ $lang.edit.form.thumbnail_url_tooptip }}
-				</MdTooltip>
-			</span>
-		</label>
-		<MdInput :value="value" name="thumbnail" @input="$emit('input', $event)" />
-		<span class="md-error">{{ error }}</span>
-	</MdField>
+	<CustomInput
+		name="thumbnail"
+		:value="value"
+		type="text"
+		:label="$lang.edit.form.thumbnail_url"
+		:error="error"
+		@input="$emit('input', $event)"
+	/>
 </template>
 
 <script>
+import CustomInput from "@/components/base/CustomInput.vue";
+
 export default {
+	components: {
+		CustomInput,
+	},
 	props: {
 		value: {
 			type: String,

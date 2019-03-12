@@ -125,6 +125,8 @@ label {
 }
 .expand {
 	border-bottom-color: #b10438;
+	border-bottom-width: 2px;
+
 	+ .select {
 		display: block;
 	}
