@@ -1,5 +1,5 @@
 <template>
-	<Select
+	<CustomSelect
 		:label="$lang.edit.form.entrypointSelector"
 		name="Entrypoint"
 		:options="getOptions()"
@@ -10,11 +10,11 @@
 </template>
 
 <script>
-import Select from "@/components/base/select.vue";
+import CustomSelect from "@/components/base/CustomSelect.vue";
 
 export default {
 	components: {
-		Select,
+		CustomSelect,
 	},
 	props: {
 		value: {

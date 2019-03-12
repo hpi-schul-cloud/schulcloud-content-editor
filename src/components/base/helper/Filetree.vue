@@ -117,7 +117,9 @@ export default {
 			} else {
 				// save files
 				this.filetree[itemIndex].state = "deleted";
-				this.value.delete.push(id);
+				if (this.filetree[itemIndex].type === "file") {
+					this.value.delete.push(id);
+				}
 			}
 			this.$emit("update", this.value);
 			this.$forceUpdate();

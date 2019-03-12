@@ -1,5 +1,5 @@
 <template>
-	<Select
+	<CustomSelect
 		:label="$lang.edit.form.hosting"
 		name="Hosting"
 		:options="options"
@@ -9,11 +9,11 @@
 </template>
 
 <script>
-import Select from "@/components/base/select.vue";
+import CustomSelect from "@/components/base/CustomSelect.vue";
 
 export default {
 	components: {
-		Select,
+		CustomSelect,
 	},
 	props: {
 		value: {

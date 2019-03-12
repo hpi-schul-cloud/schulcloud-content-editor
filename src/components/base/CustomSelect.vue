@@ -1,17 +1,18 @@
 <template>
 	<div class="wrapper">
-		<label :for="name">
-			{{ label }}
-		</label>
+		<label :for="name">{{ label }}</label>
 		<button
-			:id="name"
-			:class="{ select_button: true, disabled: disabled === true }"
+			:class="{
+				select_button: true,
+				disabled: disabled === true,
+				expand: expanded,
+			}"
 			:disabled="disabled"
 			@click="expandSelect"
-			>{{ getContent() }}
+		>
+			{{ getContent() }}
 			<img
-				:id="'icon-' + name"
-				class="icon"
+				:class="{ icon: true, rotate: expanded }"
 				src="@/assets/icon-arrow_down.svg"
 			/>
 		</button>
@@ -30,7 +31,7 @@
 
 <script>
 export default {
-	name: "Select",
+	name: "CustomSelect",
 	props: {
 		options: {
 			type: Array,
@@ -58,18 +59,19 @@ export default {
 			required: false,
 		},
 	},
+	data() {
+		return {
+			expanded: false,
+		};
+	},
 	methods: {
 		expandSelect(event) {
-			event.target.classList.toggle("expand");
-			event.target.querySelector(".icon").classList.toggle("rotate");
+			this.expanded = !this.expanded;
 		},
 		selectOption(event) {
 			const option = event.target;
 			this.$emit("input", option.getAttribute("value"));
-			document.querySelector("#" + this.name).classList.toggle("expand");
-			document
-				.querySelector("#" + "icon-" + this.name)
-				.classList.toggle("rotate");
+			this.expanded = false;
 		},
 		getContent() {
 			if (this.selected === "") return this.name;
