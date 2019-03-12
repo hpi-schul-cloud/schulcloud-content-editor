@@ -73,7 +73,13 @@ export default {
 		},
 		getContent() {
 			if (this.selected === "") return this.name;
-			else return this.selected;
+			else {
+				let selectedObject = this.options.find((elem) => {
+					return elem.key === this.selected;
+				});
+				if (selectedObject) return selectedObject.value;
+				else return this.name;
+			}
 		},
 	},
 };

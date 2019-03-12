@@ -40,8 +40,8 @@ export default {
 			let options = this.files.map((elem) => {
 				let obj = {};
 				const key =
-					$config.API.contentServerUrl +
-					$config.API.hostingEntry +
+					this.$config.API.contentServerUrl +
+					this.$config.API.hostingEntry +
 					this.contentID +
 					"/" +
 					elem;
