@@ -2,6 +2,7 @@
 	<div class="wrapper">
 		<label :for="name">{{ label }}</label>
 		<button
+			type="button"
 			:class="{
 				select_button: true,
 				disabled: disabled === true,
@@ -22,7 +23,7 @@
 				:key="option.key"
 				:class="{ option: true, selected: option.key === selected }"
 				:value="option.key"
-				@click="selectOption"
+				@click="selectOption(option)"
 				>{{ option.value }}</li
 			>
 		</ul>
@@ -68,9 +69,8 @@ export default {
 		expandSelect(event) {
 			this.expanded = !this.expanded;
 		},
-		selectOption(event) {
-			const option = event.target;
-			this.$emit("input", option.getAttribute("value"));
+		selectOption(option) {
+			this.$emit("input", option.key);
 			this.expanded = false;
 		},
 		getContent() {
