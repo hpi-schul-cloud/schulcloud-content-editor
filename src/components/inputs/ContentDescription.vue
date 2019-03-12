@@ -1,26 +1,21 @@
 <template>
-	<MdField :class="{ 'md-invalid': !!error }">
-		<label>
-			{{ $lang.edit.form.description }}
-			<span>
-				<MdIcon>help</MdIcon>
-				<MdTooltip md-direction="right">
-					{{ $lang.edit.form.description_tooltip }}
-				</MdTooltip>
-			</span>
-		</label>
-		<MdTextarea
-			:value="value"
-			name="description"
-			maxlength="500"
-			@input="$emit('input', $event)"
-		/>
-		<span class="md-error">{{ error }}</span>
-	</MdField>
+	<CustomTextarea
+		:value="value"
+		name="description"
+		:label="$lang.edit.form.description"
+		maxlength="500"
+		:error="error"
+		@input="$emit('input', $event)"
+	/>
 </template>
 
 <script>
+import CustomTextarea from "@/components/base/CustomTextarea.vue";
+
 export default {
+	components: {
+		CustomTextarea,
+	},
 	props: {
 		value: {
 			type: String,

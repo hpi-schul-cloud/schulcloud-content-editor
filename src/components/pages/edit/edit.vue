@@ -22,7 +22,7 @@
 							v-model="data.description"
 							v-validate
 							data-vv-name="description"
-							data-vv-rules="max:500"
+							data-vv-rules="max:500|required"
 							:error="errors.first('description')"
 						/>
 						<ContentUrlThumbnail
