@@ -48,7 +48,9 @@ export default {
 			}
 		},
 		async uploadFile(file, filepath) {
-			let url = `http://localhost:4040/files/upload?path=${filepath}`;
+			let url =
+				`http://localhost:4040/files/upload?path=${filepath}` +
+				`&contentId=${this.$route.params.id}`;
 			let formData = new FormData();
 			formData.append("file", file);
 
