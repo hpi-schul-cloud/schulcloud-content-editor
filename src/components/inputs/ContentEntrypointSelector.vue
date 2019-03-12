@@ -2,7 +2,7 @@
 	<CustomSelect
 		:label="$lang.edit.form.entrypointSelector"
 		name="Entrypoint"
-		:options="getOptions()"
+		:options="options"
 		:selected="value"
 		:disabled="disabled || !files.length"
 		@input="$emit('input', $event)"
@@ -30,14 +30,10 @@ export default {
 			type: Array,
 			default: () => [],
 		},
-		contentID: {
-			type: String,
-			default: "",
-		},
 	},
-	methods: {
-		getOptions() {
-			let options = this.files.map((elem) => {
+	computed: {
+		options() {
+			return this.files.map((elem) => {
 				let obj = {};
 				const key =
 					this.$config.API.contentServerUrl +
@@ -49,7 +45,6 @@ export default {
 				obj.value = elem;
 				return obj;
 			});
-			return options;
 		},
 	},
 };

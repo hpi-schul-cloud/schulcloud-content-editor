@@ -3,9 +3,9 @@
 		<div class="grid-xl-8 grid-s-12">
 			<MdCard>
 				<MdCardHeader>
-					<div v-if="editMode" class="md-title">{{
-						$lang.edit.title_edit
-					}}</div>
+					<div v-if="editMode" class="md-title">
+						{{ $lang.edit.title_edit }}
+					</div>
 					<div v-else class="md-title">{{ $lang.edit.title_create }}</div>
 				</MdCardHeader>
 				<MdCardContent>
@@ -165,12 +165,20 @@ export default {
 			userInfo: JSON.parse(localStorage.getItem("userInfo")) || {},
 			filetree: [],
 			hostingOption: "",
-			entrypointFiles: [],
 		};
 	},
 	computed: {
 		isFormValid() {
 			return Object.keys(this.fields).every((key) => this.fields[key].valid);
+		},
+		entrypointFiles() {
+			return this.filetree
+				.filter((file) => {
+					return file.type === "file";
+				})
+				.map((file) => {
+					return file.name;
+				});
 		},
 	},
 	watch: {
@@ -185,13 +193,6 @@ export default {
 	methods: {
 		handleFiletreeUpdate(newFiletree) {
 			this.filetree = newFiletree;
-			this.entrypointFiles = this.filetree
-				.filter((file) => {
-					return file.type === "file";
-				})
-				.map((file) => {
-					return file.name;
-				});
 		},
 		loadContent() {
 			if (this.editMode) {
