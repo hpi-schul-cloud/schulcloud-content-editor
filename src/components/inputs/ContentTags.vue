@@ -1,19 +1,23 @@
 <template>
 	<section>
-		<MdChips
-			id="tags"
+		<CustomChipInput
 			:value="value"
-			:md-max="10"
-			:md-placeholder="
+			:placeholder="
 				$lang.edit.form.tags + '... (' + $lang.edit.form.max + ' 10)'
 			"
+			:max="10"
 			@input="$emit('input', $event)"
 		/>
 	</section>
 </template>
 
 <script>
+import CustomChipInput from "@/components/base/CustomChipInput.vue";
+
 export default {
+	components: {
+		CustomChipInput,
+	},
 	props: {
 		value: {
 			type: Array,
