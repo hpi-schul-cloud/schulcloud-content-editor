@@ -18,7 +18,8 @@ export default {
 		tags: "Tags",
 		max: "max.",
 		mimetype: "Verwendeter MIME-Type",
-		entrypointSelector: "Entrypoint",
+		entrypointSelector: "Einstiegspunkt",
+		thumbnailSelector: "Thumbnail",
 	},
 	dialog: {
 		title: "Inhalt löschen?",

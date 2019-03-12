@@ -52,10 +52,21 @@
 							v-validate
 							data-vv-name="entrypointSelector"
 							data-vv-rules="required|url"
-							:error="errors.first('url')"
+							:error="errors.first('entrypointSelector')"
 							:disabled="filetree.length === 0"
 							:files="entrypointFiles"
-							:content-i-d="$route.params.id"
+							:content-id="$route.params.id"
+						/>
+						<ContentThumbnailSelector
+							v-show="hostingOption === 'hostedAtSchulcloud'"
+							v-model="data.thumbnail"
+							v-validate
+							data-vv-name="thumbnailSelector"
+							data-vv-rules="required|url"
+							:error="errors.first('thumbnailSelector')"
+							:disabled="filetree.length === 0"
+							:files="thumbnailFiles"
+							:content-id="$route.params.id"
 						/>
 						<FileUpload
 							v-show="hostingOption === 'hostedAtSchulcloud'"
@@ -118,6 +129,7 @@ import ContentMimetype from "@/components/inputs/ContentMimetype.vue";
 import ContentTags from "@/components/inputs/ContentTags.vue";
 import ContentHostingProvider from "@/components/inputs/ContentHostingProvider.vue";
 import ContentEntrypointSelector from "@/components/inputs/ContentEntrypointSelector.vue";
+import ContentThumbnailSelector from "@/components/inputs/ContentThumbnailSelector.vue";
 
 import FileUpload from "@/components/base/upload.vue";
 
@@ -136,6 +148,7 @@ export default {
 		ContentTags,
 		ContentHostingProvider,
 		ContentEntrypointSelector,
+		ContentThumbnailSelector,
 
 		FileUpload,
 	},
@@ -175,6 +188,18 @@ export default {
 			return this.filetree
 				.filter((file) => {
 					return file.type === "file";
+				})
+				.map((file) => {
+					return file.name;
+				});
+		},
+		thumbnailFiles() {
+			return this.filetree
+				.filter((file) => {
+					return (
+						file.type === "file" &&
+						file.name.match(/\.(jpg|jpeg|png|gif|webp)$/i)
+					);
 				})
 				.map((file) => {
 					return file.name;

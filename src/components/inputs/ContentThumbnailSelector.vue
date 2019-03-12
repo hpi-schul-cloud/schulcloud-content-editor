@@ -1,7 +1,7 @@
 <template>
 	<CustomSelect
-		:label="$lang.edit.form.entrypointSelector"
-		name="Entrypoint"
+		:label="$lang.edit.form.thumbnailSelector"
+		name="Thumbnail"
 		:options="options"
 		:selected="value"
 		:disabled="disabled || !files.length"
