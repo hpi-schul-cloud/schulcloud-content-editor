@@ -1,24 +1,26 @@
 <template>
 	<div :class="classList">
-		<span>
+		<button type="button" class="btn-icon">
 			<i class="material-icons">{{ icon }}</i>
-		</span>
+		</button>
 		<span class="file-name">{{ name }}</span>
 		<template v-if="!readOnly">
-			<span
+			<button
 				v-if="!state || state === 'new'"
-				class="btn-delete"
+				type="button"
+				class="btn-icon btn-delete"
 				@click.stop="$emit('delete', id, name)"
 			>
 				<i class="material-icons">close</i>
-			</span>
-			<span
+			</button>
+			<button
 				v-if="['deleted', 'updated'].includes(state)"
-				class="restore"
+				type="button"
+				class="btn-icon btn-restore"
 				@click.stop="$emit('restore', id, name)"
 			>
 				<i class="material-icons">restore_page</i>
-			</span>
+			</button>
 		</template>
 		<progress
 			v-if="progress !== undefined"
@@ -77,10 +79,18 @@ export default {
 	position: relative;
 	display: flex;
 	flex-wrap: nowrap;
-	span {
+	span,
+	.btn-icon {
 		display: flex;
 		align-items: center;
 		margin: 0.2em 0.2em 0.2em 0;
+	}
+	.btn-icon {
+		padding: 0;
+		color: inherit;
+		user-select: none;
+		background: transparent;
+		border: none;
 	}
 	.btn-delete {
 		display: none;
