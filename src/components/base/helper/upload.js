@@ -91,7 +91,6 @@ export default {
 
 				xhr.open("post", url, true);
 				// Set appropriate headers
-
 				[
 					["Authorization", `Bearer ${localStorage.getItem("jwt")}`],
 					["X-File-Name", file.name],
@@ -112,9 +111,8 @@ export default {
 					return xhr.setRequestHeader(header[0], header[1]);
 				});
 
-				// Send the file (doh)
+				// Send the file
 				xhr.send(formData);
-				//console.log(xhr);
 			});
 		},
 		dropFile(event, prefix) {

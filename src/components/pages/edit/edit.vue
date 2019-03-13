@@ -55,7 +55,7 @@
 							:error="errors.first('entrypointSelector')"
 							:disabled="filetree.length === 0"
 							:files="entrypointFiles"
-							:content-id="$route.params.id"
+							:content-id="$route.params.id || ''"
 						/>
 						<ContentThumbnailSelector
 							v-show="hostingOption === 'hostedAtSchulcloud'"
@@ -66,13 +66,13 @@
 							:error="errors.first('thumbnailSelector')"
 							:disabled="filetree.length === 0"
 							:files="thumbnailFiles"
-							:content-id="$route.params.id"
+							:content-id="$route.params.id || ''"
 						/>
 						<FileUpload
 							v-show="hostingOption === 'hostedAtSchulcloud'"
 							:value="data.files"
 							:filetree="filetree"
-							:prefix="$route.params.id"
+							:prefix="$route.params.id || ''"
 							@update:filetree="handleFiletreeUpdate($event)"
 							@update="data.files = $event"
 						/>

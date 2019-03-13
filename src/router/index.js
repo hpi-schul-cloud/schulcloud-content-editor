@@ -18,36 +18,7 @@ export default new Router({
 			path: "/create",
 			name: "create",
 			component: loadView("edit/edit.vue"),
-			beforeEnter: (to, from, next) => {
-				fetch(
-					config.configs.API.contentServerUrl +
-						config.configs.API.postReserveId,
-					{
-						method: "POST",
-						headers: {
-							Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-						},
-					}
-				)
-					.then((response) => {
-						return response.json();
-					})
-					.then((data) => {
-						next({
-							path: "/" + data._id + "/create",
-							component: loadView("edit/edit.vue"),
-							props: { editMode: false },
-						});
-					})
-					.catch((error) => {
-						console.error(error);
-					});
-			},
-		},
-		{
-			path: "/:id/create",
-			name: "createWithID",
-			component: loadView("edit/edit.vue"),
+			props: { editMode: false },
 		},
 		{
 			path: "/edit/:id",
