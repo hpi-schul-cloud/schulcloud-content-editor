@@ -1,6 +1,5 @@
 <template>
 	<div class="upload-wrapper">
-		<Loader :state="loadingState" />
 		<div
 			id="dropzone"
 			:class="{ 'dropzone-over': dragging }"
@@ -15,8 +14,6 @@
 				:value="value"
 				:filetree.sync="filetree"
 				@update="$emit('update', $event)"
-				@uploaded="loadingState = 'idle'"
-				@uploading="loadingState = 'uploading'"
 			/>
 		</div>
 	</div>
@@ -26,13 +23,11 @@
 import Filetree from "./helper/Filetree.vue";
 import upload from "./helper/upload.js";
 import filetree from "./helper/filetree.js";
-import Loader from "@/components/base/helper/UploadLoadingOverlay.vue";
 
 export default {
 	name: "Upload",
 	components: {
 		Filetree,
-		Loader,
 	},
 	mixins: [upload, filetree],
 	props: {
@@ -48,12 +43,10 @@ export default {
 	data() {
 		return {
 			dragging: false,
-			loadingState: "idle",
 		};
 	},
 	methods: {
 		handleDropEvent(event) {
-			this.loadingState = "uploading";
 			return this.dropFile(event)
 				.then((newItemsForest) => {
 					this.recursiveSave(newItemsForest);
@@ -62,7 +55,6 @@ export default {
 					return this.$emit("update:filetree", newForest);
 				})
 				.then((res) => {
-					this.loadingState = "idle";
 					return res;
 				});
 		},

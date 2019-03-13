@@ -28,8 +28,8 @@ function uploadFile(item, filepath, contentId) {
 
 		const formData = new FormData();
 		formData.append("file", file);
-		const xhr = new XMLHttpRequest();
 
+		const xhr = new XMLHttpRequest();
 		xhr.upload.addEventListener(
 			"progress",
 			(evt) => {
@@ -40,11 +40,11 @@ function uploadFile(item, filepath, contentId) {
 			},
 			false
 		);
-
 		xhr.addEventListener(
 			"load",
 			(res) => {
 				const response = JSON.parse(res.srcElement.responseText);
+				this.progress = undefined;
 				if (response.status !== 200) {
 					this.status = "upload-error";
 					console.error("Error after upload", res);
@@ -54,16 +54,15 @@ function uploadFile(item, filepath, contentId) {
 			},
 			false
 		);
-
 		xhr.addEventListener(
 			"error",
 			(res) => {
+				this.progress = undefined;
 				this.status = "upload-error";
 				console.error("Error during upload", res);
 			},
 			false
 		);
-
 		xhr.open("post", url, true);
 
 		// Set appropriate headers
@@ -84,33 +83,34 @@ function uploadFile(item, filepath, contentId) {
 						""
 					)
 			);
-			return xhr.setRequestHeader(header[0], header[1]);
+			xhr.setRequestHeader(header[0], header[1]);
 		});
 		xhr.send(formData);
+		return xhr;
 	});
 }
 
 export default {
 	methods: {
-		async traverseFiles(item, prefix) {
+		traverseFiles(item, prefix) {
 			if (item.isFile) {
 				const itemFullPath = prefix + item.fullPath;
-
 				const fileMetaObject = {
 					id: itemFullPath,
 					name: item.name,
 					type: "file",
 					upload: uploadFile,
 				};
+				// call `upload` from here, so we can access `fileMetaObject` as `this` inside the function
 				fileMetaObject.upload(item, itemFullPath, this.$route.params.id);
-				return fileMetaObject;
-			} else if (item.isDirectory) {
-				const entries = await PromiseReader(item);
 
+				return fileMetaObject;
+			}
+			if (item.isDirectory) {
 				return Promise.all(
-					entries.map(async (entry) => {
-						return this.traverseFiles(entry, prefix);
-					})
+					PromiseReader(item).then((entries) =>
+						entries.map((entry) => this.traverseFiles(entry, prefix))
+					)
 				).then((subFileForest) => ({
 					id: prefix + item.fullPath,
 					name: item.name,
