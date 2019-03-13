@@ -1,17 +1,21 @@
 <template>
 	<section>
-		<MdChips
-			id="license"
+		<CustomChipInput
 			:value="value"
-			:md-max="10"
-			:md-placeholder="$lang.edit.form.license"
+			:placeholder="$lang.edit.form.license"
+			:max="10"
 			@input="$emit('input', $event)"
 		/>
 	</section>
 </template>
 
 <script>
+import CustomChipInput from "@/components/base/CustomChipInput.vue";
+
 export default {
+	components: {
+		CustomChipInput,
+	},
 	props: {
 		value: {
 			type: Array,

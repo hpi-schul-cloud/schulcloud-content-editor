@@ -53,6 +53,10 @@ export default {
 	color: red;
 }
 .tag-input {
+	.ti-input {
+		border: 0;
+		border-bottom: 1px solid grey;
+	}
 	&.vue-tags-input {
 		// background: white;
 		max-width: 100%;
