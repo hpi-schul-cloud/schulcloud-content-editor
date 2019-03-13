@@ -49,7 +49,7 @@ export default {
 		handleDropEvent(event) {
 			return this.dropFile(event)
 				.then((newItemsForest) => {
-					this.recursiveSave(newItemsForest);
+					this.recursiveSaveAfterUpload(newItemsForest);
 					const newForest = this.mergeIntoTree(this.filetree, newItemsForest);
 					this.$emit("update", this.value);
 					return this.$emit("update:filetree", newForest);

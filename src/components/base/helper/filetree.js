@@ -25,10 +25,19 @@ export default {
 				return leave;
 			});
 		},
-		recursiveSave(tree) {
+		recursiveSaveAfterUpload(tree) {
 			this.traverseTree(tree, (leave) => {
 				if (leave.type === "file" && !this.value.save.includes(leave.id)) {
-					this.value.save.push(leave.id);
+					leave.xhr.addEventListener(
+						"load",
+						(res) => {
+							const response = JSON.parse(res.srcElement.responseText);
+							if (response.status === 200) {
+								this.value.save.push(response.message);
+							}
+						},
+						false
+					);
 				}
 				return leave;
 			});

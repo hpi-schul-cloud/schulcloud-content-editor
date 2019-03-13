@@ -150,25 +150,27 @@ export default {
 		},
 		handleDropEvent(event, prefix, item) {
 			if (item.type === "folder") {
-				this.dropFile(event, prefix + "/" + item.name).then((newItemsTree) => {
-					const srcTree = this.filetree;
-					this.recursiveSave(newItemsTree);
-					const currentItemIndex = srcTree.findIndex(
-						(node) => node.name === item.name
-					);
-					if (currentItemIndex === -1) {
-						srcTree[currentItemIndex].objects.push(
-							this.recursiveSetState(newItemsTree, "new")
+				this.dropFile(event, prefix + "/" + item.name).then(
+					(newItemsForest) => {
+						const srcTree = this.filetree;
+						this.recursiveSaveAfterUpload(newItemsForest);
+						const currentItemIndex = srcTree.findIndex(
+							(node) => node.name === item.name
 						);
-					} else {
-						srcTree[currentItemIndex].objects = this.mergeIntoTree(
-							srcTree[currentItemIndex].objects,
-							newItemsTree
-						);
+						if (currentItemIndex === -1) {
+							srcTree[currentItemIndex].objects.push(
+								this.recursiveSetState(newItemsForest, "new")
+							);
+						} else {
+							srcTree[currentItemIndex].objects = this.mergeIntoTree(
+								srcTree[currentItemIndex].objects,
+								newItemsForest
+							);
+						}
+						this.$emit("update", this.value);
+						this.$emit("update:filetree", srcTree);
 					}
-					this.$emit("update", this.value);
-					this.$emit("update:filetree", srcTree);
-				});
+				);
 			}
 			this.handleDragleave(event);
 		},

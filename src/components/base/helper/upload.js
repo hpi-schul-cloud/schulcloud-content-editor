@@ -19,12 +19,9 @@ function PromiseFile(item) {
 	});
 }
 
-function uploadFile(item, filepath, contentId) {
-	PromiseFile(item).then((file) => {
+function uploadFile(item, filepath, that) {
+	return PromiseFile(item).then((file) => {
 		let url = `http://localhost:4040/files/upload?path=${filepath}`;
-		if (contentId) {
-			url += `&contentId=${contentId}`;
-		}
 
 		const formData = new FormData();
 		formData.append("file", file);
@@ -35,7 +32,6 @@ function uploadFile(item, filepath, contentId) {
 			(evt) => {
 				if (evt.lengthComputable) {
 					this.progress = (evt.loaded / evt.total) * 100;
-					this.id = `${filepath}${this.progress}`; // TODO this hack forces the component to rerender
 				}
 			},
 			false
@@ -99,24 +95,30 @@ export default {
 					id: itemFullPath,
 					name: item.name,
 					type: "file",
+					progress: 0, // initialize it here, to let vue create an observer for it
 					upload: uploadFile,
 				};
 				// call `upload` from here, so we can access `fileMetaObject` as `this` inside the function
-				fileMetaObject.upload(item, itemFullPath, this.$route.params.id);
-
-				return fileMetaObject;
+				return fileMetaObject
+					.upload(item, itemFullPath, this)
+					.then((xhrUpload) => {
+						fileMetaObject.xhr = xhrUpload;
+						return new Promise((resolve) => resolve(fileMetaObject));
+					});
 			}
 			if (item.isDirectory) {
-				return Promise.all(
-					PromiseReader(item).then((entries) =>
-						entries.map((entry) => this.traverseFiles(entry, prefix))
+				return PromiseReader(item)
+					.then((entries) =>
+						Promise.all(
+							entries.map((entry) => this.traverseFiles(entry, prefix))
+						)
 					)
-				).then((subFileForest) => ({
-					id: prefix + item.fullPath,
-					name: item.name,
-					type: "folder",
-					objects: subFileForest,
-				}));
+					.then((subFileForest) => ({
+						id: prefix + item.fullPath,
+						name: item.name,
+						type: "folder",
+						objects: subFileForest,
+					}));
 			}
 		},
 		dropFile(event, prefix = "") {
