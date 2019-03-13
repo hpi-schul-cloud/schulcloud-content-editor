@@ -72,7 +72,6 @@
 							v-show="hostingOption === 'hostedAtSchulcloud'"
 							:value="data.files"
 							:filetree="filetree"
-							:prefix="$route.params.id || ''"
 							@update:filetree="handleFiletreeUpdate($event)"
 							@update="data.files = $event"
 						/>

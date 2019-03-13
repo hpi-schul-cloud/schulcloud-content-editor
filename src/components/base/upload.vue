@@ -13,7 +13,6 @@
 			<h4>Your uploaded Files:</h4>
 			<Filetree
 				:value="value"
-				:path="prefix"
 				:filetree.sync="filetree"
 				@update="$emit('update', $event)"
 				@uploaded="loadingState = 'idle'"
@@ -45,10 +44,6 @@ export default {
 			type: Array,
 			default: () => [],
 		},
-		prefix: {
-			type: String,
-			default: "",
-		},
 	},
 	data() {
 		return {
@@ -59,12 +54,12 @@ export default {
 	methods: {
 		handleDropEvent(event) {
 			this.loadingState = "uploading";
-			return this.dropFile(event, this.prefix)
-				.then((newItemsTree) => {
-					this.recursiveSave(newItemsTree);
-					const newTree = this.mergeIntoTree(this.filetree, newItemsTree);
+			return this.dropFile(event)
+				.then((newItemsForest) => {
+					this.recursiveSave(newItemsForest);
+					const newForest = this.mergeIntoTree(this.filetree, newItemsForest);
 					this.$emit("update", this.value);
-					return this.$emit("update:filetree", newTree);
+					return this.$emit("update:filetree", newForest);
 				})
 				.then((res) => {
 					this.loadingState = "idle";

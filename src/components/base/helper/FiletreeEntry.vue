@@ -1,13 +1,5 @@
 <template>
-	<div
-		:class="{
-			entry: true,
-			readonly: readOnly,
-			'is-new': state === 'new',
-			'is-updated': state === 'updated',
-			'is-deleted': state === 'deleted',
-		}"
-	>
+	<div :class="classList">
 		<span>
 			<i class="material-icons">{{ icon }}</i>
 		</span>
@@ -28,6 +20,12 @@
 				<i class="material-icons">restore_page</i>
 			</span>
 		</template>
+		<progress
+			v-if="progress !== undefined"
+			class="progress"
+			max="100"
+			:value="progress"
+		/>
 	</div>
 </template>
 
@@ -55,15 +53,30 @@ export default {
 			type: String || Boolean,
 			default: "",
 		},
+		progress: {
+			type: Number || undefined,
+			default: undefined,
+		},
+	},
+	computed: {
+		classList() {
+			const classList = ["entry"];
+			if (this.readonly) {
+				classList.push("readonly");
+			}
+			classList.push("is-" + this.state);
+
+			return classList;
+		},
 	},
 };
 </script>
 
 <style lang="scss" scoped>
 .entry {
+	position: relative;
 	display: flex;
 	flex-wrap: nowrap;
-	color: #333;
 	span {
 		display: flex;
 		align-items: center;
@@ -99,5 +112,21 @@ export default {
 }
 .is-new {
 	color: #0a0;
+}
+.progress {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: 4px;
+	-webkit-appearance: none;
+	appearance: none;
+	&::-webkit-progress-bar {
+		background-color: #aaa;
+		border-radius: 100px;
+	}
+	&::-webkit-progress-value {
+		background-color: #0a0;
+		border-radius: 100px;
+	}
 }
 </style>

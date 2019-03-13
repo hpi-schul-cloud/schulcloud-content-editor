@@ -22,6 +22,7 @@
 					"
 					:name="item.name"
 					:state="item.state"
+					:progress="item.progress"
 					:read-only="parentState === 'deleted'"
 					@delete="deleteEntry"
 					@restore="restoreEntry"
@@ -154,7 +155,8 @@ export default {
 				this.$emit("uploading");
 				this.dropFile(event, prefix + "/" + item.name)
 					.then((newItemsTree) => {
-						const srcTree = this.deepCopy(this.filetree);
+						//const srcTree = this.deepCopy(this.filetree);
+						const srcTree = this.filetree;
 						this.recursiveSave(newItemsTree);
 						const currentItemIndex = srcTree.findIndex(
 							(node) => node.name === item.name
