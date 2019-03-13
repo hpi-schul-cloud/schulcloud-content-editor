@@ -52,9 +52,22 @@ export default {
 .no-numbers {
 	color: red;
 }
-.vue-tags-input {
-	// background: white;
-	color: #1d1d1d;
-	border-radius: 20px;
+.tag-input {
+	&.vue-tags-input {
+		// background: white;
+		max-width: 100%;
+		color: #1d1d1d;
+		border-radius: 20px;
+	}
+	.ti-tag {
+		color: #333;
+		background-color: transparent;
+		border: 1px solid #333;
+		&.ti-tag.ti-deletion-mark {
+			color: #fff;
+			background-color: var(--md-theme-default-primary);
+			border-color: #fff;
+		}
+	}
 }
 </style>
