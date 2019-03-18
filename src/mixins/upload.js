@@ -42,7 +42,7 @@ function uploadFile(item, filepath, that) {
 				const response = JSON.parse(res.srcElement.responseText);
 				if (response.status !== 200) {
 					this.status = "upload-error";
-					console.error(new Error("Error after upload"), res);
+					console.error("Error after upload", res);
 					return;
 				}
 				this.id = response.message;
@@ -53,7 +53,7 @@ function uploadFile(item, filepath, that) {
 			"error",
 			(res) => {
 				this.status = "upload-error";
-				console.error(new Error("Error during upload"), res);
+				console.error("Error during upload", res);
 			},
 			false
 		);
@@ -61,7 +61,7 @@ function uploadFile(item, filepath, that) {
 			"timeout",
 			(res) => {
 				this.status = "upload-error";
-				console.error(new Error("upload timed out"), res);
+				console.error("upload timed out", res);
 			},
 			false
 		);
@@ -110,7 +110,7 @@ export default {
 					name: item.name,
 					type: "file",
 					state: "",
-					progress: 0, // initialize it here, to let vue create an observer for it
+					progress: undefined, // initialize it here, to let vue create an observer for it
 					upload: uploadFile,
 					xhr: undefined,
 				};

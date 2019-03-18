@@ -1,8 +1,5 @@
 export default {
 	methods: {
-		$_deepCopy(src) {
-			return JSON.parse(JSON.stringify(src));
-		},
 		$_traverseTree(tree, callback) {
 			if (!Array.isArray(tree)) {
 				tree = callback(tree);
@@ -46,7 +43,7 @@ export default {
 			return this.$_traverseTree(tree, (node) => {
 				return Object.assign(
 					{
-						state: "",
+						state: undefined,
 						objects: [],
 						progress: undefined,
 						upload: undefined,
@@ -64,9 +61,6 @@ export default {
 
 				out: [ { id: a, objects: [ {id: b, ... } ]} ]
 			*/
-			// create copy to remove observers
-			srcForest = this.$_deepCopy(srcForest);
-
 			newForest.forEach((newNode) => {
 				const indexInSrc = srcForest.findIndex(
 					(item) => item.name === newNode.name
@@ -82,10 +76,18 @@ export default {
 							newNode.originalId = srcForest[indexInSrc].id;
 						} else if (srcForest[indexInSrc].xhr) {
 							srcForest[indexInSrc].xhr.abort();
-							srcForest[indexInSrc].xhr = undefined;
 						}
 						newNode.state = "updated";
-						srcForest[indexInSrc] = newNode;
+						/* WARNING
+						1. with `Object.assign(srcForest[indexInSrc], newNode)`, the this reference
+							 for the progress function gets lost => doesn't work
+						2. srcForest[indexInSrc] = newNode doesn't work either (don't know why)
+							 vue looses the ui binding and doesn't display all changes (.state) anymore
+						3. only removing and setting the new item worked so far
+						*/
+						srcForest.splice(indexInSrc, 1);
+						srcForest.push(newNode);
+						//Object.assign(srcForest[indexInSrc], newNode);
 					}
 					if (srcForest[indexInSrc].type === "folder") {
 						// recursive for folders

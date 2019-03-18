@@ -4,7 +4,7 @@
 		<span class="file-name">{{ file.name }}</span>
 		<template v-if="!readOnly">
 			<button
-				v-if="!file.state || file.state === 'new'"
+				v-if="!file.state || file.state === 'new' || file.state === 'modified'"
 				type="button"
 				class="btn-icon btn-delete"
 				@click.stop="$emit('delete', file.id, file.name)"
@@ -59,8 +59,11 @@ export default {
 		},
 	},
 	watch: {
-		"file.progress": function(to, from) {
-			this.$forceUpdate();
+		file: {
+			handler: function(to, from) {
+				this.$forceUpdate();
+			},
+			deep: true,
 		},
 	},
 };
@@ -121,7 +124,8 @@ export default {
 		text-decoration: line-through;
 	}
 }
-.is-updated {
+.is-updated,
+.is-modified {
 	color: #d90;
 }
 .is-new {

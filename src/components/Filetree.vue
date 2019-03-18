@@ -80,11 +80,15 @@ export default {
 			}
 			if (to === "deleted") {
 				this.filetree.objects.forEach((item) => {
-					this.deleteEntry(item.id, item.name);
+					if (item.state !== "deleted") {
+						this.deleteEntry(item.id, item.name);
+					}
 				});
 			} else if (!to) {
 				this.filetree.objects.forEach((item) => {
-					this.restoreEntry(item.id, item.name);
+					if (item.state === "deleted") {
+						this.restoreEntry(item.id, item.name);
+					}
 				});
 			}
 		},
@@ -99,6 +103,13 @@ export default {
 							: progress;
 					}, 0);
 					this.filetree.progress = folderProgress ? folderProgress : undefined;
+					if (to.state !== "deleted") {
+						if (to.objects.some((file) => !!file.state)) {
+							this.filetree.state = "modified";
+						} else {
+							this.filetree.state = undefined;
+						}
+					}
 					this.$forceUpdate();
 				}
 			},
@@ -122,7 +133,6 @@ export default {
 		abortRequest(file) {
 			if (file.xhr) {
 				file.xhr.abort();
-				file.xhr = undefined;
 			}
 			return file;
 		},
@@ -130,11 +140,19 @@ export default {
 			const itemIndex = this.getItemIndex(name);
 			this.abortRequest(this.filetree.objects[itemIndex]);
 			const item = this.filetree.objects[itemIndex];
-			// already in list
-			if (item.state === "deleted" || item.state === "updated") {
-				return console.warn(
-					new Error("deleting this item shouldn't be possible")
+			if (item.state === "modified") {
+				const hasModifiedChilds = item.objects.some((file) =>
+					["new", "updated", "modified"].includes(file.state)
 				);
+				if (hasModifiedChilds && !confirm(this.$lang.upload.confirmDelete)) {
+					return;
+				}
+			}
+			if (item.state === "deleted") {
+				console.warn("deleting this item shouldn't be possible");
+			} else if (item.state === "updated") {
+				this.restoreEntry(id, name);
+				this.deleteEntry(id, name);
 			} else if (item.state === "new") {
 				// don't save anymore
 				this.value.save.splice(this.value.save.indexOf(id), 1);
@@ -154,7 +172,7 @@ export default {
 			this.abortRequest(this.filetree.objects[itemIndex]);
 			const item = this.filetree.objects[itemIndex];
 			if (item.state === "new") {
-				console.error(new Error("unhandled state"));
+				console.error("unhandled state");
 				return; // shouldn't be possible
 			}
 			if (item.state === "updated") {
@@ -176,7 +194,7 @@ export default {
 			this.$forceUpdate();
 		},
 		handleDropEvent(event, prefix, item) {
-			if (item.type === "folder") {
+			if (item.type === "folder" && item.state !== "deleted") {
 				this.$_dropFile(event, prefix + "/" + item.name).then(
 					(newItemsForest) => {
 						const srcTree = this.filetree.objects;
@@ -204,6 +222,8 @@ export default {
 			this.handleDragleave(event);
 		},
 		wrappingFolder(event, callback) {
+			// TODO refactor, don't use direct dom manipulation
+			// TODO highlight dropzone only if folder isn't deleted
 			const wrapper = event.target.closest(".list-item");
 			if (Array.from(wrapper.classList).includes("is-folder")) {
 				callback(wrapper);
