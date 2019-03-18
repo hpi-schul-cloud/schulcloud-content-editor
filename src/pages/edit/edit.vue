@@ -263,7 +263,7 @@ export default {
 					)
 					.then((response) => {
 						// JSON responses are automatically parsed.
-						this.filetree = this.normalizeTree(response.data);
+						this.filetree = this.$_normalizeTree(response.data);
 					})
 					.catch((e) => {
 						this.errors.add(e);

@@ -40,10 +40,9 @@ function uploadFile(item, filepath, that) {
 			"load",
 			(res) => {
 				const response = JSON.parse(res.srcElement.responseText);
-				this.progress = undefined;
 				if (response.status !== 200) {
 					this.status = "upload-error";
-					console.error("Error after upload", res);
+					console.error(new Error("Error after upload"), res);
 					return;
 				}
 				this.id = response.message;
@@ -53,9 +52,24 @@ function uploadFile(item, filepath, that) {
 		xhr.addEventListener(
 			"error",
 			(res) => {
-				this.progress = undefined;
 				this.status = "upload-error";
-				console.error("Error during upload", res);
+				console.error(new Error("Error during upload"), res);
+			},
+			false
+		);
+		xhr.addEventListener(
+			"timeout",
+			(res) => {
+				this.status = "upload-error";
+				console.error(new Error("upload timed out"), res);
+			},
+			false
+		);
+		xhr.addEventListener(
+			"loadend",
+			() => {
+				this.progress = undefined;
+				this.xhr = undefined;
 			},
 			false
 		);
@@ -88,7 +102,7 @@ function uploadFile(item, filepath, that) {
 
 export default {
 	methods: {
-		traverseFiles(item, prefix) {
+		$_traverseFiles(item, prefix) {
 			if (item.isFile) {
 				const itemFullPath = prefix + item.fullPath;
 				const fileMetaObject = {
@@ -112,7 +126,7 @@ export default {
 				return PromiseReader(item)
 					.then((entries) =>
 						Promise.all(
-							entries.map((entry) => this.traverseFiles(entry, prefix))
+							entries.map((entry) => this.$_traverseFiles(entry, prefix))
 						)
 					)
 					.then((subFileForest) => ({
@@ -124,12 +138,12 @@ export default {
 					}));
 			}
 		},
-		dropFile(event, prefix = "") {
+		$_dropFile(event, prefix = "") {
 			return Promise.all(
 				Array.from(event.dataTransfer.items).map((rawItem) => {
 					let item = rawItem.webkitGetAsEntry();
 					if (item) {
-						return this.traverseFiles(item, prefix);
+						return this.$_traverseFiles(item, prefix);
 					}
 				})
 			);

@@ -47,10 +47,10 @@ export default {
 	},
 	methods: {
 		handleDropEvent(event) {
-			return this.dropFile(event)
+			return this.$_dropFile(event)
 				.then((newItemsForest) => {
-					this.recursiveSaveAfterUpload(newItemsForest);
-					this.filetree.objects = this.mergeIntoForest(
+					this.$_recursiveSaveAfterUpload(newItemsForest);
+					this.filetree.objects = this.$_mergeIntoForest(
 						this.filetree.objects,
 						newItemsForest
 					);

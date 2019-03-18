@@ -1,32 +1,32 @@
 export default {
 	methods: {
-		deepCopy(src) {
+		$_deepCopy(src) {
 			return JSON.parse(JSON.stringify(src));
 		},
-		traverseTree(tree, callback) {
+		$_traverseTree(tree, callback) {
 			if (!Array.isArray(tree)) {
 				tree = callback(tree);
 				if (tree.type === "folder") {
-					tree.objects = this.traverseTree(tree.objects, callback);
+					tree.objects = this.$_traverseTree(tree.objects, callback);
 				}
 				return tree;
 			}
 			return tree.map((leave) => {
 				leave = callback(leave);
 				if (leave.type === "folder") {
-					leave.objects = this.traverseTree(leave.objects, callback);
+					leave.objects = this.$_traverseTree(leave.objects, callback);
 				}
 				return leave;
 			});
 		},
-		recursiveSetState(tree, state) {
-			this.traverseTree(tree, (leave) => {
+		$_recursiveSetState(tree, state) {
+			this.$_traverseTree(tree, (leave) => {
 				leave.state = state;
 				return leave;
 			});
 		},
-		recursiveSaveAfterUpload(tree) {
-			this.traverseTree(tree, (leave) => {
+		$_recursiveSaveAfterUpload(tree) {
+			this.$_traverseTree(tree, (leave) => {
 				if (leave.type === "file" && !this.value.save.includes(leave.id)) {
 					leave.xhr.addEventListener(
 						"load",
@@ -42,8 +42,8 @@ export default {
 				return leave;
 			});
 		},
-		normalizeTree(tree) {
-			return this.traverseTree(tree, (node) => {
+		$_normalizeTree(tree) {
+			return this.$_traverseTree(tree, (node) => {
 				return Object.assign(
 					{
 						state: "",
@@ -51,12 +51,13 @@ export default {
 						progress: undefined,
 						upload: undefined,
 						xhr: undefined,
+						replacedId: undefined,
 					},
 					node
 				);
 			});
 		},
-		mergeIntoForest(srcForest, newForest) {
+		$_mergeIntoForest(srcForest, newForest) {
 			/*
 				srcTree: [ { ... }, { id: a, objects: [], ... } ]
 				newTree: [ { id: a, objects: [ {id: b, ... } ]} ]
@@ -64,7 +65,7 @@ export default {
 				out: [ { id: a, objects: [ {id: b, ... } ]} ]
 			*/
 			// create copy to remove observers
-			srcForest = this.deepCopy(srcForest);
+			srcForest = this.$_deepCopy(srcForest);
 
 			newForest.forEach((newNode) => {
 				const indexInSrc = srcForest.findIndex(
@@ -72,19 +73,21 @@ export default {
 				);
 				if (indexInSrc === -1) {
 					// new
-					this.recursiveSetState(newNode, "new");
+					this.$_recursiveSetState(newNode, "new");
 					srcForest.push(newNode);
 				} else {
 					// merge
 					if (srcForest[indexInSrc].state !== "new") {
 						// TODO - item can't be "restored". It always stays in the save list
-						srcForest[indexInSrc].state = "updated";
+						newNode.replacedId = srcForest[indexInSrc].id;
+						newNode.state = "updated";
+						srcForest[indexInSrc] = newNode;
 						//newNode.state = "updated";
 						//srcForest[indexInSrc] = newNode;
 					}
 					if (srcForest[indexInSrc].type === "folder") {
 						// recursive for folders
-						srcForest[indexInSrc].objects = this.mergeIntoForest(
+						srcForest[indexInSrc].objects = this.$_mergeIntoForest(
 							srcForest[indexInSrc].objects,
 							newNode.objects
 						);

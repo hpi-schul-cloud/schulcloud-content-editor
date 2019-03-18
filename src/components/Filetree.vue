@@ -169,21 +169,21 @@ export default {
 		},
 		handleDropEvent(event, prefix, item) {
 			if (item.type === "folder") {
-				this.dropFile(event, prefix + "/" + item.name).then(
+				this.$_dropFile(event, prefix + "/" + item.name).then(
 					(newItemsForest) => {
 						const srcTree = this.filetree.objects;
-						this.recursiveSaveAfterUpload(newItemsForest);
+						this.$_recursiveSaveAfterUpload(newItemsForest);
 						const currentItemIndex = srcTree.findIndex(
 							(node) => node.name === item.name
 						);
 						if (currentItemIndex === -1) {
 							this.filetree.objects[currentItemIndex].objects.push(
-								this.recursiveSetState(newItemsForest, "new")
+								this.$_recursiveSetState(newItemsForest, "new")
 							);
 						} else {
 							this.filetree.objects[
 								currentItemIndex
-							].objects = this.mergeIntoForest(
+							].objects = this.$_mergeIntoForest(
 								this.filetree.objects[currentItemIndex].objects,
 								newItemsForest
 							);
