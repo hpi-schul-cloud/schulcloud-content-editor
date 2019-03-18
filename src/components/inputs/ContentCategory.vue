@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import BaseSelect from "@/components/base/html/BaseSelect.vue";
+import BaseSelect from "@/components/base/BaseSelect.vue";
 
 export default {
 	components: {

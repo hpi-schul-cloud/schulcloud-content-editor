@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import CustomChipInput from "@/components/base/html/BaseTags.vue";
+import CustomChipInput from "@/components/base/BaseTags.vue";
 
 export default {
 	components: {

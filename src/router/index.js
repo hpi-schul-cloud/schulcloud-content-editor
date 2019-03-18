@@ -4,7 +4,7 @@ import config from "../config.js";
 
 function loadView(path) {
 	return () =>
-		import(/* webpackChunkName: "view-[request]" */ `@/components/pages/${path}`);
+		import(/* webpackChunkName: "view-[request]" */ `@/pages/${path}`);
 }
 
 Vue.use(Router);

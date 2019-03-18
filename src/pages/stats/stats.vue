@@ -30,7 +30,7 @@
 <script>
 /* load contentTableRow async */
 const contentCard = () =>
-	import(/* webpackChunkName: "contentCard" */ "@/components/base/contentCard.vue");
+	import(/* webpackChunkName: "contentCard" */ "@/components/contentCard.vue");
 
 const qs = require("query-string");
 

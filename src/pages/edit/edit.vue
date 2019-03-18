@@ -3,9 +3,9 @@
 		<div class="grid-xl-8 grid-s-12">
 			<MdCard>
 				<MdCardHeader>
-					<div v-if="editMode" class="md-title">
-						{{ $lang.edit.title_edit }}
-					</div>
+					<div v-if="editMode" class="md-title">{{
+						$lang.edit.title_edit
+					}}</div>
 					<div v-else class="md-title">{{ $lang.edit.title_create }}</div>
 				</MdCardHeader>
 				<MdCardContent>
@@ -85,9 +85,9 @@
 						>{{ $lang.buttons.delete }}</MdButton
 					>
 					<ConfirmDialog :config="dialog" @confirm="deleteContent" />
-					<MdButton style="color: initial;" @click="$router.go(-1)">
-						{{ $lang.buttons.cancel }}
-					</MdButton>
+					<MdButton style="color: initial;" @click="$router.go(-1)">{{
+						$lang.buttons.cancel
+					}}</MdButton>
 					<MdButton
 						class="md-primary"
 						type="submit"
@@ -113,7 +113,7 @@ import VeeValidate from "vee-validate";
 
 Vue.use(VeeValidate);
 
-import ContentCard from "@/components/base/contentCard.vue";
+import ContentCard from "@/components/contentCard.vue";
 
 const ConfirmDialog = () =>
 	import(/* webpackChunkName: "ConfirmDialog" */ "@/components/dialogs/confirm.vue");
@@ -130,7 +130,7 @@ import ContentHostingProvider from "@/components/inputs/ContentHostingProvider.v
 import ContentEntrypointSelector from "@/components/inputs/ContentEntrypointSelector.vue";
 import ContentThumbnailSelector from "@/components/inputs/ContentThumbnailSelector.vue";
 
-import FileUpload from "@/components/base/upload.vue";
+import FileUpload from "@/components/upload.vue";
 
 export default {
 	name: "ContentForm",

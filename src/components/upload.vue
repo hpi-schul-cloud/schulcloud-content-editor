@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import Filetree from "@/components/base/Filetree.vue";
+import Filetree from "@/components/Filetree.vue";
 import upload from "@/mixins/upload.js";
 import filetree from "@/mixins/filetree.js";
 

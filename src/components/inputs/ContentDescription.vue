@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import BaseTextarea from "@/components/base/html/BaseTextarea.vue";
+import BaseTextarea from "@/components/base/BaseTextarea.vue";
 
 export default {
 	components: {
