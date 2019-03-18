@@ -12,7 +12,6 @@
 				@click="toggleExpansion(item)"
 			>
 				<FiletreeEntry
-					:id="item.id"
 					:icon="
 						item.type === 'file'
 							? 'insert_drive_file'
@@ -20,9 +19,7 @@
 							? 'folder_open'
 							: 'folder'
 					"
-					:name="item.name"
-					:state="item.state"
-					:progress="item.progress"
+					:file="item"
 					:read-only="parentState === 'deleted'"
 					@delete="deleteEntry"
 					@restore="restoreEntry"
@@ -147,6 +144,7 @@ export default {
 			);
 			const item = this.filetree.objects[itemIndex];
 			if (item.state === "new") {
+				console.error(new Error("unhandled state"));
 				return; // shouldn't be possible
 			}
 			if (item.state === "updated") {
@@ -184,7 +182,7 @@ export default {
 						} else {
 							this.filetree.objects[
 								currentItemIndex
-							].objects = this.mergeIntoTree(
+							].objects = this.mergeIntoForest(
 								this.filetree.objects[currentItemIndex].objects,
 								newItemsForest
 							);

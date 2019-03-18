@@ -42,7 +42,7 @@ export default {
 				return leave;
 			});
 		},
-		mergeIntoTree(srcTree, newTree) {
+		mergeIntoForest(srcForest, newForest) {
 			/*
 				srcTree: [ { ... }, { id: a, objects: [], ... } ]
 				newTree: [ { id: a, objects: [ {id: b, ... } ]} ]
@@ -50,31 +50,34 @@ export default {
 				out: [ { id: a, objects: [ {id: b, ... } ]} ]
 			*/
 			// create copy to remove observers
-			srcTree = this.deepCopy(srcTree);
+			srcForest = this.deepCopy(srcForest);
 
-			newTree.forEach((newNode) => {
-				const indexInSrc = srcTree.findIndex(
+			newForest.forEach((newNode) => {
+				const indexInSrc = srcForest.findIndex(
 					(item) => item.name === newNode.name
 				);
 				if (indexInSrc === -1) {
 					// new
 					this.recursiveSetState(newNode, "new");
-					srcTree.push(newNode);
+					srcForest.push(newNode);
 				} else {
 					// merge
-					if (srcTree[indexInSrc].state !== "new") {
-						srcTree[indexInSrc].state = "updated";
+					if (srcForest[indexInSrc].state !== "new") {
+						// TODO - item can't be "restored". It always stays in the save list
+						srcForest[indexInSrc].state = "updated";
+						//newNode.state = "updated";
+						//srcForest[indexInSrc] = newNode;
 					}
-					if (srcTree[indexInSrc].type === "folder") {
+					if (srcForest[indexInSrc].type === "folder") {
 						// recursive for folders
-						srcTree[indexInSrc].objects = this.mergeIntoTree(
-							srcTree[indexInSrc].objects,
+						srcForest[indexInSrc].objects = this.mergeIntoForest(
+							srcForest[indexInSrc].objects,
 							newNode.objects
 						);
 					}
 				}
 			});
-			return srcTree.sort((a, b) =>
+			return srcForest.sort((a, b) =>
 				a.type === b.type
 					? a.name.localeCompare(b.name)
 					: a.type === "file"

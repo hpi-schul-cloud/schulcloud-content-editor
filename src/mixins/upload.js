@@ -97,13 +97,14 @@ export default {
 					type: "file",
 					progress: 0, // initialize it here, to let vue create an observer for it
 					upload: uploadFile,
+					xhr: undefined,
 				};
 				// call `upload` from here, so we can access `fileMetaObject` as `this` inside the function
 				return fileMetaObject
 					.upload(item, itemFullPath, this)
 					.then((xhrUpload) => {
 						fileMetaObject.xhr = xhrUpload;
-						return new Promise((resolve) => resolve(fileMetaObject));
+						return fileMetaObject;
 					});
 			}
 			if (item.isDirectory) {

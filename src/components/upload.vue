@@ -50,7 +50,7 @@ export default {
 			return this.dropFile(event)
 				.then((newItemsForest) => {
 					this.recursiveSaveAfterUpload(newItemsForest);
-					this.filetree.objects = this.mergeIntoTree(
+					this.filetree.objects = this.mergeIntoForest(
 						this.filetree.objects,
 						newItemsForest
 					);
