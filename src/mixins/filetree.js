@@ -78,14 +78,14 @@ export default {
 				} else {
 					// merge
 					if (srcForest[indexInSrc].state !== "new") {
-						// TODO - item can't be "restored". It always stays in the save list
 						if (!srcForest[indexInSrc].originalId) {
 							newNode.originalId = srcForest[indexInSrc].id;
+						} else if (srcForest[indexInSrc].xhr) {
+							srcForest[indexInSrc].xhr.abort();
+							srcForest[indexInSrc].xhr = undefined;
 						}
 						newNode.state = "updated";
 						srcForest[indexInSrc] = newNode;
-						//newNode.state = "updated";
-						//srcForest[indexInSrc] = newNode;
 					}
 					if (srcForest[indexInSrc].type === "folder") {
 						// recursive for folders

@@ -119,17 +119,16 @@ export default {
 		getItemIndex(name) {
 			return this.filetree.objects.findIndex((item) => item.name === name);
 		},
-		abortRequest(itemIndex) {
-			if (this.filetree.objects[itemIndex].xhr) {
-				this.filetree.objects[itemIndex].xhr.abort();
-				this.filetree.objects[itemIndex].xhr = undefined;
-				return true;
+		abortRequest(file) {
+			if (file.xhr) {
+				file.xhr.abort();
+				file.xhr = undefined;
 			}
-			return false;
+			return file;
 		},
 		deleteEntry(id, name) {
 			const itemIndex = this.getItemIndex(name);
-			this.abortRequest(itemIndex);
+			this.abortRequest(this.filetree.objects[itemIndex]);
 			const item = this.filetree.objects[itemIndex];
 			// already in list
 			if (item.state === "deleted" || item.state === "updated") {
@@ -152,7 +151,7 @@ export default {
 		},
 		restoreEntry(id, name) {
 			const itemIndex = this.getItemIndex(name);
-			this.abortRequest(itemIndex);
+			this.abortRequest(this.filetree.objects[itemIndex]);
 			const item = this.filetree.objects[itemIndex];
 			if (item.state === "new") {
 				console.error(new Error("unhandled state"));
