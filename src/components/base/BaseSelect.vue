@@ -32,7 +32,7 @@
 
 <script>
 export default {
-	name: "CustomSelect",
+	name: "BaseSelect",
 	props: {
 		options: {
 			type: Array,

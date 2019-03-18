@@ -3,7 +3,7 @@
 		<!--<md-field id="search-input">
         <label>{{$lang.searchContent.search_for}}</label>
         <md-input v-model="searchQuery"></md-input>
-		</md-field>-->
+    </md-field>-->
 		<div id="search-input">
 			<input
 				id="search-query-input"
@@ -90,8 +90,8 @@
 </template>
 
 <script>
-import ContentCard from "@/components/base/contentCard.vue";
-import Pagination from "@/components/base/helper/pagination.vue";
+import ContentCard from "@/components/contentCard.vue";
+import Pagination from "@/components/pagination.vue";
 import SearchFilter from "./filter.vue";
 import ContentRow from "./editForm-table.vue";
 const qs = require("query-string");

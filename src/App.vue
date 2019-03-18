@@ -46,10 +46,10 @@
 <script>
 /* load login async */
 const login = () =>
-	import(/* webpackChunkName: "login" */ "./components/base/helper/login.vue");
+	import(/* webpackChunkName: "login" */ "@/components/login.vue");
 /* load hpiFooter async */
 const hpiFooter = () =>
-	import(/* webpackChunkName: "hpiFooter" */ "./components/base/footer.vue");
+	import(/* webpackChunkName: "hpiFooter" */ "@/components/footer.vue");
 
 export default {
 	name: "App",

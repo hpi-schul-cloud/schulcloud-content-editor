@@ -7,7 +7,7 @@
 
 <script>
 const welcomeMessage = () =>
-	import(/* webpackChunkName: "welcomeMessage" */ "@/components/base/welcomeMessage.vue");
+	import(/* webpackChunkName: "welcomeMessage" */ "@/components/welcomeMessage.vue");
 const search = () => import(/* webpackChunkName: "search" */ "./search.vue");
 
 export default {

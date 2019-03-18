@@ -1,5 +1,5 @@
 <template>
-	<CustomTextarea
+	<BaseTextarea
 		:value="value"
 		name="description"
 		:label="$lang.edit.form.description"
@@ -10,11 +10,11 @@
 </template>
 
 <script>
-import CustomTextarea from "@/components/base/CustomTextarea.vue";
+import BaseTextarea from "@/components/base/BaseTextarea.vue";
 
 export default {
 	components: {
-		CustomTextarea,
+		BaseTextarea,
 	},
 	props: {
 		value: {
