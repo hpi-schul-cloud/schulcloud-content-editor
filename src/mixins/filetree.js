@@ -87,7 +87,6 @@ export default {
 						*/
 						srcForest.splice(indexInSrc, 1);
 						srcForest.push(newNode);
-						//Object.assign(srcForest[indexInSrc], newNode);
 					}
 					if (srcForest[indexInSrc].type === "folder") {
 						// recursive for folders

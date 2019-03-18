@@ -3,6 +3,7 @@
 		<div
 			id="dropzone"
 			:class="{ 'dropzone-over': dragging }"
+			@dragstart.prevent="handleDragover"
 			@dragover.prevent="handleDragover"
 			@dragleave.prevent="handleDragleave"
 			@drop.prevent="handleDropEvent"
@@ -62,6 +63,7 @@ export default {
 				});
 		},
 		handleDragover(event) {
+			event.dataTransfer.dropEffect = "copy";
 			this.dragging = true;
 		},
 		handleDragleave(event) {

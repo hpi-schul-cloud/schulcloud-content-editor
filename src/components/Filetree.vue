@@ -6,6 +6,7 @@
 					'list-item': true,
 					'is-folder': item.type === 'folder',
 				}"
+				@dragenter.prevent="handleDragover"
 				@dragover.prevent="handleDragover"
 				@dragleave.prevent="handleDragleave"
 				@drop.prevent="handleDropEvent($event, path, item)"
@@ -227,11 +228,18 @@ export default {
 			const wrapper = event.target.closest(".list-item");
 			if (Array.from(wrapper.classList).includes("is-folder")) {
 				callback(wrapper);
+			} else {
+				callback(undefined);
 			}
 		},
 		handleDragover(event) {
 			this.wrappingFolder(event, (wrapper) => {
-				wrapper.classList.add("dragover");
+				if (wrapper && !wrapper.querySelector(".is-deleted")) {
+					wrapper.classList.add("dragover");
+					event.dataTransfer.dropEffect = "copy";
+				} else {
+					event.dataTransfer.dropEffect = "none";
+				}
 			});
 		},
 		handleDragleave(event) {
@@ -249,9 +257,10 @@ ul {
 	margin: 0;
 	li {
 		list-style-type: none;
+		border-radius: 2px;
 		transition: background-color 0.1s linear 0.1s;
 		&.dragover {
-			background-color: rgb(154, 243, 191);
+			background-color: #ccc;
 			transition: background-color 0.1s linear;
 		}
 	}
