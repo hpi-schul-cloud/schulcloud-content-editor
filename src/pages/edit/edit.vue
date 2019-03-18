@@ -3,9 +3,9 @@
 		<div class="grid-xl-8 grid-s-12">
 			<MdCard>
 				<MdCardHeader>
-					<div v-if="editMode" class="md-title">{{
-						$lang.edit.title_edit
-					}}</div>
+					<div v-if="editMode" class="md-title">
+						{{ $lang.edit.title_edit }}
+					</div>
 					<div v-else class="md-title">{{ $lang.edit.title_create }}</div>
 				</MdCardHeader>
 				<MdCardContent>
@@ -53,7 +53,7 @@
 							data-vv-name="entrypointSelector"
 							data-vv-rules="required|url"
 							:error="errors.first('entrypointSelector')"
-							:disabled="filetree.length === 0"
+							:disabled="filetree.objects.length === 0"
 							:files="entrypointFiles"
 							:content-id="$route.params.id || ''"
 						/>
@@ -64,7 +64,7 @@
 							data-vv-name="thumbnailSelector"
 							data-vv-rules="required|url"
 							:error="errors.first('thumbnailSelector')"
-							:disabled="filetree.length === 0"
+							:disabled="filetree.objects.length === 0"
 							:files="thumbnailFiles"
 							:content-id="$route.params.id || ''"
 						/>
@@ -85,9 +85,9 @@
 						>{{ $lang.buttons.delete }}</MdButton
 					>
 					<ConfirmDialog :config="dialog" @confirm="deleteContent" />
-					<MdButton style="color: initial;" @click="$router.go(-1)">{{
-						$lang.buttons.cancel
-					}}</MdButton>
+					<MdButton style="color: initial;" @click="$router.go(-1)">
+						{{ $lang.buttons.cancel }}
+					</MdButton>
 					<MdButton
 						class="md-primary"
 						type="submit"
@@ -175,7 +175,7 @@ export default {
 				cancle: this.$lang.edit.dialog.cancle,
 			},
 			userInfo: JSON.parse(localStorage.getItem("userInfo")) || {},
-			filetree: [],
+			filetree: { objects: [] },
 			hostingOption: "",
 		};
 	},
@@ -184,7 +184,7 @@ export default {
 			return Object.keys(this.fields).every((key) => this.fields[key].valid);
 		},
 		entrypointFiles() {
-			return this.filetree
+			return this.filetree.objects
 				.filter((file) => {
 					return file.type === "file";
 				})
@@ -193,7 +193,7 @@ export default {
 				});
 		},
 		thumbnailFiles() {
-			return this.filetree
+			return this.filetree.objects
 				.filter((file) => {
 					return (
 						file.type === "file" &&
@@ -260,7 +260,7 @@ export default {
 					)
 					.then((response) => {
 						// JSON responses are automatically parsed.
-						this.filetree = response.data[0].objects; // data[0] is folder of contentId
+						this.filetree = response.data;
 					})
 					.catch((e) => {
 						this.errors.add(e);

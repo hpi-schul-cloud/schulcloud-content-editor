@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<ul v-for="item in filetree" :key="item.id">
+		<ul v-for="item in filetree.objects" :key="item.id">
 			<li
 				:class="{
 					'list-item': true,
@@ -31,7 +31,7 @@
 			<li v-if="item.type === 'folder'">
 				<Filetree
 					v-show="expandedFolders.includes(item.id)"
-					:filetree.sync="item.objects"
+					:filetree.sync="item"
 					:value="value"
 					:path="path + '/' + item.name"
 					:parent-state="item.state"
@@ -55,7 +55,7 @@ export default {
 	mixins: [upload, filetree],
 	props: {
 		filetree: {
-			type: Array,
+			type: Object,
 			required: true,
 		},
 		value: {
@@ -82,14 +82,30 @@ export default {
 				return;
 			}
 			if (to === "deleted") {
-				this.filetree.forEach((item) => {
+				this.filetree.objects.forEach((item) => {
 					this.deleteEntry(item.id, item.name);
 				});
 			} else if (!to) {
-				this.filetree.forEach((item) => {
+				this.filetree.objects.forEach((item) => {
 					this.restoreEntry(item.id, item.name);
 				});
 			}
+		},
+		filetree: {
+			handler: function(to, from) {
+				if (to.type === "folder") {
+					const folderProgress = to.objects.reduce((progress, item) => {
+						return item.progress
+							? progress
+								? (progress + item.progress) / 2
+								: item.progress
+							: progress;
+					}, 0);
+					this.filetree.progress = folderProgress ? folderProgress : undefined;
+					this.$forceUpdate();
+				}
+			},
+			deep: true,
 		},
 	},
 	methods: {
@@ -104,19 +120,21 @@ export default {
 			}
 		},
 		deleteEntry(id, name) {
-			const itemIndex = this.filetree.findIndex((item) => item.name === name);
-			const item = this.filetree[itemIndex];
+			const itemIndex = this.filetree.objects.findIndex(
+				(item) => item.name === name
+			);
+			const item = this.filetree.objects[itemIndex];
 			// already in list
 			if (item.state === "deleted" || item.state === "updated") {
 				return; // shouldn't be possible
 				//return console.warn("deleting this item shouldn't be possible");
 			} else if (item.state === "new") {
 				this.value.save.splice(this.value.save.indexOf(id), 1);
-				this.filetree.splice(itemIndex, 1);
+				this.filetree.objects.splice(itemIndex, 1);
 			} else {
 				// save files
-				this.filetree[itemIndex].state = "deleted";
-				if (this.filetree[itemIndex].type === "file") {
+				this.filetree.objects[itemIndex].state = "deleted";
+				if (this.filetree.objects[itemIndex].type === "file") {
 					this.value.delete.push(id);
 				}
 			}
@@ -124,13 +142,15 @@ export default {
 			this.$forceUpdate();
 		},
 		restoreEntry(id, name) {
-			const itemIndex = this.filetree.findIndex((item) => item.name === name);
-			const item = this.filetree[itemIndex];
+			const itemIndex = this.filetree.objects.findIndex(
+				(item) => item.name === name
+			);
+			const item = this.filetree.objects[itemIndex];
 			if (item.state === "new") {
 				return; // shouldn't be possible
 			}
 			if (item.state === "updated") {
-				this.filetree[itemIndex].state = undefined;
+				this.filetree.objects[itemIndex].state = undefined;
 
 				this.value.save
 					.filter((savedId) => {
@@ -142,7 +162,7 @@ export default {
 					});
 			}
 			if (item.state === "deleted") {
-				this.filetree[itemIndex].state = undefined;
+				this.filetree.objects[itemIndex].state = undefined;
 				this.value.delete.splice(this.value.delete.indexOf(id), 1);
 			}
 			this.$emit("update", this.value);
@@ -152,23 +172,25 @@ export default {
 			if (item.type === "folder") {
 				this.dropFile(event, prefix + "/" + item.name).then(
 					(newItemsForest) => {
-						const srcTree = this.filetree;
+						const srcTree = this.filetree.objects;
 						this.recursiveSaveAfterUpload(newItemsForest);
 						const currentItemIndex = srcTree.findIndex(
 							(node) => node.name === item.name
 						);
 						if (currentItemIndex === -1) {
-							srcTree[currentItemIndex].objects.push(
+							this.filetree.objects[currentItemIndex].objects.push(
 								this.recursiveSetState(newItemsForest, "new")
 							);
 						} else {
-							srcTree[currentItemIndex].objects = this.mergeIntoTree(
-								srcTree[currentItemIndex].objects,
+							this.filetree.objects[
+								currentItemIndex
+							].objects = this.mergeIntoTree(
+								this.filetree.objects[currentItemIndex].objects,
 								newItemsForest
 							);
 						}
 						this.$emit("update", this.value);
-						this.$emit("update:filetree", srcTree);
+						this.$emit("update:filetree", this.filetree);
 					}
 				);
 			}
