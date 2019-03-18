@@ -1,8 +1,6 @@
 <template>
 	<div :class="classList">
-		<button type="button" class="btn-icon">
-			<i class="material-icons">{{ icon }}</i>
-		</button>
+		<i class="icon material-icons">{{ icon }}</i>
 		<span class="file-name">{{ file.name }}</span>
 		<template v-if="!readOnly">
 			<button
@@ -54,9 +52,15 @@ export default {
 			if (this.readonly) {
 				classList.push("readonly");
 			}
+			classList.push("is-" + this.file.type);
 			classList.push("is-" + this.file.state);
 
 			return classList;
+		},
+	},
+	watch: {
+		"file.progress": function(to, from) {
+			this.$forceUpdate();
 		},
 	},
 };
@@ -67,12 +71,17 @@ export default {
 	position: relative;
 	display: flex;
 	flex-wrap: nowrap;
-	span,
+	.icon,
+	.file-name,
 	.btn-icon {
 		display: flex;
 		align-items: center;
 		margin: 0.2em 0.2em 0.2em 0;
 	}
+	.file-name {
+		flex: 1;
+	}
+	.icon,
 	.btn-icon {
 		padding: 0;
 		color: inherit;
@@ -80,23 +89,30 @@ export default {
 		background: transparent;
 		border: none;
 	}
+	.btn-icon {
+		cursor: pointer;
+	}
 	.btn-delete {
 		display: none;
 	}
 	&:not(.readonly):hover {
-		cursor: pointer;
 		background: #eee;
 		.btn-delete {
 			display: flex;
 		}
 	}
 }
-.file-name {
-	flex: 1;
-}
 
 .material-icons {
 	font-size: 20px;
+}
+
+.is-file {
+	cursor: auto;
+}
+.is-folder {
+	cursor: pointer;
+	user-select: none;
 }
 
 .is-deleted {

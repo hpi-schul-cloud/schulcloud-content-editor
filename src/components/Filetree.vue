@@ -116,10 +116,20 @@ export default {
 				this.expandedFolders.push(id);
 			}
 		},
+		getItemIndex(name) {
+			return this.filetree.objects.findIndex((item) => item.name === name);
+		},
+		abortRequest(itemIndex) {
+			if (this.filetree.objects[itemIndex].xhr) {
+				this.filetree.objects[itemIndex].xhr.abort();
+				this.filetree.objects[itemIndex].xhr = undefined;
+				return true;
+			}
+			return false;
+		},
 		deleteEntry(id, name) {
-			const itemIndex = this.filetree.objects.findIndex(
-				(item) => item.name === name
-			);
+			const itemIndex = this.getItemIndex(name);
+			this.abortRequest(itemIndex);
 			const item = this.filetree.objects[itemIndex];
 			// already in list
 			if (item.state === "deleted" || item.state === "updated") {
@@ -127,6 +137,7 @@ export default {
 					new Error("deleting this item shouldn't be possible")
 				);
 			} else if (item.state === "new") {
+				// don't save anymore
 				this.value.save.splice(this.value.save.indexOf(id), 1);
 				this.filetree.objects.splice(itemIndex, 1);
 			} else {
@@ -140,22 +151,20 @@ export default {
 			this.$forceUpdate();
 		},
 		restoreEntry(id, name) {
-			const itemIndex = this.filetree.objects.findIndex(
-				(item) => item.name === name
-			);
+			const itemIndex = this.getItemIndex(name);
+			this.abortRequest(itemIndex);
 			const item = this.filetree.objects[itemIndex];
 			if (item.state === "new") {
 				console.error(new Error("unhandled state"));
 				return; // shouldn't be possible
 			}
 			if (item.state === "updated") {
+				this.filetree.objects[itemIndex].id = item.originalId;
+				this.filetree.objects[itemIndex].originalId = undefined;
 				this.filetree.objects[itemIndex].state = undefined;
 
 				this.value.save
-					.filter((savedId) => {
-						let res = savedId.includes(id);
-						if (res) return true;
-					})
+					.filter((savedId) => savedId.includes(id))
 					.forEach((elem) => {
 						this.value.save.splice(this.value.save.indexOf(elem), 1);
 					});

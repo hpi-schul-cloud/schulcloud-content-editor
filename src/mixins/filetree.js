@@ -51,7 +51,7 @@ export default {
 						progress: undefined,
 						upload: undefined,
 						xhr: undefined,
-						replacedId: undefined,
+						originalId: undefined,
 					},
 					node
 				);
@@ -79,7 +79,9 @@ export default {
 					// merge
 					if (srcForest[indexInSrc].state !== "new") {
 						// TODO - item can't be "restored". It always stays in the save list
-						newNode.replacedId = srcForest[indexInSrc].id;
+						if (!srcForest[indexInSrc].originalId) {
+							newNode.originalId = srcForest[indexInSrc].id;
+						}
 						newNode.state = "updated";
 						srcForest[indexInSrc] = newNode;
 						//newNode.state = "updated";
