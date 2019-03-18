@@ -43,9 +43,9 @@
 </template>
 
 <script>
-import FiletreeEntry from "./FiletreeEntry.vue";
-import upload from "./upload.js";
-import filetree from "./filetree.js";
+import FiletreeEntry from "@/components/base/FiletreeEntry.vue";
+import upload from "@/mixins/upload.js";
+import filetree from "@/mixins/filetree.js";
 
 export default {
 	name: "Filetree",

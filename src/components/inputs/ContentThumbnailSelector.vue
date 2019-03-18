@@ -1,5 +1,5 @@
 <template>
-	<CustomSelect
+	<BaseSelect
 		:label="$lang.edit.form.thumbnailSelector"
 		name="Thumbnail"
 		:options="options"
@@ -10,11 +10,11 @@
 </template>
 
 <script>
-import CustomSelect from "@/components/base/CustomSelect.vue";
+import BaseSelect from "@/components/base/html/BaseSelect.vue";
 
 export default {
 	components: {
-		CustomSelect,
+		BaseSelect,
 	},
 	props: {
 		value: {

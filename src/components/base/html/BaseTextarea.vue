@@ -1,10 +1,10 @@
 <template>
 	<div class="wrapper">
 		<label :class="{ invalid: !!error }" :for="name">{{ label }}</label>
-		<input
-			class="input"
+		<textarea
+			class="textarea"
 			:name="name"
-			:type="type"
+			:maxlength="maxlength"
 			:value="value"
 			:placeholder="label"
 			@input="$emit('input', $event.target.value)"
@@ -15,15 +15,15 @@
 
 <script>
 export default {
-	name: "CustomInput",
+	name: "BaseInput",
 	props: {
 		value: {
 			type: String,
 			default: "",
 		},
-		type: {
+		maxlength: {
 			type: String,
-			default: "text",
+			default: "100",
 		},
 		label: {
 			type: String,
@@ -50,18 +50,19 @@ label {
 	font-size: 0.75em;
 	color: black;
 }
-.input {
+.textarea {
 	display: block;
 	width: 100%;
-	padding: 0 8px 8px;
+	padding: 8px;
+	font-family: inherit;
 	font-size: 1.15em;
 	color: #757575;
-	border: none;
-	border-bottom: 1px solid #949494;
+	resize: vertical;
+	border-radius: 2px;
 
 	&:focus {
-		border-bottom-color: #b10438;
-		border-bottom-width: 2px;
+		border-color: #b10438;
+		border-width: 2px;
 		outline: none;
 	}
 }

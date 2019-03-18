@@ -1,5 +1,5 @@
 <template>
-	<CustomInput
+	<BaseInput
 		name="url"
 		:value="value"
 		type="text"
@@ -10,11 +10,11 @@
 </template>
 
 <script>
-import CustomInput from "@/components/base/CustomInput.vue";
+import BaseInput from "@/components/base/html/BaseInput.vue";
 
 export default {
 	components: {
-		CustomInput,
+		BaseInput,
 	},
 	props: {
 		value: {

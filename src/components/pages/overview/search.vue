@@ -3,7 +3,7 @@
 		<!--<md-field id="search-input">
         <label>{{$lang.searchContent.search_for}}</label>
         <md-input v-model="searchQuery"></md-input>
-		</md-field>-->
+    </md-field>-->
 		<div id="search-input">
 			<input
 				id="search-query-input"
@@ -24,9 +24,9 @@
 
 		<div class="md-layout-item items-per-page-picker">
 			<MdField>
-				<label for="itemsPerPage">
-					{{ $lang.searchContent.items_per_page }}
-				</label>
+				<label for="itemsPerPage">{{
+					$lang.searchContent.items_per_page
+				}}</label>
 				<MdSelect v-model.number="pagination.itemsPerPage" name="itemsPerPage">
 					<MdOption value="12">12</MdOption>
 					<MdOption value="24">24</MdOption>
@@ -91,7 +91,7 @@
 
 <script>
 import ContentCard from "@/components/base/contentCard.vue";
-import Pagination from "@/components/base/helper/pagination.vue";
+import Pagination from "@/components/base/pagination.vue";
 import SearchFilter from "./filter.vue";
 import ContentRow from "./editForm-table.vue";
 const qs = require("query-string");

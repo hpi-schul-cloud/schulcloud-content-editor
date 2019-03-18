@@ -20,9 +20,9 @@
 </template>
 
 <script>
-import Filetree from "./helper/Filetree.vue";
-import upload from "./helper/upload.js";
-import filetree from "./helper/filetree.js";
+import Filetree from "@/components/base/Filetree.vue";
+import upload from "@/mixins/upload.js";
+import filetree from "@/mixins/filetree.js";
 
 export default {
 	name: "Upload",
