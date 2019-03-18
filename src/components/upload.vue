@@ -3,12 +3,13 @@
 		<div
 			id="dropzone"
 			:class="{ 'dropzone-over': dragging }"
+			@dragstart.prevent="handleDragover"
 			@dragover.prevent="handleDragover"
 			@dragleave.prevent="handleDragleave"
 			@drop.prevent="handleDropEvent"
 			>Drop your files here!</div
 		>
-		<div v-show="filetree.length !== 0" id="filetree">
+		<div v-show="filetree.objects.length !== 0" id="filetree">
 			<h4>Your uploaded Files:</h4>
 			<Filetree
 				:value="value"
@@ -36,8 +37,8 @@ export default {
 			default: () => ({ delete: [], save: [] }),
 		},
 		filetree: {
-			type: Array,
-			default: () => [],
+			type: Object,
+			default: () => ({ id: "", name: "", type: "folder", objects: [] }),
 		},
 	},
 	data() {
@@ -47,18 +48,22 @@ export default {
 	},
 	methods: {
 		handleDropEvent(event) {
-			return this.dropFile(event)
+			return this.$_dropFile(event)
 				.then((newItemsForest) => {
-					this.recursiveSaveAfterUpload(newItemsForest);
-					const newForest = this.mergeIntoTree(this.filetree, newItemsForest);
-					this.$emit("update", this.value);
-					return this.$emit("update:filetree", newForest);
+					this.$_recursiveSaveAfterUpload(newItemsForest);
+					this.filetree.objects = this.$_mergeIntoForest(
+						this.filetree.objects,
+						newItemsForest
+					);
+					this.$emit("update", this.value); // TODO why? value isn't changed in this method
+					return this.$emit("update:filetree", this.filetree);
 				})
 				.then((res) => {
 					return res;
 				});
 		},
 		handleDragover(event) {
+			event.dataTransfer.dropEffect = "copy";
 			this.dragging = true;
 		},
 		handleDragleave(event) {

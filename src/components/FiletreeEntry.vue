@@ -1,32 +1,30 @@
 <template>
 	<div :class="classList">
-		<button type="button" class="btn-icon">
-			<i class="material-icons">{{ icon }}</i>
-		</button>
-		<span class="file-name">{{ name }}</span>
+		<i class="icon material-icons">{{ icon }}</i>
+		<span class="file-name">{{ file.name }}</span>
 		<template v-if="!readOnly">
 			<button
-				v-if="!state || state === 'new'"
+				v-if="!file.state || file.state === 'new' || file.state === 'modified'"
 				type="button"
 				class="btn-icon btn-delete"
-				@click.stop="$emit('delete', id, name)"
+				@click.stop="$emit('delete', file.id, file.name)"
 			>
 				<i class="material-icons">close</i>
 			</button>
 			<button
-				v-if="['deleted', 'updated'].includes(state)"
+				v-if="['deleted', 'updated'].includes(file.state)"
 				type="button"
 				class="btn-icon btn-restore"
-				@click.stop="$emit('restore', id, name)"
+				@click.stop="$emit('restore', file.id, file.name)"
 			>
 				<i class="material-icons">restore_page</i>
 			</button>
 		</template>
 		<progress
-			v-if="progress !== undefined"
+			v-if="file.progress !== undefined"
 			class="progress"
 			max="100"
-			:value="progress"
+			:value="file.progress"
 		/>
 	</div>
 </template>
@@ -39,25 +37,13 @@ export default {
 			type: String,
 			default: "insert_drive_file", // folder_open
 		},
-		name: {
-			type: String,
-			required: true,
-		},
-		id: {
-			type: String,
+		file: {
+			type: Object,
 			required: true,
 		},
 		readOnly: {
 			type: Boolean,
 			default: false,
-		},
-		state: {
-			type: String || Boolean,
-			default: "",
-		},
-		progress: {
-			type: Number || undefined,
-			default: undefined,
 		},
 	},
 	computed: {
@@ -66,9 +52,18 @@ export default {
 			if (this.readonly) {
 				classList.push("readonly");
 			}
-			classList.push("is-" + this.state);
+			classList.push("is-" + this.file.type);
+			classList.push("is-" + this.file.state);
 
 			return classList;
+		},
+	},
+	watch: {
+		file: {
+			handler: function(to, from) {
+				this.$forceUpdate();
+			},
+			deep: true,
 		},
 	},
 };
@@ -79,12 +74,17 @@ export default {
 	position: relative;
 	display: flex;
 	flex-wrap: nowrap;
-	span,
+	.icon,
+	.file-name,
 	.btn-icon {
 		display: flex;
 		align-items: center;
 		margin: 0.2em 0.2em 0.2em 0;
 	}
+	.file-name {
+		flex: 1;
+	}
+	.icon,
 	.btn-icon {
 		padding: 0;
 		color: inherit;
@@ -92,23 +92,30 @@ export default {
 		background: transparent;
 		border: none;
 	}
+	.btn-icon {
+		cursor: pointer;
+	}
 	.btn-delete {
 		display: none;
 	}
 	&:not(.readonly):hover {
-		cursor: pointer;
 		background: #eee;
 		.btn-delete {
 			display: flex;
 		}
 	}
 }
-.file-name {
-	flex: 1;
-}
 
 .material-icons {
 	font-size: 20px;
+}
+
+.is-file {
+	cursor: auto;
+}
+.is-folder {
+	cursor: pointer;
+	user-select: none;
 }
 
 .is-deleted {
@@ -117,7 +124,8 @@ export default {
 		text-decoration: line-through;
 	}
 }
-.is-updated {
+.is-updated,
+.is-modified {
 	color: #d90;
 }
 .is-new {

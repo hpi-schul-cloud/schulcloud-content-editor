@@ -53,7 +53,7 @@
 							data-vv-name="entrypointSelector"
 							data-vv-rules="required|url"
 							:error="errors.first('entrypointSelector')"
-							:disabled="filetree.length === 0"
+							:disabled="filetree.objects.length === 0"
 							:files="entrypointFiles"
 							:content-id="$route.params.id || ''"
 						/>
@@ -64,7 +64,7 @@
 							data-vv-name="thumbnailSelector"
 							data-vv-rules="required|url"
 							:error="errors.first('thumbnailSelector')"
-							:disabled="filetree.length === 0"
+							:disabled="filetree.objects.length === 0"
 							:files="thumbnailFiles"
 							:content-id="$route.params.id || ''"
 						/>
@@ -130,6 +130,8 @@ import ContentHostingProvider from "@/components/inputs/ContentHostingProvider.v
 import ContentEntrypointSelector from "@/components/inputs/ContentEntrypointSelector.vue";
 import ContentThumbnailSelector from "@/components/inputs/ContentThumbnailSelector.vue";
 
+import filetree from "@/mixins/filetree.js";
+
 import FileUpload from "@/components/upload.vue";
 
 export default {
@@ -151,6 +153,7 @@ export default {
 
 		FileUpload,
 	},
+	mixins: [filetree],
 	props: {
 		editMode: Boolean,
 	},
@@ -175,7 +178,7 @@ export default {
 				cancle: this.$lang.edit.dialog.cancle,
 			},
 			userInfo: JSON.parse(localStorage.getItem("userInfo")) || {},
-			filetree: [],
+			filetree: { objects: [] },
 			hostingOption: "",
 		};
 	},
@@ -184,7 +187,7 @@ export default {
 			return Object.keys(this.fields).every((key) => this.fields[key].valid);
 		},
 		entrypointFiles() {
-			return this.filetree
+			return this.filetree.objects
 				.filter((file) => {
 					return file.type === "file";
 				})
@@ -193,7 +196,7 @@ export default {
 				});
 		},
 		thumbnailFiles() {
-			return this.filetree
+			return this.filetree.objects
 				.filter((file) => {
 					return (
 						file.type === "file" &&
@@ -260,7 +263,7 @@ export default {
 					)
 					.then((response) => {
 						// JSON responses are automatically parsed.
-						this.filetree = response.data[0].objects; // data[0] is folder of contentId
+						this.filetree = this.$_normalizeTree(response.data);
 					})
 					.catch((e) => {
 						this.errors.add(e);

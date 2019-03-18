@@ -40,7 +40,6 @@ function uploadFile(item, filepath, that) {
 			"load",
 			(res) => {
 				const response = JSON.parse(res.srcElement.responseText);
-				this.progress = undefined;
 				if (response.status !== 200) {
 					this.status = "upload-error";
 					console.error("Error after upload", res);
@@ -53,9 +52,24 @@ function uploadFile(item, filepath, that) {
 		xhr.addEventListener(
 			"error",
 			(res) => {
-				this.progress = undefined;
 				this.status = "upload-error";
 				console.error("Error during upload", res);
+			},
+			false
+		);
+		xhr.addEventListener(
+			"timeout",
+			(res) => {
+				this.status = "upload-error";
+				console.error("upload timed out", res);
+			},
+			false
+		);
+		xhr.addEventListener(
+			"loadend",
+			() => {
+				this.progress = undefined;
+				this.xhr = undefined;
 			},
 			false
 		);
@@ -88,45 +102,48 @@ function uploadFile(item, filepath, that) {
 
 export default {
 	methods: {
-		traverseFiles(item, prefix) {
+		$_traverseFiles(item, prefix) {
 			if (item.isFile) {
 				const itemFullPath = prefix + item.fullPath;
 				const fileMetaObject = {
 					id: itemFullPath,
 					name: item.name,
 					type: "file",
-					progress: 0, // initialize it here, to let vue create an observer for it
+					state: "",
+					progress: undefined, // initialize it here, to let vue create an observer for it
 					upload: uploadFile,
+					xhr: undefined,
 				};
 				// call `upload` from here, so we can access `fileMetaObject` as `this` inside the function
 				return fileMetaObject
 					.upload(item, itemFullPath, this)
 					.then((xhrUpload) => {
 						fileMetaObject.xhr = xhrUpload;
-						return new Promise((resolve) => resolve(fileMetaObject));
+						return fileMetaObject;
 					});
 			}
 			if (item.isDirectory) {
 				return PromiseReader(item)
 					.then((entries) =>
 						Promise.all(
-							entries.map((entry) => this.traverseFiles(entry, prefix))
+							entries.map((entry) => this.$_traverseFiles(entry, prefix))
 						)
 					)
 					.then((subFileForest) => ({
 						id: prefix + item.fullPath,
 						name: item.name,
 						type: "folder",
+						state: "",
 						objects: subFileForest,
 					}));
 			}
 		},
-		dropFile(event, prefix = "") {
+		$_dropFile(event, prefix = "") {
 			return Promise.all(
 				Array.from(event.dataTransfer.items).map((rawItem) => {
 					let item = rawItem.webkitGetAsEntry();
 					if (item) {
-						return this.traverseFiles(item, prefix);
+						return this.$_traverseFiles(item, prefix);
 					}
 				})
 			);
