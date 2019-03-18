@@ -123,8 +123,9 @@ export default {
 			const item = this.filetree.objects[itemIndex];
 			// already in list
 			if (item.state === "deleted" || item.state === "updated") {
-				return; // shouldn't be possible
-				//return console.warn("deleting this item shouldn't be possible");
+				return console.warn(
+					new Error("deleting this item shouldn't be possible")
+				);
 			} else if (item.state === "new") {
 				this.value.save.splice(this.value.save.indexOf(id), 1);
 				this.filetree.objects.splice(itemIndex, 1);

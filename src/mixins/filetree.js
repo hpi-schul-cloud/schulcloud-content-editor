@@ -42,6 +42,20 @@ export default {
 				return leave;
 			});
 		},
+		normalizeTree(tree) {
+			return this.traverseTree(tree, (node) => {
+				return Object.assign(
+					{
+						state: "",
+						objects: [],
+						progress: undefined,
+						upload: undefined,
+						xhr: undefined,
+					},
+					node
+				);
+			});
+		},
 		mergeIntoForest(srcForest, newForest) {
 			/*
 				srcTree: [ { ... }, { id: a, objects: [], ... } ]

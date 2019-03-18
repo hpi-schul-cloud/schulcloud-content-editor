@@ -130,6 +130,8 @@ import ContentHostingProvider from "@/components/inputs/ContentHostingProvider.v
 import ContentEntrypointSelector from "@/components/inputs/ContentEntrypointSelector.vue";
 import ContentThumbnailSelector from "@/components/inputs/ContentThumbnailSelector.vue";
 
+import filetree from "@/mixins/filetree.js";
+
 import FileUpload from "@/components/upload.vue";
 
 export default {
@@ -151,6 +153,7 @@ export default {
 
 		FileUpload,
 	},
+	mixins: [filetree],
 	props: {
 		editMode: Boolean,
 	},
@@ -260,7 +263,7 @@ export default {
 					)
 					.then((response) => {
 						// JSON responses are automatically parsed.
-						this.filetree = response.data;
+						this.filetree = this.normalizeTree(response.data);
 					})
 					.catch((e) => {
 						this.errors.add(e);

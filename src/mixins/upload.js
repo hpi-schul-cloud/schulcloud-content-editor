@@ -95,6 +95,7 @@ export default {
 					id: itemFullPath,
 					name: item.name,
 					type: "file",
+					state: "",
 					progress: 0, // initialize it here, to let vue create an observer for it
 					upload: uploadFile,
 					xhr: undefined,
@@ -118,6 +119,7 @@ export default {
 						id: prefix + item.fullPath,
 						name: item.name,
 						type: "folder",
+						state: "",
 						objects: subFileForest,
 					}));
 			}
