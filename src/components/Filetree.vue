@@ -102,7 +102,9 @@ export default {
 					}, 0);
 					this.filetree.progress = folderProgress ? folderProgress : undefined;
 					if (to.state !== "deleted") {
-						if (to.objects.some((file) => !!file.state)) {
+						if (to.objects.every((file) => file.state === "new")) {
+							this.filetree.state = "new";
+						} else if (to.objects.some((file) => !!file.state)) {
 							this.filetree.state = "modified";
 						} else {
 							this.filetree.state = undefined;
