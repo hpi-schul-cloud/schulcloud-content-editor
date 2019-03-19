@@ -2,10 +2,7 @@
 	<div>
 		<ul v-for="item in filetree.objects" :key="item.id">
 			<li
-				:class="{
-					'list-item': true,
-					'is-folder': item.type === 'folder',
-				}"
+				:class="['list-item', 'is-' + item.type]"
 				@dragenter.prevent="handleDragover"
 				@dragover.prevent="handleDragover"
 				@dragleave.prevent="handleDragleave"
