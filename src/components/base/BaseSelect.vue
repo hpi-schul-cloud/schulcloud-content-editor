@@ -93,7 +93,8 @@ export default {
 }
 label {
 	padding-left: 8px;
-	font-size: 0.75em;
+	font-size: 0.9em;
+	font-weight: 500;
 	color: black;
 }
 .select_button {

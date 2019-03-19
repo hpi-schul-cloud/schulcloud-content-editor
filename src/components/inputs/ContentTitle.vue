@@ -4,6 +4,7 @@
 		:value="value"
 		type="text"
 		:label="$lang.edit.form.title"
+		placeholder="Malen nach Zahlen"
 		:error="error"
 		@input="$emit('input', $event)"
 	/>

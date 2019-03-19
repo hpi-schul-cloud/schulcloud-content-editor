@@ -7,6 +7,7 @@
 			:name="name"
 			:type="type"
 			:value="value"
+			:placeholder="placeholder"
 			@input="$emit('input', $event.target.value)"
 		/>
 		<span v-if="!!error" class="invalid">{{ error }}</span>
@@ -29,6 +30,10 @@ export default {
 			type: String,
 			required: true,
 		},
+		placeholder: {
+			type: String,
+			default: "",
+		},
 		error: {
 			type: String,
 			default: "",
@@ -47,7 +52,8 @@ export default {
 }
 label {
 	padding-left: 8px;
-	font-size: 0.75em;
+	font-size: 0.9em;
+	font-weight: 500;
 	color: black;
 }
 .input {

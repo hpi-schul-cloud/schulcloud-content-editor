@@ -1,11 +1,14 @@
 <template>
-	<VueTagsInput
-		v-model="newTag"
-		class="tag-input"
-		:tags="value.map((item) => ({ text: item }))"
-		:placeholder="placeholder"
-		@tags-changed="tagsChanged"
-	/>
+	<div class="wrapper">
+		<label>{{ label }}</label>
+		<VueTagsInput
+			v-model="newTag"
+			class="tag-input"
+			:tags="value.map((item) => ({ text: item }))"
+			:placeholder="placeholder"
+			@tags-changed="tagsChanged"
+		/>
+	</div>
 </template>
 
 <script>
@@ -19,6 +22,10 @@ export default {
 		value: {
 			type: Array,
 			default: () => [],
+		},
+		label: {
+			type: String,
+			required: true,
 		},
 		placeholder: {
 			type: String,
@@ -49,6 +56,15 @@ export default {
 };
 </script>
 <style lang="scss">
+.wrapper {
+	margin: 1.5em 0;
+}
+label {
+	padding-left: 8px;
+	font-size: 0.9em;
+	font-weight: 500;
+	color: black;
+}
 .no-numbers {
 	color: red;
 }

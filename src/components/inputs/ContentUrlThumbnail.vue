@@ -4,6 +4,7 @@
 		:value="value"
 		type="text"
 		:label="$lang.edit.form.thumbnail_url"
+		placeholder="https://..."
 		:error="error"
 		@input="$emit('input', $event)"
 	/>

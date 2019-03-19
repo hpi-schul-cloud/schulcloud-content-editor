@@ -2,6 +2,7 @@
 	<section>
 		<CustomChipInput
 			:value="value"
+			:label="$lang.edit.form.tags"
 			:placeholder="
 				$lang.edit.form.tags + '... (' + $lang.edit.form.max + ' 10)'
 			"

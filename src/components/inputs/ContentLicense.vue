@@ -2,7 +2,8 @@
 	<section>
 		<CustomChipInput
 			:value="value"
-			:placeholder="$lang.edit.form.license"
+			:label="$lang.edit.form.license"
+			:placeholder="$lang.edit.form.license + '... (max. 10)'"
 			:max="10"
 			@input="$emit('input', $event)"
 		/>
