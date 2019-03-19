@@ -41,7 +41,7 @@ function uploadFile(item, filepath, that) {
 			(res) => {
 				const response = JSON.parse(res.srcElement.responseText);
 				if (response.status !== 200) {
-					this.status = "upload-error";
+					this.state = "upload-error";
 					console.error("Error after upload", res);
 					return;
 				}
@@ -52,7 +52,7 @@ function uploadFile(item, filepath, that) {
 		xhr.addEventListener(
 			"error",
 			(res) => {
-				this.status = "upload-error";
+				this.state = "upload-error";
 				console.error("Error during upload", res);
 			},
 			false
@@ -60,7 +60,7 @@ function uploadFile(item, filepath, that) {
 		xhr.addEventListener(
 			"timeout",
 			(res) => {
-				this.status = "upload-error";
+				this.state = "upload-error";
 				console.error("upload timed out", res);
 			},
 			false

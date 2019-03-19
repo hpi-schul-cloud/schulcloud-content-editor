@@ -154,7 +154,7 @@ export default {
 			} else if (item.state === "updated") {
 				this.restoreEntry(id, name);
 				this.deleteEntry(id, name);
-			} else if (item.state === "new") {
+			} else if (item.state === "new" || item.state === "upload-error") {
 				// don't save anymore
 				this.value.save.splice(this.value.save.indexOf(id), 1);
 				this.filetree.objects.splice(itemIndex, 1);
@@ -226,7 +226,7 @@ export default {
 			// TODO refactor, don't use direct dom manipulation
 			// TODO highlight dropzone only if folder isn't deleted
 			const wrapper = event.target.closest(".list-item");
-			if (Array.from(wrapper.classList).includes("is-folder")) {
+			if (wrapper && Array.from(wrapper.classList).includes("is-folder")) {
 				callback(wrapper);
 			} else {
 				callback(undefined);
@@ -244,7 +244,9 @@ export default {
 		},
 		handleDragleave(event) {
 			this.wrappingFolder(event, (wrapper) => {
-				wrapper.classList.remove("dragover");
+				if (wrapper) {
+					wrapper.classList.remove("dragover");
+				}
 			});
 		},
 	},

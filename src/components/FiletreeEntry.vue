@@ -4,7 +4,10 @@
 		<span class="file-name">{{ file.name }}</span>
 		<template v-if="!readOnly">
 			<button
-				v-if="!file.state || file.state === 'new' || file.state === 'modified'"
+				v-if="
+					!file.state ||
+						['new', 'modified', 'upload-error'].includes(file.state)
+				"
 				type="button"
 				class="btn-icon btn-delete"
 				@click.stop="$emit('delete', file.id, file.name)"
@@ -127,6 +130,9 @@ export default {
 .is-updated,
 .is-modified {
 	color: #d90;
+}
+.is-upload-error {
+	color: #f00;
 }
 .is-new {
 	color: #0a0;
