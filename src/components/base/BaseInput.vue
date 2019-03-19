@@ -2,11 +2,11 @@
 	<div class="wrapper">
 		<label :class="{ invalid: !!error }" :for="name">{{ label }}</label>
 		<input
+			v-bind="$attrs"
 			class="input"
 			:name="name"
 			:type="type"
 			:value="value"
-			:placeholder="label"
 			@input="$emit('input', $event.target.value)"
 		/>
 		<span v-if="!!error" class="invalid">{{ error }}</span>
@@ -27,7 +27,7 @@ export default {
 		},
 		label: {
 			type: String,
-			default: "",
+			required: true,
 		},
 		error: {
 			type: String,
