@@ -57,16 +57,26 @@ export default {
 		border: 0;
 		border-bottom: 1px solid grey;
 	}
+	&.ti-focus .ti-input {
+		border-color: #b10438;
+	}
 	&.vue-tags-input {
 		// background: white;
 		max-width: 100%;
 		color: #1d1d1d;
 		border-radius: 20px;
+
+		.ti-new-tag-input {
+			font-size: 1rem;
+			color: #757575;
+		}
 	}
 	.ti-tag {
-		color: #333;
-		background-color: transparent;
+		font-size: 1rem;
+		color: #757575;
+		background-color: #e7e7e7;
 		border: 1px solid #333;
+
 		&.ti-tag.ti-deletion-mark {
 			color: #fff;
 			background-color: var(--md-theme-default-primary);
