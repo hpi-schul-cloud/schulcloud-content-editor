@@ -77,6 +77,12 @@
 						/>
 					</form>
 				</MdCardContent>
+				<div>
+					<BaseButton>Abbrechen</BaseButton>
+					<BaseButton form="contentForm" type="submit" :disabled="!isFormValid">
+						Speichern
+					</BaseButton>
+				</div>
 				<MdCardActions>
 					<MdButton
 						v-if="$route.params.id"
@@ -129,6 +135,7 @@ import ContentTags from "@/components/inputs/ContentTags.vue";
 import ContentHostingProvider from "@/components/inputs/ContentHostingProvider.vue";
 import ContentEntrypointSelector from "@/components/inputs/ContentEntrypointSelector.vue";
 import ContentThumbnailSelector from "@/components/inputs/ContentThumbnailSelector.vue";
+import BaseButton from "@/components/base/BaseButton.vue";
 
 import filetree from "@/mixins/filetree.js";
 
@@ -150,6 +157,7 @@ export default {
 		ContentHostingProvider,
 		ContentEntrypointSelector,
 		ContentThumbnailSelector,
+		BaseButton,
 
 		FileUpload,
 	},
