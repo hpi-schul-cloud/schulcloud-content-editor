@@ -1,5 +1,10 @@
 <template>
-	<button :class="getClass()" :disabled="disabled">
+	<button
+		:class="getClass()"
+		:type="type"
+		:disabled="disabled"
+		@click="$emit('ButtonClicked')"
+	>
 		<slot></slot>
 	</button>
 </template>
@@ -20,6 +25,10 @@ export default {
 			type: String,
 			default: "",
 		},
+		delete: {
+			type: Boolean,
+			default: false,
+		},
 	},
 	methods: {
 		getClass() {
@@ -28,10 +37,8 @@ export default {
 				disabled: this.disabled === true,
 				submit_btn: this.type === "submit",
 				normal_btn: this.type === "button",
+				delete_btn: this.delete === true,
 			};
-		},
-		submit() {
-			this.$emit("btnClicked");
 		},
 	},
 };
@@ -40,6 +47,7 @@ export default {
 <style lang="scss" scoped>
 .btn {
 	padding: 8px;
+	margin: 0 8px;
 	font-family: inherit;
 	font-size: 14px;
 	font-weight: 500;
@@ -47,6 +55,7 @@ export default {
 	background: #fff;
 	border: none;
 	border-radius: 2px;
+	transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
 	&:hover {
 		cursor: pointer;
@@ -65,6 +74,10 @@ export default {
 	&:hover {
 		background: #00000021;
 	}
+}
+.delete_btn {
+	position: absolute;
+	left: 0;
 }
 .disabled {
 	color: #c4c4c4;

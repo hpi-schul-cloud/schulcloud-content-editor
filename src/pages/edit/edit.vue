@@ -75,12 +75,32 @@
 							@update:filetree="handleFiletreeUpdate($event)"
 							@update="data.files = $event"
 						/>
+						<button
+							ref="submitButton"
+							style="display:none"
+							type="submit"
+						></button>
 					</form>
 				</MdCardContent>
-				<div>
-					<BaseButton>Abbrechen</BaseButton>
-					<BaseButton form="contentForm" type="submit" :disabled="!isFormValid">
-						Speichern
+				<div class="button_wrapper">
+					<BaseButton
+						v-if="$route.params.id"
+						:delete="true"
+						@ButtonClicked="dialog.active = true"
+					>
+						{{ $lang.buttons.delete }}
+					</BaseButton>
+					<ConfirmDialog :config="dialog" @confirm="deleteContent" />
+					<BaseButton @ButtonClicked="$router.go(-1)">
+						{{ $lang.buttons.cancel }}
+					</BaseButton>
+					<BaseButton
+						form="contentForm"
+						type="submit"
+						:disabled="!isFormValid"
+						@ButtonClicked="$refs.submitButton.click()"
+					>
+						{{ $lang.buttons.save }}
 					</BaseButton>
 				</div>
 				<MdCardActions>
@@ -381,5 +401,9 @@ textarea {
 		position: absolute;
 		left: 8px;
 	}
+}
+.button_wrapper {
+	display: flex;
+	justify-content: flex-end;
 }
 </style>
