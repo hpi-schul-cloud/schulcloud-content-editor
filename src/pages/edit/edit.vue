@@ -103,25 +103,6 @@
 						{{ $lang.buttons.save }}
 					</BaseButton>
 				</div>
-				<MdCardActions>
-					<MdButton
-						v-if="$route.params.id"
-						class="delete"
-						@click="dialog.active = true"
-						>{{ $lang.buttons.delete }}</MdButton
-					>
-					<ConfirmDialog :config="dialog" @confirm="deleteContent" />
-					<MdButton style="color: initial;" @click="$router.go(-1)">
-						{{ $lang.buttons.cancel }}
-					</MdButton>
-					<MdButton
-						class="md-primary"
-						type="submit"
-						form="contentForm"
-						:disabled="!isFormValid"
-						>{{ $lang.buttons.save }}</MdButton
-					>
-				</MdCardActions>
 			</MdCard>
 		</div>
 		<div class="grid-xl-4 grid-s-12">
@@ -405,5 +386,6 @@ textarea {
 .button_wrapper {
 	display: flex;
 	justify-content: flex-end;
+	padding: 8px;
 }
 </style>
