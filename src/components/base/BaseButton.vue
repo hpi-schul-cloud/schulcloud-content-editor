@@ -75,10 +75,6 @@ export default {
 		background: #00000021;
 	}
 }
-.delete_btn {
-	position: absolute;
-	left: 0;
-}
 .disabled {
 	color: #c4c4c4;
 

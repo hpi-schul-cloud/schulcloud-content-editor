@@ -82,7 +82,7 @@
 						></button>
 					</form>
 				</template>
-				<template slot="action">
+				<template slot="footer">
 					<div class="button_wrapper">
 						<BaseButton
 							v-if="$route.params.id"
@@ -375,6 +375,6 @@ h3 {
 
 .button_wrapper {
 	display: flex;
-	justify-content: flex-end;
+	justify-content: space-between;
 }
 </style>

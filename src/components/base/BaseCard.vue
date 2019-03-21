@@ -1,13 +1,16 @@
 <template>
 	<div class="card">
+		<div v-if="withMedia === true" class="media">
+			<slot name="media"></slot>
+		</div>
 		<div class="header">
 			<slot name="head"></slot>
 		</div>
 		<div class="content">
 			<slot name="content"></slot>
 		</div>
-		<div class="action">
-			<slot name="action"></slot>
+		<div class="footer">
+			<slot name="footer"></slot>
 		</div>
 	</div>
 </template>
@@ -15,6 +18,12 @@
 <script>
 export default {
 	name: "BaseCard",
+	props: {
+		withMedia: {
+			type: Boolean,
+			default: false,
+		},
+	},
 };
 </script>
 
@@ -35,10 +44,22 @@ export default {
 		line-height: 32px;
 	}
 }
+.media {
+	img {
+		width: 100%;
+		border-top-left-radius: 2px;
+		border-top-right-radius: 2px;
+	}
+
+	+ .header {
+		padding-top: 8px;
+	}
+}
 .content {
 	padding: 8px 16px;
+	word-break: break-word;
 }
-.action {
+.footer {
 	padding: 8px 16px 16px;
 }
 </style>
