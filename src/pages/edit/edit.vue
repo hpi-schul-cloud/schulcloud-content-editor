@@ -1,14 +1,14 @@
 <template>
 	<div md-gutter class="container-fluid grid">
 		<div class="grid-xl-8 grid-s-12">
-			<MdCard>
-				<MdCardHeader>
-					<div v-if="editMode" class="md-title">
+			<BaseCard>
+				<template slot="head">
+					<div v-if="editMode" class="title">
 						{{ $lang.edit.title_edit }}
 					</div>
-					<div v-else class="md-title">{{ $lang.edit.title_create }}</div>
-				</MdCardHeader>
-				<MdCardContent>
+					<div v-else class="title">{{ $lang.edit.title_create }}</div>
+				</template>
+				<template slot="content">
 					<form id="contentForm" @submit.prevent="validateBeforeSubmit">
 						<h3>Metadaten</h3>
 						<ContentTitle
@@ -81,29 +81,31 @@
 							type="submit"
 						></button>
 					</form>
-				</MdCardContent>
-				<div class="button_wrapper">
-					<BaseButton
-						v-if="$route.params.id"
-						:delete="true"
-						@ButtonClicked="dialog.active = true"
-					>
-						{{ $lang.buttons.delete }}
-					</BaseButton>
-					<ConfirmDialog :config="dialog" @confirm="deleteContent" />
-					<BaseButton @ButtonClicked="$router.go(-1)">
-						{{ $lang.buttons.cancel }}
-					</BaseButton>
-					<BaseButton
-						form="contentForm"
-						type="submit"
-						:disabled="!isFormValid"
-						@ButtonClicked="$refs.submitButton.click()"
-					>
-						{{ $lang.buttons.save }}
-					</BaseButton>
-				</div>
-			</MdCard>
+				</template>
+				<template slot="action">
+					<div class="button_wrapper">
+						<BaseButton
+							v-if="$route.params.id"
+							:delete="true"
+							@ButtonClicked="dialog.active = true"
+						>
+							{{ $lang.buttons.delete }}
+						</BaseButton>
+						<ConfirmDialog :config="dialog" @confirm="deleteContent" />
+						<BaseButton @ButtonClicked="$router.go(-1)">
+							{{ $lang.buttons.cancel }}
+						</BaseButton>
+						<BaseButton
+							form="contentForm"
+							type="submit"
+							:disabled="!isFormValid"
+							@ButtonClicked="$refs.submitButton.click()"
+						>
+							{{ $lang.buttons.save }}
+						</BaseButton>
+					</div>
+				</template>
+			</BaseCard>
 		</div>
 		<div class="grid-xl-4 grid-s-12">
 			<div class="preview-wrapper">
@@ -137,6 +139,7 @@ import ContentHostingProvider from "@/components/inputs/ContentHostingProvider.v
 import ContentEntrypointSelector from "@/components/inputs/ContentEntrypointSelector.vue";
 import ContentThumbnailSelector from "@/components/inputs/ContentThumbnailSelector.vue";
 import BaseButton from "@/components/base/BaseButton.vue";
+import BaseCard from "@/components/base/BaseCard.vue";
 
 import filetree from "@/mixins/filetree.js";
 
@@ -159,6 +162,7 @@ export default {
 		ContentEntrypointSelector,
 		ContentThumbnailSelector,
 		BaseButton,
+		BaseCard,
 
 		FileUpload,
 	},
@@ -357,35 +361,20 @@ export default {
 	padding: 5px;
 }
 
-.md-card {
-	width: 100%;
-
-	h3 {
-		margin: 2.5em 0 0.5em 0;
-		&:first-of-type {
-			margin-top: 0;
-		}
-	}
-}
-
 .preview-wrapper {
 	display: block;
 	width: 100%;
 }
 
-textarea {
-	min-height: 12rem !important;
-}
-
-.md-card-actions {
-	.delete {
-		position: absolute;
-		left: 8px;
+h3 {
+	margin: 2.5em 0 0.5em 0;
+	&:first-of-type {
+		margin-top: 0;
 	}
 }
+
 .button_wrapper {
 	display: flex;
 	justify-content: flex-end;
-	padding: 8px;
 }
 </style>
