@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<label :for="name">{{ label }}</label>
+		<label v-if="label" :for="name">{{ label }}</label>
 		<button
 			type="button"
 			:class="{

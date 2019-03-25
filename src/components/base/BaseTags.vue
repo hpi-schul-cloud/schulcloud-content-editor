@@ -1,6 +1,6 @@
 <template>
 	<div class="wrapper">
-		<label>{{ label }}</label>
+		<label v-if="label">{{ label }}</label>
 		<VueTagsInput
 			v-model="newTag"
 			class="tag-input"
@@ -77,14 +77,15 @@ label {
 		border-color: #b10438;
 	}
 	&.vue-tags-input {
-		// background: white;
 		max-width: 100%;
 		color: #1d1d1d;
+		background: none;
 		border-radius: 20px;
 
 		.ti-new-tag-input {
 			font-size: 1rem;
 			color: #757575;
+			background: none;
 		}
 	}
 	.ti-tag {

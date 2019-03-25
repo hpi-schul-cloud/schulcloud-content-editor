@@ -3,7 +3,7 @@
 		name="url"
 		:value="value"
 		type="text"
-		:label="$lang.edit.form.url"
+		:label="getLabel()"
 		placeholder="https://..."
 		:error="error"
 		@input="$emit('input', $event)"
@@ -25,6 +25,16 @@ export default {
 		error: {
 			type: String,
 			default: "",
+		},
+		withoutLabel: {
+			type: Boolean,
+			default: false,
+		},
+	},
+	methods: {
+		getLabel() {
+			if (!this.withoutLabel) return this.$lang.edit.form.url;
+			else return "";
 		},
 	},
 };

@@ -1,6 +1,8 @@
 <template>
 	<div class="wrapper">
-		<label :class="{ invalid: !!error }" :for="name">{{ label }}</label>
+		<label v-if="label" :class="{ invalid: !!error }" :for="name">{{
+			label
+		}}</label>
 		<input
 			v-bind="$attrs"
 			class="input"
@@ -62,6 +64,7 @@ label {
 	padding: 0 8px 8px;
 	font-size: 1.15em;
 	color: #757575;
+	background: rgba(255, 255, 255, 0);
 	border: none;
 	border-bottom: 1px solid #949494;
 
