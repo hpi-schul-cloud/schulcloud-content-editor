@@ -33,14 +33,19 @@
 				<div class="button_wrapper">
 					<div class="provider-name">{{ data.providerName }}</div>
 					<div>
-						<BaseButton v-if="data._id" @ButtonClicked="dialog.active = true"
+						<BaseButton
+							v-if="data._id"
+							:secondary="true"
+							@ButtonClicked="dialog.active = true"
 							>{{ $lang.buttons.open }}
 						</BaseButton>
 						<RouterLink
 							v-if="readOnly != true"
 							:to="{ path: '/edit/' + data._id }"
 						>
-							<BaseButton>{{ $lang.buttons.edit }}</BaseButton>
+							<BaseButton :secondary="true">{{
+								$lang.buttons.edit
+							}}</BaseButton>
 						</RouterLink>
 					</div>
 				</div>

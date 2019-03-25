@@ -1,32 +1,49 @@
 <template>
 	<div class="pagination">
-		<MdButton v-if="config.page == 1" class="md-icon-button md-raised" disabled>
-			<MdIcon>arrow_back</MdIcon>
-		</MdButton>
-		<MdButton v-else class="md-icon-button md-raised" @click="config.page -= 1">
-			<MdIcon>arrow_back</MdIcon>
-		</MdButton>
-
-		<MdButton id="page-number" class="md-button md-primary md-raised">
-			<input v-model.lazy="pageString" type="number" min="1" :max="maxPages" />
-		</MdButton>
-
-		<MdButton
-			v-if="config.page == maxPages"
-			class="md-icon-button md-raised"
-			disabled
+		<BaseButton v-if="config.page == 1" :disabled="true" :round_shape="true">
+			<img src="@/assets/icon-arrow_back.svg" />
+		</BaseButton>
+		<BaseButton
+			v-else
+			:secondary="true"
+			:raised="true"
+			:round_shape="true"
+			@ButtonClicked="config.page -= 1"
 		>
-			<MdIcon>arrow_forward</MdIcon>
-		</MdButton>
-		<MdButton v-else class="md-icon-button md-raised" @click="config.page += 1">
-			<MdIcon>arrow_forward</MdIcon>
-		</MdButton>
+			<img src="@/assets/icon-arrow_back.svg" />
+		</BaseButton>
+
+		<BaseButton id="page-number" :primary="true" :raised="true">
+			<input v-model.lazy="pageString" type="number" min="1" :max="maxPages" />
+		</BaseButton>
+
+		<BaseButton
+			v-if="config.page == maxPages"
+			:disabled="true"
+			:round_shape="true"
+		>
+			<img src="@/assets/icon-arrow_forward.svg" />
+		</BaseButton>
+		<BaseButton
+			v-else
+			:secondary="true"
+			:raised="true"
+			:round_shape="true"
+			@ButtonClicked="config.page += 1"
+		>
+			<img src="@/assets/icon-arrow_forward.svg" />
+		</BaseButton>
 	</div>
 </template>
 
 <script>
+import BaseButton from "@/components/base/BaseButton.vue";
+
 export default {
 	name: "Pagination",
+	components: {
+		BaseButton,
+	},
 	props: {
 		config: {
 			type: Object,

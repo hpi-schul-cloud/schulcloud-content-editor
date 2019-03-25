@@ -17,19 +17,23 @@ export default {
 			type: String,
 			default: "button",
 		},
+		secondary: {
+			type: Boolean,
+			dafault: true,
+		},
+		primary: {
+			type: Boolean,
+			dafault: false,
+		},
 		disabled: {
 			type: Boolean,
 			default: false,
 		},
-		form: {
-			type: String,
-			default: "",
-		},
-		delete: {
+		raised: {
 			type: Boolean,
 			default: false,
 		},
-		toggled: {
+		roundShape: {
 			type: Boolean,
 			default: false,
 		},
@@ -38,11 +42,12 @@ export default {
 		getClass() {
 			return {
 				btn: true,
-				disabled: this.disabled === true,
 				submit_btn: this.type === "submit",
-				normal_btn: this.type === "button",
-				delete_btn: this.delete === true,
-				toggled: this.toggled === true,
+				secondary_btn: this.type === "button" && this.secondary === true,
+				primary_btn: this.type === "button" && this.primary === true,
+				disabled: this.disabled === true,
+				raised: this.raised === true,
+				round: this.round_shape === true,
 			};
 		},
 	},
@@ -68,13 +73,19 @@ export default {
 }
 .submit_btn {
 	color: #b10438;
+	background: rgba(255, 255, 255, 0);
 
 	&:hover {
 		background: #b104381f;
 	}
 }
-.normal_btn {
+.primary_btn {
+	color: #fff;
+	background-color: #b10438;
+}
+.secondary_btn {
 	color: black;
+	background: rgba(255, 255, 255, 0);
 
 	&:hover {
 		background: #00000021;
@@ -82,19 +93,19 @@ export default {
 }
 .disabled {
 	color: #c4c4c4;
+	background: #eee;
 
 	&:hover {
-		background: #fff;
+		cursor: default;
+		background: #eee;
 	}
 }
-.toggled {
-	color: #fff;
-	background-color: #b10438;
+.raised {
 	box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14),
 		0 1px 5px 0 rgba(0, 0, 0, 0.12);
-
-	&:hover {
-		background: #b10438;
-	}
+}
+.round {
+	padding: 8px;
+	border-radius: 50%;
 }
 </style>

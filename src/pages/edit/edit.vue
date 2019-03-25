@@ -86,13 +86,13 @@
 					<div class="button_wrapper">
 						<BaseButton
 							v-if="$route.params.id"
-							:delete="true"
+							:secondary="true"
 							@ButtonClicked="dialog.active = true"
 						>
 							{{ $lang.buttons.delete }}
 						</BaseButton>
 						<ConfirmDialog :config="dialog" @confirm="deleteContent" />
-						<BaseButton @ButtonClicked="$router.go(-1)">
+						<BaseButton :secondary="true" @ButtonClicked="$router.go(-1)">
 							{{ $lang.buttons.cancel }}
 						</BaseButton>
 						<BaseButton

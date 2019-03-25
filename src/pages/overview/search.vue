@@ -1,49 +1,52 @@
 <template>
 	<div class="wrapper">
-		<!--<md-field id="search-input">
-        <label>{{$lang.searchContent.search_for}}</label>
-        <md-input v-model="searchQuery"></md-input>
-    </md-field>-->
-		<div id="search-input">
-			<input
-				id="search-query-input"
-				v-model.lazy="searchQuery"
-				:placeholder="$lang.searchContent.search_for + '...'"
-			/>
-			<br />
-			<span v-if="searchQuery" id="result-headline">
-				<b>{{ pagination.totalEntrys }}</b>
-				{{ $lang.searchContent.searchResults_for }}
-				<b>"{{ searchQuery }}"</b>
-			</span>
-		</div>
-
-		<div class="md-layout">
-			<SearchFilter @newFilter="updateFilter" />
-		</div>
-		<div class="flex">
-			<div v-if="readOnly != true">
-				<BaseButton :toggled="gutter" @ButtonClicked="gutter = true">
-					{{ $lang.buttons.card }}
-				</BaseButton>
-				<BaseButton
-					:toggled="!gutter"
-					@ButtonClicked="
-						gutter = false;
-						tableEnabled = true;
-					"
-				>
-					{{ $lang.buttons.list }}
-				</BaseButton>
-			</div>
-			<div class="items-per-page-picker">
-				<BaseSelect
-					:label="$lang.searchContent.items_per_page"
-					name="itemsPerPage"
-					:options="entry_options"
-					:selected="pagination.itemsPerPage.toString()"
-					@input="pagination.itemsPerPage = parseInt($event)"
+		<div class="head">
+			<div id="search-input">
+				<input
+					id="search-query-input"
+					v-model.lazy="searchQuery"
+					:placeholder="$lang.searchContent.search_for + '...'"
 				/>
+				<br />
+				<span v-if="searchQuery" id="result-headline">
+					<b>{{ pagination.totalEntrys }}</b>
+					{{ $lang.searchContent.searchResults_for }}
+					<b>"{{ searchQuery }}"</b>
+				</span>
+			</div>
+
+			<SearchFilter @newFilter="updateFilter" />
+			<div class="flex">
+				<div v-if="readOnly != true">
+					<BaseButton
+						:raised="gutter"
+						:secondary="!gutter"
+						:primary="gutter"
+						@ButtonClicked="gutter = true"
+					>
+						{{ $lang.buttons.card }}
+					</BaseButton>
+					<BaseButton
+						:raised="!gutter"
+						:secondary="gutter"
+						:primary="!gutter"
+						@ButtonClicked="
+							gutter = false;
+							tableEnabled = true;
+						"
+					>
+						{{ $lang.buttons.list }}
+					</BaseButton>
+				</div>
+				<div class="items-per-page-picker">
+					<BaseSelect
+						:label="$lang.searchContent.items_per_page"
+						name="itemsPerPage"
+						:options="entry_options"
+						:selected="pagination.itemsPerPage.toString()"
+						@input="pagination.itemsPerPage = parseInt($event)"
+					/>
+				</div>
 			</div>
 		</div>
 		<div v-show="gutter" class="grid">
@@ -71,13 +74,11 @@
 				@delete="deleteEntry"
 			/>
 		</table>
-		<MdEmptyState
-			v-if="data.length == 0"
-			class="md-primary"
-			md-icon="error_outline"
-			:md-label="$lang.searchContent.nothing_found"
-			:md-description="$lang.searchContent.nothing_found_help"
-		/>
+		<div v-if="data.length == 0" class="empty_state">
+			<img src="@/assets/icon-error.svg" />
+			<strong>{{ $lang.searchContent.nothing_found }}</strong>
+			<p>{{ $lang.searchContent.nothing_found_help }}</p>
+		</div>
 		<Pagination :config="pagination" @pageChanged="pageChanged" />
 	</div>
 </template>
@@ -256,27 +257,11 @@ export default {
 .wrapper {
 	margin: 30px 5% 0 5%;
 }
-.date-picker {
-	display: inline-flex;
-}
-
-.clear-date-picker {
-	margin-top: 7px;
-}
 
 .items-per-page-picker {
 	float: right;
 	max-width: 200px;
 	margin: 0 8px;
-}
-
-.md-layout {
-	width: 100%;
-	margin-bottom: 5px;
-}
-
-.md-layout-item {
-	margin-right: 5px;
 }
 
 .card-wrapper {
@@ -295,9 +280,34 @@ table {
 	margin: 1em 0;
 }
 
+.head {
+	display: flex;
+	flex-direction: column;
+}
+
+.empty_state {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	max-width: 420px;
+	padding: 36px;
+	margin: 0 auto;
+	text-align: center;
+
+	img {
+		width: 150px;
+	}
+
+	strong {
+		font-size: 26px;
+		font-weight: 500;
+		line-height: 40px;
+	}
+}
+
 #search-input {
 	float: left;
-	width: calc(100% - 200px);
 	margin-top: 16px;
 	margin-bottom: 16px;
 	font-size: 1.75em !important;
@@ -316,8 +326,8 @@ table {
 		border-bottom: 1px solid grey;
 		outline: none;
 		&:focus {
-			color: var(--md-theme-default-primary);
-			border-bottom: 1px solid var(--md-theme-default-primary);
+			color: #b10438;
+			border-bottom: 1px solid #b10438;
 		}
 	}
 	#result-headline {
