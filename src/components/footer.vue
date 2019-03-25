@@ -25,7 +25,7 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 footer {
-	margin: 1rem 0;
+	margin: 2rem 0;
 	text-align: center;
 }
 </style>

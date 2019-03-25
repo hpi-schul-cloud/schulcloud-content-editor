@@ -21,39 +21,32 @@
 		<div class="md-layout">
 			<SearchFilter @newFilter="updateFilter" />
 		</div>
-
-		<div class="md-layout-item items-per-page-picker">
-			<MdField>
-				<label for="itemsPerPage">
-					{{ $lang.searchContent.items_per_page }}
-				</label>
-				<MdSelect v-model.number="pagination.itemsPerPage" name="itemsPerPage">
-					<MdOption value="12">12</MdOption>
-					<MdOption value="24">24</MdOption>
-					<MdOption value="48">48</MdOption>
-					<MdOption value="48">96</MdOption>
-				</MdSelect>
-			</MdField>
+		<div class="flex">
+			<div v-if="readOnly != true">
+				<BaseButton :toggled="gutter" @ButtonClicked="gutter = true">
+					{{ $lang.buttons.card }}
+				</BaseButton>
+				<BaseButton
+					:toggled="!gutter"
+					@ButtonClicked="
+						gutter = false;
+						tableEnabled = true;
+					"
+				>
+					{{ $lang.buttons.list }}
+				</BaseButton>
+			</div>
+			<div class="items-per-page-picker">
+				<BaseSelect
+					:label="$lang.searchContent.items_per_page"
+					name="itemsPerPage"
+					:options="entry_options"
+					:selected="pagination.itemsPerPage.toString()"
+					@input="pagination.itemsPerPage = parseInt($event)"
+				/>
+			</div>
 		</div>
-
-		<div v-if="readOnly != true" id="view-toggle">
-			<MdButton
-				class="md-toggle"
-				:class="{ 'md-primary md-raised': gutter }"
-				@click="gutter = true"
-				>{{ $lang.buttons.card }}</MdButton
-			>
-			<MdButton
-				class="md-toggle"
-				:class="{ 'md-primary md-raised': !gutter }"
-				@click="
-					gutter = false;
-					tableEnabled = true;
-				"
-				>{{ $lang.buttons.list }}</MdButton
-			>
-		</div>
-		<div v-show="gutter" md-gutter class="grid">
+		<div v-show="gutter" class="grid">
 			<div
 				v-for="item in data"
 				:key="item._id + '#card'"
@@ -94,6 +87,9 @@ import ContentCard from "@/components/contentCard.vue";
 import Pagination from "@/components/pagination.vue";
 import SearchFilter from "./filter.vue";
 import ContentRow from "./editForm-table.vue";
+import BaseSelect from "@/components/base/BaseSelect.vue";
+import BaseButton from "@/components/base/BaseButton.vue";
+
 const qs = require("query-string");
 
 export default {
@@ -103,6 +99,8 @@ export default {
 		Pagination,
 		ContentRow,
 		SearchFilter,
+		BaseSelect,
+		BaseButton,
 	},
 	props: {
 		readOnly: {
@@ -128,6 +126,12 @@ export default {
 					behavior: "smooth",
 				},
 			},
+			entry_options: [
+				{ key: "12", value: 12 },
+				{ key: "24", value: 24 },
+				{ key: "48", value: 48 },
+				{ key: "96", value: 96 },
+			],
 		};
 	},
 	watch: {
@@ -262,7 +266,8 @@ export default {
 
 .items-per-page-picker {
 	float: right;
-	margin-left: 7px;
+	max-width: 200px;
+	margin: 0 8px;
 }
 
 .md-layout {
@@ -274,10 +279,6 @@ export default {
 	margin-right: 5px;
 }
 
-.grid {
-	clear: both;
-}
-
 .card-wrapper {
 	box-sizing: border-box;
 	padding: 5px;
@@ -287,12 +288,11 @@ table {
 	width: 100%;
 }
 
-#view-toggle {
-	float: right;
-	margin-top: 16px;
-	.md-button {
-		margin: 0;
-	}
+.flex {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	margin: 1em 0;
 }
 
 #search-input {

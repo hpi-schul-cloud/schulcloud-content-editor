@@ -1,6 +1,6 @@
 <template>
-	<div md-gutter class="container-fluid grid">
-		<div class="grid-xl-8 grid-s-12">
+	<div class="container">
+		<div id="content-card">
 			<BaseCard>
 				<template slot="head">
 					<div v-if="editMode" class="title">
@@ -107,7 +107,7 @@
 				</template>
 			</BaseCard>
 		</div>
-		<div class="grid-xl-4 grid-s-12">
+		<div id="preview-card">
 			<div class="preview-wrapper">
 				<h2>{{ $lang.edit.livepreview }}:</h2>
 				<ContentCard :data="data" :read-only="true" />
@@ -353,12 +353,19 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-.container-fluid {
+.container {
+	display: flex;
 	max-width: 1000px;
-	padding: 30px 16px;
+	margin: 1em auto;
 }
-.gutter > div {
-	padding: 5px;
+
+#content-card {
+	flex: 2;
+	margin-right: 1em;
+}
+
+#preview-card {
+	flex: 1;
 }
 
 .preview-wrapper {

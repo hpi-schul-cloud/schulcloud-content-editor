@@ -1,5 +1,5 @@
 <template>
-	<div class="wrapper">
+	<div>
 		<label :for="name">{{ label }}</label>
 		<button
 			type="button"
@@ -50,7 +50,7 @@ export default {
 			required: true,
 		},
 		selected: {
-			type: String,
+			type: String || Number,
 			default: "",
 			required: false,
 		},
@@ -88,11 +88,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.wrapper {
-	margin: 1.5em 0;
-}
 label {
-	padding-left: 8px;
+	padding: 0 8px;
 	font-size: 0.9em;
 	font-weight: 500;
 	color: black;
@@ -106,7 +103,7 @@ label {
 	font-size: 1.15em;
 	color: #757575;
 	cursor: pointer;
-	background: #fff;
+	background: rgba(255, 255, 255, 0);
 	border: none;
 	border-bottom: 1px solid #949494;
 
@@ -115,7 +112,10 @@ label {
 	}
 }
 .select {
+	position: absolute;
+	z-index: 999;
 	display: none;
+	min-width: 100px;
 	padding: 0;
 	margin: 0;
 	list-style-type: none;
