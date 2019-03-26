@@ -47,7 +47,7 @@ export default {
 				primary_btn: this.type === "button" && this.primary === true,
 				disabled: this.disabled === true,
 				raised: this.raised === true,
-				round: this.round_shape === true,
+				round: this.roundShape === true,
 			};
 		},
 	},

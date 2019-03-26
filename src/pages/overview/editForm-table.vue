@@ -29,30 +29,27 @@
 			<ContentLicense v-model="contentData.licenses" :without-label="true" />
 		</td>
 		<td class="hide-m">
-			<MdField>
-				<MdSelect
-					id="contentCategory"
-					v-model="contentData.contentCategory"
-					name="contentCategory"
-				>
-					<MdOption value="" />
-					<MdOption value="atomic">
-						Atomic
-					</MdOption>
-					<MdOption value="interactive">
-						Interactive
-					</MdOption>
-				</MdSelect>
-			</MdField>
+			<ContentCategory
+				v-model="contentData.contentCategory"
+				:without-label="true"
+			/>
 		</td>
 		<td>
-			<MdButton class="md-icon-button" @click="dialog.active = true">
-				<MdIcon>delete</MdIcon>
-			</MdButton>
+			<BaseButton
+				:secondary="true"
+				:round-shape="true"
+				@ButtonClicked="dialog.active = true"
+			>
+				<img src="@/assets/icon-delete.svg" />
+			</BaseButton>
 			<ConfirmDialog :config="dialog" @confirm="deleteContent" />
-			<MdButton class="md-icon-button md-primary" type="submit">
-				<MdIcon>save</MdIcon>
-			</MdButton>
+			<BaseButton
+				type="submit"
+				:round-shape="true"
+				@ButtonClicked="submitContent"
+			>
+				<img src="@/assets/icon-save.svg" />
+			</BaseButton>
 		</td>
 	</tr>
 </template>
@@ -64,6 +61,8 @@ import VeeValidate from "vee-validate";
 import ContentTitle from "@/components/inputs/ContentTitle.vue";
 import ContentUrl from "@/components/inputs/ContentUrl.vue";
 import ContentLicense from "@/components/inputs/ContentLicense.vue";
+import ContentCategory from "@/components/inputs/ContentCategory.vue";
+import BaseButton from "@/components/base/BaseButton.vue";
 
 Vue.use(VeeValidate);
 
@@ -77,6 +76,8 @@ export default {
 		ContentTitle,
 		ContentUrl,
 		ContentLicense,
+		BaseButton,
+		ContentCategory,
 	},
 	props: {
 		contentData: {
@@ -183,20 +184,13 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 td {
-	max-width: 200px;
+	width: 200px;
 	padding: 0 8px;
 	vertical-align: top;
-	.md-field {
-		min-height: initial;
-		padding-top: 0;
-		margin-top: 0;
-	}
+
 	&:last-of-type {
 		width: 80px;
 		white-space: nowrap;
-	}
-	.md-button {
-		margin: 0;
 	}
 }
 

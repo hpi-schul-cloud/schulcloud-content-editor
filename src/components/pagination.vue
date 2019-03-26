@@ -1,13 +1,13 @@
 <template>
 	<div class="pagination">
-		<BaseButton v-if="config.page == 1" :disabled="true" :round_shape="true">
+		<BaseButton v-if="config.page == 1" :disabled="true" :round-shape="true">
 			<img src="@/assets/icon-arrow_back.svg" />
 		</BaseButton>
 		<BaseButton
 			v-else
 			:secondary="true"
 			:raised="true"
-			:round_shape="true"
+			:round-shape="true"
 			@ButtonClicked="config.page -= 1"
 		>
 			<img src="@/assets/icon-arrow_back.svg" />
@@ -20,7 +20,7 @@
 		<BaseButton
 			v-if="config.page == maxPages"
 			:disabled="true"
-			:round_shape="true"
+			:round-shape="true"
 		>
 			<img src="@/assets/icon-arrow_forward.svg" />
 		</BaseButton>
@@ -28,7 +28,7 @@
 			v-else
 			:secondary="true"
 			:raised="true"
-			:round_shape="true"
+			:round-shape="true"
 			@ButtonClicked="config.page += 1"
 		>
 			<img src="@/assets/icon-arrow_forward.svg" />

@@ -3,7 +3,7 @@
 		name="url"
 		:value="value"
 		type="text"
-		:label="getLabel()"
+		:label="getLabel"
 		placeholder="https://..."
 		:error="error"
 		@input="$emit('input', $event)"
@@ -31,8 +31,8 @@ export default {
 			default: false,
 		},
 	},
-	methods: {
-		getLabel() {
+	computed: {
+		getLabel: function() {
 			if (!this.withoutLabel) return this.$lang.edit.form.url;
 			else return "";
 		},
