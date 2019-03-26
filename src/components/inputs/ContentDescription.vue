@@ -3,6 +3,7 @@
 		:value="value"
 		name="description"
 		:label="$lang.edit.form.description"
+		placeholder="Die Sets umfassen eine Maltafel mit nummerierten Malfeldern, Acrylfarben und Pinsel. ..."
 		maxlength="500"
 		:error="error"
 		@input="$emit('input', $event)"

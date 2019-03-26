@@ -1,7 +1,7 @@
 ﻿<template>
 	<article>
-		<MdCard class="card-content height-100">
-			<MdCardMedia md-ratio="16:9">
+		<BaseCard :with-media="true">
+			<template slot="media">
 				<img
 					:src="
 						data.thumbnail ||
@@ -9,43 +9,48 @@
 					"
 					:alt="'Thumbnail for ~' + data.title + '~'"
 				/>
-			</MdCardMedia>
-
-			<MdCardHeader>
-				<h2 class="md-title">{{ data.title || "Titel" }}</h2>
-				<div class="md-subhead">
-					<div class="tags">
-						<MdIcon>label</MdIcon>
-						<span
-							v-for="(tag, index) in (data.tags || []).slice(
-								0,
-								this.$config.card.displayedTags
-							)"
-							:key="`${index}-${tag}`"
-							>{{ tag }},</span
+			</template>
+			<template slot="head">
+				<h2 class="title">{{ data.title || "Titel" }}</h2>
+				<div class="tags">
+					<img class="icon" src="@/assets/icon-label.svg" />
+					<span
+						v-for="(tag, index) in (data.tags || []).slice(
+							0,
+							this.$config.card.displayedTags
+						)"
+						:key="`${index}-${tag}`"
+					>
+						{{ tag }},
+					</span>
+				</div>
+			</template>
+			<template slot="content">
+				{{ (data.description || "Beschreibung...").substring(0, 300) }}
+				{{ (data.description || "").length > 300 ? "..." : "" }}
+			</template>
+			<template slot="footer">
+				<div class="button_wrapper">
+					<div class="provider-name">{{ data.providerName }}</div>
+					<div>
+						<BaseButton
+							v-if="data._id"
+							:secondary="true"
+							@ButtonClicked="dialog.active = true"
+							>{{ $lang.buttons.open }}
+						</BaseButton>
+						<RouterLink
+							v-if="readOnly != true"
+							:to="{ path: '/edit/' + data._id }"
 						>
+							<BaseButton :secondary="true">{{
+								$lang.buttons.edit
+							}}</BaseButton>
+						</RouterLink>
 					</div>
 				</div>
-			</MdCardHeader>
-
-			<MdCardContent>
-				{{ (data.description || "Beschreibung...").substring(0, 300)
-				}}{{ (data.description || "").length > 300 ? "..." : "" }}
-			</MdCardContent>
-
-			<MdCardActions>
-				<div class="provider-name">{{ data.providerName }}</div>
-				<MdButton
-					v-if="data._id"
-					:class="{ 'md-primary': readOnly }"
-					@click="dialog.active = true"
-					>{{ $lang.buttons.open }}</MdButton
-				>
-				<RouterLink v-if="readOnly != true" :to="{ path: '/edit/' + data._id }">
-					<MdButton class="md-primary">{{ $lang.buttons.edit }}</MdButton>
-				</RouterLink>
-			</MdCardActions>
-		</MdCard>
+			</template>
+		</BaseCard>
 		<ConfirmDialog :config="dialog" @confirm="onConfirm" />
 	</article>
 </template>
@@ -54,11 +59,15 @@
 /* load confirmDialog async */
 const ConfirmDialog = () =>
 	import(/* webpackChunkName: "confirmDialog" */ "@/components/dialogs/confirm.vue");
+import BaseCard from "@/components/base/BaseCard.vue";
+import BaseButton from "@/components/base/BaseButton.vue";
 
 export default {
 	name: "ContentForm",
 	components: {
 		ConfirmDialog,
+		BaseCard,
+		BaseButton,
 	},
 	props: {
 		data: {
@@ -95,38 +104,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.card-content {
-	position: relative;
-	width: 100%;
-	padding-bottom: 52px;
-	overflow: hidden;
-	word-break: break-all;
-	word-break: break-word;
-	.md-subhead {
-		.md-icon {
-			$size: 16px;
-
-			width: $size;
-			min-width: $size;
-			height: $size;
-			min-height: $size;
-			font-size: $size;
-			line-height: $size;
-		}
-
-		span {
-			vertical-align: middle;
-		}
-	}
-	.md-card-actions {
-		position: absolute;
-		right: 0;
-		bottom: 0;
-		left: 0;
-		.provider-name {
-			position: absolute;
-			left: 16px;
-		}
-	}
+span {
+	vertical-align: middle;
+}
+.tags {
+	color: #999;
+}
+.button_wrapper {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 }
 </style>

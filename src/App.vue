@@ -183,7 +183,7 @@ export default {
 }
 
 main {
-	display: contents;
+	// display: contents;
 	max-width: 100% !important;
 	padding: 0;
 	margin: 0 auto !important;

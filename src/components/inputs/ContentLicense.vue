@@ -2,7 +2,8 @@
 	<section>
 		<CustomChipInput
 			:value="value"
-			:placeholder="$lang.edit.form.license"
+			:label="getLabel()"
+			:placeholder="$lang.edit.form.license + '... (max. 10)'"
 			:max="10"
 			@input="$emit('input', $event)"
 		/>
@@ -20,6 +21,16 @@ export default {
 		value: {
 			type: Array,
 			default: () => [],
+		},
+		withoutLabel: {
+			type: Boolean,
+			default: false,
+		},
+	},
+	methods: {
+		getLabel() {
+			if (!this.withoutLabel) return this.$lang.edit.form.license;
+			else return "";
 		},
 	},
 };

@@ -1,59 +1,55 @@
 <template>
 	<div class="wrapper">
-		<!--<md-field id="search-input">
-        <label>{{$lang.searchContent.search_for}}</label>
-        <md-input v-model="searchQuery"></md-input>
-    </md-field>-->
-		<div id="search-input">
-			<input
-				id="search-query-input"
-				v-model.lazy="searchQuery"
-				:placeholder="$lang.searchContent.search_for + '...'"
-			/>
-			<br />
-			<span v-if="searchQuery" id="result-headline">
-				<b>{{ pagination.totalEntrys }}</b>
-				{{ $lang.searchContent.searchResults_for }}
-				<b>"{{ searchQuery }}"</b>
-			</span>
-		</div>
+		<div class="head">
+			<div id="search-input">
+				<input
+					id="search-query-input"
+					v-model.lazy="searchQuery"
+					:placeholder="$lang.searchContent.search_for + '...'"
+				/>
+				<br />
+				<span v-if="searchQuery" id="result-headline">
+					<b>{{ pagination.totalEntrys }}</b>
+					{{ $lang.searchContent.searchResults_for }}
+					<b>"{{ searchQuery }}"</b>
+				</span>
+			</div>
 
-		<div class="md-layout">
 			<SearchFilter @newFilter="updateFilter" />
+			<div class="flex">
+				<div v-if="readOnly != true">
+					<BaseButton
+						:raised="gutter"
+						:secondary="!gutter"
+						:primary="gutter"
+						@ButtonClicked="gutter = true"
+					>
+						{{ $lang.buttons.card }}
+					</BaseButton>
+					<BaseButton
+						:raised="!gutter"
+						:secondary="gutter"
+						:primary="!gutter"
+						@ButtonClicked="
+							gutter = false;
+							tableEnabled = true;
+						"
+					>
+						{{ $lang.buttons.list }}
+					</BaseButton>
+				</div>
+				<div class="items-per-page-picker">
+					<BaseSelect
+						:label="$lang.searchContent.items_per_page"
+						name="itemsPerPage"
+						:options="entry_options"
+						:selected="pagination.itemsPerPage.toString()"
+						@input="pagination.itemsPerPage = parseInt($event)"
+					/>
+				</div>
+			</div>
 		</div>
-
-		<div class="md-layout-item items-per-page-picker">
-			<MdField>
-				<label for="itemsPerPage">
-					{{ $lang.searchContent.items_per_page }}
-				</label>
-				<MdSelect v-model.number="pagination.itemsPerPage" name="itemsPerPage">
-					<MdOption value="12">12</MdOption>
-					<MdOption value="24">24</MdOption>
-					<MdOption value="48">48</MdOption>
-					<MdOption value="48">96</MdOption>
-				</MdSelect>
-			</MdField>
-		</div>
-
-		<div v-if="readOnly != true" id="view-toggle">
-			<MdButton
-				class="md-toggle"
-				:class="{ 'md-primary md-raised': gutter }"
-				@click="gutter = true"
-				>{{ $lang.buttons.card }}</MdButton
-			>
-			<MdButton
-				class="md-toggle"
-				:class="{ 'md-primary md-raised': !gutter }"
-				@click="
-					gutter = false;
-					tableEnabled = true;
-				"
-				>{{ $lang.buttons.list }}</MdButton
-			>
-		</div>
-		<div v-show="gutter" md-gutter class="grid">
+		<div v-show="gutter" class="grid">
 			<div
 				v-for="item in data"
 				:key="item._id + '#card'"
@@ -78,13 +74,11 @@
 				@delete="deleteEntry"
 			/>
 		</table>
-		<MdEmptyState
-			v-if="data.length == 0"
-			class="md-primary"
-			md-icon="error_outline"
-			:md-label="$lang.searchContent.nothing_found"
-			:md-description="$lang.searchContent.nothing_found_help"
-		/>
+		<div v-if="data.length == 0" class="empty_state">
+			<img src="@/assets/icon-error.svg" />
+			<strong>{{ $lang.searchContent.nothing_found }}</strong>
+			<p>{{ $lang.searchContent.nothing_found_help }}</p>
+		</div>
 		<Pagination :config="pagination" @pageChanged="pageChanged" />
 	</div>
 </template>
@@ -94,6 +88,9 @@ import ContentCard from "@/components/contentCard.vue";
 import Pagination from "@/components/pagination.vue";
 import SearchFilter from "./filter.vue";
 import ContentRow from "./editForm-table.vue";
+import BaseSelect from "@/components/base/BaseSelect.vue";
+import BaseButton from "@/components/base/BaseButton.vue";
+
 const qs = require("query-string");
 
 export default {
@@ -103,6 +100,8 @@ export default {
 		Pagination,
 		ContentRow,
 		SearchFilter,
+		BaseSelect,
+		BaseButton,
 	},
 	props: {
 		readOnly: {
@@ -128,6 +127,12 @@ export default {
 					behavior: "smooth",
 				},
 			},
+			entry_options: [
+				{ key: "12", value: 12 },
+				{ key: "24", value: 24 },
+				{ key: "48", value: 48 },
+				{ key: "96", value: 96 },
+			],
 		};
 	},
 	watch: {
@@ -252,30 +257,11 @@ export default {
 .wrapper {
 	margin: 30px 5% 0 5%;
 }
-.date-picker {
-	display: inline-flex;
-}
-
-.clear-date-picker {
-	margin-top: 7px;
-}
 
 .items-per-page-picker {
 	float: right;
-	margin-left: 7px;
-}
-
-.md-layout {
-	width: 100%;
-	margin-bottom: 5px;
-}
-
-.md-layout-item {
-	margin-right: 5px;
-}
-
-.grid {
-	clear: both;
+	max-width: 200px;
+	margin: 0 8px;
 }
 
 .card-wrapper {
@@ -287,17 +273,41 @@ table {
 	width: 100%;
 }
 
-#view-toggle {
-	float: right;
-	margin-top: 16px;
-	.md-button {
-		margin: 0;
+.flex {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	margin: 1em 0;
+}
+
+.head {
+	display: flex;
+	flex-direction: column;
+}
+
+.empty_state {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	max-width: 420px;
+	padding: 36px;
+	margin: 0 auto;
+	text-align: center;
+
+	img {
+		width: 150px;
+	}
+
+	strong {
+		font-size: 26px;
+		font-weight: 500;
+		line-height: 40px;
 	}
 }
 
 #search-input {
 	float: left;
-	width: calc(100% - 200px);
 	margin-top: 16px;
 	margin-bottom: 16px;
 	font-size: 1.75em !important;
@@ -316,8 +326,8 @@ table {
 		border-bottom: 1px solid grey;
 		outline: none;
 		&:focus {
-			color: var(--md-theme-default-primary);
-			border-bottom: 1px solid var(--md-theme-default-primary);
+			color: #b10438;
+			border-bottom: 1px solid #b10438;
 		}
 	}
 	#result-headline {

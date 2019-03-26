@@ -1,14 +1,14 @@
 <template>
-	<div md-gutter class="container-fluid grid">
-		<div class="grid-xl-8 grid-s-12">
-			<MdCard>
-				<MdCardHeader>
-					<div v-if="editMode" class="md-title">
+	<div class="container">
+		<div id="content-card">
+			<BaseCard>
+				<template slot="head">
+					<div v-if="editMode" class="title">
 						{{ $lang.edit.title_edit }}
 					</div>
-					<div v-else class="md-title">{{ $lang.edit.title_create }}</div>
-				</MdCardHeader>
-				<MdCardContent>
+					<div v-else class="title">{{ $lang.edit.title_create }}</div>
+				</template>
+				<template slot="content">
 					<form id="contentForm" @submit.prevent="validateBeforeSubmit">
 						<h3>Metadaten</h3>
 						<ContentTitle
@@ -75,30 +75,39 @@
 							@update:filetree="handleFiletreeUpdate($event)"
 							@update="data.files = $event"
 						/>
+						<button
+							ref="submitButton"
+							style="display:none"
+							type="submit"
+						></button>
 					</form>
-				</MdCardContent>
-				<MdCardActions>
-					<MdButton
-						v-if="$route.params.id"
-						class="delete"
-						@click="dialog.active = true"
-						>{{ $lang.buttons.delete }}</MdButton
-					>
-					<ConfirmDialog :config="dialog" @confirm="deleteContent" />
-					<MdButton style="color: initial;" @click="$router.go(-1)">
-						{{ $lang.buttons.cancel }}
-					</MdButton>
-					<MdButton
-						class="md-primary"
-						type="submit"
-						form="contentForm"
-						:disabled="!isFormValid"
-						>{{ $lang.buttons.save }}</MdButton
-					>
-				</MdCardActions>
-			</MdCard>
+				</template>
+				<template slot="footer">
+					<div class="button_wrapper">
+						<BaseButton
+							v-if="$route.params.id"
+							:secondary="true"
+							@ButtonClicked="dialog.active = true"
+						>
+							{{ $lang.buttons.delete }}
+						</BaseButton>
+						<ConfirmDialog :config="dialog" @confirm="deleteContent" />
+						<BaseButton :secondary="true" @ButtonClicked="$router.go(-1)">
+							{{ $lang.buttons.cancel }}
+						</BaseButton>
+						<BaseButton
+							form="contentForm"
+							type="submit"
+							:disabled="!isFormValid"
+							@ButtonClicked="$refs.submitButton.click()"
+						>
+							{{ $lang.buttons.save }}
+						</BaseButton>
+					</div>
+				</template>
+			</BaseCard>
 		</div>
-		<div class="grid-xl-4 grid-s-12">
+		<div id="preview-card">
 			<div class="preview-wrapper">
 				<h2>{{ $lang.edit.livepreview }}:</h2>
 				<ContentCard :data="data" :read-only="true" />
@@ -129,6 +138,8 @@ import ContentTags from "@/components/inputs/ContentTags.vue";
 import ContentHostingProvider from "@/components/inputs/ContentHostingProvider.vue";
 import ContentEntrypointSelector from "@/components/inputs/ContentEntrypointSelector.vue";
 import ContentThumbnailSelector from "@/components/inputs/ContentThumbnailSelector.vue";
+import BaseButton from "@/components/base/BaseButton.vue";
+import BaseCard from "@/components/base/BaseCard.vue";
 
 import filetree from "@/mixins/filetree.js";
 
@@ -150,6 +161,8 @@ export default {
 		ContentHostingProvider,
 		ContentEntrypointSelector,
 		ContentThumbnailSelector,
+		BaseButton,
+		BaseCard,
 
 		FileUpload,
 	},
@@ -340,23 +353,19 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-.container-fluid {
+.container {
+	display: flex;
 	max-width: 1000px;
-	padding: 30px 16px;
-}
-.gutter > div {
-	padding: 5px;
+	margin: 1em auto;
 }
 
-.md-card {
-	width: 100%;
+#content-card {
+	flex: 2;
+	margin-right: 1em;
+}
 
-	h3 {
-		margin: 2.5em 0 0.5em 0;
-		&:first-of-type {
-			margin-top: 0;
-		}
-	}
+#preview-card {
+	flex: 1;
 }
 
 .preview-wrapper {
@@ -364,14 +373,15 @@ export default {
 	width: 100%;
 }
 
-textarea {
-	min-height: 12rem !important;
+h3 {
+	margin: 2.5em 0 0.5em 0;
+	&:first-of-type {
+		margin-top: 0;
+	}
 }
 
-.md-card-actions {
-	.delete {
-		position: absolute;
-		left: 8px;
-	}
+.button_wrapper {
+	display: flex;
+	justify-content: space-between;
 }
 </style>

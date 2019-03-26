@@ -6,7 +6,7 @@
 			:name="name"
 			:maxlength="maxlength"
 			:value="value"
-			:placeholder="label"
+			:placeholder="placeholder"
 			@input="$emit('input', $event.target.value)"
 		/>
 		<span v-if="!!error" class="invalid">{{ error }}</span>
@@ -26,6 +26,10 @@ export default {
 			default: "100",
 		},
 		label: {
+			type: String,
+			required: true,
+		},
+		placeholder: {
 			type: String,
 			default: "",
 		},
@@ -47,7 +51,8 @@ export default {
 }
 label {
 	padding-left: 8px;
-	font-size: 0.75em;
+	font-size: 0.9em;
+	font-weight: 500;
 	color: black;
 }
 .textarea {

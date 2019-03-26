@@ -6,25 +6,27 @@
 		@change="itemChanged"
 	>
 		<td>
-			<MdField :class="{ 'md-input-invalid': errors.has('title') }">
-				<MdInput v-model="contentData.title" type="text" />
-				<span class="md-error">
-					{{ errors.first("title") }}
-				</span>
-			</MdField>
+			<ContentTitle
+				v-model="contentData.title"
+				v-validate
+				data-vv-name="title"
+				data-vv-rules="required"
+				:without-label="true"
+				:error="errors.first('title')"
+			/>
 		</td>
 		<td>
-			<MdField :class="{ 'md-input-invalid': errors.has('url') }">
-				<MdInput v-model="contentData.url" />
-				<span class="md-error">
-					{{ errors.first("url") }}
-				</span>
-			</MdField>
+			<ContentUrl
+				v-model="contentData.url"
+				v-validate
+				data-vv-name="url"
+				data-vv-rules="required|url"
+				:without-label="true"
+				:error="errors.first('url')"
+			/>
 		</td>
 		<td class="hide-s">
-			<MdField>
-				<MdInput v-model="contentData.licenses" name="license" />
-			</MdField>
+			<ContentLicense v-model="contentData.licenses" :without-label="true" />
 		</td>
 		<td class="hide-m">
 			<MdField>
@@ -59,6 +61,9 @@
 import Vue from "vue";
 
 import VeeValidate from "vee-validate";
+import ContentTitle from "@/components/inputs/ContentTitle.vue";
+import ContentUrl from "@/components/inputs/ContentUrl.vue";
+import ContentLicense from "@/components/inputs/ContentLicense.vue";
 
 Vue.use(VeeValidate);
 
@@ -69,6 +74,9 @@ export default {
 	name: "ContentTableRow",
 	components: {
 		ConfirmDialog,
+		ContentTitle,
+		ContentUrl,
+		ContentLicense,
 	},
 	props: {
 		contentData: {
@@ -174,23 +182,21 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-form {
-	display: contents;
-	td {
-		padding: 0 8px;
-		vertical-align: top;
-		.md-field {
-			min-height: initial;
-			padding-top: 0;
-			margin-top: 0;
-		}
-		&:last-of-type {
-			width: 80px;
-			white-space: nowrap;
-		}
-		.md-button {
-			margin: 0;
-		}
+td {
+	max-width: 200px;
+	padding: 0 8px;
+	vertical-align: top;
+	.md-field {
+		min-height: initial;
+		padding-top: 0;
+		margin-top: 0;
+	}
+	&:last-of-type {
+		width: 80px;
+		white-space: nowrap;
+	}
+	.md-button {
+		margin: 0;
 	}
 }
 
