@@ -15,7 +15,6 @@
 				</span>
 			</div>
 
-			<SearchFilter @newFilter="updateFilter" />
 			<div class="flex">
 				<div v-if="readOnly != true">
 					<BaseButton
@@ -82,7 +81,6 @@
 <script>
 import ContentCard from "@/components/contentCard.vue";
 import Pagination from "@/components/pagination.vue";
-import SearchFilter from "./filter.vue";
 import ContentRow from "./editForm-table.vue";
 import BaseSelect from "@/components/base/BaseSelect.vue";
 import BaseButton from "@/components/base/BaseButton.vue";
@@ -95,7 +93,6 @@ export default {
 		ContentCard,
 		Pagination,
 		ContentRow,
-		SearchFilter,
 		BaseSelect,
 		BaseButton,
 	},
@@ -110,7 +107,6 @@ export default {
 			gutter: true,
 			tableEnabled: false,
 			searchQuery: "",
-			apiFilterQuery: {},
 			urlQuery: {},
 			pagination: {
 				page: 1,
@@ -196,9 +192,7 @@ export default {
 				"_all[$match]": searchString,
 			};
 
-			const queryString = qs.stringify(
-				Object.assign(searchQuery, this.apiFilterQuery)
-			);
+			const queryString = qs.stringify(searchQuery);
 			const path =
 				searchString.length == 0
 					? this.$config.API.getContentPath
@@ -231,11 +225,6 @@ export default {
 					this.pagination.page = parseInt(query.p);
 				}
 			}
-		},
-		updateFilter(newApiQuery, newUrlQuery) {
-			this.apiFilterQuery = newApiQuery;
-			this.urlQuery = newUrlQuery;
-			this.loadContent();
 		},
 		deleteEntry(id) {
 			this.data.forEach((entry, index) => {
