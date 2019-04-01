@@ -98,10 +98,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-.md-button {
-	margin: 0 8px;
-}
-
 .pagination {
 	display: block;
 	width: 100%;

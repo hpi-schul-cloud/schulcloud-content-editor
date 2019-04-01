@@ -43,6 +43,7 @@ export default {
 .media {
 	img {
 		width: 100%;
+		max-height: 300px;
 		border-top-left-radius: 2px;
 		border-top-right-radius: 2px;
 	}
