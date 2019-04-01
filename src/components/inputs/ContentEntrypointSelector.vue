@@ -41,13 +41,7 @@ export default {
 		options() {
 			return this.files.map((elem) => {
 				let obj = {};
-				const key =
-					this.$config.API.contentServerUrl +
-					this.$config.API.hostingEntry +
-					this.contentId +
-					"/" +
-					elem;
-				obj.key = key;
+				obj.key = "/" + elem;
 				obj.value = elem;
 				return obj;
 			});

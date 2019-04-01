@@ -37,7 +37,7 @@
 						<h3>Inhalte</h3>
 						<ContentHostingProvider v-model="hostingOption" />
 						<ContentUrl
-							v-show="hostingOption === 'hostedExternally'"
+							v-if="hostingOption === 'hostedExternally'"
 							v-model="data.url"
 							v-validate
 							data-vv-name="url"
@@ -49,7 +49,7 @@
 							v-model="data.url"
 							v-validate
 							data-vv-name="entrypointSelector"
-							data-vv-rules="required|url"
+							data-vv-rules="{required: true, url: {require_protocol: false, require_host: false, allow_protocol_relative_urls: true}}"
 							:error="errors.first('entrypointSelector')"
 							:disabled="filetree.objects.length === 0"
 							:files="entrypointFiles"
@@ -60,7 +60,7 @@
 							v-model="data.thumbnail"
 							v-validate
 							data-vv-name="thumbnailSelector"
-							data-vv-rules="required|url"
+							data-vv-rules="{required: true, url: {require_protocol: false, require_host: false, allow_protocol_relative_urls: true}}"
 							:error="errors.first('thumbnailSelector')"
 							:disabled="filetree.objects.length === 0"
 							:files="thumbnailFiles"
