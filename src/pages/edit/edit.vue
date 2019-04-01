@@ -83,9 +83,9 @@
 								>{{ $lang.buttons.delete }}</BaseButton
 							>
 							<ConfirmDialog :config="dialog" @confirm="deleteContent" />
-							<BaseButton :secondary="true" @click="$router.go(-1)">{{
-								$lang.buttons.cancel
-							}}</BaseButton>
+							<BaseButton :secondary="true" @click="$router.go(-1)">
+								{{ $lang.buttons.cancel }}
+							</BaseButton>
 							<BaseButton
 								form="contentForm"
 								type="submit"
@@ -244,7 +244,7 @@ export default {
 							this.$config.API.contentServerUrl + this.$config.API.hostingEntry
 						)
 							? "hostedAtSchulcloud"
-							: "hostedAtSchulcloud";
+							: "hostedExternally";
 					})
 					.catch((e) => {
 						this.errors.add(e);
@@ -279,19 +279,10 @@ export default {
 			}
 		},
 		submitContent() {
-			const d = this.data;
-			const newData = {
-				providerName: d.providerName,
-				url: d.url,
-				title: d.title,
-				description: d.description,
-				thumbnail: d.thumbnail,
-				contentCategory: d.contentCategory,
-				licenses: d.licenses,
-				tags: d.tags,
-				mimeType: d.mimeType,
-				files: d.files,
-			};
+			// deep copy to remove reactivity
+			const newData = JSON.parse(JSON.stringify(this.data));
+			newData.hostedAtSchulcloud = this.hostingOption === "hostedAtSchulcloud";
+
 			let request;
 			if (this.editMode) {
 				request = this.$http.patch(
