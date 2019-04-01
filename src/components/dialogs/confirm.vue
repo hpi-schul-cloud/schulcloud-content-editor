@@ -1,18 +1,24 @@
 <template>
-	<MdDialogConfirm
-		:md-active.sync="isActive"
-		:md-title="config.title || 'Agree/Disagree?'"
-		:md-content="config.content"
-		:md-confirm-text="config.confirm || 'Agree'"
-		:md-cancel-text="config.cancle || 'Disagree'"
-		@md-cancel="onCancel"
-		@md-confirm="onConfirm"
-	/>
+	<BaseConfirm
+		:active="isActive"
+		:title="config.title || 'Agree/Disagree?'"
+		:content="config.content"
+		:confirm_text="config.confirm || 'Agree'"
+		:cancel_text="config.cancle || 'Disagree'"
+		@cancel="onCancel"
+		@confirm="onConfirm"
+	>
+	</BaseConfirm>
 </template>
 
 <script>
+import BaseConfirm from "./BaseConfirm.vue";
+
 export default {
 	name: "DialogConfirm",
+	components: {
+		BaseConfirm,
+	},
 	props: {
 		config: {
 			type: Object,
@@ -32,12 +38,14 @@ export default {
 	methods: {
 		onConfirm() {
 			this.$emit("confirm");
+			this.isActive = false;
 			if (this.config.onConfirm) {
 				this.config.onConfirm();
 			}
 		},
 		onCancel() {
 			this.$emit("cancle");
+			this.isActive = false;
 			if (this.config.onCancle) {
 				this.config.onCancle();
 			}
