@@ -37,7 +37,7 @@
 						<h3>Inhalte</h3>
 						<ContentHostingProvider v-model="hostingOption" />
 						<ContentUrl
-							v-show="hostingOption === 'hostedExternally'"
+							v-if="hostingOption === 'hostedExternally'"
 							v-model="data.url"
 							v-validate
 							data-vv-name="url"
