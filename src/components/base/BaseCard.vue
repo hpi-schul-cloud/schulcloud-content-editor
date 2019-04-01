@@ -1,16 +1,16 @@
 <template>
 	<div class="card">
 		<slot>
-			<div v-if="withMedia === true" class="media">
+			<div v-if="$slots.media" class="media">
 				<slot name="media"></slot>
 			</div>
-			<div class="header">
+			<div v-if="$slots.head" class="header">
 				<slot name="head"></slot>
 			</div>
-			<div class="body">
+			<div v-if="$slots.body" class="body">
 				<slot name="body"></slot>
 			</div>
-			<div class="footer">
+			<div v-if="$slots.footer" class="footer">
 				<slot name="footer"></slot>
 			</div>
 		</slot>
@@ -20,12 +20,6 @@
 <script>
 export default {
 	name: "BaseCard",
-	props: {
-		withMedia: {
-			type: Boolean,
-			default: false,
-		},
-	},
 };
 </script>
 
@@ -37,7 +31,7 @@ export default {
 		0 1px 5px 0 rgba(0, 0, 0, 0.12);
 }
 .header {
-	padding: 16px 16px 8px;
+	padding: 16px;
 
 	.title {
 		margin-top: 8px;
@@ -54,7 +48,7 @@ export default {
 	}
 
 	+ .header {
-		padding-top: 8px;
+		padding: 8px 16px;
 	}
 }
 .body {
