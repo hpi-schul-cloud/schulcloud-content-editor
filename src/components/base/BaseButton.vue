@@ -3,7 +3,7 @@
 		:class="getClass()"
 		:type="type"
 		:disabled="disabled"
-		v-bind="$props"
+		v-bind="$attrs"
 		v-on="$listeners"
 	>
 		<slot></slot>
@@ -18,14 +18,6 @@ export default {
 			type: String,
 			default: "button",
 		},
-		secondary: {
-			type: Boolean,
-			dafault: true,
-		},
-		primary: {
-			type: Boolean,
-			dafault: false,
-		},
 		disabled: {
 			type: Boolean,
 			default: false,
@@ -38,14 +30,18 @@ export default {
 			type: Boolean,
 			default: false,
 		},
+		styling: {
+			type: String,
+			default: "secondary",
+		},
 	},
 	methods: {
 		getClass() {
 			return {
 				btn: true,
 				submit_btn: this.type === "submit",
-				secondary_btn: this.type === "button" && this.secondary === true,
-				primary_btn: this.type === "button" && this.primary === true,
+				secondary_btn: this.type === "button" && this.styling === "secondary",
+				primary_btn: this.type === "button" && this.styling === "primary",
 				disabled: this.disabled === true,
 				raised: this.raised === true,
 				round: this.roundShape === true,

@@ -34,7 +34,7 @@
 					<div>
 						<BaseButton
 							v-if="data._id"
-							:secondary="true"
+							styling="secondary"
 							@click="dialog.active = true"
 							>{{ $lang.buttons.open }}</BaseButton
 						>
@@ -42,7 +42,7 @@
 							v-if="readOnly != true"
 							:to="{ path: '/edit/' + data._id }"
 						>
-							<BaseButton :secondary="true">{{
+							<BaseButton styling="secondary">{{
 								$lang.buttons.edit
 							}}</BaseButton>
 						</RouterLink>

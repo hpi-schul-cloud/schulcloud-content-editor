@@ -20,15 +20,13 @@
 				<div v-if="readOnly != true">
 					<BaseButton
 						:raised="gutter"
-						:secondary="!gutter"
-						:primary="gutter"
+						:styling="gutter ? 'primary' : 'secondary'"
 						@click="gutter = true"
 						>{{ $lang.buttons.card }}</BaseButton
 					>
 					<BaseButton
 						:raised="!gutter"
-						:secondary="gutter"
-						:primary="!gutter"
+						:styling="gutter ? 'secondary' : 'primary'"
 						@click="
 							gutter = false;
 							tableEnabled = true;
