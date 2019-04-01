@@ -1,11 +1,16 @@
 <template>
 	<div class="pagination">
-		<BaseButton v-if="config.page == 1" :disabled="true" :round-shape="true">
+		<BaseButton
+			v-if="config.page == 1"
+			:disabled="true"
+			styling="secondary"
+			:round-shape="true"
+		>
 			<img src="@/assets/icon-arrow_back.svg" />
 		</BaseButton>
 		<BaseButton
 			v-else
-			:secondary="true"
+			styling="secondary"
 			:raised="true"
 			:round-shape="true"
 			@click="config.page -= 1"
@@ -13,12 +18,13 @@
 			<img src="@/assets/icon-arrow_back.svg" />
 		</BaseButton>
 
-		<BaseButton id="page-number" :primary="true" :raised="true">
+		<BaseButton id="page-number" styling="primary" :raised="true">
 			<input v-model.lazy="pageString" type="number" min="1" :max="maxPages" />
 		</BaseButton>
 
 		<BaseButton
 			v-if="config.page == maxPages"
+			styling="secondary"
 			:disabled="true"
 			:round-shape="true"
 		>
@@ -26,7 +32,7 @@
 		</BaseButton>
 		<BaseButton
 			v-else
-			:secondary="true"
+			styling="secondary"
 			:raised="true"
 			:round-shape="true"
 			@click="config.page += 1"

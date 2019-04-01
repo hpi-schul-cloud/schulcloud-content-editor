@@ -36,7 +36,7 @@
 		</td>
 		<td>
 			<BaseButton
-				:secondary="true"
+				styling="secondary"
 				:round-shape="true"
 				@ButtonClicked="dialog.active = true"
 			>
