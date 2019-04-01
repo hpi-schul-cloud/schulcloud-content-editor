@@ -1,6 +1,6 @@
 ﻿<template>
 	<article>
-		<BaseCard :with-media="true">
+		<BaseCard>
 			<template slot="media">
 				<img
 					:src="

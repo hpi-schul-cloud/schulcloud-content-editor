@@ -1,14 +1,19 @@
 <template>
-	<MdCard v-if="isFirstView" id="welcome-card" class="card-content">
-		<MdCardHeader>
-			<h2 id="welcome-message" class="md-title">{{ $lang.welcome.message }}</h2>
-		</MdCardHeader>
-	</MdCard>
+	<BaseCard v-if="isFirstView" id="welcome-card">
+		<template slot="head">
+			<h2 id="welcome-message" class="title">{{ $lang.welcome.message }}</h2>
+		</template>
+	</BaseCard>
 </template>
 
 <script>
+import BaseCard from "@/components/base/BaseCard.vue";
+
 export default {
 	name: "WelcomeMessage",
+	components: {
+		BaseCard,
+	},
 	data() {
 		return {
 			isFirstView: true,
@@ -30,6 +35,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 #welcome-message {
+	margin: 0;
 	text-align: center;
 }
 
