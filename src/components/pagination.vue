@@ -129,8 +129,5 @@ export default {
 			appearance: none;
 		}
 	}
-	&.md-toggle {
-		background: rgba(0, 0, 0, 0.1);
-	}
 }
 </style>
