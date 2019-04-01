@@ -56,7 +56,7 @@
 							:error="errors.first('entrypointSelector')"
 							:disabled="filetree.objects.length === 0"
 							:files="entrypointFiles"
-							:content-id="$route.params.id || ''"
+							:resource-id="$route.params.id || ''"
 						/>
 						<ContentThumbnailSelector
 							v-show="hostingOption === 'hostedAtSchulcloud'"
@@ -67,7 +67,7 @@
 							:error="errors.first('thumbnailSelector')"
 							:disabled="filetree.objects.length === 0"
 							:files="thumbnailFiles"
-							:content-id="$route.params.id || ''"
+							:resource-id="$route.params.id || ''"
 						/>
 						<FileUpload
 							v-show="hostingOption === 'hostedAtSchulcloud'"
@@ -284,7 +284,9 @@ export default {
 		submitContent() {
 			// deep copy to remove reactivity
 			const newData = JSON.parse(JSON.stringify(this.data));
-			newData.patchResourceUrl = this.hostingOption === "hostedAtSchulcloud";
+			newData.patchResourceUrl =
+				this.hostingOption === "hostedAtSchulcloud" &&
+				!newData.url.startsWith("http");
 
 			let request;
 			if (this.editMode) {

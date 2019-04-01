@@ -32,10 +32,6 @@ export default {
 			type: Array,
 			default: () => [],
 		},
-		contentId: {
-			type: String,
-			required: true,
-		},
 	},
 	computed: {
 		options() {

@@ -30,7 +30,7 @@ export default {
 			type: Array,
 			default: () => [],
 		},
-		contentId: {
+		resourceId: {
 			type: String,
 			required: true,
 		},
@@ -42,7 +42,7 @@ export default {
 				const key =
 					this.$config.API.contentServerUrl +
 					this.$config.API.hostingEntry +
-					this.contentId +
+					this.resourceId +
 					"/" +
 					elem;
 				obj.key = key;
