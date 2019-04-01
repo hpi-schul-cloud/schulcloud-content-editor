@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/schulcloud-content-editor/precache-manifest.6ae6715eb9ce9863e774b8427fb9b766.js"
+  "/schulcloud-content-editor/precache-manifest.371d04cb949b56bdbacd91aa9fe65c33.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "schulcloud-content-editor"});
