@@ -31,7 +31,10 @@ function uploadFile(item, filepath, that) {
 			"progress",
 			(evt) => {
 				if (evt.lengthComputable) {
-					this.progress = (evt.loaded / evt.total) * 100;
+					const progress = (evt.loaded / evt.total) * 100;
+					if (progress < 100 && progress > 0) {
+						this.progress = progress;
+					}
 				}
 			},
 			false
