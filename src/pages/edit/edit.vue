@@ -23,6 +23,9 @@
 							data-vv-rules="max:500|required"
 							:error="errors.first('description')"
 						/>
+						<label>
+							<input v-model="data.isPublished" type="checkbox" /> Published?
+						</label>
 						<ContentUrlThumbnail
 							v-model="data.thumbnail"
 							v-validate
