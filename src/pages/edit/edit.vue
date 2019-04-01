@@ -281,7 +281,7 @@ export default {
 		submitContent() {
 			// deep copy to remove reactivity
 			const newData = JSON.parse(JSON.stringify(this.data));
-			newData.hostedAtSchulcloud = this.hostingOption === "hostedAtSchulcloud";
+			newData.patchResourceUrl = this.hostingOption === "hostedAtSchulcloud";
 
 			let request;
 			if (this.editMode) {
