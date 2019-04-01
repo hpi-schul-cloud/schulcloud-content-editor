@@ -1,17 +1,19 @@
 <template>
 	<div class="card">
-		<div v-if="withMedia === true" class="media">
-			<slot name="media"></slot>
-		</div>
-		<div class="header">
-			<slot name="head"></slot>
-		</div>
-		<div class="content">
-			<slot name="content"></slot>
-		</div>
-		<div class="footer">
-			<slot name="footer"></slot>
-		</div>
+		<slot>
+			<div v-if="withMedia === true" class="media">
+				<slot name="media"></slot>
+			</div>
+			<div class="header">
+				<slot name="head"></slot>
+			</div>
+			<div class="body">
+				<slot name="body"></slot>
+			</div>
+			<div class="footer">
+				<slot name="footer"></slot>
+			</div>
+		</slot>
 	</div>
 </template>
 
@@ -55,7 +57,7 @@ export default {
 		padding-top: 8px;
 	}
 }
-.content {
+.body {
 	padding: 8px 16px;
 	word-break: break-word;
 }

@@ -22,21 +22,19 @@
 						:raised="gutter"
 						:secondary="!gutter"
 						:primary="gutter"
-						@ButtonClicked="gutter = true"
+						@click="gutter = true"
+						>{{ $lang.buttons.card }}</BaseButton
 					>
-						{{ $lang.buttons.card }}
-					</BaseButton>
 					<BaseButton
 						:raised="!gutter"
 						:secondary="gutter"
 						:primary="!gutter"
-						@ButtonClicked="
+						@click="
 							gutter = false;
 							tableEnabled = true;
 						"
+						>{{ $lang.buttons.list }}</BaseButton
 					>
-						{{ $lang.buttons.list }}
-					</BaseButton>
 				</div>
 				<div class="items-per-page-picker">
 					<BaseSelect

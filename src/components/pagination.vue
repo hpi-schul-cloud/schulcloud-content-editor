@@ -8,7 +8,7 @@
 			:secondary="true"
 			:raised="true"
 			:round_shape="true"
-			@ButtonClicked="config.page -= 1"
+			@click="config.page -= 1"
 		>
 			<img src="@/assets/icon-arrow_back.svg" />
 		</BaseButton>
@@ -29,7 +29,7 @@
 			:secondary="true"
 			:raised="true"
 			:round_shape="true"
-			@ButtonClicked="config.page += 1"
+			@click="config.page += 1"
 		>
 			<img src="@/assets/icon-arrow_forward.svg" />
 		</BaseButton>

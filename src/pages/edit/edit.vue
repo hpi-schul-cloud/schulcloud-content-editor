@@ -1,15 +1,13 @@
 <template>
 	<div class="container">
 		<div id="content-card">
-			<BaseCard>
-				<template slot="head">
-					<div v-if="editMode" class="title">
-						{{ $lang.edit.title_edit }}
-					</div>
-					<div v-else class="title">{{ $lang.edit.title_create }}</div>
-				</template>
-				<template slot="content">
-					<form id="contentForm" @submit.prevent="validateBeforeSubmit">
+			<form id="contentForm" @submit.prevent="validateBeforeSubmit">
+				<BaseCard>
+					<template slot="head">
+						<div v-if="editMode" class="title">{{ $lang.edit.title_edit }}</div>
+						<div v-else class="title">{{ $lang.edit.title_create }}</div>
+					</template>
+					<template slot="body">
 						<h3>Metadaten</h3>
 						<ContentTitle
 							v-model="data.title"
@@ -75,37 +73,29 @@
 							@update:filetree="handleFiletreeUpdate($event)"
 							@update="data.files = $event"
 						/>
-						<button
-							ref="submitButton"
-							style="display:none"
-							type="submit"
-						></button>
-					</form>
-				</template>
-				<template slot="footer">
-					<div class="button_wrapper">
-						<BaseButton
-							v-if="$route.params.id"
-							:secondary="true"
-							@ButtonClicked="dialog.active = true"
-						>
-							{{ $lang.buttons.delete }}
-						</BaseButton>
-						<ConfirmDialog :config="dialog" @confirm="deleteContent" />
-						<BaseButton :secondary="true" @ButtonClicked="$router.go(-1)">
-							{{ $lang.buttons.cancel }}
-						</BaseButton>
-						<BaseButton
-							form="contentForm"
-							type="submit"
-							:disabled="!isFormValid"
-							@ButtonClicked="$refs.submitButton.click()"
-						>
-							{{ $lang.buttons.save }}
-						</BaseButton>
-					</div>
-				</template>
-			</BaseCard>
+					</template>
+					<template slot="footer">
+						<div class="button_wrapper">
+							<BaseButton
+								v-if="$route.params.id"
+								:secondary="true"
+								@click="dialog.active = true"
+								>{{ $lang.buttons.delete }}</BaseButton
+							>
+							<ConfirmDialog :config="dialog" @confirm="deleteContent" />
+							<BaseButton :secondary="true" @click="$router.go(-1)">{{
+								$lang.buttons.cancel
+							}}</BaseButton>
+							<BaseButton
+								form="contentForm"
+								type="submit"
+								:disabled="!isFormValid"
+								>{{ $lang.buttons.save }}</BaseButton
+							>
+						</div>
+					</template>
+				</BaseCard>
+			</form>
 		</div>
 		<div id="preview-card">
 			<div class="preview-wrapper">

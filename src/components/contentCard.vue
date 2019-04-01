@@ -20,12 +20,11 @@
 							this.$config.card.displayedTags
 						)"
 						:key="`${index}-${tag}`"
+						>{{ tag }},</span
 					>
-						{{ tag }},
-					</span>
 				</div>
 			</template>
-			<template slot="content">
+			<template slot="body">
 				{{ (data.description || "Beschreibung...").substring(0, 300) }}
 				{{ (data.description || "").length > 300 ? "..." : "" }}
 			</template>
@@ -36,9 +35,9 @@
 						<BaseButton
 							v-if="data._id"
 							:secondary="true"
-							@ButtonClicked="dialog.active = true"
-							>{{ $lang.buttons.open }}
-						</BaseButton>
+							@click="dialog.active = true"
+							>{{ $lang.buttons.open }}</BaseButton
+						>
 						<RouterLink
 							v-if="readOnly != true"
 							:to="{ path: '/edit/' + data._id }"

@@ -3,7 +3,8 @@
 		:class="getClass()"
 		:type="type"
 		:disabled="disabled"
-		@click="$emit('ButtonClicked')"
+		v-bind="$props"
+		v-on="$listeners"
 	>
 		<slot></slot>
 	</button>
