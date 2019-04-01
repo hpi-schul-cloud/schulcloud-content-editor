@@ -1,7 +1,7 @@
 <template>
 	<div class="wrapper">
 		<BaseSelect
-			:label="$lang.edit.form.categorie"
+			:label="getLabel"
 			name="Kategorie"
 			:options="options"
 			:selected="value"
@@ -22,6 +22,10 @@ export default {
 			type: String,
 			default: "",
 		},
+		withoutLabel: {
+			type: Boolean,
+			default: false,
+		},
 	},
 	data() {
 		return {
@@ -32,6 +36,12 @@ export default {
 				{ key: "tool", value: "Tool" },
 			],
 		};
+	},
+	computed: {
+		getLabel: function() {
+			if (!this.withoutLabel) return this.$lang.edit.form.categorie;
+			else return "";
+		},
 	},
 };
 </script>
