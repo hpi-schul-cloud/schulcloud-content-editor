@@ -50,7 +50,6 @@ export default {
 	margin: 1.5em 0;
 }
 label {
-	padding-left: 8px;
 	font-size: 0.9em;
 	font-weight: 500;
 	color: black;

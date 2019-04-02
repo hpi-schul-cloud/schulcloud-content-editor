@@ -60,7 +60,6 @@ export default {
 	margin: 1.5em 0;
 }
 label {
-	padding-left: 8px;
 	font-size: 0.9em;
 	font-weight: 500;
 	color: black;
@@ -70,6 +69,7 @@ label {
 }
 .tag-input {
 	.ti-input {
+		padding: 1px 0;
 		border: 0;
 		border-bottom: 1px solid grey;
 	}
@@ -82,10 +82,14 @@ label {
 		background: none;
 		border-radius: 20px;
 
-		.ti-new-tag-input {
-			font-size: 1rem;
-			color: #757575;
-			background: none;
+		.ti-new-tag-input-wrapper {
+			padding: 0;
+
+			.ti-new-tag-input {
+				font-size: 1rem;
+				color: #757575;
+				background: none;
+			}
 		}
 	}
 	.ti-tag {

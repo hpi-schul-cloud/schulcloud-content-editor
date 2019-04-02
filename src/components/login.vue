@@ -1,49 +1,84 @@
 <template>
-	<MdCard id="login-card" class="card-content">
-		<MdCardHeader>
-			<h2 class="md-title">
-				{{ $lang.login.title }}
-			</h2>
-		</MdCardHeader>
-
-		<MdCardContent>
-			<form id="loginForm" @submit.prevent="validateBeforeSubmit">
-				<MdField>
-					<label>{{ $lang.login.username }}</label>
-					<MdInput v-model="login.username" name="username" required />
-				</MdField>
-				<MdField md-has-password>
-					<label>{{ $lang.login.password }}</label>
-					<MdInput
-						v-model="login.password"
-						name="password"
-						type="password"
-						required
-					/>
-				</MdField>
+	<form id="loginForm" @submit.prevent="validateBeforeSubmit">
+		<BaseCard id="login-card">
+			<template slot="head">
+				<div class="title">{{ $lang.login.title }}</div>
+			</template>
+			<template slot="body">
+				<BaseInput
+					v-model="login.username"
+					name="username"
+					type="text"
+					:label="$lang.login.username"
+					placeholder="Benutzername *"
+					required
+				/>
+				<BaseInput
+					ref="passwordInput"
+					v-model="login.password"
+					name="password"
+					:type="pwInputType"
+					:label="$lang.login.password"
+					placeholder="Passwort *"
+					required
+				>
+					<template slot="icon">
+						<span class="visibility-icon-wrapper">
+							<BaseButton
+								v-if="pwVisible"
+								styling="secondary"
+								:round-shape="true"
+								@click="toggleVisibility"
+							>
+								<img ref="visibilityIcon" src="@/assets/icon-visibility.svg" />
+							</BaseButton>
+							<BaseButton
+								v-else
+								styling="secondary"
+								:round-shape="true"
+								@click="toggleVisibility"
+							>
+								<img
+									ref="visibilityIcon"
+									src="@/assets/icon-visibility_off.svg"
+								/>
+							</BaseButton>
+						</span>
+					</template>
+				</BaseInput>
 				<a :href="this.$config.API.baseUrl + this.$config.API.pwRecoveryPath">
 					{{ $lang.login.forgot_password }}?
 				</a>
-			</form>
-		</MdCardContent>
-
-		<MdCardActions>
-			<MdButton class="md-primary" type="submit" form="loginForm">
-				{{ $lang.buttons.login }}
-			</MdButton>
-		</MdCardActions>
-	</MdCard>
+			</template>
+			<template slot="footer">
+				<div class="button_wrapper">
+					<BaseButton type="submit">{{ $lang.buttons.login }}</BaseButton>
+				</div>
+			</template>
+		</BaseCard>
+	</form>
 </template>
 
 <script>
+import BaseButton from "@/components/base/BaseButton.vue";
+import BaseCard from "@/components/base/BaseCard.vue";
+import BaseInput from "@/components/base/BaseInput.vue";
+
 export default {
 	name: "Login",
+	components: {
+		BaseButton,
+		BaseCard,
+		BaseInput,
+	},
 	data() {
 		return {
 			login: {
 				username: "",
 				password: "",
 			},
+			pwInputType: "password",
+			pwVisible: false,
 		};
 	},
 	created() {
@@ -103,6 +138,14 @@ export default {
 					console.error(e); // eslint-disable-line no-console
 				});
 		},
+		toggleVisibility() {
+			this.pwVisible = !this.pwVisible;
+			if (this.pwInputType === "password") {
+				this.pwInputType = "text";
+			} else {
+				this.pwInputType = "password";
+			}
+		},
 	},
 };
 </script>
@@ -113,23 +156,13 @@ export default {
 	max-width: 600px;
 	margin: 1em auto;
 }
-</style>
-<style lang="scss">
-#app {
-	&::after {
-		position: fixed;
-		top: 0;
-		right: 0;
-		bottom: 0;
-		left: 0;
-		z-index: -999;
-		display: block;
-		content: "";
-		background: linear-gradient(
-			-3deg,
-			var(--md-theme-default-accent) 15%,
-			#fff 15%
-		);
-	}
+.button_wrapper {
+	display: flex;
+	justify-content: flex-end;
+}
+.visibility-icon-wrapper {
+	position: absolute;
+	right: 0;
+	bottom: 0;
 }
 </style>

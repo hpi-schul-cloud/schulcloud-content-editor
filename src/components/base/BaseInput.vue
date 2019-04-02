@@ -12,6 +12,7 @@
 			:placeholder="placeholder"
 			@input="$emit('input', $event.target.value)"
 		/>
+		<slot name="icon"></slot>
 		<span v-if="!!error" class="invalid">{{ error }}</span>
 	</div>
 </template>
@@ -50,10 +51,11 @@ export default {
 
 <style lang="scss" scoped>
 .wrapper {
+	position: relative;
+	width: 100%;
 	margin: 1.5em 0;
 }
 label {
-	padding-left: 8px;
 	font-size: 0.9em;
 	font-weight: 500;
 	color: black;
@@ -61,8 +63,8 @@ label {
 .input {
 	display: block;
 	width: 100%;
-	padding: 0 8px 8px;
 	font-size: 1.15em;
+	line-height: 32px;
 	color: #757575;
 	background: rgba(255, 255, 255, 0);
 	border: none;

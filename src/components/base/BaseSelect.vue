@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div style="position: relative">
 		<label v-if="label" :for="name">{{ label }}</label>
 		<button
 			type="button"
@@ -89,7 +89,6 @@ export default {
 
 <style lang="scss" scoped>
 label {
-	padding: 0 8px;
 	font-size: 0.9em;
 	font-weight: 500;
 	color: black;
@@ -99,8 +98,9 @@ label {
 	align-items: center;
 	justify-content: space-between;
 	width: 100%;
-	padding: 0 8px 8px;
+	padding: 1px 0;
 	font-size: 1.15em;
+	line-height: 32px;
 	color: #757575;
 	cursor: pointer;
 	background: rgba(255, 255, 255, 0);
@@ -113,6 +113,8 @@ label {
 }
 .select {
 	position: absolute;
+	right: 0;
+	left: 0;
 	z-index: 999;
 	display: none;
 	min-width: 100px;
