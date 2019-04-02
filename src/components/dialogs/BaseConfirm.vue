@@ -5,10 +5,10 @@
 			<div class="content">{{ content }}</div>
 			<div class="action">
 				<BaseButton styling="secondary" @click="$emit('cancel')">
-					{{ cancel_text }}
+					{{ cancelText }}
 				</BaseButton>
 				<BaseButton styling="primary" @click="$emit('confirm')">
-					{{ confirm_text }}
+					{{ confirmText }}
 				</BaseButton>
 			</div>
 		</div>
