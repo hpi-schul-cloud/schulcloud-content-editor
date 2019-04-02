@@ -1,0 +1,111 @@
+<template>
+	<div class="menu-wrapper">
+		<button
+			type="button"
+			:class="{
+				select_button: true,
+				expand: expanded,
+			}"
+			@click="toggleExpansion"
+		>
+			<slot name="MenuTitle"></slot>
+			<img
+				:class="{ rotate: expanded }"
+				src="@/assets/icon-arrow_down_white.svg"
+			/>
+		</button>
+		<ul class="select">
+			<li
+				v-for="option in options"
+				:key="option.text"
+				:class="{ option: true, selected: option.text === selected }"
+				@click="selectOption(option)"
+				>{{ option.text }}</li
+			>
+		</ul>
+	</div>
+</template>
+
+<script>
+export default {
+	name: "BaseMenu",
+	props: {
+		options: {
+			type: Array,
+			required: true,
+		},
+	},
+	data() {
+		return {
+			expanded: false,
+			selected: "",
+		};
+	},
+	methods: {
+		toggleExpansion(event) {
+			this.expanded = !this.expanded;
+		},
+		selectOption(option) {
+			this.selected = option.text;
+			this.$emit("input", option);
+			this.expanded = false;
+		},
+	},
+};
+</script>
+
+<style lang="scss" scoped>
+.menu-wrapper {
+	display: inline-block;
+}
+.select_button {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	padding: 8px;
+	color: #fff;
+	text-transform: uppercase;
+	cursor: pointer;
+	background: rgba(255, 255, 255, 0);
+	border: none;
+	border-radius: 2px;
+
+	&:hover {
+		background: #ba2350;
+	}
+
+	.rotate {
+		transform: rotate(180deg);
+	}
+}
+.select {
+	position: absolute;
+	z-index: 99;
+	display: none;
+	padding: 0;
+	margin: 0;
+	color: black;
+	list-style-type: none;
+	cursor: pointer;
+	background: #fff;
+	border-top: none;
+	box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+		0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+.expand + .select {
+	display: block;
+}
+.option {
+	padding: 16px;
+	font-size: 16px;
+	font-weight: 400;
+
+	&:hover {
+		background: #e0e0e0;
+	}
+}
+.selected {
+	color: #b10438;
+}
+</style>

@@ -16,19 +16,9 @@
 						<RouterLink to="/stats">
 							<MdButton>{{ $lang.buttons.stats }}</MdButton>
 						</RouterLink>
-						<MdMenu md-direction="bottom-end" :md-align-trigger="true">
-							<MdButton id="user-name" md-menu-trigger>
-								{{ userInfo.displayName }}
-								<MdIcon>
-									<i class="material-icons">arrow_drop_down</i>
-								</MdIcon>
-							</MdButton>
-							<MdMenuContent>
-								<MdMenuItem @click="logout">{{
-									$lang.buttons.logout
-								}}</MdMenuItem>
-							</MdMenuContent>
-						</MdMenu>
+						<BaseMenu :options="MenuOptions" @input="handleMenuClick($event)">
+							<template slot="MenuTitle">{{ userInfo.displayName }}</template>
+						</BaseMenu>
 					</div>
 				</MdToolbar>
 			</div>
@@ -50,18 +40,23 @@ const login = () =>
 /* load hpiFooter async */
 const hpiFooter = () =>
 	import(/* webpackChunkName: "hpiFooter" */ "@/components/footer.vue");
+import BaseMenu from "@/components/base/BaseMenu.vue";
 
 export default {
 	name: "App",
 	components: {
 		AppLogin: login,
 		AppFooter: hpiFooter,
+		BaseMenu,
 	},
 	data() {
 		return {
 			title: "Schul-Cloud Content",
 			jwt: localStorage.getItem("jwt"),
 			userInfo: JSON.parse(localStorage.getItem("userInfo")) || {},
+			MenuOptions: [
+				{ text: this.$lang.buttons.logout, actionOnClick: "logout" },
+			],
 		};
 	},
 	created() {
@@ -77,6 +72,9 @@ export default {
 		});
 	},
 	methods: {
+		handleMenuClick(ev) {
+			this[ev.actionOnClick]();
+		},
 		logout() {
 			localStorage.clear();
 			this.$cookies.remove("jwt");

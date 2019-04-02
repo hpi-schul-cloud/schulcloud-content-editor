@@ -14,7 +14,7 @@
 			{{ getContent() }}
 			<img
 				:class="{ icon: true, rotate: expanded }"
-				src="@/assets/icon-arrow_down.svg"
+				src="@/assets/icon-arrow_down_black.svg"
 			/>
 		</button>
 		<ul class="select">
