@@ -10,3 +10,85 @@
 );
 
 @import "~vue-material/dist/theme/all"; // Apply the theme
+
+.container-fluid {
+	width: 100%;
+	max-width: 900px;
+	margin: 0 auto 0;
+}
+
+.container-fluid-max {
+	width: 100%;
+	max-width: 1750px;
+	margin: 0 auto 0;
+}
+
+.grid {
+	display: grid;
+	grid-template-columns: repeat(12, 1fr);
+	grid-gap: 5px;
+	width: 100%;
+}
+
+@for $i from 1 through 12 {
+	.hide-xl {
+		display: none;
+	}
+	.grid-xl-#{$i} {
+		grid-column: span $i;
+	}
+}
+
+@media (max-width: 1903px) {
+	.hide-l {
+		display: none;
+	}
+
+	@for $i from 1 through 12 {
+		.grid-l-#{$i} {
+			grid-column: span $i;
+		}
+	}
+}
+
+@media (max-width: 1264px) {
+	.hide-m {
+		display: none;
+	}
+
+	@for $i from 1 through 12 {
+		.grid-m-#{$i} {
+			grid-column: span $i;
+		}
+	}
+}
+
+@media (max-width: 944px) {
+	.hide-s {
+		display: none;
+	}
+
+	@for $i from 1 through 12 {
+		.grid-s-#{$i} {
+			grid-column: span $i;
+		}
+	}
+}
+
+@media (max-width: 600px) {
+	.hide-s {
+		display: none;
+	}
+
+	@for $i from 1 through 12 {
+		.grid-xs-#{$i} {
+			grid-column: span $i;
+		}
+	}
+}
+
+@for $i from 0 through 10 {
+	.height-#{$i * 10} {
+		height: percentage($i / 10);
+	}
+}

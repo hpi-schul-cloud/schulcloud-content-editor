@@ -3,27 +3,34 @@
 		<!-- eslint-disable -->
 		<vue-progress-bar />
 		<!--eslint-enable-->
-		<header class="md-elevation-1 md-primary">
-			<div class="container-fluid-max">
-				<MdToolbar md-elevation="0" class="md-primary">
+		<header>
+			<div class="flex">
+				<div id="title-wrapper">
 					<RouterLink to="/" style="flex: 1">
-						<h2 class="cloud-logo md-title" style="flex: 1">{{ title }}</h2>
+						<div class="flex">
+							<span class="logo"
+								><img src="./assets/cloud-transparent-mono.svg"
+							/></span>
+							<h2 class="title" style="flex: 1">{{ title }}</h2>
+						</div>
 					</RouterLink>
-					<div v-if="jwt">
-						<RouterLink to="/create">
-							<MdButton>{{ $lang.buttons.create }}</MdButton>
-						</RouterLink>
-						<RouterLink to="/stats">
-							<MdButton>{{ $lang.buttons.stats }}</MdButton>
-						</RouterLink>
-						<BaseMenu :options="MenuOptions" @input="handleMenuClick($event)">
-							<template slot="MenuTitle">{{ userInfo.displayName }}</template>
-						</BaseMenu>
-					</div>
-				</MdToolbar>
+				</div>
+				<div v-if="jwt" id="button-wrapper">
+					<RouterLink to="/create">
+						<BaseButton styling="primary">{{
+							$lang.buttons.create
+						}}</BaseButton>
+					</RouterLink>
+					<RouterLink to="/stats">
+						<BaseButton styling="primary">{{ $lang.buttons.stats }}</BaseButton>
+					</RouterLink>
+					<BaseMenu :options="MenuOptions" @input="handleMenuClick($event)">
+						<template slot="MenuTitle">{{ userInfo.displayName }}</template>
+					</BaseMenu>
+				</div>
 			</div>
 		</header>
-		<main class="page-container container-fluid-max">
+		<main class="container-fluid-max">
 			<Transition name="fade" mode="out-in" appear>
 				<RouterView v-if="jwt" />
 			</Transition>
@@ -41,6 +48,7 @@ const login = () =>
 const hpiFooter = () =>
 	import(/* webpackChunkName: "hpiFooter" */ "@/components/footer.vue");
 import BaseMenu from "@/components/base/BaseMenu.vue";
+import BaseButton from "@/components/base/BaseButton.vue";
 
 export default {
 	name: "App",
@@ -48,6 +56,7 @@ export default {
 		AppLogin: login,
 		AppFooter: hpiFooter,
 		BaseMenu,
+		BaseButton,
 	},
 	data() {
 		return {
@@ -86,89 +95,6 @@ export default {
 
 <style lang="scss">
 @import "./default";
-
-.container-fluid {
-	width: 100%;
-	max-width: 900px;
-	margin: 0 auto 0;
-}
-
-.container-fluid-max {
-	width: 100%;
-	max-width: 1750px;
-	margin: 0 auto 0;
-}
-
-.grid {
-	display: grid;
-	grid-template-columns: repeat(12, 1fr);
-	grid-gap: 5px;
-	width: 100%;
-}
-
-@for $i from 1 through 12 {
-	.hide-xl {
-		display: none;
-	}
-	.grid-xl-#{$i} {
-		grid-column: span $i;
-	}
-}
-
-@media (max-width: 1903px) {
-	.hide-l {
-		display: none;
-	}
-
-	@for $i from 1 through 12 {
-		.grid-l-#{$i} {
-			grid-column: span $i;
-		}
-	}
-}
-
-@media (max-width: 1264px) {
-	.hide-m {
-		display: none;
-	}
-
-	@for $i from 1 through 12 {
-		.grid-m-#{$i} {
-			grid-column: span $i;
-		}
-	}
-}
-
-@media (max-width: 944px) {
-	.hide-s {
-		display: none;
-	}
-
-	@for $i from 1 through 12 {
-		.grid-s-#{$i} {
-			grid-column: span $i;
-		}
-	}
-}
-
-@media (max-width: 600px) {
-	.hide-s {
-		display: none;
-	}
-
-	@for $i from 1 through 12 {
-		.grid-xs-#{$i} {
-			grid-column: span $i;
-		}
-	}
-}
-
-@for $i from 0 through 10 {
-	.height-#{$i * 10} {
-		height: percentage($i / 10);
-	}
-}
-
 #app {
 	display: flex;
 	flex-direction: column;
@@ -180,53 +106,6 @@ export default {
 	-moz-osx-font-smoothing: grayscale;
 }
 
-main {
-	// display: contents;
-	max-width: 100% !important;
-	padding: 0;
-	margin: 0 auto !important;
-}
-
-header {
-	top: 0;
-	left: 0;
-	z-index: 999;
-	width: 100vw;
-	padding-right: 16px !important;
-	background: var(--md-theme-default-accent-on-background, #b10438);
-	.md-title {
-		font-size: 1.5rem !important;
-		&:hover {
-			text-decoration: none !important;
-		}
-	}
-	.md-button {
-		margin: 0;
-	}
-	#user-name {
-		.md-icon {
-			width: 1em;
-			min-width: 1em;
-			height: 1em;
-			min-height: 1em;
-			font-size: 1em !important;
-		}
-	}
-	.cloud-logo::before {
-		display: inline-block;
-		width: 1.8em;
-		height: 1.1em;
-		margin: 0 0.25em -0.16em 0;
-		content: "";
-		background: url(./assets/cloud-transparent-mono.svg) no-repeat center;
-		background-size: contain;
-	}
-}
-
-.md-menu-content {
-	z-index: 9999;
-}
-
 .fade-enter-active,
 .fade-leave-active {
 	transition: opacity 0.3s;
@@ -235,5 +114,64 @@ header {
 .fade-enter,
 .fade-leave-active {
 	opacity: 0;
+}
+
+header {
+	top: 0;
+	left: 0;
+	z-index: 999;
+	width: 100vw;
+	padding: 0 32px 0 16px !important;
+	color: white;
+	background: var(--md-theme-default-accent-on-background, #b10438);
+	box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14),
+		0 1px 3px 0 rgba(0, 0, 0, 0.12);
+
+	.flex {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+
+		@media (max-width: 730px) {
+			justify-content: space-around;
+		}
+	}
+
+	#title-wrapper {
+		max-width: 300px;
+
+		.logo {
+			max-width: 50px;
+			margin: 8px;
+		}
+
+		.title {
+			font-size: 20px;
+			font-weight: 500;
+			line-height: 26px;
+			color: white;
+			letter-spacing: 0.005em;
+
+			@media (max-width: 730px) {
+				text-align: center;
+			}
+		}
+	}
+
+	#button-wrapper {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: center;
+		max-width: 500px;
+	}
+}
+
+main {
+	// display: contents;
+	max-width: 100% !important;
+	padding: 0;
+	margin: 0 auto !important;
 }
 </style>

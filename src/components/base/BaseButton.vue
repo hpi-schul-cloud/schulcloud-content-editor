@@ -79,6 +79,10 @@ export default {
 .primary_btn {
 	color: #fff;
 	background-color: #b10438;
+
+	&:hover {
+		background: #ba2350;
+	}
 }
 .secondary_btn {
 	color: black;
