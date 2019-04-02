@@ -56,14 +56,19 @@ export default {
 
 <style lang="scss" scoped>
 .menu-wrapper {
+	position: relative;
 	display: inline-block;
+	margin: 0 8px;
 }
 .select_button {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	width: 100%;
-	padding: 8px;
+	padding: 8px 16px;
+	font-family: inherit;
+	font-size: 14px;
+	font-weight: 500;
 	color: #fff;
 	text-transform: uppercase;
 	cursor: pointer;
@@ -81,6 +86,8 @@ export default {
 }
 .select {
 	position: absolute;
+	right: 0;
+	left: 0;
 	z-index: 99;
 	display: none;
 	padding: 0;

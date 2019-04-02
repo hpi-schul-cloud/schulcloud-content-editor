@@ -3,8 +3,8 @@
 		:active="isActive"
 		:title="config.title || 'Agree/Disagree?'"
 		:content="config.content"
-		:confirm_text="config.confirm || 'Agree'"
-		:cancel_text="config.cancle || 'Disagree'"
+		:confirm-text="config.confirm || 'Agree'"
+		:cancel-text="config.cancle || 'Disagree'"
 		@cancel="onCancel"
 		@confirm="onConfirm"
 	>
