@@ -15,6 +15,7 @@ export default {
 			pushContentPath: "/resources/",
 			searchContentPath: "/content/search/",
 			viewContentPath: "/content/redirect/",
+			fileUploadPath: "/files/upload/",
 			hostingEntry: "/files/get/",
 		},
 		card: {
