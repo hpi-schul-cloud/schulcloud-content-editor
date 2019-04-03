@@ -27,5 +27,9 @@
 footer {
 	margin: 2rem 0;
 	text-align: center;
+
+	a {
+		color: var(--primaryColor);
+	}
 }
 </style>

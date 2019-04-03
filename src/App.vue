@@ -123,7 +123,7 @@ header {
 	width: 100vw;
 	padding: 0 32px 0 16px !important;
 	color: white;
-	background: var(--md-theme-default-accent-on-background, #b10438);
+	background: var(--primaryColor);
 	box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14),
 		0 1px 3px 0 rgba(0, 0, 0, 0.12);
 
@@ -135,6 +135,14 @@ header {
 
 		@media (max-width: 730px) {
 			justify-content: space-around;
+		}
+
+		a {
+			text-decoration: none;
+
+			&:hover {
+				text-decoration: none;
+			}
 		}
 	}
 

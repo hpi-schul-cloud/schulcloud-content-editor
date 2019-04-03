@@ -311,8 +311,8 @@ table {
 		border-bottom: 1px solid grey;
 		outline: none;
 		&:focus {
-			color: #b10438;
-			border-bottom: 1px solid #b10438;
+			color: var(--primaryColor);
+			border-bottom: 1px solid var(--primaryColor);
 		}
 	}
 	#result-headline {

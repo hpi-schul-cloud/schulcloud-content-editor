@@ -71,7 +71,7 @@ label {
 	border-bottom: 1px solid #949494;
 
 	&:focus {
-		border-bottom-color: #b10438;
+		border-bottom-color: var(--primaryColor);
 		border-bottom-width: 2px;
 		outline: none;
 	}
@@ -80,6 +80,6 @@ span {
 	font-size: 0.75em;
 }
 .invalid {
-	color: #b10438;
+	color: var(--primaryColor);
 }
 </style>

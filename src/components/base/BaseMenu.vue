@@ -113,6 +113,6 @@ export default {
 	}
 }
 .selected {
-	color: #b10438;
+	color: var(--primaryColor);
 }
 </style>

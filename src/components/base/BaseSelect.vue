@@ -127,7 +127,7 @@ label {
 	box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);
 }
 .expand {
-	border-bottom-color: #b10438;
+	border-bottom-color: var(--primaryColor);
 	border-bottom-width: 2px;
 
 	+ .select {
@@ -145,6 +145,6 @@ label {
 	}
 }
 .selected {
-	color: #b10438;
+	color: var(--primaryColor);
 }
 </style>

@@ -69,7 +69,7 @@ export default {
 	}
 }
 .submit_btn {
-	color: #b10438;
+	color: var(--primaryColor);
 	background: rgba(255, 255, 255, 0);
 
 	&:hover {
@@ -78,7 +78,7 @@ export default {
 }
 .primary_btn {
 	color: #fff;
-	background-color: #b10438;
+	background-color: var(--primaryColor);
 
 	&:hover {
 		background: #ba2350;

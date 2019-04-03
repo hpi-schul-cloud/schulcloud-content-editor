@@ -74,7 +74,7 @@ label {
 		border-bottom: 1px solid grey;
 	}
 	&.ti-focus .ti-input {
-		border-color: #b10438;
+		border-color: var(--primaryColor);
 	}
 	&.vue-tags-input {
 		max-width: 100%;
@@ -100,7 +100,7 @@ label {
 
 		&.ti-tag.ti-deletion-mark {
 			color: #fff;
-			background-color: var(--md-theme-default-primary);
+			background-color: var(--primaryColor);
 			border-color: #fff;
 		}
 	}

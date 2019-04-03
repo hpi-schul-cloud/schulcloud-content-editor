@@ -65,7 +65,7 @@ label {
 	border-radius: 2px;
 
 	&:focus {
-		border-color: #b10438;
+		border-color: var(--primaryColor);
 		border-width: 2px;
 		outline: none;
 	}
@@ -74,6 +74,6 @@ span {
 	font-size: 0.75em;
 }
 .invalid {
-	color: #b10438;
+	color: var(--primaryColor);
 }
 </style>
