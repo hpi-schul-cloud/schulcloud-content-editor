@@ -23,9 +23,6 @@
 							data-vv-rules="max:500|required"
 							:error="errors.first('description')"
 						/>
-						<label>
-							<input v-model="data.isPublished" type="checkbox" /> Published?
-						</label>
 						<ContentUrlThumbnail
 							v-model="data.thumbnail"
 							v-validate
@@ -38,6 +35,11 @@
 						<ContentMimetype v-model="data.mimeType" />
 						<ContentTags v-model="data.tags" />
 						<h3>Inhalte</h3>
+						<div class="wrapper">
+							<h4 class="subtitle">Inhalte veröffentlichen?</h4>
+							<BaseCheckbox v-model="data.isPublished" label="published">
+							</BaseCheckbox>
+						</div>
 						<ContentHostingProvider v-model="hostingOption" />
 						<ContentUrl
 							v-if="hostingOption === 'hostedExternally'"
@@ -133,6 +135,7 @@ import ContentEntrypointSelector from "@/components/inputs/ContentEntrypointSele
 import ContentThumbnailSelector from "@/components/inputs/ContentThumbnailSelector.vue";
 import BaseButton from "@/components/base/BaseButton.vue";
 import BaseCard from "@/components/base/BaseCard.vue";
+import BaseCheckbox from "@/components/base/BaseCheckbox.vue";
 
 import filetree from "@/mixins/filetree.js";
 
@@ -156,6 +159,7 @@ export default {
 		ContentThumbnailSelector,
 		BaseButton,
 		BaseCard,
+		BaseCheckbox,
 
 		FileUpload,
 	},
@@ -175,6 +179,7 @@ export default {
 				licenses: ["Test License"],
 				tags: [],
 				files: { delete: [], save: [] },
+				isPublished: false,
 			},
 			dialog: {
 				active: false,
@@ -364,6 +369,12 @@ h3 {
 	&:first-of-type {
 		margin-top: 0;
 	}
+}
+
+.subtitle {
+	margin: 0;
+	font-size: 0.9em;
+	font-weight: 500;
 }
 
 .button_wrapper {
