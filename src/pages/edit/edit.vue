@@ -54,7 +54,7 @@
 							v-model="data.url"
 							v-validate
 							data-vv-name="entrypointSelector"
-							data-vv-rules="{required: true, url: {require_protocol: false, require_host: false, allow_protocol_relative_urls: true}}"
+							FIX-data-vv-rules="{required: true, url: {require_protocol: false, require_host: false, allow_protocol_relative_urls: true}}"
 							:error="errors.first('entrypointSelector')"
 							:disabled="filetree.objects.length === 0"
 							:files="entrypointFiles"
@@ -65,7 +65,7 @@
 							v-model="data.thumbnail"
 							v-validate
 							data-vv-name="thumbnailSelector"
-							data-vv-rules="{required: true, url: {require_protocol: false, require_host: false, allow_protocol_relative_urls: true}}"
+							FIX-data-vv-rules="{required: true, url: {require_protocol: false, require_host: false, allow_protocol_relative_urls: true}}"
 							:error="errors.first('thumbnailSelector')"
 							:disabled="filetree.objects.length === 0"
 							:files="thumbnailFiles"

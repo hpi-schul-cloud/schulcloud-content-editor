@@ -21,8 +21,8 @@ function PromiseFile(item) {
 
 function uploadFile(item, filepath, that) {
 	return PromiseFile(item).then((file) => {
-		let url = `${this.$config.API.contentServerUrl}${
-			this.$config.API.fileUploadPath
+		let url = `${that.$config.API.contentServerUrl}${
+			that.$config.API.fileUploadPath
 		}?path=${filepath}`;
 
 		const formData = new FormData();
