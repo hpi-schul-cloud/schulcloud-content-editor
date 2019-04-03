@@ -26,56 +26,59 @@
 						<label>
 							<input v-model="data.isPublished" type="checkbox" /> Published?
 						</label>
-						<ContentUrlThumbnail
-							v-model="data.thumbnail"
-							v-validate
-							data-vv-name="thumbnail"
-							data-vv-rules="url"
-							:error="errors.first('thumbnail')"
-						/>
 						<ContentLicense v-model="data.licenses" />
 						<ContentCategory v-model="data.contentCategory" />
 						<ContentMimetype v-model="data.mimeType" />
 						<ContentTags v-model="data.tags" />
 						<h3>Inhalte</h3>
 						<ContentHostingProvider v-model="hostingOption" />
-						<ContentUrl
-							v-if="hostingOption === 'hostedExternally'"
-							v-model="data.url"
-							v-validate
-							data-vv-name="url"
-							data-vv-rules="required|url"
-							:error="errors.first('url')"
-						/>
-						<ContentEntrypointSelector
-							v-show="hostingOption === 'hostedAtSchulcloud'"
-							v-model="data.url"
-							v-validate
-							data-vv-name="entrypointSelector"
-							FIX-data-vv-rules="{required: true, url: {require_protocol: false, require_host: false, allow_protocol_relative_urls: true}}"
-							:error="errors.first('entrypointSelector')"
-							:disabled="filetree.objects.length === 0"
-							:files="entrypointFiles"
-							:resource-id="$route.params.id || ''"
-						/>
-						<ContentThumbnailSelector
-							v-show="hostingOption === 'hostedAtSchulcloud'"
-							v-model="data.thumbnail"
-							v-validate
-							data-vv-name="thumbnailSelector"
-							FIX-data-vv-rules="{required: true, url: {require_protocol: false, require_host: false, allow_protocol_relative_urls: true}}"
-							:error="errors.first('thumbnailSelector')"
-							:disabled="filetree.objects.length === 0"
-							:files="thumbnailFiles"
-							:resource-id="$route.params.id || ''"
-						/>
-						<FileUpload
-							v-show="hostingOption === 'hostedAtSchulcloud'"
-							:value="data.files"
-							:filetree="filetree"
-							@update:filetree="handleFiletreeUpdate($event)"
-							@update="data.files = $event"
-						/>
+						<template v-if="hostingOption === 'hostedExternally'">
+							<ContentUrl
+								v-model="data.url"
+								v-validate
+								data-vv-name="url"
+								data-vv-rules="required|url"
+								:error="errors.first('url')"
+							/>
+							<ContentUrlThumbnail
+								v-model="data.thumbnail"
+								v-validate
+								data-vv-name="thumbnail"
+								data-vv-rules="url"
+								:error="errors.first('thumbnail')"
+							/>
+						</template>
+						<template>
+							<ContentEntrypointSelector
+								v-show="hostingOption === 'hostedAtSchulcloud'"
+								v-model="data.url"
+								v-validate
+								data-vv-name="entrypointSelector"
+								FIX-data-vv-rules="{required: true, url: {require_protocol: false, require_host: false, allow_protocol_relative_urls: true}}"
+								:error="errors.first('entrypointSelector')"
+								:disabled="filetree.objects.length === 0"
+								:files="entrypointFiles"
+								:resource-id="$route.params.id || ''"
+							/>
+							<ContentThumbnailSelector
+								v-show="hostingOption === 'hostedAtSchulcloud'"
+								v-model="data.thumbnail"
+								v-validate
+								data-vv-name="thumbnailSelector"
+								FIX-data-vv-rules="{required: true, url: {require_protocol: false, require_host: false, allow_protocol_relative_urls: true}}"
+								:error="errors.first('thumbnailSelector')"
+								:disabled="filetree.objects.length === 0"
+								:files="thumbnailFiles"
+								:resource-id="$route.params.id || ''"
+							/>
+							<FileUpload
+								v-show="hostingOption === 'hostedAtSchulcloud'"
+								:value="data.files"
+								:filetree="filetree"
+								@update:filetree="handleFiletreeUpdate($event)"
+								@update="data.files = $event"
+							/>
+						</template>
 					</template>
 					<template slot="footer">
 						<div class="button_wrapper">

@@ -20,6 +20,7 @@ export default {
 		mimetype: "Verwendeter MIME-Type",
 		entrypointSelector: "Einstiegspunkt",
 		thumbnailSelector: "Thumbnail",
+		thumbnailAutogenerate: "Automatisch generieren",
 	},
 	dialog: {
 		title: "Inhalt löschen?",

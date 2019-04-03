@@ -50,8 +50,8 @@ export default {
 			required: true,
 		},
 		selected: {
-			type: String || Number,
-			default: "",
+			type: String,
+			default: undefined,
 			required: false,
 		},
 		disabled: {
@@ -74,7 +74,7 @@ export default {
 			this.expanded = false;
 		},
 		getContent() {
-			if (this.selected === "") return this.name;
+			if (this.selected === undefined) return this.name;
 			else {
 				let selectedObject = this.options.find((elem) => {
 					return elem.key === this.selected;
