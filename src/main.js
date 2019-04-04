@@ -3,15 +3,11 @@
 import Vue from "vue";
 import App from "./App";
 import router from "./router";
-import VueMaterial from "vue-material";
 import VueProgressBar from "vue-progressbar";
-import "vue-material/dist/vue-material.min.css";
 import VueCookies from "vue-cookies";
 import VueResource from "vue-resource";
 import VueConfig from "vue-config";
 import "./registerServiceWorker";
-
-Vue.use(VueMaterial);
 
 Vue.use(VueCookies);
 

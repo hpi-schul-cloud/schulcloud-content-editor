@@ -1,11 +1,19 @@
-@import "~vue-material/dist/theme/engine"; // Import the theme engine
-
 :root {
 	--primaryColor: #b10438;
 	--accentColor: #f8a41b;
 }
 
-@import "~vue-material/dist/theme/all"; // Apply the theme
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+}
+
+a {
+	color: var(--primaryColor);
+}
 
 .container-fluid {
 	width: 100%;

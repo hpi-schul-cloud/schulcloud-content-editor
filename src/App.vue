@@ -35,8 +35,8 @@
 				<RouterView v-if="jwt" />
 			</Transition>
 			<AppLogin v-if="!jwt" />
-			<AppFooter />
 		</main>
+		<AppFooter />
 	</div>
 </template>
 
@@ -98,7 +98,7 @@ export default {
 #app {
 	display: flex;
 	flex-direction: column;
-	max-height: 100vh;
+	min-height: 100vh;
 	padding: 0;
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu,
 		"Helvetica Neue", Arial, sans-serif;
@@ -152,6 +152,10 @@ header {
 		.logo {
 			max-width: 50px;
 			margin: 8px;
+
+			img {
+				width: 100%;
+			}
 		}
 
 		.title {
@@ -177,6 +181,7 @@ header {
 }
 
 main {
+	flex: 1;
 	// display: contents;
 	max-width: 100% !important;
 	padding: 0;
