@@ -10,6 +10,18 @@
 			</Transition>
 			<AppLogin v-if="!jwt" />
 		</main>
+		<nav class="sidebar">
+			<ul>
+				<li v-for="entry in sidebarEntries" :key="entry.title">
+					<RouterLink :to="entry.to">
+						<i class="material-icons">
+							{{ entry.icon }}
+						</i>
+						{{ entry.title }}
+					</RouterLink>
+				</li>
+			</ul>
+		</nav>
 		<vue-fab
 			v-if="showFab"
 			:main-btn-color="primaryColor"
@@ -55,6 +67,9 @@ export default {
 		},
 		showFab() {
 			return this.$store.getters["ui/isFabVisible"](this.$route.path);
+		},
+		sidebarEntries() {
+			return this.$store.getters["ui/getSidebar"];
 		},
 	},
 	created() {
