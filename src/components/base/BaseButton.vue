@@ -73,7 +73,8 @@ export default {
 	background: rgba(255, 255, 255, 0);
 
 	&:hover {
-		background: #b104381f;
+		background: var(--accentColor);
+		opacity: 0.95;
 	}
 }
 .primary_btn {
@@ -81,7 +82,7 @@ export default {
 	background-color: var(--primaryColor);
 
 	&:hover {
-		background: #ba2350;
+		background: var(--accentColor);
 	}
 }
 .secondary_btn {

@@ -8,6 +8,14 @@ import VueCookies from "vue-cookies";
 import VueResource from "vue-resource";
 import VueConfig from "vue-config";
 import "./registerServiceWorker";
+import VueFab from "vue-float-action-button";
+import store from "./store";
+
+Vue.prototype.$eventHub = new Vue(); // Global event bus
+
+Vue.use(VueFab, {
+	iconType: "MaterialDesign",
+});
 
 Vue.use(VueCookies);
 
@@ -45,6 +53,6 @@ Vue.config.productionTip = false;
 new Vue({
 	el: "#app",
 	router,
-	components: { App },
-	template: "<App/>",
+	store,
+	render: (h) => h(App),
 }).$mount("#app");

@@ -26,6 +26,11 @@
 <style lang="scss" scoped>
 footer {
 	margin: 2rem 0;
+	color: #aaa;
 	text-align: center;
+	img {
+		filter: grayscale(1);
+		opacity: 0.7;
+	}
 }
 </style>

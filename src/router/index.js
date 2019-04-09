@@ -16,7 +16,7 @@ export default new Router({
 		{ path: "/stats", name: "stats", component: loadView("stats/stats.vue") },
 		{
 			path: "/create",
-			name: "create",
+			name: "createResource",
 			component: loadView("edit/edit.vue"),
 			props: { editMode: false },
 		},
