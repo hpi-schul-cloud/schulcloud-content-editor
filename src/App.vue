@@ -10,20 +10,7 @@
 			</Transition>
 			<AppLogin v-if="!jwt" />
 		</main>
-		<vue-fab
-			v-if="showFab"
-			:main-btn-color="primaryColor"
-			:scroll-auto-hide="false"
-		>
-			<fab-item
-				v-for="(action, index) in fabActions"
-				:key="action.event"
-				:idx="index"
-				:title="action.title"
-				:icon="action.icon"
-				@clickItem="clickItem(action.event, action.payload)"
-			/>
-		</vue-fab>
+		<TheFAB />
 		<TheFooter />
 	</div>
 </template>
@@ -33,12 +20,14 @@
 const login = () => import("@/components/login.vue");
 import TheFooter from "@/components/TheFooter.vue";
 import TheHeader from "@/components/TheHeader.vue";
+import TheFAB from "@/components/TheFAB.vue";
 
 export default {
 	name: "App",
 	components: {
 		AppLogin: login,
 		TheFooter,
+		TheFAB,
 		TheHeader,
 	},
 	data() {
@@ -48,14 +37,6 @@ export default {
 				"--primaryColor"
 			),
 		};
-	},
-	computed: {
-		fabActions() {
-			return this.$store.getters["ui/fabActions"](this.$route.path);
-		},
-		showFab() {
-			return this.$store.getters["ui/isFabVisible"](this.$route.path);
-		},
 	},
 	created() {
 		this.$Progress.start();
@@ -68,11 +49,6 @@ export default {
 		this.$router.afterEach(() => {
 			this.$Progress.finish();
 		});
-	},
-	methods: {
-		clickItem(event, payload) {
-			this.$eventHub.$emit(event, payload);
-		},
 	},
 };
 </script>
