@@ -8,6 +8,13 @@ const state = {
 				name: "resourceManagement",
 			},
 		},
+		{
+			title: "Statistics",
+			icon: "import_export",
+			to: {
+				name: "statistics",
+			},
+		},
 	],
 };
 
