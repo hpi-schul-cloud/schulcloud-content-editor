@@ -1,6 +1,9 @@
 // login.js
 export default {
-	search_for: "Suche nach",
+	searchbar: {
+		label: "Suche nach Inhalten",
+		placeholder: "Zentripetalkraft",
+	},
 	searchResults_for: "Suchergebnisse für",
 	nothing_found: "keine Ergebnisse gefunden",
 	nothing_found_help:
