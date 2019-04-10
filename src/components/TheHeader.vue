@@ -4,9 +4,6 @@
 			<div id="title-wrapper">
 				<RouterLink to="/" style="flex: 1">
 					<div class="flex">
-						<span class="logo">
-							<img src="@/assets/cloud-transparent.svg" />
-						</span>
 						<h2 class="title" style="flex: 1">{{ title }}</h2>
 					</div>
 				</RouterLink>
@@ -106,15 +103,6 @@ header {
 }
 
 #title-wrapper {
-	.logo {
-		max-width: 50px;
-		margin: 8px;
-
-		img {
-			width: 100%;
-		}
-	}
-
 	.title {
 		font-size: 32px;
 		font-weight: 500;

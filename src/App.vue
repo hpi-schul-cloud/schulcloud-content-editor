@@ -96,12 +96,13 @@ main {
 .header {
 	position: fixed;
 	top: 0;
+	left: 150px;
 	height: 80px;
 	background: white;
 }
 .sidebar {
 	position: fixed;
-	top: 80px;
+	top: 0;
 	bottom: 0;
 	width: 150px;
 }

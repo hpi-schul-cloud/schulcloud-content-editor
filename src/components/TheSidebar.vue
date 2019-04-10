@@ -1,6 +1,9 @@
 <template>
 	<nav class="sidebar">
 		<ul class="sidebar-list">
+			<li class="logo">
+				<img src="@/assets/cloud-transparent.svg" />
+			</li>
 			<li
 				v-for="entry in sidebarEntries"
 				:key="entry.title"
@@ -39,6 +42,7 @@ nav {
 }
 .sidebar-list {
 	padding: 0;
+	margin-top: 0;
 	list-style-type: none;
 }
 .sidebar-entry {
@@ -66,5 +70,11 @@ nav {
 	&:hover {
 		background: #ccc;
 	}
+}
+.logo {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 80px;
 }
 </style>
