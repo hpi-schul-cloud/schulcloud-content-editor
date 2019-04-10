@@ -7,8 +7,9 @@
 			@dragover.prevent="handleDragover"
 			@dragleave.prevent="handleDragleave"
 			@drop.prevent="handleDropEvent"
-			>Drop your files here!</div
 		>
+			Drop your files here!
+		</div>
 		<div v-show="filetree.objects.length !== 0" id="filetree">
 			<h4>Your uploaded Files:</h4>
 			<Filetree

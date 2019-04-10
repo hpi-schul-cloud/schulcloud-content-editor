@@ -7,8 +7,7 @@
 		:cancel-text="config.cancle || 'Disagree'"
 		@cancel="onCancel"
 		@confirm="onConfirm"
-	>
-	</BaseConfirm>
+	></BaseConfirm>
 </template>
 
 <script>

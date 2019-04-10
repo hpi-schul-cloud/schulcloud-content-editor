@@ -1,5 +1,5 @@
 <template>
-	<div style="position: relative">
+	<div class="select-wrapper">
 		<label v-if="label" :for="name">{{ label }}</label>
 		<button
 			type="button"
@@ -24,8 +24,9 @@
 				:class="{ option: true, selected: option.key === selected }"
 				:value="option.key"
 				@click="selectOption(option)"
-				>{{ option.value }}</li
 			>
+				{{ option.value }}
+			</li>
 		</ul>
 	</div>
 </template>
@@ -88,6 +89,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.select-wrapper {
+	position: relative;
+}
 label {
 	font-size: 0.9em;
 	font-weight: 500;

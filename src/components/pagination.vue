@@ -99,10 +99,11 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 .pagination {
-	display: block;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	width: 100%;
 	margin-top: 2rem;
-	text-align: center;
 }
 
 #page-number {
