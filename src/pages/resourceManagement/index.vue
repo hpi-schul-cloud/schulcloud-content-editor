@@ -5,7 +5,11 @@
 			:label="$lang.searchContent.searchbar.label"
 			:placeholder="$lang.searchContent.searchbar.placeholder"
 		/>
-		<ResourceEditTable :resources="resources" />
+		<Pagination :config="pagination" @pageChanged="handlePageChange" />
+		<ResourceEditTable
+			:resources="resources"
+			:index-start="(pagination.page - 1) * pagination.itemsPerPage"
+		/>
 		<Pagination :config="pagination" @pageChanged="handlePageChange" />
 	</div>
 </template>
@@ -29,7 +33,7 @@ export default {
 			searchString: this.$route.query.q || "",
 			pagination: {
 				page: parseInt(this.$route.query.p) || 1,
-				itemsPerPage: 5,
+				itemsPerPage: 50,
 				totalEntrys: 0,
 				buttonRange: 2,
 				scroll: {
