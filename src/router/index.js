@@ -23,7 +23,7 @@ export default new Router({
 		{
 			path: "/resources/create",
 			name: "resourceManagement/create",
-			component: loadView("resourceManagement/create.vue"),
+			component: loadView("resourceManagement/edit.vue"), // resourceManagement/create.vue
 			props: { editMode: false },
 		},
 		{
