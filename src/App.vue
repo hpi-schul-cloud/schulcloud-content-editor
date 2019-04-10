@@ -3,27 +3,16 @@
 		<!-- eslint-disable -->
 		<vue-progress-bar />
 		<!--eslint-enable-->
-		<TheHeader />
+		<TheHeader class="header" />
+		<TheSidebar class="sidebar" />
 		<main class="container-fluid-max">
 			<Transition name="fade" mode="out-in" appear>
 				<RouterView v-if="jwt" />
 			</Transition>
 			<TheLogin v-if="!jwt" />
 		</main>
-		<nav class="sidebar">
-			<ul>
-				<li v-for="entry in sidebarEntries" :key="entry.title">
-					<RouterLink :to="entry.to">
-						<i class="material-icons">
-							{{ entry.icon }}
-						</i>
-						{{ entry.title }}
-					</RouterLink>
-				</li>
-			</ul>
-		</nav>
 		<TheFAB />
-		<TheFooter />
+		<TheFooter class="footer" />
 	</div>
 </template>
 
@@ -32,6 +21,7 @@
 const TheLogin = () => import("@/components/TheLogin.vue");
 import TheHeader from "@/components/TheHeader.vue";
 import TheFAB from "@/components/TheFAB.vue";
+import TheSidebar from "@/components/TheSidebar.vue";
 import TheFooter from "@/components/TheFooter.vue";
 
 export default {
@@ -40,6 +30,7 @@ export default {
 		TheLogin,
 		TheHeader,
 		TheFAB,
+		TheSidebar,
 		TheFooter,
 	},
 	data() {
@@ -49,11 +40,6 @@ export default {
 				"--primaryColor"
 			),
 		};
-	},
-	computed: {
-		sidebarEntries() {
-			return this.$store.getters["ui/getSidebar"];
-		},
 	},
 	created() {
 		this.$Progress.start();
@@ -82,16 +68,6 @@ export default {
 
 <style lang="scss">
 @import "./default";
-#app {
-	display: flex;
-	flex-direction: column;
-	min-height: 100vh;
-	padding: 0;
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu,
-		"Helvetica Neue", Arial, sans-serif;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-}
 
 .fade-enter-active,
 .fade-leave-active {
@@ -102,12 +78,31 @@ export default {
 .fade-leave-active {
 	opacity: 0;
 }
-
+</style>
+<style lang="scss" scoped>
+#app {
+	min-height: 100vh;
+	padding: 0;
+}
 main {
 	flex: 1;
 	// display: contents;
 	max-width: 100% !important;
-	padding: 0;
+	padding-top: 80px;
+	padding-left: 150px;
 	margin: 0 auto !important;
+}
+
+.header {
+	position: fixed;
+	top: 0;
+	height: 80px;
+	background: white;
+}
+.sidebar {
+	position: fixed;
+	top: 80px;
+	bottom: 0;
+	width: 150px;
 }
 </style>
