@@ -1,48 +1,47 @@
 <template>
 	<div>
-		<table v-if="resources.length" class="table sticky">
-			<thead>
-				<tr>
-					<th></th>
-					<th v-for="column in visibleColoumns" :key="column">
-						{{ column }}
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr v-for="(resource, index) in resources" :key="resource._id">
-					<td>{{ indexStart + index + 1 }}</td>
-					<td v-for="column in visibleColoumns" :key="column">
-						<component
-							:is="getColoumnComponent(column)"
-							v-model="resource[column]"
-							:label="`edit ${column}`"
-						/>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+		<BaseTags
+			v-model="visibleColoumns"
+			label="Select Coloumns"
+			:autocomplete-items="availableColoumns.map((a) => ({ text: a }))"
+			:add-only-from-autocomplete="true"
+		/>
+		<HotTable v-if="resources.length" :settings="hotSettings" />
 		<p v-else>Nothing found :(</p>
 	</div>
 </template>
 
 <script>
-import BaseInput from "@/components/base/BaseInput.vue";
-import BaseSelect from "@/components/base/BaseSelect.vue";
+import { HotTable } from "@handsontable/vue";
+import Handsontable from "handsontable";
+
+import { options as MimeTypeOptions } from "@/components/inputs/ContentMimetype.vue";
 import BaseTags from "@/components/base/BaseTags.vue";
 
+const availableColoumns = ["title", "url", "tags"];
+/*
 const availableColoumns = [
+	{ key: "contentCategory", component: BaseSelect, attributes: {} },
+	{ key: "description", component: BaseInput, attributes: {} },
+	{ key: "isPublished", component: BaseCheckbox, attributes: {} },
+	{ key: "licenses", component: BaseTags, attributes: {} },
 	{
-		key: "title",
-		component: BaseInput,
+		key: "mimeType",
+		component: BaseSelect,
+		attributes: { options: MimeTypeOptions },
 	},
-	{
-		key: "tags",
-		component: BaseTags,
-	},
+	{ key: "tags", component: BaseTags, attributes: {} },
+	{ key: "thumbnail", component: BaseInput, attributes: {} },
+	{ key: "title", component: BaseInput, attributes: {} },
+	{ key: "url", component: BaseInput, attributes: {} },
 ];
+*/
 
 export default {
+	components: {
+		BaseTags,
+		HotTable,
+	},
 	props: {
 		resources: {
 			type: Array,
@@ -55,45 +54,66 @@ export default {
 	},
 	data() {
 		return {
-			visibleColoumns: ["title", "tags"], //, "url", "contentCategory", "tags"],
+			availableColoumns,
+			visibleColoumns: ["title"], //, "url", "contentCategory", "tags"],
 		};
+	},
+	computed: {
+		hotSettings() {
+			return {
+				data: this.resources,
+				colHeaders: Object.keys(this.resources[0]),
+				licenseKey: "non-commercial-and-evaluation", // TODO
+				manualColumnMove: true,
+				manualColumnResize: true,
+				selectionMode: "single",
+				disableVisualSelection: ["area", "header"],
+				fillHandle: false,
+				enterBeginsEditingBoolean: true,
+			};
+		},
 	},
 	methods: {
 		getColoumnComponent(key) {
-			const coloumn = availableColoumns.find((coloumn) => coloumn.key === key);
-			return !!coloumn ? coloumn.component : undefined;
+			return availableColoumns.find((coloumn) => coloumn.key === key);
 		},
 	},
 };
 </script>
 
+<style src="handsontable/dist/handsontable.full.css"></style>
+
 <style lang="scss" scoped>
+/*
 .table {
 	width: 100%;
-	table-layout: fixed;
+	// table-layout: fixed;
 	border-collapse: collapse;
 	td {
 		padding: 2px 4px;
 		overflow-x: auto;
 		white-space: nowrap;
 	}
-	&.sticky {
-		th {
-			position: sticky;
-			font-size: 1.1em;
-			background: #fff;
+	tbody tr {
+		&:nth-of-type(2n) {
+			background-color: #eee;
 		}
-		thead th {
-			top: 0;
+		&:hover {
+			background-color: #ddd;
 		}
 	}
 }
-tbody tr {
-	&:nth-of-type(2n) {
-		background-color: #eee;
+table.sticky {
+	th {
+		position: sticky;
+		font-size: 1.1em;
+		background: #fff;
 	}
-	&:hover {
-		background-color: #ddd;
+	thead th {
+		top: 0;
 	}
 }
+table.edit {
+}
+*/
 </style>

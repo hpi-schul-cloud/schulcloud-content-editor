@@ -13,6 +13,18 @@
 <script>
 import BaseSelect from "@/components/base/BaseSelect.vue";
 
+export const options = [
+	{ key: "application", value: "application" },
+	{ key: "audio", value: "audio" },
+	{ key: "example", value: "example" },
+	{ key: "image", value: "image" },
+	{ key: "message", value: "message" },
+	{ key: "model", value: "model" },
+	{ key: "multipart", value: "multipart" },
+	{ key: "text", value: "text" },
+	{ key: "video", value: "video" },
+];
+
 export default {
 	components: {
 		BaseSelect,
@@ -25,17 +37,7 @@ export default {
 	},
 	data() {
 		return {
-			options: [
-				{ key: "application", value: "application" },
-				{ key: "audio", value: "audio" },
-				{ key: "example", value: "example" },
-				{ key: "image", value: "image" },
-				{ key: "message", value: "message" },
-				{ key: "model", value: "model" },
-				{ key: "multipart", value: "multipart" },
-				{ key: "text", value: "text" },
-				{ key: "video", value: "video" },
-			],
+			options,
 		};
 	},
 };

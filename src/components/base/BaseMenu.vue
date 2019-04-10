@@ -22,8 +22,9 @@
 				:key="option.text"
 				:class="{ option: true, selected: option.text === selected }"
 				@click="selectOption(option)"
-				>{{ option.text }}</li
 			>
+				{{ option.text }}
+			</li>
 		</ul>
 	</div>
 </template>

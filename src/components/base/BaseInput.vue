@@ -1,8 +1,8 @@
 <template>
 	<div class="wrapper">
-		<label v-if="label" :class="{ invalid: !!error }" :for="name">{{
-			label
-		}}</label>
+		<label v-if="label" :class="{ invalid: !!error }" :for="name">
+			{{ label }}
+		</label>
 		<input
 			v-bind="$attrs"
 			class="input"

@@ -30,8 +30,10 @@
 						<h3>Inhalte</h3>
 						<div class="wrapper">
 							<h4 class="subtitle">Inhalte veröffentlichen?</h4>
-							<BaseCheckbox v-model="data.isPublished" label="published">
-							</BaseCheckbox>
+							<BaseCheckbox
+								v-model="data.isPublished"
+								label="published"
+							></BaseCheckbox>
 						</div>
 						<ContentHostingProvider v-model="hostingOption" />
 						<template v-if="hostingOption === 'hostedExternally'">
@@ -88,8 +90,9 @@
 								v-if="$route.params.id"
 								styling="secondary"
 								@click="dialog.active = true"
-								>{{ $lang.buttons.delete }}</BaseButton
 							>
+								{{ $lang.buttons.delete }}
+							</BaseButton>
 							<ConfirmDialog :config="dialog" @confirm="deleteContent" />
 							<BaseButton styling="secondary" @click="$router.go(-1)">
 								{{ $lang.buttons.cancel }}
@@ -98,8 +101,9 @@
 								form="contentForm"
 								type="submit"
 								:disabled="!isFormValid"
-								>{{ $lang.buttons.save }}</BaseButton
 							>
+								{{ $lang.buttons.save }}
+							</BaseButton>
 						</div>
 					</template>
 				</BaseCard>

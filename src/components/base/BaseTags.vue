@@ -3,6 +3,7 @@
 		<label v-if="label">{{ label }}</label>
 		<VueTagsInput
 			v-model="newTag"
+			v-bind="$attrs"
 			class="tag-input"
 			:tags="value.map((item) => ({ text: item }))"
 			:placeholder="placeholder"

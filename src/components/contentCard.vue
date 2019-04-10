@@ -20,8 +20,9 @@
 							this.$config.card.displayedTags
 						)"
 						:key="`${index}-${tag}`"
-						>{{ tag }},</span
 					>
+						{{ tag }},
+					</span>
 				</div>
 			</template>
 			<template slot="body">
@@ -36,8 +37,9 @@
 							v-if="data._id"
 							styling="secondary"
 							@click="dialog.active = true"
-							>{{ $lang.buttons.open }}</BaseButton
 						>
+							{{ $lang.buttons.open }}
+						</BaseButton>
 						<RouterLink
 							v-if="readOnly != true"
 							:to="{
@@ -45,9 +47,9 @@
 								params: { id: data._id },
 							}"
 						>
-							<BaseButton styling="secondary">{{
-								$lang.buttons.edit
-							}}</BaseButton>
+							<BaseButton styling="secondary">
+								{{ $lang.buttons.edit }}
+							</BaseButton>
 						</RouterLink>
 					</div>
 				</div>

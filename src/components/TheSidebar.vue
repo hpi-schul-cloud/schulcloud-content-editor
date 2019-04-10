@@ -35,7 +35,8 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-nav {
+nav.sidebar {
+	z-index: 999;
 	background: var(--darkGrey);
 	box-shadow: 2px 3px 8px 0 rgba(199, 199, 199, 1);
 }

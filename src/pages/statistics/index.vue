@@ -17,9 +17,7 @@
 </template>
 
 <script>
-/* load contentTableRow async */
-const contentCard = () =>
-	import(/* webpackChunkName: "contentCard" */ "@/components/contentCard.vue");
+const contentCard = () => import("@/components/contentCard.vue");
 
 const qs = require("query-string");
 
