@@ -14,7 +14,7 @@
 
 <script>
 import Filetree from "@/components/Filetree.vue";
-import dropzone from "@/components/dropzone.vue";
+import Dropzone from "@/components/Dropzone.vue";
 import upload from "@/mixins/upload.js";
 import filetree from "@/mixins/filetree.js";
 
@@ -22,7 +22,7 @@ export default {
 	name: "Upload",
 	components: {
 		Filetree,
-		dropzone,
+		Dropzone,
 	},
 	mixins: [upload, filetree],
 	props: {

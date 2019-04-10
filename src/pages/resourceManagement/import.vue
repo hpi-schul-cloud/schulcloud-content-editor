@@ -23,7 +23,7 @@
 </template>
 <script>
 import stepProgress from "@/components/stepProgress.vue";
-import dropzone from "@/components/dropzone.vue";
+import Dropzone from "@/components/Dropzone.vue";
 import BaseButton from "@/components/base/BaseButton.vue";
 
 export default {
