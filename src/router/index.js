@@ -11,7 +11,7 @@ Vue.use(Router);
 
 export default new Router({
 	mode: "history",
-	base: process.env.BASE || "/",
+	base: process.env.VUE_APP_PUBLIC_PATH || "/",
 	routes: [
 		{ path: "/", name: "main", component: loadView("overview/overview.vue") },
 		{ path: "/stats", name: "stats", component: loadView("stats/stats.vue") },
