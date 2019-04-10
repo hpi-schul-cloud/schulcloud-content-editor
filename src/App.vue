@@ -89,7 +89,8 @@ main {
 	// display: contents;
 	max-width: 100% !important;
 	padding-top: 80px;
-	padding-left: 150px;
+	padding-right: 30px;
+	padding-left: 180px;
 	margin: 0 auto !important;
 }
 

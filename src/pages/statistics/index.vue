@@ -1,32 +1,25 @@
 <template>
-	<BaseCard class="card-content">
-		<template slot="head">
-			<h2 style="margin-bottom: 0" class="title">{{ $lang.stats.title }}</h2>
-		</template>
-		<template slot="body">
-			<div class="subheading"
-				>{{ $lang.stats.article }}: {{ totalContent }}</div
+	<div>
+		<h2 style="margin-bottom: 0" class="title">{{ $lang.stats.title }}</h2>
+		<div class="subheading">{{ $lang.stats.article }}: {{ totalContent }}</div>
+		<div class="subheading">{{ $lang.stats.most_clicked }}:</div>
+		<div class="grid">
+			<div
+				v-for="item in mostClickedContent"
+				:key="item.id"
+				class="card-wrapper grid-xs-12 grid-s-6 grid-m-6 grid-l-4 grid-xl-4 height-100"
 			>
-			<div class="subheading">{{ $lang.stats.most_clicked }}:</div>
-			<div class="grid">
-				<div
-					v-for="item in mostClickedContent"
-					:key="item.id"
-					class="card-wrapper grid-xs-12 grid-s-6 grid-m-6 grid-l-4 grid-xl-4 height-100"
-				>
-					<b>{{ $lang.stats.clicks }}: {{ item.clickCount }}</b>
-					<AppContentCard :data="item" class="height-100" />
-				</div>
+				<b>{{ $lang.stats.clicks }}: {{ item.clickCount }}</b>
+				<AppContentCard :data="item" class="height-100" />
 			</div>
-		</template>
-	</BaseCard>
+		</div>
+	</div>
 </template>
 
 <script>
 /* load contentTableRow async */
 const contentCard = () =>
 	import(/* webpackChunkName: "contentCard" */ "@/components/contentCard.vue");
-import BaseCard from "@/components/base/BaseCard.vue";
 
 const qs = require("query-string");
 
@@ -34,7 +27,6 @@ export default {
 	name: "ContentStats",
 	components: {
 		AppContentCard: contentCard,
-		BaseCard,
 	},
 	data() {
 		return {
