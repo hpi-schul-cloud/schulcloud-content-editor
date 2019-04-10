@@ -12,8 +12,8 @@ self.__precacheManifest = [
     "url": "/schulcloud-content-editor/robots.txt"
   },
   {
-    "revision": "fbfc31ba0d3d2b98adfd",
-    "url": "/schulcloud-content-editor/js/app.ef773f38.js"
+    "revision": "27b7b44399e2337867d1",
+    "url": "/schulcloud-content-editor/js/app.741af22b.js"
   },
   {
     "revision": "8da9487a7768df6f01a5",
@@ -24,88 +24,88 @@ self.__precacheManifest = [
     "url": "/schulcloud-content-editor/img/safari-pinned-tab.svg"
   },
   {
-    "revision": "be8ef1b8498651f591d5",
-    "url": "/schulcloud-content-editor/js/contentCard.4068083c.js"
+    "revision": "01b7528c0d88c9e95d85",
+    "url": "/schulcloud-content-editor/js/contentCard.6c55f7d7.js"
   },
   {
     "revision": "9c0f4d0a51098f66f31daeffea6608b1",
     "url": "/schulcloud-content-editor/img/logo/safari-pinned-tab.svg"
   },
   {
-    "revision": "93901b4ddce2a51d9d1e",
-    "url": "/schulcloud-content-editor/js/hpiFooter.46d80297.js"
+    "revision": "6fed59bd59dcac16932e",
+    "url": "/schulcloud-content-editor/js/hpiFooter.884a37ab.js"
   },
   {
     "revision": "8dd8fb187e4c661577eae0655057b104",
     "url": "/schulcloud-content-editor/img/logo/mstile-150x150.png"
   },
   {
-    "revision": "8fccdb9b64b8ed22a5e6",
-    "url": "/schulcloud-content-editor/js/login.81e7a687.js"
+    "revision": "c8bd247d242c20a010bd",
+    "url": "/schulcloud-content-editor/js/login.d83fbe97.js"
   },
   {
     "revision": "3f0a0b1c902e40fed113cb21e056037e",
     "url": "/schulcloud-content-editor/img/logo/favicon-48.png"
   },
   {
-    "revision": "c993349b83634ccac935",
-    "url": "/schulcloud-content-editor/js/search.ce880104.js"
+    "revision": "61542fcb7ce05631651b",
+    "url": "/schulcloud-content-editor/js/search.59e0b2ba.js"
   },
   {
     "revision": "0bdd89f9fa15793f45b0c747577ffb4f",
     "url": "/schulcloud-content-editor/img/logo/favicon-36.png"
   },
   {
-    "revision": "47db9e3efe27ffb21564",
-    "url": "/schulcloud-content-editor/js/search~view-edit-edit~view-overview-editForm-table.f86338de.js"
+    "revision": "523b17762545adcd910d",
+    "url": "/schulcloud-content-editor/js/search~view-edit-edit~view-overview-editForm-table.2bcde0b7.js"
   },
   {
     "revision": "aef1823e2d872898eee589ff569d5041",
     "url": "/schulcloud-content-editor/img/logo/favicon-32.png"
   },
   {
-    "revision": "bf133f2247182e79a735",
-    "url": "/schulcloud-content-editor/js/view-edit-edit.229da941.js"
+    "revision": "3bb166ca12e921e6a9b7",
+    "url": "/schulcloud-content-editor/js/view-edit-edit.d5d5cca4.js"
   },
   {
     "revision": "953a8bd55b2b06ca93ead7e9759e929d",
     "url": "/schulcloud-content-editor/img/logo/favicon-16.png"
   },
   {
-    "revision": "3d83fd141d85af6ca29c",
-    "url": "/schulcloud-content-editor/js/view-overview-editForm-table.49d842e7.js"
+    "revision": "89f661fc1e7b4ef71495",
+    "url": "/schulcloud-content-editor/js/view-overview-editForm-table.81ad434c.js"
   },
   {
-    "revision": "eff9e1a163958fc87456",
-    "url": "/schulcloud-content-editor/js/view-overview-overview.b437dfe2.js"
+    "revision": "7baa6d5090031031a035",
+    "url": "/schulcloud-content-editor/js/view-overview-overview.72aaf687.js"
   },
   {
     "revision": "d6c0fbaae990e3849697b6e3feff32c1",
     "url": "/schulcloud-content-editor/img/logo/cloud-transparent-mono.svg"
   },
   {
-    "revision": "bb713d7477fd71e90e2b",
-    "url": "/schulcloud-content-editor/js/view-stats-stats.2efc1212.js"
+    "revision": "d36a8cfe92872f18b1b0",
+    "url": "/schulcloud-content-editor/js/view-stats-stats.c3c41f10.js"
   },
   {
     "revision": "c2144392add1b052d4cb87ad121815a0",
     "url": "/schulcloud-content-editor/img/logo/app-icon-96.png"
   },
   {
-    "revision": "baaf45914feba8c726a9",
-    "url": "/schulcloud-content-editor/js/welcomeMessage.35c640a9.js"
+    "revision": "87cbb2172c25e3befd82",
+    "url": "/schulcloud-content-editor/js/welcomeMessage.790b69c1.js"
   },
   {
     "revision": "02fca366172e05311be0940ba17fff4e",
     "url": "/schulcloud-content-editor/img/logo/app-icon-72.png"
   },
   {
-    "revision": "b9d7ac59886f9636eff65ee15414c18a",
+    "revision": "50b2d665b22675ef7ddb1cab273bcff9",
     "url": "/schulcloud-content-editor/index.html"
   },
   {
-    "revision": "a041d47ca456dc0ac192",
-    "url": "/schulcloud-content-editor/js/ConfirmDialog.2de3a003.js"
+    "revision": "7aaccf84cf3f5da18d2c",
+    "url": "/schulcloud-content-editor/js/ConfirmDialog.4cd16f76.js"
   },
   {
     "revision": "269c63a5f4d4151e28ce757080a00532",
@@ -184,47 +184,47 @@ self.__precacheManifest = [
     "url": "/schulcloud-content-editor/img/logo/app-icon-167.png"
   },
   {
-    "revision": "be8ef1b8498651f591d5",
+    "revision": "01b7528c0d88c9e95d85",
     "url": "/schulcloud-content-editor/css/contentCard.98cc4d1c.css"
   },
   {
-    "revision": "bf133f2247182e79a735",
+    "revision": "3bb166ca12e921e6a9b7",
     "url": "/schulcloud-content-editor/css/view-edit-edit.ec2eb866.css"
   },
   {
-    "revision": "baaf45914feba8c726a9",
+    "revision": "87cbb2172c25e3befd82",
     "url": "/schulcloud-content-editor/css/welcomeMessage.e31c3f64.css"
   },
   {
-    "revision": "bb713d7477fd71e90e2b",
+    "revision": "d36a8cfe92872f18b1b0",
     "url": "/schulcloud-content-editor/css/view-stats-stats.0d7c3f3b.css"
   },
   {
-    "revision": "3d83fd141d85af6ca29c",
+    "revision": "89f661fc1e7b4ef71495",
     "url": "/schulcloud-content-editor/css/view-overview-editForm-table.7879fc4b.css"
   },
   {
-    "revision": "47db9e3efe27ffb21564",
+    "revision": "523b17762545adcd910d",
     "url": "/schulcloud-content-editor/css/search~view-edit-edit~view-overview-editForm-table.97e839f1.css"
   },
   {
-    "revision": "c993349b83634ccac935",
+    "revision": "61542fcb7ce05631651b",
     "url": "/schulcloud-content-editor/css/search.a4b8e1d0.css"
   },
   {
-    "revision": "8fccdb9b64b8ed22a5e6",
+    "revision": "c8bd247d242c20a010bd",
     "url": "/schulcloud-content-editor/css/login.e8e3a117.css"
   },
   {
-    "revision": "93901b4ddce2a51d9d1e",
+    "revision": "6fed59bd59dcac16932e",
     "url": "/schulcloud-content-editor/css/hpiFooter.618d59c6.css"
   },
   {
-    "revision": "fbfc31ba0d3d2b98adfd",
+    "revision": "27b7b44399e2337867d1",
     "url": "/schulcloud-content-editor/css/app.de9c9c4a.css"
   },
   {
-    "revision": "a041d47ca456dc0ac192",
+    "revision": "7aaccf84cf3f5da18d2c",
     "url": "/schulcloud-content-editor/css/ConfirmDialog.0d81150d.css"
   }
 ];
