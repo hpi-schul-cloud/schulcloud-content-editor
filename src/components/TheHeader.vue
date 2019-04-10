@@ -1,20 +1,18 @@
 <template>
 	<header>
 		<div class="flex">
-			<div id="title-wrapper">
-				<RouterLink to="/" style="flex: 1">
-					<div class="flex">
-						<span class="logo">
-							<img src="@/assets/cloud-transparent.svg" />
-						</span>
-						<h2 class="title" style="flex: 1">{{ title }}</h2>
-					</div>
-				</RouterLink>
-			</div>
+			<span class="logo">
+				<img src="@/assets/cloud-transparent.svg" />
+			</span>
+			<RouterLink to="/" style="flex: 1">
+				<h2 class="title" style="flex: 1">{{ title }}</h2>
+			</RouterLink>
 			<div v-if="jwt" id="button-wrapper">
 				<BaseMenu :options="MenuOptions" @input="handleMenuClick($event)">
 					<img src="http://i.pravatar.cc/50" class="user-avatar" />
-					<template slot="MenuTitle">{{ userInfo.displayName }}</template>
+					<template slot="MenuTitle">
+						{{ userInfo.displayName }}
+					</template>
 				</BaseMenu>
 			</div>
 		</div>
@@ -73,7 +71,6 @@ header {
 	left: 0;
 	z-index: 999;
 	width: 100%;
-	padding: 0 32px 0 16px !important;
 	box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14),
 		0 1px 3px 0 rgba(0, 0, 0, 0.12);
 
@@ -105,26 +102,27 @@ header {
 	}
 }
 
-#title-wrapper {
-	.logo {
-		max-width: 50px;
-		margin: 8px;
+.logo {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 175px;
+	padding: 0 8px;
 
-		img {
-			width: 100%;
-		}
+	img {
+		width: 80px;
 	}
+}
 
-	.title {
-		font-size: 32px;
-		font-weight: 500;
-		font-weight: lighter;
-		line-height: 26px;
-		color: #333;
+.title {
+	font-size: 32px;
+	font-weight: 500;
+	font-weight: lighter;
+	line-height: 26px;
+	color: #333;
 
-		@media (max-width: 730px) {
-			text-align: center;
-		}
+	@media (max-width: 730px) {
+		text-align: center;
 	}
 }
 

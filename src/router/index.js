@@ -19,6 +19,8 @@ export default new Router({
 			path: "/resources",
 			name: "resourceManagement",
 			component: loadView("resourceManagement/index.vue"),
+			sidebarTitle: "Verwaltung",
+			sidebarIcon: "home",
 		},
 		{
 			path: "/resources/create",
@@ -43,6 +45,8 @@ export default new Router({
 			path: "/statistics",
 			name: "statistics",
 			component: loadView("statistics/index.vue"),
+			sidebarTitle: "Statistiken",
+			sidebarIcon: "timeline",
 		},
 	],
 	scrollBehavior(to, from, savedPosition) {

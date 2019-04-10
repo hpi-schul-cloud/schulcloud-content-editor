@@ -2,15 +2,15 @@
 	<nav class="sidebar">
 		<ul class="sidebar-list">
 			<li
-				v-for="entry in sidebarEntries"
-				:key="entry.title"
+				v-for="entry in items"
+				:key="entry.sidebarTitle"
 				class="sidebar-entry"
 			>
-				<RouterLink :to="entry.to" class="link">
+				<RouterLink :to="entry" class="link">
 					<i class="material-icons">
-						{{ entry.icon }}
+						{{ entry.sidebarIcon }}
 					</i>
-					{{ entry.title }}
+					{{ entry.sidebarTitle }}
 				</RouterLink>
 			</li>
 		</ul>
@@ -19,6 +19,12 @@
 
 <script>
 export default {
+	props: {
+		items: {
+			type: Array,
+			required: true,
+		},
+	},
 	data() {
 		return {
 			primaryColor: getComputedStyle(document.documentElement).getPropertyValue(
@@ -26,15 +32,11 @@ export default {
 			),
 		};
 	},
-	computed: {
-		sidebarEntries() {
-			return this.$store.getters["ui/getSidebar"];
-		},
-	},
 };
 </script>
 <style lang="scss" scoped>
 nav {
+	background: #4a4a4a;
 	box-shadow: 2px 3px 8px 0 rgba(199, 199, 199, 1);
 }
 .sidebar-list {
@@ -46,7 +48,7 @@ nav {
 		display: flex;
 		align-items: center;
 		padding: 8px;
-		color: black;
+		color: white;
 		text-decoration: none;
 
 		i {
@@ -64,7 +66,7 @@ nav {
 	}
 
 	&:hover {
-		background: #ccc;
+		background: #5c5c5c;
 	}
 }
 </style>

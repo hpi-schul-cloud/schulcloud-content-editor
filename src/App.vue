@@ -4,7 +4,7 @@
 		<vue-progress-bar />
 		<!--eslint-enable-->
 		<TheHeader class="header" />
-		<TheSidebar class="sidebar" />
+		<TheSidebar class="sidebar" :items="sidebarItems" />
 		<main class="container-fluid-max">
 			<Transition name="fade" mode="out-in" appear>
 				<RouterView v-if="jwt" />
@@ -23,6 +23,11 @@ import TheHeader from "@/components/TheHeader.vue";
 import TheFAB from "@/components/TheFAB.vue";
 import TheSidebar from "@/components/TheSidebar.vue";
 import TheFooter from "@/components/TheFooter.vue";
+import Router from "@/router/index.js";
+
+const sidebarItems = Router.options.routes.filter((route) => {
+	return !!route.sidebarTitle;
+});
 
 export default {
 	name: "App",
@@ -39,6 +44,7 @@ export default {
 			primaryColor: getComputedStyle(document.documentElement).getPropertyValue(
 				"--primaryColor"
 			),
+			sidebarItems,
 		};
 	},
 	created() {
@@ -89,8 +95,8 @@ main {
 	// display: contents;
 	max-width: 100% !important;
 	padding-top: 80px;
-	padding-right: 30px;
-	padding-left: 180px;
+	padding-right: 25px;
+	padding-left: 200px;
 	margin: 0 auto !important;
 }
 
@@ -99,11 +105,15 @@ main {
 	top: 0;
 	height: 80px;
 	background: white;
+	box-shadow: 0 2px 8px 0 rgb(140, 139, 139);
 }
 .sidebar {
 	position: fixed;
 	top: 80px;
 	bottom: 0;
-	width: 150px;
+	width: 175px;
+}
+.footer {
+	padding-left: 175px;
 }
 </style>
