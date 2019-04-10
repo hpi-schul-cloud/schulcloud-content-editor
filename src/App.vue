@@ -52,6 +52,16 @@ export default {
 		this.$router.afterEach(() => {
 			this.$Progress.finish();
 		});
+
+		this.$eventHub.$on("navigate", this.navigate);
+	},
+	beforeDestroy() {
+		this.$eventHub.$off("navigate");
+	},
+	methods: {
+		navigate(target) {
+			this.$router.push(target);
+		},
 	},
 };
 </script>

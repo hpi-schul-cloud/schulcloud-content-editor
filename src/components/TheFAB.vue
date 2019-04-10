@@ -6,7 +6,7 @@
 	>
 		<fab-item
 			v-for="(action, index) in fabActions"
-			:key="action.event"
+			:key="action.title"
 			:idx="index"
 			:title="action.title"
 			:icon="action.icon"
