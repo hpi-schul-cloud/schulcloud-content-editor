@@ -8,7 +8,7 @@
 			<Transition name="fade" mode="out-in" appear>
 				<RouterView v-if="jwt" />
 			</Transition>
-			<AppLogin v-if="!jwt" />
+			<TheLogin v-if="!jwt" />
 		</main>
 		<nav class="sidebar">
 			<ul>
@@ -29,18 +29,18 @@
 
 <script>
 /* load login async */
-const login = () => import("@/components/login.vue");
-import TheFooter from "@/components/TheFooter.vue";
+const TheLogin = () => import("@/components/TheLogin.vue");
 import TheHeader from "@/components/TheHeader.vue";
 import TheFAB from "@/components/TheFAB.vue";
+import TheFooter from "@/components/TheFooter.vue";
 
 export default {
 	name: "App",
 	components: {
-		AppLogin: login,
-		TheFooter,
-		TheFAB,
+		TheLogin,
 		TheHeader,
+		TheFAB,
+		TheFooter,
 	},
 	data() {
 		return {
