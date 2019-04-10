@@ -173,7 +173,7 @@ export default {
 					}
 				)
 				.then(() => {
-					this.$router.push({ path: "/" });
+					this.$router.push({ name: "resourceManagement" });
 				});
 			this.$emit("delete", this.contentData._id);
 		},

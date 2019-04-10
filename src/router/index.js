@@ -12,19 +12,37 @@ Vue.use(Router);
 export default new Router({
 	mode: "history",
 	routes: [
-		{ path: "/", name: "main", component: loadView("overview/overview.vue") },
-		{ path: "/stats", name: "stats", component: loadView("stats/stats.vue") },
+		// entrypoint
+		{ path: "/", redirect: "/resources", name: "main" },
+		// resources Plugin
 		{
-			path: "/create",
-			name: "createResource",
-			component: loadView("edit/edit.vue"),
+			path: "/resources",
+			name: "resourceManagement",
+			component: loadView("resourceManagement/index.vue"),
+		},
+		{
+			path: "/resources/create",
+			name: "resourceManagement/create",
+			component: loadView("resourceManagement/create.vue"),
 			props: { editMode: false },
 		},
 		{
-			path: "/edit/:id",
-			name: "edit",
-			component: loadView("edit/edit.vue"),
+			path: "/resources/import",
+			name: "resourceManagement/import",
+			component: loadView("resourceManagement/create.vue"),
+			props: { editMode: false },
+		},
+		{
+			path: "/resources/:id",
+			name: "resourceManagement/edit",
+			component: loadView("resourceManagement/edit.vue"),
 			props: { editMode: true },
+		},
+		// Stats
+		{
+			path: "/statistics",
+			name: "statistics",
+			component: loadView("statistics/index.vue"),
 		},
 	],
 	scrollBehavior(to, from, savedPosition) {

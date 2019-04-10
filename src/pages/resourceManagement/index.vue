@@ -18,13 +18,13 @@ export default {
 					title: "Inhalt erstellen",
 					icon: "create",
 					event: "create",
-					payload: { name: "createResource" },
+					payload: { name: "resourceManagement/create" },
 				},
 				{
 					title: "Inhalte importieren",
 					icon: "import_export",
 					event: "import",
-					payload: {},
+					payload: { name: "resourceManagement/import" },
 				},
 			],
 		};

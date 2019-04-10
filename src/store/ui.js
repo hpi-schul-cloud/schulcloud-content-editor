@@ -5,7 +5,7 @@ const state = {
 			title: "overview",
 			icon: "home",
 			to: {
-				name: "main",
+				name: "resourceManagement",
 			},
 		},
 	],

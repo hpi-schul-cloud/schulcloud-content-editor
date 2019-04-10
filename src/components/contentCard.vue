@@ -40,7 +40,10 @@
 						>
 						<RouterLink
 							v-if="readOnly != true"
-							:to="{ path: '/edit/' + data._id }"
+							:to="{
+								name: 'resourceManagement/edit',
+								params: { id: data._id },
+							}"
 						>
 							<BaseButton styling="secondary">{{
 								$lang.buttons.edit
