@@ -5,7 +5,6 @@
 			:label="$lang.searchContent.searchbar.label"
 			:placeholder="$lang.searchContent.searchbar.placeholder"
 		/>
-		<Pagination :config="pagination" @pageChanged="handlePageChange" />
 		<ResourceEditTable
 			:resources="resources"
 			:index-start="(pagination.page - 1) * pagination.itemsPerPage"
