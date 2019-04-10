@@ -1,14 +1,6 @@
 <template>
 	<div class="upload-wrapper">
-		<div
-			id="dropzone"
-			:class="{ 'dropzone-over': dragging }"
-			@dragstart.prevent="handleDragover"
-			@dragover.prevent="handleDragover"
-			@dragleave.prevent="handleDragleave"
-			@drop.prevent="handleDropEvent"
-			>Drop your files here!</div
-		>
+		<Dropzone @drop.prevent="handleDropEvent">Drop your files here!</Dropzone>
 		<div v-show="filetree.objects.length !== 0" id="filetree">
 			<h4>Your uploaded Files:</h4>
 			<Filetree
@@ -22,6 +14,7 @@
 
 <script>
 import Filetree from "@/components/Filetree.vue";
+import dropzone from "@/components/dropzone.vue";
 import upload from "@/mixins/upload.js";
 import filetree from "@/mixins/filetree.js";
 
@@ -29,6 +22,7 @@ export default {
 	name: "Upload",
 	components: {
 		Filetree,
+		dropzone,
 	},
 	mixins: [upload, filetree],
 	props: {
@@ -40,11 +34,6 @@ export default {
 			type: Object,
 			default: () => ({ id: "", name: "", type: "folder", objects: [] }),
 		},
-	},
-	data() {
-		return {
-			dragging: false,
-		};
 	},
 	methods: {
 		handleDropEvent(event) {
@@ -62,13 +51,6 @@ export default {
 					return res;
 				});
 		},
-		handleDragover(event) {
-			event.dataTransfer.dropEffect = "copy";
-			this.dragging = true;
-		},
-		handleDragleave(event) {
-			this.dragging = false;
-		},
 	},
 };
 </script>
@@ -77,20 +59,6 @@ export default {
 .upload-wrapper {
 	position: relative;
 	padding: 16px;
-	#dropzone {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		height: 100px;
-		padding: 16px;
-		margin: 1em auto;
-		border: 2px dashed black;
-		border-radius: 8px;
-	}
-
-	.dropzone-over {
-		background: #eee;
-	}
 
 	#filetree {
 		margin: 1em auto;

@@ -31,7 +31,7 @@ export default new Router({
 		{
 			path: "/resources/import",
 			name: "resourceManagement/import",
-			component: loadView("resourceManagement/create.vue"),
+			component: loadView("resourceManagement/import.vue"),
 			props: { editMode: false },
 		},
 		{
