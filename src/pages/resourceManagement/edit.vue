@@ -124,10 +124,10 @@ import VeeValidate from "vee-validate";
 
 Vue.use(VeeValidate);
 
-import ContentCard from "@/components/contentCard.vue";
+import ContentCard from "@/components/ContentCard.vue";
 
 const ConfirmDialog = () =>
-	import(/* webpackChunkName: "ConfirmDialog" */ "@/components/dialogs/confirm.vue");
+	import(/* webpackChunkName: "ConfirmDialog" */ "@/components/dialogs/Confirm.vue");
 
 import ContentTitle from "@/components/inputs/ContentTitle.vue";
 import ContentDescription from "@/components/inputs/ContentDescription.vue";
@@ -146,7 +146,7 @@ import BaseCheckbox from "@/components/base/BaseCheckbox.vue";
 
 import filetree from "@/mixins/filetree.js";
 
-import FileUpload from "@/components/upload.vue";
+import FileUpload from "@/components/Upload.vue";
 
 export default {
 	name: "ContentForm",
