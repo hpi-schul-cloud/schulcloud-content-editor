@@ -62,7 +62,11 @@ export default {
 		hotSettings() {
 			return {
 				data: this.resources,
-				colHeaders: Object.keys(this.resources[0]),
+				//colHeaders: Object.keys(this.resources[0]),
+				columns: [
+					{ title: "Titel", data: "title" },
+					{ title: "URL", data: "url" },
+				],
 				licenseKey: "non-commercial-and-evaluation", // TODO
 				manualColumnMove: true,
 				manualColumnResize: true,
