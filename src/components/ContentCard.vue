@@ -62,7 +62,7 @@
 <script>
 /* load confirmDialog async */
 const ConfirmDialog = () =>
-	import(/* webpackChunkName: "confirmDialog" */ "@/components/dialogs/confirm.vue");
+	import(/* webpackChunkName: "confirmDialog" */ "@/components/dialogs/Confirm.vue");
 import BaseCard from "@/components/base/BaseCard.vue";
 import BaseButton from "@/components/base/BaseButton.vue";
 

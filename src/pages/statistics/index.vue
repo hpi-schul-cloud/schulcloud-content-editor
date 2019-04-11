@@ -10,21 +10,21 @@
 				class="card-wrapper grid-xs-12 grid-s-6 grid-m-6 grid-l-4 grid-xl-4 height-100"
 			>
 				<b>{{ $lang.stats.clicks }}: {{ item.clickCount }}</b>
-				<AppContentCard :data="item" class="height-100" />
+				<ContentCard :data="item" class="height-100" />
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
-const contentCard = () => import("@/components/contentCard.vue");
+const ContentCard = () => import("@/components/ContentCard.vue");
 
 const qs = require("query-string");
 
 export default {
 	name: "ContentStats",
 	components: {
-		AppContentCard: contentCard,
+		ContentCard,
 	},
 	data() {
 		return {

@@ -22,14 +22,14 @@
 	</div>
 </template>
 <script>
-import stepProgress from "@/components/stepProgress.vue";
+import StepProgress from "@/components/StepProgress.vue";
 import Dropzone from "@/components/Dropzone.vue";
 import BaseButton from "@/components/base/BaseButton.vue";
 
 export default {
 	name: "CsvImport",
 	components: {
-		stepProgress,
+		StepProgress,
 		dropzone,
 		BaseButton,
 	},
