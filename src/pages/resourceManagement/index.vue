@@ -18,7 +18,7 @@ import qs from "query-string";
 
 import Searchbar from "@/components/Searchbar.vue";
 import ResourceEditTable from "@/components/ResourceEditTable.vue";
-import Pagination from "@/components/pagination.vue";
+import Pagination from "@/components/Pagination.vue";
 
 export default {
 	name: "Overview",
