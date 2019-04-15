@@ -17,6 +17,11 @@ body {
 	-moz-osx-font-smoothing: grayscale;
 }
 
+input,
+textarea {
+	font: inherit;
+}
+
 a {
 	color: var(--primaryColor);
 }
