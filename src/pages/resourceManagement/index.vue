@@ -14,11 +14,11 @@
 </template>
 
 <script>
-import qs from "query-string";
-
 import Searchbar from "@/components/Searchbar.vue";
 import ResourceEditTable from "@/components/ResourceEditTable.vue";
 import Pagination from "@/components/Pagination.vue";
+
+import api from "@/mixins/api.js";
 
 export default {
 	name: "Overview",
@@ -27,6 +27,7 @@ export default {
 		ResourceEditTable,
 		Pagination,
 	},
+	mixins: [api],
 	data() {
 		return {
 			searchString: this.$route.query.q || "",
@@ -121,21 +122,13 @@ export default {
 				$skip: this.pagination.itemsPerPage * (this.pagination.page - 1),
 				"_all[$match]": this.searchString,
 			};
-			const apiSearchQueryString = qs.stringify(apiSearchQuery);
 
 			// build request url
-			const path =
+			const request =
 				this.searchString.length == 0
-					? this.$config.API.getContentPath
-					: `${this.$config.API.searchContentPath}?${apiSearchQueryString}`;
-
-			// fetch new data
-			this.$http
-				.get(this.$config.API.serverServerUrl + path, {
-					headers: {
-						Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-					},
-				})
+					? this.$_resourceGet()
+					: this.$_resourceFind(apiSearchQuery);
+			return request
 				.then((response) => {
 					this.resources = response.data.data;
 					this.pagination.totalEntrys = response.data.total;

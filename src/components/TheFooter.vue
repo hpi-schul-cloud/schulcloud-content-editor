@@ -22,7 +22,6 @@
 	</footer>
 </template>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 footer {
 	margin: 2rem 0;

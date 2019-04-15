@@ -64,6 +64,8 @@ import BaseButton from "@/components/base/BaseButton.vue";
 import BaseCard from "@/components/base/BaseCard.vue";
 import BaseInput from "@/components/base/BaseInput.vue";
 
+import api from "@/mixins/api.js";
+
 export default {
 	name: "Login",
 	components: {
@@ -71,6 +73,7 @@ export default {
 		BaseCard,
 		BaseInput,
 	},
+	mixins: [api],
 	data() {
 		return {
 			login: {
@@ -94,11 +97,7 @@ export default {
 			}
 		},
 		getToken() {
-			this.$http
-				.post(
-					this.$config.API.serverServerUrl + this.$config.API.authPath,
-					this.login
-				)
+			this.$_login(this.login)
 				.then((response) => {
 					// JSON responses are automatically parsed.
 					const jwt = response.data.accessToken;
@@ -119,17 +118,7 @@ export default {
 			const base64Url = jwt.split(".")[1];
 			const base64 = base64Url.replace("-", "+").replace("_", "/");
 			const payload = JSON.parse(window.atob(base64));
-			this.$http
-				.get(
-					this.$config.API.serverServerUrl +
-						this.$config.API.userInfoPath +
-						payload.userId,
-					{
-						headers: {
-							Authorization: `Bearer ${jwt}`,
-						},
-					}
-				)
+			this.$_userGet(payload.userId)
 				.then((response) => {
 					localStorage.setItem("userInfo", JSON.stringify(response.data));
 					this.$router.go();
@@ -150,7 +139,6 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 #login-card {
 	max-width: 600px;
