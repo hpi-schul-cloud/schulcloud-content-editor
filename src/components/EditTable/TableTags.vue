@@ -73,7 +73,7 @@ export default {
 	&.vue-tags-input {
 		max-width: 100%;
 		color: #1d1d1d;
-		background: none;
+		background: transparent;
 		border-radius: 0;
 		.ti-new-tag-input-wrapper {
 			padding: 0;

@@ -19,17 +19,19 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr v-for="(row, rowIndex) in resources" :key="row._id">
+				<tr v-for="(resource, rowIndex) in resources" :key="resource._id">
 					<td style="text-align: right;">{{ indexStart + rowIndex + 1 }}</td>
 					<td v-for="(coloumn, coloumnIndex) in visibleColoumns" :key="coloumn">
 						<form
 							v-if="coloumnIndex === 0"
 							:id="getFormId(rowIndex)"
-							@submit.prevent="handleFormSubmit(row, $event)"
+							@submit.prevent="
+								handleFormSubmit(resource, indexStart + rowIndex + 1)
+							"
 						></form>
 						<component
 							:is="getComponent(coloumn).component"
-							v-model="row[coloumn]"
+							v-model="resource[coloumn]"
 							:form="getFormId(rowIndex)"
 							:label="coloumn"
 							:name="coloumn"
@@ -48,7 +50,10 @@
 						</BaseButton>
 						<RouterLink
 							class="action"
-							:to="{ name: 'resourceManagement/edit', params: { id: row._id } }"
+							:to="{
+								name: 'resourceManagement/edit',
+								params: { id: resource._id },
+							}"
 						>
 							<i class="material-icons">
 								edit
@@ -58,11 +63,19 @@
 				</tr>
 			</tbody>
 		</table>
-		<p v-else>Nothing found :(</p>
+		<p v-else>
+			{{ $lang.search.nothing_found }}
+			<br />
+			<small>
+				{{ $lang.search.nothing_found_help }}
+			</small>
+		</p>
 	</div>
 </template>
 
 <script>
+import api from "@/mixins/api.js";
+
 import { options as MimeTypeOptions } from "@/components/inputs/ContentMimetype.vue";
 import { options as CategoryOptions } from "@/components/inputs/ContentCategory.vue";
 import BaseButton from "@/components/base/BaseButton.vue";
@@ -98,6 +111,7 @@ export default {
 		BaseButton,
 		TableInput,
 	},
+	mixins: [api],
 	props: {
 		resources: {
 			type: Array,
@@ -121,8 +135,14 @@ export default {
 		getFormId(index) {
 			return `table-form-${index}`;
 		},
-		handleFormSubmit(resource, event) {
-			//console.log(resource, event);
+		handleFormSubmit(resource, index) {
+			return this.$_resourcePatch(resource)
+				.then(() => {
+					this.$toasted.show(`L${index} - Saved`);
+				})
+				.catch((error) => {
+					this.$toasted.error(`L${index} - Failed to save`);
+				});
 		},
 	},
 };
@@ -146,7 +166,7 @@ export default {
 			background-color: #eee;
 		}
 		&:hover {
-			background-color: #ddd;
+			background-color: #ccc;
 		}
 	}
 }
