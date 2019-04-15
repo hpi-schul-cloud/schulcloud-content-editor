@@ -166,17 +166,16 @@ export default {
 	width: 100%;
 	// table-layout: fixed;
 	border-collapse: collapse;
+	.fit-content {
+		width: 1px;
+		white-space: nowrap;
+	}
 	td {
-		max-width: 200px;
 		padding: 0 4px;
 		overflow: hidden;
 		overflow-x: auto;
 		white-space: nowrap;
 		border: 1px solid #333;
-		&.fit-content {
-			width: 1px;
-			white-space: nowrap;
-		}
 	}
 	tbody tr {
 		&:nth-of-type(2n) {
