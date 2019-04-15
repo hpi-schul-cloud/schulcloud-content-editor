@@ -2,8 +2,8 @@
 	<div>
 		<Searchbar
 			v-model.lazy="searchString"
-			:label="$lang.searchContent.searchbar.label"
-			:placeholder="$lang.searchContent.searchbar.placeholder"
+			:label="$lang.search.searchbar.label"
+			:placeholder="$lang.search.searchbar.placeholder"
 		/>
 		<ResourceEditTable
 			:resources="resources"
