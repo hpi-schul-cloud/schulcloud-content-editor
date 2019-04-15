@@ -242,20 +242,10 @@ export default {
 		},
 		loadContent() {
 			if (this.editMode) {
-				this.$http
-					.get(
-						this.$config.API.serverServerUrl +
-							this.$config.API.getContentPath +
-							this.$route.params.id,
-						{
-							headers: {
-								Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-							},
-						}
-					)
-					.then((response) => {
+				return this.$_resourceGet(this.$route.params.id)
+					.then((data) => {
 						// JSON responses are automatically parsed.
-						this.data = response.body;
+						this.data = data;
 						this.hostingOption = (this.data.url || "").startsWith(
 							this.$config.API.contentServerUrl + this.$config.API.hostingEntry
 						)
@@ -269,17 +259,7 @@ export default {
 		},
 		loadFiletree() {
 			if (this.editMode) {
-				this.$http
-					.get(
-						this.$config.API.contentServerUrl +
-							this.$config.API.getFiletreePath +
-							this.$route.params.id,
-						{
-							headers: {
-								Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-							},
-						}
-					)
+				this.$_resourceFilesGet(this.$route.params.id)
 					.then((response) => {
 						// JSON responses are automatically parsed.
 						this.filetree = this.$_normalizeTree(response.data);
@@ -304,31 +284,19 @@ export default {
 			const request = this.editMode
 				? $_resourcePatch(newData)
 				: $_resourceCreate(newData);
-			request.then(() => {
+			return request.then(() => {
 				this.$router.push({ name: "resourceManagement" });
 			});
 		},
 		deleteContent() {
-			this.$http
-				.delete(
-					this.$config.API.contentServerUrl +
-						this.$config.API.pushContentPath +
-						this.$route.params.id,
-					{
-						headers: {
-							Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-						},
-					}
-				)
-				.then(() => {
-					this.$router.push({ name: "resourceManagement" });
-				});
+			return this.$_resourceDelete(this.$route.params.id).then(() => {
+				this.$router.push({ name: "resourceManagement" });
+			});
 		},
 	},
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 .container {
 	display: flex;

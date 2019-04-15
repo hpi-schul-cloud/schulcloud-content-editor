@@ -19,13 +19,13 @@
 <script>
 const ContentCard = () => import("@/components/ContentCard.vue");
 
-const qs = require("query-string");
+import api from "@/mixins/api.js";
 
 export default {
-	name: "ContentStats",
 	components: {
 		ContentCard,
 	},
+	mixins: [api],
 	data() {
 		return {
 			totalContent: 0,
@@ -38,18 +38,10 @@ export default {
 	},
 	methods: {
 		getTotalContent() {
-			this.$http
-				.get(
-					this.$config.API.serverServerUrl + this.$config.API.getContentPath,
-					{
-						headers: {
-							Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-						},
-					}
-				)
-				.then((response) => {
+			return this.$_resourceGet()
+				.then((data) => {
 					// JSON responses are automatically parsed.
-					this.totalContent = response.data.total;
+					this.totalContent = data.total;
 				})
 				.catch((e) => {
 					this.errors.push(e);
@@ -61,18 +53,10 @@ export default {
 				"$sort[clickCount]": -1,
 				$limit: 3,
 			};
-			const path = `${this.$config.API.getContentPath}?${qs.stringify(
-				apiQuery
-			)}`;
-			this.$http
-				.get(this.$config.API.serverServerUrl + path, {
-					headers: {
-						Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-					},
-				})
-				.then((response) => {
+			return this.$_resourceFind(apiQuery)
+				.then((data) => {
 					// JSON responses are automatically parsed.
-					this.mostClickedContent = response.data.data;
+					this.mostClickedContent = data.data;
 				})
 				.catch((e) => {
 					this.errors.push(e);
@@ -82,7 +66,6 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 .subheading {
 	font-size: 16px;

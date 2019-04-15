@@ -1,55 +1,31 @@
 import Vue from "vue";
 import Router from "vue-router";
-import config from "../config.js";
-
-function loadView(path) {
-	return () =>
-		import(/* webpackChunkName: "view-[request]" */ `@/pages/${path}`);
-}
-
 Vue.use(Router);
+
+const loadView = (path) => {
+	return () =>
+		import(/* webpackChunkName: "page-[request]" */ `@/pages/${path}`);
+};
+
+import resourceManagement from "./resourceManagement";
+import statistics from "./statistics";
+
+const routes = [
+	{ path: "/", redirect: "/resources", name: "main" },
+	// Plugins:
+	...resourceManagement,
+	...statistics,
+];
 
 export default new Router({
 	mode: "history",
 	base: process.env.VUE_APP_PUBLIC_PATH || "/",
-	routes: [
-		// entrypoint
-		{ path: "/", redirect: "/resources", name: "main" },
-		// resources Plugin
-		{
-			path: "/resources",
-			name: "resourceManagement",
-			component: loadView("resourceManagement/index.vue"),
-			sidebarTitle: "Verwaltung",
-			sidebarIcon: "home",
-		},
-		{
-			path: "/resources/create",
-			name: "resourceManagement/create",
-			component: loadView("resourceManagement/edit.vue"), // resourceManagement/create.vue
-			props: { editMode: false },
-		},
-		{
-			path: "/resources/import",
-			name: "resourceManagement/import",
-			component: loadView("resourceManagement/import.vue"),
-			props: { editMode: false },
-		},
-		{
-			path: "/resources/:id",
-			name: "resourceManagement/edit",
-			component: loadView("resourceManagement/edit.vue"),
-			props: { editMode: true },
-		},
-		// Stats
-		{
-			path: "/statistics",
-			name: "statistics",
-			component: loadView("statistics/index.vue"),
-			sidebarTitle: "Statistiken",
-			sidebarIcon: "timeline",
-		},
-	],
+	routes: routes.map((route) => {
+		if (route.component) {
+			route.component = loadView(route.component);
+		}
+		return route;
+	}),
 	scrollBehavior(to, from, savedPosition) {
 		if (savedPosition) {
 			return savedPosition;

@@ -61,7 +61,7 @@ export default {
 	&::-webkit-scrollbar {
 		width: 0;
 		height: 0;
-		background: transparent; /* Optional: just make scrollbar invisible */
+		background: transparent;
 	}
 	.ti-input {
 		padding: 1px 0;
