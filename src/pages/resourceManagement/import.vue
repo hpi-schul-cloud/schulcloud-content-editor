@@ -22,12 +22,48 @@
 				<span>Einträge wurden hochgeladen aus {{ csv_fileName }}</span>
 			</div>
 		</div>
-		<template v-if="progressbarCurrentStep === 1" class="content">
-			<p>Metadaten</p>
-		</template>
-		<template v-if="progressbarCurrentStep === 2" class="content">
-			<p>Import</p>
-		</template>
+		<div v-if="progressbarCurrentStep === 1" class="content">
+			<table style="width:100%">
+				<tr>
+					<th id="state-column"></th>
+					<th>Metadaten Felder</th>
+					<th>CSV-Felder</th>
+				</tr>
+				<tr v-for="(value, key) in metadataFieldMapping" :key="key">
+					<td>
+						<i v-if="metadataFieldMapping[key] != ''" class="material-icons">
+							done
+						</i>
+					</td>
+					<td>{{ key }}</td>
+					<td>
+						<BaseSelect
+							:options="options"
+							label=""
+							name="FieldMapping"
+							:selected="metadataFieldMapping[key]"
+							@input="metadataFieldMapping[key] = $event"
+						/>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div v-if="progressbarCurrentStep === 2" class="content">
+			<table>
+				<tr>
+					<th v-for="(value, key) in metadataFieldMapping" :key="key">
+						{{ key }}
+					</th>
+				</tr>
+				<tr v-for="(row, index) in csv_content" :key="index">
+					<td v-for="(value, key) in metadataFieldMapping" :key="key">
+						{{ row[metadataFieldMapping[key]] }}
+					</td>
+				</tr>
+			</table>
+
+			<p v-for="(field, index) in csv_content" :key="index">{{ field }}</p>
+		</div>
 		<div class="button-wrapper">
 			<BaseButton
 				styling="primary"
@@ -43,6 +79,7 @@
 import StepProgress from "@/components/StepProgress.vue";
 import Dropzone from "@/components/Dropzone.vue";
 import BaseButton from "@/components/base/BaseButton.vue";
+import BaseSelect from "@/components/base/BaseSelect.vue";
 
 export default {
 	name: "CsvImport",
@@ -50,6 +87,7 @@ export default {
 		StepProgress,
 		Dropzone,
 		BaseButton,
+		BaseSelect,
 	},
 	data() {
 		return {
@@ -62,6 +100,17 @@ export default {
 			csv_content: [],
 			csv_headers: [],
 			csv_fileName: "",
+			metadataFieldMapping: {
+				Titel: "",
+				Beschreibung: "",
+				Lizenz: "",
+				Kategorie: "",
+				"MIME-type": "",
+				Tags: "",
+				URL: "",
+				"Thumbnail-URL": "",
+			},
+			options: [{ key: "none", value: "kein Match" }],
 		};
 	},
 	methods: {
@@ -97,6 +146,13 @@ export default {
 			let result = [];
 			this.csv_headers = lines.splice(0, 1)[0].split(";");
 
+			this.csv_headers.forEach((headerField) => {
+				let obj = {};
+				obj.key = headerField;
+				obj.value = headerField;
+				this.options.push(obj);
+			});
+
 			lines.forEach((line, indexLine) => {
 				let obj = {};
 				let currentline = line.split(";");
@@ -118,8 +174,10 @@ export default {
 </script>
 <style lang="scss" scoped>
 .content {
-	max-width: 800px;
 	margin: 8em auto 1em;
+}
+.dropzone {
+	max-width: 800px;
 }
 .button-wrapper {
 	display: flex;
@@ -144,5 +202,29 @@ export default {
 	flex: 1;
 	padding: 2em;
 	text-align: center;
+}
+
+.table-wrapper {
+	margin: 1em 0;
+}
+
+table,
+th,
+td {
+	border-collapse: collapse;
+	border: 1px solid black;
+}
+
+th,
+td {
+	padding: 8px;
+}
+
+table {
+	table-layout: fixed;
+
+	#state-column {
+		width: 40px;
+	}
 }
 </style>
