@@ -34,7 +34,7 @@ Vue.use(VueResource);
 // global config file
 import VueConfig from "vue-config";
 const configFile = require("./config");
-Vue.use(VueConfig, configFile.default.configs);
+Vue.use(VueConfig, configFile.default);
 
 // language files
 import VueLang from "vuejs-localization";
