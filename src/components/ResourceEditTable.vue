@@ -164,7 +164,6 @@ export default {
 <style lang="scss" scoped>
 .table {
 	width: 100%;
-	// table-layout: fixed;
 	border-collapse: collapse;
 	.fit-content {
 		width: 1px;
