@@ -5,6 +5,7 @@
 	"description": "Schul-Cloud Content Editor",
 	"author": "adrianjost <homepage@hackedit.de>",
 	"scripts": {
+		"dev": "yarn serve",
 		"serve": "vue-cli-service serve",
 		"build": "vue-cli-service build",
 		"lint:eslint": "eslint --fix",
