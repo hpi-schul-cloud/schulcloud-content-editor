@@ -9,11 +9,15 @@
 		<table v-if="resources.length" class="table edit sticky">
 			<thead>
 				<tr>
-					<th />
-					<th v-for="coloumn in visibleColoumns" :key="coloumn">
+					<th style="width: 3em" />
+					<th
+						v-for="coloumn in visibleColoumns"
+						:key="coloumn"
+						:class="getComponent(coloumn).class"
+					>
 						{{ $lang.resources[coloumn] }}
 					</th>
-					<th>
+					<th class="fit-content">
 						Actions
 					</th>
 				</tr>
@@ -21,7 +25,11 @@
 			<tbody>
 				<tr v-for="(resource, rowIndex) in resources" :key="resource._id">
 					<td style="text-align: right;">{{ indexStart + rowIndex + 1 }}</td>
-					<td v-for="(coloumn, coloumnIndex) in visibleColoumns" :key="coloumn">
+					<td
+						v-for="(coloumn, coloumnIndex) in visibleColoumns"
+						:key="coloumn"
+						:class="getComponent(coloumn).class"
+					>
 						<form
 							v-if="coloumnIndex === 0"
 							:id="getFormId(rowIndex)"
@@ -99,7 +107,12 @@ const availableColoumns = [
 		attributes: { options: CategoryOptions },
 	},
 	{ key: "description", component: TableInput, attributes: {} },
-	{ key: "isPublished", component: TableCheckbox, attributes: {} },
+	{
+		key: "isPublished",
+		component: TableCheckbox,
+		attributes: { type: "checkbox" },
+		class: "fit-content",
+	},
 	{ key: "url", component: TableInput, attributes: { type: "url" } },
 	{ key: "thumbnail", component: TableInput, attributes: { type: "url" } },
 	{ key: "licenses", component: TableTags, attributes: {} },
@@ -160,6 +173,10 @@ export default {
 		overflow-x: auto;
 		white-space: nowrap;
 		border: 1px solid #333;
+		&.fit-content {
+			width: 1px;
+			white-space: nowrap;
+		}
 	}
 	tbody tr {
 		&:nth-of-type(2n) {
@@ -188,6 +205,7 @@ table.edit {
 	}
 	.action {
 		padding: 0;
+		margin: 0 0.25em;
 	}
 }
 </style>
