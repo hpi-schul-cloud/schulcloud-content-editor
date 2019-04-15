@@ -243,9 +243,9 @@ export default {
 		loadContent() {
 			if (this.editMode) {
 				return this.$_resourceGet(this.$route.params.id)
-					.then((response) => {
+					.then((data) => {
 						// JSON responses are automatically parsed.
-						this.data = response.body;
+						this.data = data;
 						this.hostingOption = (this.data.url || "").startsWith(
 							this.$config.API.contentServerUrl + this.$config.API.hostingEntry
 						)
@@ -259,7 +259,7 @@ export default {
 		},
 		loadFiletree() {
 			if (this.editMode) {
-				this._resourceFilesGet(this.$route.params.id)
+				this.$_resourceFilesGet(this.$route.params.id)
 					.then((response) => {
 						// JSON responses are automatically parsed.
 						this.filetree = this.$_normalizeTree(response.data);

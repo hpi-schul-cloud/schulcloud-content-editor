@@ -98,9 +98,8 @@ export default {
 		},
 		getToken() {
 			this.$_login(this.login)
-				.then((response) => {
-					// JSON responses are automatically parsed.
-					const jwt = response.data.accessToken;
+				.then((data) => {
+					const jwt = data.accessToken;
 					localStorage.setItem("jwt", jwt);
 					this.$cookies.set(
 						"jwt",
@@ -119,8 +118,8 @@ export default {
 			const base64 = base64Url.replace("-", "+").replace("_", "/");
 			const payload = JSON.parse(window.atob(base64));
 			this.$_userGet(payload.userId)
-				.then((response) => {
-					localStorage.setItem("userInfo", JSON.stringify(response.data));
+				.then((data) => {
+					localStorage.setItem("userInfo", JSON.stringify(data));
 					this.$router.go();
 				})
 				.catch((e) => {

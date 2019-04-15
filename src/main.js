@@ -27,10 +27,6 @@ Vue.use(VueFab, {
 import VueCookies from "vue-cookies";
 Vue.use(VueCookies);
 
-// HTTP requests
-import VueResource from "vue-resource";
-Vue.use(VueResource);
-
 // global config file
 import VueConfig from "vue-config";
 const configFile = require("./config");

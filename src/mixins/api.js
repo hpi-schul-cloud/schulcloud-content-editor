@@ -1,97 +1,94 @@
 import qs from "query-string";
 
+const jsonFetch = (url, config = {}) => {
+	const defaultConfig = {
+		headers: {
+			"Content-Type": "application/json",
+		},
+	};
+
+	const jwt = localStorage.getItem("jwt");
+	if (jwt) {
+		defaultConfig.headers["Authorization"] = `Bearer ${jwt}`;
+	}
+
+	if (typeof config.body === "object") {
+		config.body = JSON.stringify(config.body);
+	}
+
+	return fetch(url, { ...defaultConfig, ...config }).then((res) => res.json());
+};
+
 export default {
 	methods: {
 		$_login(data) {
-			return this.$http.post(
+			return jsonFetch(
 				this.$config.API.serverServerUrl + this.$config.API.authPath,
-				data
+				{
+					method: "POST",
+					body: data,
+				}
 			);
 		},
 		$_userGet(userId) {
-			return this.$http.get(
+			return jsonFetch(
 				this.$config.API.serverServerUrl +
 					this.$config.API.userInfoPath +
-					userId,
-				{
-					headers: {
-						Authorization: `Bearer ${jwt}`,
-					},
-				}
+					userId
 			);
 		},
 		$_resourceGet(resourceId) {
-			return this.$http.get(
+			return jsonFetch(
 				this.$config.API.serverServerUrl +
 					this.$config.API.getContentPath +
-					(resourceId ? resourceId : ""),
-				{
-					headers: {
-						Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-					},
-				}
+					(resourceId ? resourceId : "")
 			);
 		},
 		$_resourceFind(query) {
 			const queryString = qs.stringify(query);
-			return this.$http.get(
+
+			return jsonFetch(
 				this.$config.API.serverServerUrl +
 					this.$config.API.searchContentPath +
 					"?" +
-					queryString,
-				{
-					headers: {
-						Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-					},
-				}
+					queryString
 			);
 		},
 		$_resourceCreate(resource) {
-			return this.$http.post(
+			return jsonFetch(
 				this.$config.API.contentServerUrl + this.$config.API.pushContentPath,
-				resource,
 				{
-					headers: {
-						Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-					},
+					method: "POST",
+					body: resource,
 				}
 			);
 		},
 		$_resourcePatch(resource) {
-			return this.$http.patch(
+			return jsonFetch(
 				this.$config.API.contentServerUrl +
 					this.$config.API.pushContentPath +
 					resource._id,
-				resource,
 				{
-					headers: {
-						Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-					},
+					method: "PATCH",
+					body: resource,
 				}
 			);
 		},
 		$_resourceDelete(resourceId) {
-			return this.$http.delete(
+			return jsonFetch(
 				this.$config.API.contentServerUrl +
 					this.$config.API.pushContentPath +
 					resourceId,
 				{
-					headers: {
-						Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-					},
+					method: "DELETE",
 				}
 			);
 		},
 		$_resourceFilesGet(resourceId) {
-			return this.$http.get(
+			return jsonFetch(
 				this.$config.API.contentServerUrl +
 					this.$config.API.getFiletreePath +
-					resourceId,
-				{
-					headers: {
-						Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-					},
-				}
+					resourceId
 			);
 		},
 	},

@@ -129,9 +129,9 @@ export default {
 					? this.$_resourceGet()
 					: this.$_resourceFind(apiSearchQuery);
 			return request
-				.then((response) => {
-					this.resources = response.data.data;
-					this.pagination.totalEntrys = response.data.total;
+				.then((data) => {
+					this.resources = data.data;
+					this.pagination.totalEntrys = data.total;
 				})
 				.catch((e) => {
 					// TODO: show error to user

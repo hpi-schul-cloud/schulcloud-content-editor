@@ -39,9 +39,9 @@ export default {
 	methods: {
 		getTotalContent() {
 			return this.$_resourceGet()
-				.then((response) => {
+				.then((data) => {
 					// JSON responses are automatically parsed.
-					this.totalContent = response.data.total;
+					this.totalContent = data.total;
 				})
 				.catch((e) => {
 					this.errors.push(e);
@@ -54,9 +54,9 @@ export default {
 				$limit: 3,
 			};
 			return this.$_resourceFind(apiQuery)
-				.then((response) => {
+				.then((data) => {
 					// JSON responses are automatically parsed.
-					this.mostClickedContent = response.data.data;
+					this.mostClickedContent = data.data;
 				})
 				.catch((e) => {
 					this.errors.push(e);
