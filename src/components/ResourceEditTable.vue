@@ -9,8 +9,9 @@
 		<table v-if="resources.length" class="table edit sticky">
 			<thead>
 				<tr>
+					<th />
 					<th v-for="coloumn in visibleColoumns" :key="coloumn">
-						{{ coloumn }}
+						{{ $lang.resources[coloumn] }}
 					</th>
 					<th>
 						Actions
@@ -19,8 +20,13 @@
 			</thead>
 			<tbody>
 				<tr v-for="(row, rowIndex) in resources" :key="row._id">
+					<td style="text-align: right;">{{ indexStart + rowIndex + 1 }}</td>
 					<td v-for="(coloumn, coloumnIndex) in visibleColoumns" :key="coloumn">
-						<form v-if="coloumnIndex === 0" :id="getFormId(rowIndex)"></form>
+						<form
+							v-if="coloumnIndex === 0"
+							:id="getFormId(rowIndex)"
+							@submit.prevent="handleFormSubmit(row, $event)"
+						></form>
 						<component
 							:is="getComponent(coloumn).component"
 							v-model="row[coloumn]"
@@ -30,7 +36,7 @@
 							v-bind="getComponent(coloumn).attributes"
 						/>
 					</td>
-					<td>
+					<td style="text-align: center;">
 						<BaseButton
 							type="submit"
 							:form="getFormId(rowIndex)"
@@ -108,25 +114,6 @@ export default {
 			visibleColoumns: ["title", "isPublished", "contentCategory", "licenses"],
 		};
 	},
-	computed: {
-		hotSettings() {
-			return {
-				data: this.resources,
-				//colHeaders: Object.keys(this.resources[0]),
-				columns: [
-					{ title: "Titel", data: "title" },
-					{ title: "URL", data: "url" },
-				],
-				licenseKey: "non-commercial-and-evaluation", // TODO
-				manualColumnMove: true,
-				manualColumnResize: true,
-				selectionMode: "single",
-				disableVisualSelection: ["area", "header"],
-				fillHandle: false,
-				enterBeginsEditingBoolean: true,
-			};
-		},
-	},
 	methods: {
 		getComponent(key) {
 			return availableColoumns.find((coloumn) => coloumn.key === key);
@@ -134,13 +121,12 @@ export default {
 		getFormId(index) {
 			return `table-form-${index}`;
 		},
+		handleFormSubmit(resource, event) {
+			//console.log(resource, event);
+		},
 	},
 };
 </script>
-
-<!--
-<style src="handsontable/dist/handsontable.full.css"></style>
--->
 
 <style lang="scss" scoped>
 .table {

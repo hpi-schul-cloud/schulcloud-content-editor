@@ -56,13 +56,13 @@ export default {
 </script>
 <style lang="scss">
 .table-tag-input {
+	overflow: auto;
+	font-size: 0.8em;
 	&::-webkit-scrollbar {
 		width: 0;
 		height: 0;
 		background: transparent; /* Optional: just make scrollbar invisible */
 	}
-
-	overflow: auto;
 	.ti-input {
 		padding: 1px 0;
 		border: 0;
@@ -89,10 +89,11 @@ export default {
 		flex-wrap: nowrap;
 	}
 	.ti-tag {
-		font-size: 1rem;
-		color: #757575;
-		background-color: #e7e7e7;
-		border: 1px solid #333;
+		font-size: 1em;
+		color: inherit;
+		background-color: transparent;
+		border: 0;
+		box-shadow: inset 0 0 0 1px #333;
 
 		&.ti-tag.ti-deletion-mark {
 			color: #fff;
