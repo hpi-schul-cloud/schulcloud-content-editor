@@ -105,7 +105,9 @@ export default {
 	width: 100%;
 	margin-top: 2rem;
 }
-
+[disabled] {
+	visibility: hidden;
+}
 #page-number {
 	height: 40px;
 	padding: 0;

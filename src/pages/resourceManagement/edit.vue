@@ -145,6 +145,7 @@ import BaseCard from "@/components/base/BaseCard.vue";
 import BaseCheckbox from "@/components/base/BaseCheckbox.vue";
 
 import filetree from "@/mixins/filetree.js";
+import api from "@/mixins/api.js";
 
 import FileUpload from "@/components/Upload.vue";
 
@@ -170,7 +171,7 @@ export default {
 
 		FileUpload,
 	},
-	mixins: [filetree],
+	mixins: [api, filetree],
 	props: {
 		editMode: Boolean,
 	},
@@ -300,31 +301,9 @@ export default {
 				this.hostingOption === "hostedAtSchulcloud" &&
 				!newData.url.startsWith("http");
 
-			let request;
-			if (this.editMode) {
-				request = this.$http.patch(
-					this.$config.API.contentServerUrl +
-						this.$config.API.pushContentPath +
-						this.$route.params.id,
-					newData,
-					{
-						headers: {
-							Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-						},
-					}
-				);
-			} else {
-				newData.originId = Date.now().toString();
-				request = this.$http.post(
-					this.$config.API.contentServerUrl + this.$config.API.pushContentPath,
-					newData,
-					{
-						headers: {
-							Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-						},
-					}
-				);
-			}
+			const request = this.editMode
+				? $_resourcePatch(newData)
+				: $_resourceCreate(newData);
 			request.then(() => {
 				this.$router.push({ name: "resourceManagement" });
 			});

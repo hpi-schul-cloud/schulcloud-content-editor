@@ -13,6 +13,13 @@
 <script>
 import BaseSelect from "@/components/base/BaseSelect.vue";
 
+export const options = [
+	{ key: "atomic", value: "Atomic" },
+	{ key: "learning-object", value: "Lernobjekt" },
+	{ key: "proven-learning-object", value: "Bewährtes Lernobjekt" },
+	{ key: "tool", value: "Tool" },
+];
+
 export default {
 	components: {
 		BaseSelect,
@@ -29,12 +36,7 @@ export default {
 	},
 	data() {
 		return {
-			options: [
-				{ key: "atomic", value: "Atomic" },
-				{ key: "learning-object", value: "Lernobjekt" },
-				{ key: "proven-learning-object", value: "Bewährtes Lernobjekt" },
-				{ key: "tool", value: "Tool" },
-			],
+			options,
 		};
 	},
 	computed: {
