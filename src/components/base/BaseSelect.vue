@@ -21,11 +21,20 @@
 			<li
 				v-for="option in options"
 				:key="option.key"
-				:class="{ option: true, selected: option.key === selected }"
+				:class="{
+					option: true,
+					selected: option.key === selected,
+					'disabled-option': disabledOptions.includes(option.key),
+				}"
 				:value="option.key"
-				@click="selectOption(option)"
 			>
-				{{ option.value }}
+				<button
+					:disabled="disabledOptions.includes(option.key)"
+					type="button"
+					@click="selectOption(option)"
+				>
+					{{ option.value }}
+				</button>
 			</li>
 		</ul>
 	</div>
@@ -39,6 +48,11 @@ export default {
 			type: Array,
 			default: () => [],
 			required: true,
+		},
+		disabledOptions: {
+			type: Array,
+			default: () => [],
+			required: false,
 		},
 		label: {
 			type: String,
@@ -143,12 +157,24 @@ label {
 	border-bottom-color: #ccc;
 }
 .option {
-	padding: 8px;
 	&:hover {
 		background: #e0e0e0;
+	}
+
+	button {
+		display: block;
+		width: 100%;
+		padding: 8px;
+		text-align: left;
+		cursor: pointer;
+		background: none;
+		border: none;
 	}
 }
 .selected {
 	color: var(--primaryColor);
+}
+.disabled-option {
+	color: red;
 }
 </style>
