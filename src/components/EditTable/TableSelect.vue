@@ -1,9 +1,11 @@
 <template>
 	<select
+		ref="select"
 		:aria-label="label"
 		v-bind="$attrs"
-		class="table-select"
-		@change="$emit('update', $event.target.value)"
+		:class="{ 'table-select': true, multiple: multiple }"
+		:multiple="multiple"
+		@change="handleChange"
 	>
 		<option
 			v-for="option in options"
@@ -17,12 +19,10 @@
 
 <script>
 export default {
-	name: "BaseSelect",
 	props: {
 		options: {
 			type: Array,
 			default: () => [],
-			required: true,
 		},
 		label: {
 			type: String,
@@ -33,29 +33,30 @@ export default {
 			type: String,
 			default: "",
 		},
-	},
-	data() {
-		return {
-			expanded: false,
-		};
+		multiple: {
+			type: Boolean,
+		},
 	},
 	methods: {
-		expandSelect(event) {
-			this.expanded = !this.expanded;
+		handleChange(event) {
+			this.$emit(
+				"update",
+				multiple ? this.getSelectValues(this.$refs.select) : event.target.value
+			);
 		},
-		selectOption(option) {
-			this.$emit("input", option.key);
-			this.expanded = false;
-		},
-		getContent() {
-			if (this.selected === undefined) return this.name;
-			else {
-				let selectedObject = this.options.find((elem) => {
-					return elem.key === this.selected;
-				});
-				if (selectedObject) return selectedObject.value;
-				else return this.name;
+		getSelectValues(select) {
+			var result = [];
+			var options = select && select.options;
+			var opt;
+
+			for (var i = 0, iLen = options.length; i < iLen; i++) {
+				opt = options[i];
+
+				if (opt.selected) {
+					result.push(opt.value || opt.text);
+				}
 			}
+			return result;
 		},
 	},
 };
@@ -68,6 +69,16 @@ export default {
 	border: 0;
 	&:focus {
 		outline: none;
+	}
+	&.multiple {
+		height: 2em;
+		&:focus {
+			height: 7em;
+		}
+	}
+	option:checked {
+		color: white;
+		background: var(--color-primary);
 	}
 }
 </style>

@@ -56,7 +56,7 @@ export default {
 	},
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .wrapper {
 	margin: 1.5em 0;
 }
@@ -68,6 +68,8 @@ label {
 .no-numbers {
 	color: red;
 }
+</style>
+<style lang="scss">
 .tag-input {
 	.ti-input {
 		padding: 1px 0;

@@ -18,18 +18,24 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr v-for="row in resources" :key="row._id">
-					<td v-for="coloumn in visibleColoumns" :key="coloumn">
+				<tr v-for="(row, rowIndex) in resources" :key="row._id">
+					<td v-for="(coloumn, coloumnIndex) in visibleColoumns" :key="coloumn">
+						<form v-if="coloumnIndex === 0" :id="getFormId(rowIndex)"></form>
 						<component
 							:is="getComponent(coloumn).component"
 							v-model="row[coloumn]"
+							:form="getFormId(rowIndex)"
 							:label="coloumn"
 							:name="coloumn"
 							v-bind="getComponent(coloumn).attributes"
 						/>
 					</td>
 					<td>
-						<BaseButton class="action">
+						<BaseButton
+							type="submit"
+							:form="getFormId(rowIndex)"
+							class="action"
+						>
 							<i class="material-icons">
 								check
 							</i>
@@ -46,20 +52,16 @@
 				</tr>
 			</tbody>
 		</table>
-		<!--
-			<HotTable v-if="resources.length" :settings="hotSettings" />
-		-->
 		<p v-else>Nothing found :(</p>
 	</div>
 </template>
 
 <script>
-//import { HotTable } from "@handsontable/vue";
-import Handsontable from "handsontable";
-
 import { options as MimeTypeOptions } from "@/components/inputs/ContentMimetype.vue";
+import { options as CategoryOptions } from "@/components/inputs/ContentCategory.vue";
 import BaseButton from "@/components/base/BaseButton.vue";
 import BaseTags from "@/components/base/BaseTags.vue";
+import TableCheckbox from "@/components/EditTable/TableCheckbox.vue";
 import TableInput from "@/components/EditTable/TableInput.vue";
 import TableSelect from "@/components/EditTable/TableSelect.vue";
 import TableTags from "@/components/EditTable/TableTags.vue";
@@ -72,21 +74,16 @@ const availableColoumns = [
 		component: TableSelect,
 		attributes: { options: MimeTypeOptions },
 	},
-	/*
-	{ key: "contentCategory", component: BaseSelect, attributes: {} },
-	{ key: "description", component: BaseInput, attributes: {} },
-	{ key: "isPublished", component: BaseCheckbox, attributes: {} },
-	{ key: "licenses", component: BaseTags, attributes: {} },
 	{
-		key: "mimeType",
-		component: BaseSelect,
-		attributes: { options: MimeTypeOptions },
+		key: "contentCategory",
+		component: TableSelect,
+		attributes: { options: CategoryOptions },
 	},
-	{ key: "tags", component: BaseTags, attributes: {} },
-	{ key: "thumbnail", component: BaseInput, attributes: {} },
-	{ key: "title", component: BaseInput, attributes: {} },
-	{ key: "url", component: BaseInput, attributes: {} },
-	*/
+	{ key: "description", component: TableInput, attributes: {} },
+	{ key: "isPublished", component: TableCheckbox, attributes: {} },
+	{ key: "url", component: TableInput, attributes: { type: "url" } },
+	{ key: "thumbnail", component: TableInput, attributes: { type: "url" } },
+	{ key: "licenses", component: TableTags, attributes: {} },
 ];
 
 export default {
@@ -94,7 +91,6 @@ export default {
 		BaseTags,
 		BaseButton,
 		TableInput,
-		//HotTable,
 	},
 	props: {
 		resources: {
@@ -109,7 +105,7 @@ export default {
 	data() {
 		return {
 			availableColoumns,
-			visibleColoumns: ["title", "mimeType"], //, "url", "contentCategory", "tags"],
+			visibleColoumns: ["title", "isPublished", "contentCategory", "licenses"],
 		};
 	},
 	computed: {
@@ -134,6 +130,9 @@ export default {
 	methods: {
 		getComponent(key) {
 			return availableColoumns.find((coloumn) => coloumn.key === key);
+		},
+		getFormId(index) {
+			return `table-form-${index}`;
 		},
 	},
 };
