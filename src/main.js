@@ -3,12 +3,7 @@
 import Vue from "vue";
 import App from "./App";
 import router from "./router";
-import VueProgressBar from "vue-progressbar";
-import VueCookies from "vue-cookies";
-import VueResource from "vue-resource";
-import VueConfig from "vue-config";
 import "./registerServiceWorker";
-import VueFab from "vue-float-action-button";
 import store from "./store";
 
 // Global event bus
@@ -23,27 +18,32 @@ const toastOptions = {
 Vue.use(Toasted, toastOptions);
 
 // FAB
+import VueFab from "vue-float-action-button";
 Vue.use(VueFab, {
 	iconType: "MaterialDesign",
 });
 
 // Cookie access
+import VueCookies from "vue-cookies";
 Vue.use(VueCookies);
 
 // HTTP requests
+import VueResource from "vue-resource";
 Vue.use(VueResource);
 
 // global config file
+import VueConfig from "vue-config";
 const configFile = require("./config");
 Vue.use(VueConfig, configFile.default.configs);
 
 // language files
-const VueLang = require("vuejs-localization");
+import VueLang from "vuejs-localization";
 VueLang.requireAll(require.context("./lang", true, /\.js$/));
 Vue.use(VueLang, { default: "de" });
 
 // Progressbar
-const options = {
+import VueProgressBar from "vue-progressbar";
+const progressbarOptions = {
 	color: "#ffffff",
 	failedColor: "#874b4b",
 	thickness: "5px",
@@ -56,7 +56,7 @@ const options = {
 	location: "top",
 	inverse: false,
 };
-Vue.use(VueProgressBar, options);
+Vue.use(VueProgressBar, progressbarOptions);
 
 // Vue Config
 Vue.config.silent = false;
