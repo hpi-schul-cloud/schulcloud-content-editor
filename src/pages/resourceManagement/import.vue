@@ -9,12 +9,17 @@
 			<CsvUpload v-model="csv" />
 		</div>
 		<div v-if="progressbarCurrentStep === 1" class="content">
-			<MetadataMapping v-model="metadataFieldMapping" :options="getOptions" />
+			<MetadataMapping
+				v-model="metadataFieldMapping"
+				:csv-headers="csv.headers"
+			/>
 		</div>
 		<div v-if="progressbarCurrentStep === 2" class="content">
+			<h3>Vorschau</h3>
 			<PreviewTable
-				:header-fields="getPreviewTableHeader"
-				:content="getPreviewTableContent"
+				:header-fields="previewTableHeader"
+				:content="clippedContentRows"
+				:clipped="clipped"
 			/>
 			<div class="flex">
 				<h4 class="subtitle">Inhalte veröffentlichen?</h4>
@@ -25,9 +30,9 @@
 			<BaseButton
 				styling="primary"
 				:disabled="csv.content.length === 0"
-				@click="incrementCurrentStep"
+				@click="handleNextStep"
 			>
-				Nächster Schritt
+				{{ buttonText }}
 			</BaseButton>
 		</div>
 	</div>
@@ -40,6 +45,8 @@ import PreviewTable from "@/components/import/PreviewTable.vue";
 import BaseButton from "@/components/base/BaseButton.vue";
 import BaseCheckbox from "@/components/base/BaseCheckbox.vue";
 
+import api from "@/mixins/api.js";
+
 export default {
 	name: "CsvImport",
 	components: {
@@ -50,6 +57,7 @@ export default {
 		BaseButton,
 		BaseCheckbox,
 	},
+	mixins: [api],
 	data() {
 		return {
 			progressbarSteps: [
@@ -59,60 +67,93 @@ export default {
 			],
 			progressbarCurrentStep: 0,
 			csv: {
-				content: [],
 				headers: [],
+				content: [],
 				fileName: "",
 			},
 			metadataFieldMapping: {
-				Titel: "",
-				Beschreibung: "",
-				Lizenz: "",
-				Kategorie: "",
-				"MIME-type": "",
-				Tags: "",
-				URL: "",
-				"Thumbnail-URL": "",
+				title: "",
+				description: "",
+				licenses: "",
+				contentCategory: "",
+				mimeType: "",
+				tags: "",
+				url: "",
+				thumbnail: "",
 			},
 			disabledOptions: [],
 			isPublished: false,
+			maxRows: 5,
 		};
 	},
 	computed: {
-		getOptions: function() {
-			let options = [{ key: "none", value: "kein Match" }];
-
-			this.csv.headers.forEach((headerField) => {
-				let obj = {};
-				obj.key = headerField;
-				obj.value = headerField;
-				options.push(obj);
-			});
-
-			return options;
+		buttonText: function() {
+			if (this.progressbarCurrentStep === 2) return "Importieren";
+			else return "Nächster Schritt";
 		},
-		getPreviewTableHeader() {
+		previewTableHeader() {
 			let header = Object.keys(this.metadataFieldMapping);
 			return header;
 		},
-		getPreviewTableContent() {
-			let content = [];
-			this.csv.content.forEach((row) => {
-				let rowContent = [];
-				Object.values(this.metadataFieldMapping).forEach((metadata) => {
-					if (row[metadata]) {
-						rowContent.push(row[metadata]);
-					} else rowContent.push("");
+		importedResources: function() {
+			let newData = [];
+			this.csv.content.forEach((row, index) => {
+				let resource = {
+					title: "Test",
+					description: "Testbeschreibung",
+					licenses: [],
+					contentCategory: "atomic",
+					mimeType: "image",
+					tags: [],
+					url: "https://schul-cloud.org/",
+					thumbnail: "",
+					providerName: "TestProvider",
+					userId: "0000d231816abba584714c9e",
+					originId: Date.now().toString() + index,
+				};
+				Object.entries(this.metadataFieldMapping).forEach(([key, value]) => {
+					if (key === "tags" || key === "licenses") {
+						if (row[value]) {
+							resource[key] = row[value].split(",").map((each) => each.trim());
+						}
+					} else {
+						if (row[value]) {
+							resource[key] = row[value];
+						}
+					}
 				});
-				content.push(rowContent);
+				resource.contentCategory = "atomic";
+
+				newData.push(resource);
 			});
-			return content;
+			return newData;
+		},
+		clipped: function() {
+			return this.importedResources.length > this.maxRows;
+		},
+		clippedContentRows: function() {
+			return this.importedResources.slice(0, this.maxRows);
 		},
 	},
 	methods: {
-		incrementCurrentStep() {
+		handleNextStep() {
 			if (this.progressbarCurrentStep < 2) {
-				this.progressbarCurrentStep = this.progressbarCurrentStep + 1;
-			} else this.progressbarCurrentStep = 0;
+				this.incrementCurrentStep();
+			} else this.importCSV();
+		},
+		incrementCurrentStep() {
+			this.progressbarCurrentStep = this.progressbarCurrentStep + 1;
+		},
+		importCSV() {
+			let newData = this.importedResources;
+
+			return this.$_resourceCreate(newData)
+				.then((error) => {
+					this.$toasted.show(`Saved`);
+				})
+				.catch((error) => {
+					this.$toasted.error(`Failed to save`);
+				});
 		},
 	},
 };

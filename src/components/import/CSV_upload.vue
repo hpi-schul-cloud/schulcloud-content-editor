@@ -1,13 +1,13 @@
 <template>
 	<div>
-		<Dropzone>
+		<Dropzone @drop.prevent="handleDrop">
 			<label class="input-label">
 				Lade hier eine CSV-Datei hoch
 				<input
 					class="hidden-but-accessible"
 					type="file"
 					accept=".csv"
-					@input="loadCSV"
+					@input="handleFileChosen"
 				/>
 			</label>
 		</Dropzone>
@@ -37,38 +37,45 @@ export default {
 		},
 	},
 	methods: {
-		loadCSV(ev) {
+		handleDrop(ev) {
+			this.loadCSV(ev.dataTransfer.files[0]);
+		},
+		handleFileChosen(ev) {
 			let file = ev.target.files[0];
+			this.loadCSV(file);
+		},
+		loadCSV(file) {
+			if (!file.type === "application/vnd.ms-excel") {
+				// TODO is CSV always of this type?
+				return alert("Wrong file type! Please choose a csv-file.");
+			}
+			if (!window.FileReader) {
+				return alert("FileReader is not supported in this browser.");
+			}
 
-			if (file.type === "application/vnd.ms-excel") {
-				this.csv.fileName = file.name;
-				if (window.FileReader) {
-					var reader = new FileReader();
+			this.csv.fileName = file.name;
+			var reader = new FileReader();
 
-					reader.readAsText(file, "ISO-8859-1");
-					reader.onload = (event) => {
-						this.csv.content = this.parseCSV(event.target.result);
-					};
-					reader.onerror = (evt) => {
-						if (evt.target.error.name == "NotReadableError") {
-							alert("Cannot read file !");
-						}
-					};
-					this.$emit("input", this.csv);
-				} else {
-					alert("FileReader is not supported in this browser.");
-				}
-			} else alert("Wrong file type! Please choose a csv-file.");
+			reader.readAsText(file, "ISO-8859-1");
+			reader.onload = (event) => {
+				this.csv.content = this.parseCSV(event.target.result);
+				this.$emit("input", this.csv);
+			};
+			reader.onerror = (evt) => {
+				alert("Cannot read file !");
+			};
 		},
 		parseCSV(csv) {
 			const lines = csv.split("\n");
-			let result = [];
+			// read headers as array and remove it from lines
 			this.csv.headers = lines.splice(0, 1)[0].split(";");
 
+			const result = [];
 			lines.forEach((line, indexLine) => {
-				let obj = {};
-				let currentline = line.split(";");
+				const obj = {};
+				const currentline = line.split(";");
 
+				// ignore blank lines
 				if (currentline.length < this.csv.headers.length) {
 					return;
 				}

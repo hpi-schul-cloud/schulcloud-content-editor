@@ -1,16 +1,22 @@
 <template>
-	<table>
-		<tr>
-			<th v-for="(header, index) in headerFields" :key="index">
-				{{ header }}
-			</th>
-		</tr>
-		<tr v-for="(row, index) in content" :key="index">
-			<td v-for="(field, key) in row" :key="key">
-				{{ field }}
-			</td>
-		</tr>
-	</table>
+	<div>
+		<table>
+			<tr>
+				<th v-for="(header, index) in headerFields" :key="index">
+					{{ header }}
+				</th>
+			</tr>
+			<tr v-for="(row, index) in formattedContent" :key="index">
+				<td v-for="(field, key) in row" :key="key">
+					{{ field }}
+				</td>
+			</tr>
+		</table>
+
+		<div v-if="clipped" class="text-center">
+			<i class="material-icons">more_horiz</i>
+		</div>
+	</div>
 </template>
 <script>
 export default {
@@ -23,6 +29,22 @@ export default {
 		content: {
 			type: Array,
 			required: true,
+		},
+		clipped: {
+			type: Boolean,
+			default: false,
+		},
+	},
+	computed: {
+		formattedContent: function() {
+			return this.content.map((row) => {
+				return this.headerFields.map((headerField) => {
+					if (Array.isArray(row[headerField])) {
+						return row[headerField].join(", ");
+					}
+					return row[headerField];
+				});
+			});
 		},
 	},
 };
@@ -42,5 +64,8 @@ td {
 
 table {
 	width: 100%;
+}
+.text-center {
+	text-align: center;
 }
 </style>

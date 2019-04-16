@@ -1,28 +1,32 @@
 <template>
 	<table class="fixed">
-		<tr>
-			<th id="state-column"></th>
-			<th>Metadaten Felder</th>
-			<th>CSV-Felder</th>
-		</tr>
-		<tr v-for="(value, key) in metadataFieldMapping" :key="key">
-			<td>
-				<i v-if="metadataFieldMapping[key] != ''" class="material-icons">
-					done
-				</i>
-			</td>
-			<td>{{ key }}</td>
-			<td>
-				<BaseSelect
-					:options="options"
-					:disabled-options="disabledOptions"
-					label=""
-					name="FieldMapping"
-					:selected="metadataFieldMapping[key]"
-					@input="handleInput($event, key)"
-				/>
-			</td>
-		</tr>
+		<thead>
+			<tr>
+				<th class="state-column"></th>
+				<th>Metadaten Felder</th>
+				<th>CSV-Felder</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr v-for="(value, key) in metadataFieldMapping" :key="key">
+				<td>
+					<i v-if="metadataFieldMapping[key] != ''" class="material-icons">
+						done
+					</i>
+				</td>
+				<td>{{ $lang.resources[key] }}</td>
+				<td>
+					<BaseSelect
+						:options="mappingOptions"
+						:disabled-options="disabledOptions"
+						label=""
+						name="FieldMapping"
+						:selected="metadataFieldMapping[key]"
+						@input="handleInput($event, key)"
+					/>
+				</td>
+			</tr>
+		</tbody>
 	</table>
 </template>
 
@@ -42,21 +46,35 @@ export default {
 			type: Object,
 			required: true,
 		},
-		options: {
+		csvHeaders: {
 			type: Array,
 			required: true,
 		},
 	},
-	data() {
-		return {
-			disabledOptions: [],
-		};
+	computed: {
+		mappingOptions: function() {
+			let options = [{ key: "none", value: "kein Match" }];
+
+			options.push(
+				...this.csvHeaders.map((headerField) => {
+					let obj = {};
+					obj.key = headerField;
+					obj.value = headerField;
+					return obj;
+				})
+			);
+
+			return options;
+		},
+		disabledOptions: function() {
+			const selected = Object.values(this.metadataFieldMapping);
+			return selected.filter((option) => {
+				return option !== this.mappingOptions[0].key;
+			});
+		},
 	},
 	methods: {
 		handleInput(event, key) {
-			if (event != this.options[0].key) {
-				this.disabledOptions.push(event);
-			}
 			this.metadataFieldMapping[key] = event;
 		},
 	},
@@ -83,7 +101,7 @@ table {
 .fixed {
 	table-layout: fixed;
 
-	#state-column {
+	.state-column {
 		width: 40px;
 	}
 }
