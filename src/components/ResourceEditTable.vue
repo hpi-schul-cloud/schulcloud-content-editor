@@ -125,7 +125,14 @@ const availableColoumns = [
 	},
 	{ key: "url", component: TableInput, attributes: { type: "url" } },
 	{ key: "thumbnail", component: TableInput, attributes: { type: "url" } },
-	{ key: "licenses", component: TableTags, attributes: {} },
+	{
+		key: "licenses",
+		component: TableTags,
+		attributes: {},
+		wrapperAttributes: {
+			style: "width: 150px",
+		},
+	},
 ];
 
 export default {
