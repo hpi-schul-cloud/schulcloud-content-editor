@@ -138,9 +138,9 @@ export default {
 					this.resources = data.data;
 					this.pagination.totalEntrys = data.total;
 				})
-				.catch((e) => {
-					// TODO: show error to user
+				.catch((error) => {
 					console.error(e);
+					this.$toasted.error(error);
 				});
 		},
 	},
