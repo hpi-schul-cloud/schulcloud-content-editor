@@ -5,6 +5,11 @@
 			:label="$lang.search.searchbar.label"
 			:placeholder="$lang.search.searchbar.placeholder"
 		/>
+
+		<p>
+			{{ pagination.totalEntrys }} {{ $lang.search.number_of_found_items }}.
+		</p>
+
 		<ResourceEditTable
 			:resources="resources"
 			:index-start="(pagination.page - 1) * pagination.itemsPerPage"

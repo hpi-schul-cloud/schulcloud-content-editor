@@ -14,6 +14,5 @@ export default {
 <style lang="scss" scoped>
 .searchbar {
 	max-width: 500px;
-	padding: 0 1rem;
 }
 </style>

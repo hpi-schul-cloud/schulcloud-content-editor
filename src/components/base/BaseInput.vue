@@ -65,11 +65,13 @@ label {
 	width: 100%;
 	font-size: 1.15em;
 	line-height: 32px;
-	color: #757575;
+	color: #333;
 	background: rgba(255, 255, 255, 0);
 	border: none;
 	border-bottom: 1px solid #949494;
-
+	::placeholder {
+		color: #999;
+	}
 	&:focus {
 		border-bottom-color: var(--primaryColor);
 		border-bottom-width: 2px;
