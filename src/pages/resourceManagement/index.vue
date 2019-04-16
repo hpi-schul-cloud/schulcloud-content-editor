@@ -10,20 +10,10 @@
 			{{ pagination.totalEntrys }} {{ $lang.search.number_of_found_items }}.
 		</p>
 
-		<BaseTags
-			v-model="visibleColoumns"
-			label="Select Coloumns"
-			:autocomplete-items="availableColoumns.map((a) => ({ text: a.key }))"
-			:add-only-from-autocomplete="true"
-		/>
-
-		<ResourceEditTable
+		<ResourceBulkEdit
 			v-if="resources.length"
 			:resources="resources"
-			:header-visible="true"
-			:visible-coloumns="visibleColoumns"
-			:index-start="(pagination.page - 1) * pagination.itemsPerPage"
-			@patchResource="patchResource"
+			:resource-start-index="(pagination.page - 1) * pagination.itemsPerPage"
 		/>
 		<p v-else>
 			{{ $lang.search.nothing_found }}
@@ -38,21 +28,16 @@
 
 <script>
 import Searchbar from "@/components/Searchbar.vue";
-import BaseTags from "@/components/base/BaseTags.vue";
-import ResourceEditTable, {
-	availableColoumns,
-} from "@/components/ResourceEditTable.vue";
 import Pagination from "@/components/Pagination.vue";
+import ResourceBulkEdit from "@/components/ResourceBulkEdit.vue";
 
 import api from "@/mixins/api.js";
 
 export default {
-	name: "Overview",
 	components: {
 		Searchbar,
-		BaseTags,
-		ResourceEditTable,
 		Pagination,
+		ResourceBulkEdit,
 	},
 	mixins: [api],
 	data() {
@@ -69,14 +54,6 @@ export default {
 					behavior: "smooth",
 				},
 			},
-			availableColoumns,
-			visibleColoumns: [
-				"title",
-				"isPublished",
-				"contentCategory",
-				"licenses",
-				"description",
-			],
 			resources: [],
 		};
 	},
@@ -171,18 +148,6 @@ export default {
 				.catch((error) => {
 					console.error(e);
 					this.$toasted.error(error);
-				});
-		},
-		patchResource(resource) {
-			const resourceViewIndex =
-				(this.pagination.page - 1) * this.pagination.itemsPerPage +
-				this.resources.indexOf(resource);
-			return this.$_resourcePatch(resource)
-				.then(() => {
-					this.$toasted.show(`L${resourceViewIndex} - Saved`);
-				})
-				.catch((error) => {
-					this.$toasted.error(`L${resourceViewIndex} - Failed to save`);
 				});
 		},
 	},
