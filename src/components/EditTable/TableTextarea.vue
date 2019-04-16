@@ -15,10 +15,6 @@ export default {
 			type: String,
 			default: "",
 		},
-		type: {
-			type: String,
-			required: true,
-		},
 		label: {
 			type: String,
 			required: true,
