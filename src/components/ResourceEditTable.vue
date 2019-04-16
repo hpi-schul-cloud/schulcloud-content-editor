@@ -28,7 +28,7 @@
 					<td
 						v-for="(coloumn, coloumnIndex) in visibleColoumns"
 						:key="coloumn"
-						:class="getComponent(coloumn).class"
+						v-bind="getComponent(coloumn).wrapperAttributes"
 					>
 						<form
 							v-if="coloumnIndex === 0"
@@ -90,6 +90,7 @@ import BaseButton from "@/components/base/BaseButton.vue";
 import BaseTags from "@/components/base/BaseTags.vue";
 import TableCheckbox from "@/components/EditTable/TableCheckbox.vue";
 import TableInput from "@/components/EditTable/TableInput.vue";
+import TableTextarea from "@/components/EditTable/TableTextarea.vue";
 import TableSelect from "@/components/EditTable/TableSelect.vue";
 import TableTags from "@/components/EditTable/TableTags.vue";
 
@@ -105,13 +106,22 @@ const availableColoumns = [
 		key: "contentCategory",
 		component: TableSelect,
 		attributes: { options: CategoryOptions },
+		wrapperAttributes: {
+			style: "width: 150px",
+		},
 	},
-	{ key: "description", component: TableInput, attributes: {} },
+	{
+		key: "description",
+		component: TableTextarea,
+		attributes: {},
+	},
 	{
 		key: "isPublished",
 		component: TableCheckbox,
 		attributes: { type: "checkbox" },
-		class: "fit-content",
+		wrapperAttributes: {
+			class: "fit-content",
+		},
 	},
 	{ key: "url", component: TableInput, attributes: { type: "url" } },
 	{ key: "thumbnail", component: TableInput, attributes: { type: "url" } },
@@ -138,7 +148,13 @@ export default {
 	data() {
 		return {
 			availableColoumns,
-			visibleColoumns: ["title", "isPublished", "contentCategory", "licenses"],
+			visibleColoumns: [
+				"title",
+				"isPublished",
+				"contentCategory",
+				"licenses",
+				"description",
+			],
 		};
 	},
 	methods: {
@@ -188,16 +204,17 @@ export default {
 table.sticky {
 	th {
 		position: sticky;
+		z-index: 1;
 		font-size: 1.1em;
 		background: #fff;
 	}
 	thead th {
-		top: 0;
+		top: 80px;
 	}
 }
 table.edit {
 	td {
-		&:focus-within {
+		&:focus-within:not(:last-of-type) {
 			box-shadow: inset 0 0 0 2px var(--primaryColor);
 		}
 	}
