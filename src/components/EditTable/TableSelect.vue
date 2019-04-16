@@ -19,6 +19,10 @@
 
 <script>
 export default {
+	model: {
+		prop: "value",
+		event: "update",
+	},
 	props: {
 		options: {
 			type: Array,
@@ -41,7 +45,9 @@ export default {
 		handleChange(event) {
 			this.$emit(
 				"update",
-				multiple ? this.getSelectValues(this.$refs.select) : event.target.value
+				this.multiple
+					? this.getSelectValues(this.$refs.select)
+					: event.target.value
 			);
 		},
 		getSelectValues(select) {

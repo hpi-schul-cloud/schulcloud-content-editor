@@ -5,27 +5,39 @@
 			:label="$lang.search.searchbar.label"
 			:placeholder="$lang.search.searchbar.placeholder"
 		/>
-		<ResourceEditTable
+
+		<p>
+			{{ pagination.totalEntrys }} {{ $lang.search.number_of_found_items }}.
+		</p>
+
+		<ResourceBulkEdit
+			v-if="resources.length"
 			:resources="resources"
-			:index-start="(pagination.page - 1) * pagination.itemsPerPage"
+			:resource-start-index="(pagination.page - 1) * pagination.itemsPerPage"
 		/>
+		<p v-else>
+			{{ $lang.search.nothing_found }}
+			<br />
+			<small>
+				{{ $lang.search.nothing_found_help }}
+			</small>
+		</p>
 		<Pagination :config="pagination" @pageChanged="handlePageChange" />
 	</div>
 </template>
 
 <script>
 import Searchbar from "@/components/Searchbar.vue";
-import ResourceEditTable from "@/components/ResourceEditTable.vue";
 import Pagination from "@/components/Pagination.vue";
+import ResourceBulkEdit from "@/components/ResourceBulkEdit.vue";
 
 import api from "@/mixins/api.js";
 
 export default {
-	name: "Overview",
 	components: {
 		Searchbar,
-		ResourceEditTable,
 		Pagination,
+		ResourceBulkEdit,
 	},
 	mixins: [api],
 	data() {
@@ -133,9 +145,9 @@ export default {
 					this.resources = data.data;
 					this.pagination.totalEntrys = data.total;
 				})
-				.catch((e) => {
-					// TODO: show error to user
+				.catch((error) => {
 					console.error(e);
+					this.$toasted.error(error);
 				});
 		},
 	},

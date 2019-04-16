@@ -1,99 +1,78 @@
 <template>
-	<div>
-		<BaseTags
-			v-model="visibleColoumns"
-			label="Select Coloumns"
-			:autocomplete-items="availableColoumns.map((a) => ({ text: a.key }))"
-			:add-only-from-autocomplete="true"
-		/>
-		<table v-if="resources.length" class="table edit sticky">
-			<thead>
-				<tr>
-					<th style="width: 3em" />
-					<th
-						v-for="coloumn in visibleColoumns"
-						:key="coloumn"
-						:class="getComponent(coloumn).class"
+	<table class="table edit sticky">
+		<thead v-if="headerVisible">
+			<tr>
+				<th style="width: 3em" />
+				<th
+					v-for="coloumn in visibleColoumns"
+					:key="coloumn"
+					:class="getComponent(coloumn).class"
+				>
+					{{ $lang.resources[coloumn] }}
+				</th>
+				<th class="fit-content">
+					Actions
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr v-for="(resource, rowIndex) in resources" :key="resource._id">
+				<td style="text-align: right;">{{ indexStart + rowIndex + 1 }}</td>
+				<td
+					v-for="(coloumn, coloumnIndex) in visibleColoumns"
+					:key="coloumn"
+					v-bind="getComponent(coloumn).wrapperAttributes"
+				>
+					<form
+						v-if="coloumnIndex === 0"
+						:id="getFormId(rowIndex)"
+						@submit.prevent="
+							handleFormSubmit(resource, indexStart + rowIndex + 1)
+						"
+					></form>
+					<component
+						:is="getComponent(coloumn).component"
+						v-model="resource[coloumn]"
+						:form="getFormId(rowIndex)"
+						:label="coloumn"
+						:name="coloumn"
+						v-bind="getComponent(coloumn).attributes"
+					/>
+				</td>
+				<td style="text-align: center;">
+					<BaseButton type="submit" :form="getFormId(rowIndex)" class="action">
+						<i class="material-icons">
+							check
+						</i>
+					</BaseButton>
+					<RouterLink
+						class="action"
+						:to="{
+							name: 'resourceManagement/edit',
+							params: { id: resource._id },
+						}"
 					>
-						{{ $lang.resources[coloumn] }}
-					</th>
-					<th class="fit-content">
-						Actions
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr v-for="(resource, rowIndex) in resources" :key="resource._id">
-					<td style="text-align: right;">{{ indexStart + rowIndex + 1 }}</td>
-					<td
-						v-for="(coloumn, coloumnIndex) in visibleColoumns"
-						:key="coloumn"
-						:class="getComponent(coloumn).class"
-					>
-						<form
-							v-if="coloumnIndex === 0"
-							:id="getFormId(rowIndex)"
-							@submit.prevent="
-								handleFormSubmit(resource, indexStart + rowIndex + 1)
-							"
-						></form>
-						<component
-							:is="getComponent(coloumn).component"
-							v-model="resource[coloumn]"
-							:form="getFormId(rowIndex)"
-							:label="coloumn"
-							:name="coloumn"
-							v-bind="getComponent(coloumn).attributes"
-						/>
-					</td>
-					<td style="text-align: center;">
-						<BaseButton
-							type="submit"
-							:form="getFormId(rowIndex)"
-							class="action"
-						>
-							<i class="material-icons">
-								check
-							</i>
-						</BaseButton>
-						<RouterLink
-							class="action"
-							:to="{
-								name: 'resourceManagement/edit',
-								params: { id: resource._id },
-							}"
-						>
-							<i class="material-icons">
-								edit
-							</i>
-						</RouterLink>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-		<p v-else>
-			{{ $lang.search.nothing_found }}
-			<br />
-			<small>
-				{{ $lang.search.nothing_found_help }}
-			</small>
-		</p>
-	</div>
+						<i class="material-icons">
+							edit
+						</i>
+					</RouterLink>
+				</td>
+			</tr>
+		</tbody>
+	</table>
 </template>
 
 <script>
-import api from "@/mixins/api.js";
-
 import { options as MimeTypeOptions } from "@/components/inputs/ContentMimetype.vue";
 import { options as CategoryOptions } from "@/components/inputs/ContentCategory.vue";
 import BaseButton from "@/components/base/BaseButton.vue";
-import BaseTags from "@/components/base/BaseTags.vue";
 import TableCheckbox from "@/components/EditTable/TableCheckbox.vue";
 import TableInput from "@/components/EditTable/TableInput.vue";
+import TableTextarea from "@/components/EditTable/TableTextarea.vue";
 import TableSelect from "@/components/EditTable/TableSelect.vue";
 import TableTags from "@/components/EditTable/TableTags.vue";
 
-const availableColoumns = [
+export const availableColoumns = [
 	{ key: "title", component: TableInput, attributes: { type: "text" } },
 	{ key: "tags", component: TableTags, attributes: {} },
 	{
@@ -105,26 +84,40 @@ const availableColoumns = [
 		key: "contentCategory",
 		component: TableSelect,
 		attributes: { options: CategoryOptions },
+		wrapperAttributes: {
+			style: "width: 150px",
+		},
 	},
-	{ key: "description", component: TableInput, attributes: {} },
+	{
+		key: "description",
+		component: TableTextarea,
+		attributes: {},
+	},
 	{
 		key: "isPublished",
 		component: TableCheckbox,
 		attributes: { type: "checkbox" },
-		class: "fit-content",
+		wrapperAttributes: {
+			class: "fit-content",
+		},
 	},
 	{ key: "url", component: TableInput, attributes: { type: "url" } },
 	{ key: "thumbnail", component: TableInput, attributes: { type: "url" } },
-	{ key: "licenses", component: TableTags, attributes: {} },
+	{
+		key: "licenses",
+		component: TableTags,
+		attributes: {},
+		wrapperAttributes: {
+			style: "width: 150px",
+		},
+	},
 ];
 
 export default {
 	components: {
-		BaseTags,
 		BaseButton,
 		TableInput,
 	},
-	mixins: [api],
 	props: {
 		resources: {
 			type: Array,
@@ -134,11 +127,17 @@ export default {
 			type: Number,
 			default: 0,
 		},
+		headerVisible: {
+			type: Boolean,
+		},
+		visibleColoumns: {
+			type: Array,
+			default: () => [],
+		},
 	},
 	data() {
 		return {
 			availableColoumns,
-			visibleColoumns: ["title", "isPublished", "contentCategory", "licenses"],
 		};
 	},
 	methods: {
@@ -149,13 +148,7 @@ export default {
 			return `table-form-${index}`;
 		},
 		handleFormSubmit(resource, index) {
-			return this.$_resourcePatch(resource)
-				.then(() => {
-					this.$toasted.show(`L${index} - Saved`);
-				})
-				.catch((error) => {
-					this.$toasted.error(`L${index} - Failed to save`);
-				});
+			this.$emit("patchResource", resource);
 		},
 	},
 };
@@ -188,16 +181,17 @@ export default {
 table.sticky {
 	th {
 		position: sticky;
+		z-index: 1;
 		font-size: 1.1em;
 		background: #fff;
 	}
 	thead th {
-		top: 0;
+		top: 80px;
 	}
 }
 table.edit {
 	td {
-		&:focus-within {
+		&:focus-within:not(:last-of-type) {
 			box-shadow: inset 0 0 0 2px var(--primaryColor);
 		}
 	}
