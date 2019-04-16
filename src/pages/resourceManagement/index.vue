@@ -10,17 +10,38 @@
 			{{ pagination.totalEntrys }} {{ $lang.search.number_of_found_items }}.
 		</p>
 
-		<ResourceEditTable
-			:resources="resources"
-			:index-start="(pagination.page - 1) * pagination.itemsPerPage"
+		<BaseTags
+			v-model="visibleColoumns"
+			label="Select Coloumns"
+			:autocomplete-items="availableColoumns.map((a) => ({ text: a.key }))"
+			:add-only-from-autocomplete="true"
 		/>
+
+		<ResourceEditTable
+			v-if="resources.length"
+			:resources="resources"
+			:header-visible="true"
+			:visible-coloumns="visibleColoumns"
+			:index-start="(pagination.page - 1) * pagination.itemsPerPage"
+			@patchResource="patchResource"
+		/>
+		<p v-else>
+			{{ $lang.search.nothing_found }}
+			<br />
+			<small>
+				{{ $lang.search.nothing_found_help }}
+			</small>
+		</p>
 		<Pagination :config="pagination" @pageChanged="handlePageChange" />
 	</div>
 </template>
 
 <script>
 import Searchbar from "@/components/Searchbar.vue";
-import ResourceEditTable from "@/components/ResourceEditTable.vue";
+import BaseTags from "@/components/base/BaseTags.vue";
+import ResourceEditTable, {
+	availableColoumns,
+} from "@/components/ResourceEditTable.vue";
 import Pagination from "@/components/Pagination.vue";
 
 import api from "@/mixins/api.js";
@@ -29,6 +50,7 @@ export default {
 	name: "Overview",
 	components: {
 		Searchbar,
+		BaseTags,
 		ResourceEditTable,
 		Pagination,
 	},
@@ -47,6 +69,14 @@ export default {
 					behavior: "smooth",
 				},
 			},
+			availableColoumns,
+			visibleColoumns: [
+				"title",
+				"isPublished",
+				"contentCategory",
+				"licenses",
+				"description",
+			],
 			resources: [],
 		};
 	},
@@ -141,6 +171,18 @@ export default {
 				.catch((error) => {
 					console.error(e);
 					this.$toasted.error(error);
+				});
+		},
+		patchResource(resource) {
+			const resourceViewIndex =
+				(this.pagination.page - 1) * this.pagination.itemsPerPage +
+				this.resources.indexOf(resource);
+			return this.$_resourcePatch(resource)
+				.then(() => {
+					this.$toasted.show(`L${resourceViewIndex} - Saved`);
+				})
+				.catch((error) => {
+					this.$toasted.error(`L${resourceViewIndex} - Failed to save`);
 				});
 		},
 	},
