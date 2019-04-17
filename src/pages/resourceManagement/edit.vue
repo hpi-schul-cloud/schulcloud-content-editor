@@ -125,11 +125,9 @@
 <script>
 import Vue from "vue";
 import VeeValidate from "vee-validate";
-
 Vue.use(VeeValidate);
 
 import ContentCard from "@/components/resourceManagement/edit/ContentCard";
-
 const BaseConfirm = () =>
 	import(/* webpackChunkName: "BaseConfirm" */ "@/components/base/BaseConfirm");
 
@@ -285,8 +283,8 @@ export default {
 				!newData.url.startsWith("http");
 
 			const request = this.editMode
-				? $_resourcePatch(newData)
-				: $_resourceCreate(newData);
+				? this.$_resourcePatch(newData)
+				: this.$_resourceCreate(newData);
 			return request.then(() => {
 				this.$router.push({ name: "resourceManagement" });
 			});
