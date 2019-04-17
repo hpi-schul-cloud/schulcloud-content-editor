@@ -45,16 +45,14 @@ export default {
 	data() {
 		return {
 			pageString: "1", // needed to display current page (only strings allowed for v-model)
-			maxPages: "1",
 		};
 	},
+	computed: {
+		maxPages() {
+			return Math.ceil(this.config.totalEntrys / this.config.itemsPerPage) || 1;
+		},
+	},
 	watch: {
-		"config.totalEntrys": function() {
-			this.calcMaxPages();
-		},
-		"config.itemsPerPage": function() {
-			this.calcMaxPages();
-		},
 		"config.page": function() {
 			if (this.config.scroll) {
 				window.scroll(this.config.scroll);
@@ -62,22 +60,21 @@ export default {
 			this.pageString = this.config.page.toString();
 			this.$emit("pageChanged", this.config.page);
 		},
-		pageString(to) {
+		pageString(to, from) {
 			if (to) {
-				this.config.page = Number.parseInt(this.pageString);
+				const newPage = Number.parseInt(this.pageString);
+				if (newPage < 1) {
+					this.pageString = "1";
+				} else if (newPage > this.maxPages) {
+					this.pageString = this.maxPages.toString();
+				} else {
+					this.config.page = newPage;
+				}
 			}
 		},
 	},
 	created() {
 		this.pageString = this.config.page.toString();
-		this.calcMaxPages();
-	},
-	methods: {
-		calcMaxPages() {
-			this.maxPages = (
-				Math.ceil(this.config.totalEntrys / this.config.itemsPerPage) || 1
-			).toString();
-		},
 	},
 };
 </script>
