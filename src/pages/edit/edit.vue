@@ -29,9 +29,16 @@
 						<ContentTags v-model="data.tags" />
 						<h3>Inhalte</h3>
 						<div class="wrapper">
-							<h4 class="subtitle">Inhalte veröffentlichen?</h4>
-							<BaseCheckbox v-model="data.isPublished" label="published">
-							</BaseCheckbox>
+							<BaseCheckbox
+								v-model="data.isPublished"
+								label="Inhalte veröffentlichen?"
+							/>
+						</div>
+						<div class="wrapper">
+							<BaseCheckbox
+								v-model="data.isProtected"
+								label="Inhalte schützen?"
+							/>
 						</div>
 						<ContentHostingProvider v-model="hostingOption" />
 						<template v-if="hostingOption === 'hostedExternally'">
