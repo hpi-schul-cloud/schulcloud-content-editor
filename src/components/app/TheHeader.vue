@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import BaseMenu from "@/components/base/BaseMenu.vue";
+import BaseMenu from "@/components/base/BaseMenu";
 
 export default {
 	components: {

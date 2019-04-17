@@ -62,9 +62,9 @@
 <script>
 /* load confirmDialog async */
 const ConfirmDialog = () =>
-	import(/* webpackChunkName: "confirmDialog" */ "@/components/dialogs/Confirm.vue");
-import BaseCard from "@/components/base/BaseCard.vue";
-import BaseButton from "@/components/base/BaseButton.vue";
+	import(/* webpackChunkName: "confirmDialog" */ "@/components/dialogs/Confirm");
+import BaseCard from "@/components/base/BaseCard";
+import BaseButton from "@/components/base/BaseButton";
 
 export default {
 	name: "ContentForm",

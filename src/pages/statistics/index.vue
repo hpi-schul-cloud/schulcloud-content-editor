@@ -10,21 +10,16 @@
 				class="card-wrapper grid-xs-12 grid-s-6 grid-m-6 grid-l-4 grid-xl-4 height-100"
 			>
 				<b>{{ $lang.stats.clicks }}: {{ item.clickCount }}</b>
-				<ContentCard :data="item" class="height-100" />
+				<pre>{{ JSON.stringify(item, null, 2) }}</pre>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
-const ContentCard = () => import("@/components/ContentCard.vue");
-
 import api from "@/mixins/api.js";
 
 export default {
-	components: {
-		ContentCard,
-	},
 	mixins: [api],
 	data() {
 		return {

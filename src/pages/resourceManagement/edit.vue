@@ -124,30 +124,30 @@ import VeeValidate from "vee-validate";
 
 Vue.use(VeeValidate);
 
-import ContentCard from "@/components/ContentCard.vue";
+import ContentCard from "@/components/resourceManagement/edit/ContentCard";
 
 const ConfirmDialog = () =>
-	import(/* webpackChunkName: "ConfirmDialog" */ "@/components/dialogs/Confirm.vue");
+	import(/* webpackChunkName: "ConfirmDialog" */ "@/components/dialogs/Confirm");
 
-import ContentTitle from "@/components/inputs/ContentTitle.vue";
-import ContentDescription from "@/components/inputs/ContentDescription.vue";
-import ContentUrl from "@/components/inputs/ContentUrl.vue";
-import ContentUrlThumbnail from "@/components/inputs/ContentUrlThumbnail.vue";
-import ContentLicense from "@/components/inputs/ContentLicense.vue";
-import ContentCategory from "@/components/inputs/ContentCategory.vue";
-import ContentMimetype from "@/components/inputs/ContentMimetype.vue";
-import ContentTags from "@/components/inputs/ContentTags.vue";
-import ContentHostingProvider from "@/components/inputs/ContentHostingProvider.vue";
-import ContentEntrypointSelector from "@/components/inputs/ContentEntrypointSelector.vue";
-import ContentThumbnailSelector from "@/components/inputs/ContentThumbnailSelector.vue";
-import BaseButton from "@/components/base/BaseButton.vue";
-import BaseCard from "@/components/base/BaseCard.vue";
-import BaseCheckbox from "@/components/base/BaseCheckbox.vue";
+import ContentTitle from "@/components/resourceManagement/edit/inputs/ContentTitle";
+import ContentDescription from "@/components/resourceManagement/edit/inputs/ContentDescription";
+import ContentUrl from "@/components/resourceManagement/edit/inputs/ContentUrl";
+import ContentUrlThumbnail from "@/components/resourceManagement/edit/inputs/ContentUrlThumbnail";
+import ContentLicense from "@/components/resourceManagement/edit/inputs/ContentLicense";
+import ContentCategory from "@/components/resourceManagement/edit/inputs/ContentCategory";
+import ContentMimetype from "@/components/resourceManagement/edit/inputs/ContentMimetype";
+import ContentTags from "@/components/resourceManagement/edit/inputs/ContentTags";
+import ContentHostingProvider from "@/components/resourceManagement/edit/inputs/ContentHostingProvider";
+import ContentEntrypointSelector from "@/components/resourceManagement/edit/inputs/ContentEntrypointSelector";
+import ContentThumbnailSelector from "@/components/resourceManagement/edit/inputs/ContentThumbnailSelector";
+import BaseButton from "@/components/base/BaseButton";
+import BaseCard from "@/components/base/BaseCard";
+import BaseCheckbox from "@/components/base/BaseCheckbox";
 
 import filetree from "@/mixins/filetree.js";
 import api from "@/mixins/api.js";
 
-import FileUpload from "@/components/Upload.vue";
+import FileUpload from "@/components/resourceManagement/edit/fileUpload/Upload";
 
 export default {
 	name: "ContentForm",

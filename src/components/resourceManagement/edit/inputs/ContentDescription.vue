@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import BaseTextarea from "@/components/base/BaseTextarea.vue";
+import BaseTextarea from "@/components/base/BaseTextarea";
 
 export default {
 	components: {

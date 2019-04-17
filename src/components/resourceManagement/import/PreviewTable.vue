@@ -20,7 +20,6 @@
 </template>
 <script>
 export default {
-	name: "PreviewTable",
 	props: {
 		headerFields: {
 			type: Array,

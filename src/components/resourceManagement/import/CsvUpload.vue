@@ -19,10 +19,9 @@
 </template>
 
 <script>
-import Dropzone from "@/components/Dropzone.vue";
+import Dropzone from "@/components/resourceManagement/Dropzone";
 
 export default {
-	name: "CsvUpload",
 	components: {
 		Dropzone,
 	},

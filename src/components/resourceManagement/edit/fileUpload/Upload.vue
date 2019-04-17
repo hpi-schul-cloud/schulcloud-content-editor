@@ -13,8 +13,8 @@
 </template>
 
 <script>
-import Filetree from "@/components/Filetree.vue";
-import Dropzone from "@/components/Dropzone.vue";
+import Filetree from "@/components/resourceManagement/edit/fileUpload/Filetree";
+import Dropzone from "@/components/resourceManagement/Dropzone";
 import upload from "@/mixins/upload.js";
 import filetree from "@/mixins/filetree.js";
 

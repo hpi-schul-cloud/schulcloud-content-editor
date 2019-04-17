@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import BaseConfirm from "./BaseConfirm.vue";
+import BaseConfirm from "@/components/base/BaseConfirm";
 
 export default {
 	name: "DialogConfirm",

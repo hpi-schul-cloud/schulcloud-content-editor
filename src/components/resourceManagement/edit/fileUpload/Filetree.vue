@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import FiletreeEntry from "@/components/FiletreeEntry.vue";
+import FiletreeEntry from "./FiletreeEntry";
 import upload from "@/mixins/upload.js";
 import filetree from "@/mixins/filetree.js";
 

@@ -63,14 +63,14 @@
 </template>
 
 <script>
-import { options as MimeTypeOptions } from "@/components/inputs/ContentMimetype.vue";
-import { options as CategoryOptions } from "@/components/inputs/ContentCategory.vue";
-import BaseButton from "@/components/base/BaseButton.vue";
-import TableCheckbox from "@/components/EditTable/TableCheckbox.vue";
-import TableInput from "@/components/EditTable/TableInput.vue";
-import TableTextarea from "@/components/EditTable/TableTextarea.vue";
-import TableSelect from "@/components/EditTable/TableSelect.vue";
-import TableTags from "@/components/EditTable/TableTags.vue";
+import { options as MimeTypeOptions } from "@/components/resourceManagement/edit/inputs/ContentMimetype";
+import { options as CategoryOptions } from "@/components/resourceManagement/edit/inputs/ContentCategory";
+import BaseButton from "@/components/base/BaseButton";
+import TableCheckbox from "./EditTable/TableCheckbox";
+import TableInput from "./EditTable/TableInput";
+import TableTextarea from "./EditTable/TableTextarea";
+import TableSelect from "./EditTable/TableSelect";
+import TableTags from "./EditTable/TableTags";
 
 export const availableColoumns = [
 	{ key: "title", component: TableInput, attributes: { type: "text" } },

@@ -27,9 +27,9 @@
 </template>
 
 <script>
-import Searchbar from "@/components/Searchbar.vue";
-import Pagination from "@/components/Pagination.vue";
-import ResourceBulkEdit from "@/components/ResourceBulkEdit.vue";
+import Searchbar from "@/components/Searchbar";
+import Pagination from "@/components/Pagination";
+import ResourceBulkEdit from "@/components/resourceManagement/index/ResourceBulkEdit";
 
 import api from "@/mixins/api.js";
 

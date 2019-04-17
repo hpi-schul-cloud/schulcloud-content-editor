@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import BaseSelect from "@/components/base/BaseSelect.vue";
+import BaseSelect from "@/components/base/BaseSelect";
 
 export default {
 	components: {

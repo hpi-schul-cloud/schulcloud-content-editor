@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import BaseButton from "@/components/base/BaseButton.vue";
+import BaseButton from "@/components/base/BaseButton";
 
 export default {
 	name: "BaseConfirm",

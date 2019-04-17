@@ -1,17 +1,17 @@
 <template>
 	<BaseInput
-		name="title"
+		name="url"
 		:value="value"
 		type="text"
 		:label="getLabel"
-		placeholder="Malen nach Zahlen"
+		placeholder="https://..."
 		:error="error"
 		@input="$emit('input', $event)"
 	/>
 </template>
 
 <script>
-import BaseInput from "@/components/base/BaseInput.vue";
+import BaseInput from "@/components/base/BaseInput";
 
 export default {
 	components: {
@@ -33,7 +33,7 @@ export default {
 	},
 	computed: {
 		getLabel: function() {
-			if (!this.withoutLabel) return this.$lang.edit.form.title;
+			if (!this.withoutLabel) return this.$lang.edit.form.url;
 			else return "";
 		},
 	},

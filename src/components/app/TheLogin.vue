@@ -60,9 +60,9 @@
 </template>
 
 <script>
-import BaseButton from "@/components/base/BaseButton.vue";
-import BaseCard from "@/components/base/BaseCard.vue";
-import BaseInput from "@/components/base/BaseInput.vue";
+import BaseButton from "@/components/base/BaseButton";
+import BaseCard from "@/components/base/BaseCard";
+import BaseInput from "@/components/base/BaseInput";
 
 import api from "@/mixins/api.js";
 

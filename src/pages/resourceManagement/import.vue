@@ -38,12 +38,12 @@
 	</div>
 </template>
 <script>
-import StepProgress from "@/components/StepProgress.vue";
-import CsvUpload from "@/components/import/CSV_upload.vue";
-import MetadataMapping from "@/components/import/MappingMetadata.vue";
-import PreviewTable from "@/components/import/PreviewTable.vue";
-import BaseButton from "@/components/base/BaseButton.vue";
-import BaseCheckbox from "@/components/base/BaseCheckbox.vue";
+import StepProgress from "@/components/StepProgress";
+import CsvUpload from "@/components/resourceManagement/import/CsvUpload";
+import MetadataMapping from "@/components/resourceManagement/import/MappingMetadata";
+import PreviewTable from "@/components/resourceManagement/import/PreviewTable";
+import BaseButton from "@/components/base/BaseButton";
+import BaseCheckbox from "@/components/base/BaseCheckbox";
 
 import api from "@/mixins/api.js";
 

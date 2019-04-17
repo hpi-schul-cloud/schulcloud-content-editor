@@ -19,10 +19,10 @@
 </template>
 
 <script>
-import BaseTags from "@/components/base/BaseTags.vue";
+import BaseTags from "@/components/base/BaseTags";
 import ResourceEditTable, {
 	availableColoumns,
-} from "@/components/ResourceEditTable.vue";
+} from "@/components/resourceManagement/index/ResourceEditTable";
 
 import api from "@/mixins/api.js";
 

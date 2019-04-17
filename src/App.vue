@@ -18,11 +18,11 @@
 
 <script>
 /* load login async */
-const TheLogin = () => import("@/components/TheLogin.vue");
-import TheHeader from "@/components/TheHeader.vue";
-import TheFAB from "@/components/TheFAB.vue";
-import TheSidebar from "@/components/TheSidebar.vue";
-import TheFooter from "@/components/TheFooter.vue";
+const TheLogin = () => import("@/components/app/TheLogin");
+import TheHeader from "@/components/app/TheHeader";
+import TheFAB from "@/components/app/TheFAB";
+import TheSidebar from "@/components/app/TheSidebar";
+import TheFooter from "@/components/app/TheFooter";
 import Router from "@/router/index.js";
 
 const sidebarItems = Router.options.routes.filter((route) => {
