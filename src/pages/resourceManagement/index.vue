@@ -11,11 +11,12 @@
 		</p>
 
 		<ResourceBulkEdit
-			v-if="resources.length"
+			v-show="true || resources.length"
 			:resources="resources"
 			:resource-start-index="(pagination.page - 1) * pagination.itemsPerPage"
+			:query="apiSearchQuery"
 		/>
-		<p v-else>
+		<p v-show="!resources.length">
 			{{ $lang.search.nothing_found }}
 			<br />
 			<small>
@@ -56,6 +57,15 @@ export default {
 			},
 			resources: [],
 		};
+	},
+	computed: {
+		apiSearchQuery() {
+			return {
+				$limit: this.pagination.itemsPerPage,
+				$skip: this.pagination.itemsPerPage * (this.pagination.page - 1),
+				"_all[$match]": this.searchString,
+			};
+		},
 	},
 	watch: {
 		searchString: function(to, from) {
@@ -123,23 +133,16 @@ export default {
 		},
 		loadContent() {
 			// clear data to show "loading state"
-			this.resources = [];
+			//this.resources = []; // TODO add loading animation/transition
 
 			// set unique browser url
 			this.updateUrlQuery();
-
-			// build request query params
-			const apiSearchQuery = {
-				$limit: this.pagination.itemsPerPage,
-				$skip: this.pagination.itemsPerPage * (this.pagination.page - 1),
-				"_all[$match]": this.searchString,
-			};
 
 			// build request url
 			const request =
 				this.searchString.length == 0
 					? this.$_resourceGet()
-					: this.$_resourceFind(apiSearchQuery);
+					: this.$_resourceFind(this.apiSearchQuery);
 			return request
 				.then((data) => {
 					this.resources = data.data;
