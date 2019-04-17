@@ -122,7 +122,7 @@ export default {
 			return keyInputMapping.find((coloumn) => coloumn.key === key);
 		},
 		handleFormSubmit(resource) {
-			this.$emit("patchResource", resource);
+			this.$emit("submit", resource);
 		},
 	},
 };

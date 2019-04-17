@@ -91,5 +91,17 @@ export default {
 					resourceId
 			);
 		},
+		$_resourceBulkPatch(query, data = {}) {
+			if (!query) {
+				throw new Error("query (first) parameter is required!");
+			}
+			return jsonFetch(
+				this.$config.API.contentServerUrl + this.$config.API.pushContentPath,
+				{
+					method: "PATCH",
+					body: data,
+				}
+			);
+		},
 	},
 };

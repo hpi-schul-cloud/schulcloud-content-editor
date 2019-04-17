@@ -1,35 +1,49 @@
 <template>
-	<table class="table edit sticky">
-		<thead>
-			<tr>
-				<th style="width: 3em" />
-				<th v-for="coloumn in visibleColoumns" :key="coloumn">
-					{{ $lang.resources[coloumn] }}
-				</th>
-				<th class="fit-content">
-					Actions
-				</th>
-			</tr>
-		</thead>
-		<tbody>
-			<EditTableRow
-				v-for="bulkInput in bulkInputs"
-				:key="bulkInput.name"
-				:resource="bulkInput"
-				:row-name="bulkInput.name"
-				:visible-coloumns="visibleColoumns"
-			/>
-			<tr v-if="bulkInputs.length" class="spacer"></tr>
-			<EditTableRow
-				v-for="(resource, rowIndex) in resources"
-				:key="resource._id"
-				:resource="resource"
-				:row-name="indexStart + rowIndex + 1"
-				:visible-coloumns="visibleColoumns"
-				@patchResource="passThroughSubmit"
-			/>
-		</tbody>
-	</table>
+	<div class="overflow-container">
+		<table class="table edit sticky">
+			<thead>
+				<tr>
+					<th style="width: 3em" />
+					<th v-for="coloumn in visibleColoumns" :key="coloumn">
+						{{ $lang.resources[coloumn] }}
+					</th>
+					<th class="fit-content">
+						Actions
+					</th>
+				</tr>
+			</thead>
+			<tfoot>
+				<tr>
+					<th style="width: 3em" />
+					<th v-for="coloumn in visibleColoumns" :key="coloumn">
+						{{ $lang.resources[coloumn] }}
+					</th>
+					<th class="fit-content">
+						Actions
+					</th>
+				</tr>
+			</tfoot>
+			<tbody>
+				<EditTableRow
+					v-for="bulkInput in bulkInputs"
+					:key="bulkInput.name"
+					:resource="bulkInput"
+					:row-name="bulkInput.name"
+					:visible-coloumns="visibleColoumns"
+					@submit="passThroughBulkSubmit"
+				/>
+				<tr v-if="bulkInputs.length" class="spacer"></tr>
+				<EditTableRow
+					v-for="(resource, rowIndex) in resources"
+					:key="resource._id"
+					:resource="resource"
+					:row-name="indexStart + rowIndex + 1"
+					:visible-coloumns="visibleColoumns"
+					@submit="passThroughResourceSubmit"
+				/>
+			</tbody>
+		</table>
+	</div>
 </template>
 
 <script>
@@ -65,7 +79,10 @@ export default {
 		};
 	},
 	methods: {
-		passThroughSubmit(resource) {
+		passThroughBulkSubmit(resource) {
+			this.$emit("patchBulk", resource);
+		},
+		passThroughResourceSubmit(resource) {
 			this.$emit("patchResource", resource);
 		},
 	},
@@ -73,8 +90,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.table {
+.overflow-container {
 	width: 100%;
+	overflow-x: auto;
+}
+.table {
+	box-sizing: border-box;
+	// width: 100%;
+	width: calc(100% - 2px);
 	border-collapse: collapse;
 	tbody tr {
 		&:nth-of-type(2n) {
@@ -88,6 +111,8 @@ export default {
 .spacer {
 	height: 2rem;
 }
+
+/*
 table.sticky {
 	th {
 		position: sticky;
@@ -99,4 +124,5 @@ table.sticky {
 		top: 80px;
 	}
 }
+*/
 </style>

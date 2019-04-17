@@ -14,12 +14,13 @@
 		/>
 
 		<ResourceEditTable
-			:bulk-inputs="bulkInput"
+			:bulk-inputs="bulkInputs"
 			:resources="resources"
 			:header-visible="true"
 			:visible-coloumns="visibleColoumns"
 			:index-start="resourceStartIndex"
 			@patchResource="patchResource"
+			@patchBulk="patchBulk"
 		/>
 	</div>
 </template>
@@ -36,7 +37,7 @@ import api from "@/mixins/api.js";
 const emptyResource = (name) => {
 	const resource = { name };
 	availableColoumns.forEach((coloumn) => {
-		resource[coloumn] = undefined;
+		resource[coloumn.key] = undefined;
 	});
 	return resource;
 };
@@ -49,6 +50,10 @@ export default {
 	},
 	mixins: [api],
 	props: {
+		query: {
+			type: Object,
+			default: () => {},
+		},
 		resources: {
 			type: Array,
 			default: () => [],
@@ -60,7 +65,7 @@ export default {
 	},
 	data() {
 		return {
-			bulkEdit: false,
+			bulkEdit: true,
 			bulkAdvanced: false,
 			bulkReplace: emptyResource("Edit"),
 			bulkFind: emptyResource("Filter"),
@@ -75,7 +80,7 @@ export default {
 		};
 	},
 	computed: {
-		bulkInput() {
+		bulkInputs() {
 			const inputRows = [];
 			if (this.bulkEdit) {
 				inputRows.push(this.bulkReplace);
@@ -96,6 +101,30 @@ export default {
 				})
 				.catch((error) => {
 					this.$toasted.error(`L${resourceViewIndex} - Failed to save`);
+				});
+		},
+		patchBulk(data) {
+			const cleanedData = {};
+			Object.entries(data).forEach(([key, value]) => {
+				if ((value && value.length > 0) || typeof value === "boolean") {
+					cleanedData[key] = value;
+				}
+			});
+
+			const cleanQuery = {};
+			Object.entries(this.query).forEach(([key, value]) => {
+				if (!["$limit", "$skip"].includes(key)) {
+					cleanQuery[key] = value;
+				}
+			});
+
+			return this.$_resourceBulkPatch(cleanQuery, cleanedData)
+				.then((result) => {
+					this.$toasted.show(`Patched ${result.length} Resources`);
+				})
+				.catch((error) => {
+					console.error(error);
+					this.$toasted.error(`Failed to Patch`);
 				});
 		},
 	},
