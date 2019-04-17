@@ -11,11 +11,11 @@
 		</p>
 
 		<ResourceBulkEdit
-			v-if="resources.length"
+			v-show="true || resources.length"
 			:resources="resources"
 			:resource-start-index="(pagination.page - 1) * pagination.itemsPerPage"
 		/>
-		<p v-else>
+		<p v-show="!resources.length">
 			{{ $lang.search.nothing_found }}
 			<br />
 			<small>

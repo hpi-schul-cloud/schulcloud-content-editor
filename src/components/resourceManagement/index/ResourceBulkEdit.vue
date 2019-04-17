@@ -1,5 +1,11 @@
 <template>
 	<div>
+		<BaseCheckbox v-model="bulkEdit" label="Bulk Edit" />
+		<BaseCheckbox
+			v-if="bulkEdit"
+			v-model="bulkAdvanced"
+			label="Advanced Bulk Edit"
+		/>
 		<BaseTags
 			v-model="visibleColoumns"
 			label="Select Coloumns"
@@ -8,7 +14,7 @@
 		/>
 
 		<ResourceEditTable
-			v-if="resources.length"
+			:bulk-inputs="bulkInput"
 			:resources="resources"
 			:header-visible="true"
 			:visible-coloumns="visibleColoumns"
@@ -19,6 +25,7 @@
 </template>
 
 <script>
+import BaseCheckbox from "@/components/base/BaseCheckbox";
 import BaseTags from "@/components/base/BaseTags";
 import ResourceEditTable, {
 	availableColoumns,
@@ -26,8 +33,17 @@ import ResourceEditTable, {
 
 import api from "@/mixins/api.js";
 
+const emptyResource = (name) => {
+	const resource = { name };
+	availableColoumns.forEach((coloumn) => {
+		resource[coloumn] = undefined;
+	});
+	return resource;
+};
+
 export default {
 	components: {
+		BaseCheckbox,
 		BaseTags,
 		ResourceEditTable,
 	},
@@ -44,6 +60,10 @@ export default {
 	},
 	data() {
 		return {
+			bulkEdit: false,
+			bulkAdvanced: false,
+			bulkReplace: emptyResource("Edit"),
+			bulkFind: emptyResource("Filter"),
 			availableColoumns,
 			visibleColoumns: [
 				"title",
@@ -53,6 +73,18 @@ export default {
 				"description",
 			],
 		};
+	},
+	computed: {
+		bulkInput() {
+			const inputRows = [];
+			if (this.bulkEdit) {
+				inputRows.push(this.bulkReplace);
+			}
+			if (this.bulkAdvanced) {
+				inputRows.push(this.bulkFind);
+			}
+			return inputRows;
+		},
 	},
 	methods: {
 		patchResource(resource) {

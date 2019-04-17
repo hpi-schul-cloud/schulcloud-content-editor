@@ -1,13 +1,9 @@
 <template>
 	<table class="table edit sticky">
-		<thead v-if="headerVisible">
+		<thead>
 			<tr>
 				<th style="width: 3em" />
-				<th
-					v-for="coloumn in visibleColoumns"
-					:key="coloumn"
-					:class="getComponent(coloumn).class"
-				>
+				<th v-for="coloumn in visibleColoumns" :key="coloumn">
 					{{ $lang.resources[coloumn] }}
 				</th>
 				<th class="fit-content">
@@ -16,109 +12,39 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr v-for="(resource, rowIndex) in resources" :key="resource._id">
-				<td style="text-align: right;">{{ indexStart + rowIndex + 1 }}</td>
-				<td
-					v-for="(coloumn, coloumnIndex) in visibleColoumns"
-					:key="coloumn"
-					v-bind="getComponent(coloumn).wrapperAttributes"
-				>
-					<form
-						v-if="coloumnIndex === 0"
-						:id="getFormId(rowIndex)"
-						@submit.prevent="
-							handleFormSubmit(resource, indexStart + rowIndex + 1)
-						"
-					></form>
-					<component
-						:is="getComponent(coloumn).component"
-						v-model="resource[coloumn]"
-						:form="getFormId(rowIndex)"
-						:label="coloumn"
-						:name="coloumn"
-						v-bind="getComponent(coloumn).attributes"
-					/>
-				</td>
-				<td style="text-align: center;">
-					<BaseButton type="submit" :form="getFormId(rowIndex)" class="action">
-						<i class="material-icons">
-							check
-						</i>
-					</BaseButton>
-					<RouterLink
-						class="action"
-						:to="{
-							name: 'resourceManagement/edit',
-							params: { id: resource._id },
-						}"
-					>
-						<i class="material-icons">
-							edit
-						</i>
-					</RouterLink>
-				</td>
-			</tr>
+			<EditTableRow
+				v-for="bulkInput in bulkInputs"
+				:key="bulkInput.name"
+				:resource="bulkInput"
+				:row-name="bulkInput.name"
+				:visible-coloumns="visibleColoumns"
+			/>
+			<EditTableRow
+				v-for="(resource, rowIndex) in resources"
+				:key="resource._id"
+				:resource="resource"
+				:row-name="indexStart + rowIndex + 1"
+				:visible-coloumns="visibleColoumns"
+				@patchResource="passThroughSubmit"
+			/>
 		</tbody>
 	</table>
 </template>
 
 <script>
-import { options as MimeTypeOptions } from "@/components/resourceManagement/edit/inputs/ContentMimetype";
-import { options as CategoryOptions } from "@/components/resourceManagement/edit/inputs/ContentCategory";
-import BaseButton from "@/components/base/BaseButton";
-import TableCheckbox from "./EditTable/TableCheckbox";
-import TableInput from "./EditTable/TableInput";
-import TableTextarea from "./EditTable/TableTextarea";
-import TableSelect from "./EditTable/TableSelect";
-import TableTags from "./EditTable/TableTags";
+import EditTableRow, { keyInputMapping } from "./EditTable/EditTableRow";
 
-export const availableColoumns = [
-	{ key: "title", component: TableInput, attributes: { type: "text" } },
-	{ key: "tags", component: TableTags, attributes: {} },
-	{
-		key: "mimeType",
-		component: TableSelect,
-		attributes: { options: MimeTypeOptions },
-	},
-	{
-		key: "contentCategory",
-		component: TableSelect,
-		attributes: { options: CategoryOptions },
-		wrapperAttributes: {
-			style: "width: 150px",
-		},
-	},
-	{
-		key: "description",
-		component: TableTextarea,
-		attributes: {},
-	},
-	{
-		key: "isPublished",
-		component: TableCheckbox,
-		attributes: { type: "checkbox" },
-		wrapperAttributes: {
-			class: "fit-content",
-		},
-	},
-	{ key: "url", component: TableInput, attributes: { type: "url" } },
-	{ key: "thumbnail", component: TableInput, attributes: { type: "url" } },
-	{
-		key: "licenses",
-		component: TableTags,
-		attributes: {},
-		wrapperAttributes: {
-			style: "width: 150px",
-		},
-	},
-];
+export const availableColoumns = keyInputMapping;
 
 export default {
 	components: {
-		BaseButton,
-		TableInput,
+		EditTableRow,
 	},
 	props: {
+		bulkInputs: {
+			type: Array,
+			default: () => [],
+		},
 		resources: {
 			type: Array,
 			required: true,
@@ -126,9 +52,6 @@ export default {
 		indexStart: {
 			type: Number,
 			default: 0,
-		},
-		headerVisible: {
-			type: Boolean,
 		},
 		visibleColoumns: {
 			type: Array,
@@ -141,13 +64,7 @@ export default {
 		};
 	},
 	methods: {
-		getComponent(key) {
-			return availableColoumns.find((coloumn) => coloumn.key === key);
-		},
-		getFormId(index) {
-			return `table-form-${index}`;
-		},
-		handleFormSubmit(resource, index) {
+		passThroughSubmit(resource) {
 			this.$emit("patchResource", resource);
 		},
 	},
@@ -158,17 +75,6 @@ export default {
 .table {
 	width: 100%;
 	border-collapse: collapse;
-	.fit-content {
-		width: 1px;
-		white-space: nowrap;
-	}
-	td {
-		padding: 0 4px;
-		overflow: hidden;
-		overflow-x: auto;
-		white-space: nowrap;
-		border: 1px solid #333;
-	}
 	tbody tr {
 		&:nth-of-type(2n) {
 			background-color: #eee;
@@ -187,17 +93,6 @@ table.sticky {
 	}
 	thead th {
 		top: 80px;
-	}
-}
-table.edit {
-	td {
-		&:focus-within:not(:last-of-type) {
-			box-shadow: inset 0 0 0 2px var(--primaryColor);
-		}
-	}
-	.action {
-		padding: 0;
-		margin: 0 0.25em;
 	}
 }
 </style>
