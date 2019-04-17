@@ -24,15 +24,31 @@
 			<div class="flex">
 				<h4 class="subtitle">Inhalte veröffentlichen?</h4>
 				<BaseCheckbox v-model="isPublished" label="published"></BaseCheckbox>
+				<p>
+					<b>! Hinweis:</b>
+					Nur vollständige Inhalte können veröffentlicht werden. Sollten Sie
+					einige Felder im vorherigen Schritt nicht zuordnen können, werden ihre
+					Inhalte als nicht veröffentlicht gespeichert und Sie werden
+					automatisch zu einer gefilterten Ansicht der Verwaltungstabelle
+					umgeleitet. Dort können Sie ihre importierten, nicht veröffentlichten
+					Inhalte vervollständigen und anschließend veröffentlichen.
+				</p>
 			</div>
 		</div>
 		<div class="button-wrapper">
+			<BaseButton
+				v-if="progressbarCurrentStep != 0"
+				styling="secondary"
+				@click="handleBackStep"
+			>
+				Zurück
+			</BaseButton>
 			<BaseButton
 				styling="primary"
 				:disabled="csv.content.length === 0"
 				@click="handleNextStep"
 			>
-				{{ buttonText }}
+				{{ forwardButtonText }}
 			</BaseButton>
 		</div>
 	</div>
@@ -87,7 +103,7 @@ export default {
 		};
 	},
 	computed: {
-		buttonText: function() {
+		forwardButtonText: function() {
 			if (this.progressbarCurrentStep === 2) return "Importieren";
 			else return "Nächster Schritt";
 		},
@@ -141,8 +157,16 @@ export default {
 				this.incrementCurrentStep();
 			} else this.importCSV();
 		},
+		handleBackStep() {
+			if (this.progressbarCurrentStep > 0) {
+				this.decrementCurrentStep();
+			}
+		},
 		incrementCurrentStep() {
 			this.progressbarCurrentStep = this.progressbarCurrentStep + 1;
+		},
+		decrementCurrentStep() {
+			this.progressbarCurrentStep = this.progressbarCurrentStep - 1;
 		},
 		importCSV() {
 			let newData = this.importedResources;
