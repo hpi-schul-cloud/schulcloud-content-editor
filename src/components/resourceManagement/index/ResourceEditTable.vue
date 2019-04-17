@@ -19,6 +19,7 @@
 				:row-name="bulkInput.name"
 				:visible-coloumns="visibleColoumns"
 			/>
+			<tr v-if="bulkInputs.length" class="spacer"></tr>
 			<EditTableRow
 				v-for="(resource, rowIndex) in resources"
 				:key="resource._id"
@@ -83,6 +84,9 @@ export default {
 			background-color: #ccc;
 		}
 	}
+}
+.spacer {
+	height: 2rem;
 }
 table.sticky {
 	th {

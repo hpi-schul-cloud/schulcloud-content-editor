@@ -123,7 +123,7 @@ export default {
 		},
 		loadContent() {
 			// clear data to show "loading state"
-			this.resources = [];
+			//this.resources = [];
 
 			// set unique browser url
 			this.updateUrlQuery();

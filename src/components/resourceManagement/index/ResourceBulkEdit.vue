@@ -2,7 +2,7 @@
 	<div>
 		<BaseCheckbox v-model="bulkEdit" label="Bulk Edit" />
 		<BaseCheckbox
-			v-if="bulkEdit"
+			v-if="bulkEdit && false"
 			v-model="bulkAdvanced"
 			label="Advanced Bulk Edit"
 		/>
