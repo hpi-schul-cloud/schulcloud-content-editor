@@ -10,10 +10,9 @@
 		>
 			<slot>
 				<slot name="MenuTitle" />
-				<img
-					:class="{ rotate: expanded }"
-					src="@/assets/icon-arrow_down_white.svg"
-				/>
+				<i :class="{ 'material-icons': true, rotate: expanded }">
+					arrow_drop_down
+				</i>
 			</slot>
 		</button>
 		<ul class="select">

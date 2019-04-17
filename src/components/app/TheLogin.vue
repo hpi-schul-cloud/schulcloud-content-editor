@@ -30,7 +30,7 @@
 								:round-shape="true"
 								@click="toggleVisibility"
 							>
-								<img ref="visibilityIcon" src="@/assets/icon-visibility.svg" />
+								<i class="material-icons">visibility</i>
 							</BaseButton>
 							<BaseButton
 								v-else
@@ -38,10 +38,7 @@
 								:round-shape="true"
 								@click="toggleVisibility"
 							>
-								<img
-									ref="visibilityIcon"
-									src="@/assets/icon-visibility_off.svg"
-								/>
+								<i class="material-icons">visibility_off</i>
 							</BaseButton>
 						</span>
 					</template>

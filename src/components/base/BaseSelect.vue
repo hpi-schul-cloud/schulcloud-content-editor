@@ -12,10 +12,9 @@
 			@click="expandSelect"
 		>
 			{{ getContent() }}
-			<img
-				:class="{ icon: true, rotate: expanded }"
-				src="@/assets/icon-arrow_down_black.svg"
-			/>
+			<i :class="{ 'material-icons': true, rotate: expanded }">
+				arrow_drop_down
+			</i>
 		</button>
 		<ul class="select">
 			<li

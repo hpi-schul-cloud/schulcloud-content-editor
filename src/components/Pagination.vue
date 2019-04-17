@@ -1,21 +1,14 @@
 <template>
 	<div class="pagination">
 		<BaseButton
-			v-if="config.page == 1"
-			:disabled="true"
 			styling="secondary"
+			:disabled="config.page == 1"
+			:raised="config.page != 1"
 			:round-shape="true"
-		>
-			<img src="@/assets/icon-arrow_back.svg" />
-		</BaseButton>
-		<BaseButton
-			v-else
-			styling="secondary"
-			:raised="true"
-			:round-shape="true"
+			class="pagination-button"
 			@click="config.page -= 1"
 		>
-			<img src="@/assets/icon-arrow_back.svg" />
+			<i class="material-icons">arrow_back</i>
 		</BaseButton>
 
 		<BaseButton id="page-number" styling="primary" :raised="true">
@@ -23,21 +16,14 @@
 		</BaseButton>
 
 		<BaseButton
-			v-if="config.page == maxPages"
 			styling="secondary"
-			:disabled="true"
+			:disabled="config.page == maxPages"
+			:raised="config.page != maxPages"
 			:round-shape="true"
-		>
-			<img src="@/assets/icon-arrow_forward.svg" />
-		</BaseButton>
-		<BaseButton
-			v-else
-			styling="secondary"
-			:raised="true"
-			:round-shape="true"
+			class="pagination-button"
 			@click="config.page += 1"
 		>
-			<img src="@/assets/icon-arrow_forward.svg" />
+			<i class="material-icons">arrow_forward</i>
 		</BaseButton>
 	</div>
 </template>
@@ -103,6 +89,11 @@ export default {
 	justify-content: center;
 	width: 100%;
 	margin-top: 2rem;
+
+	.pagination-button {
+		font-size: 0;
+		line-height: 0;
+	}
 }
 [disabled] {
 	visibility: hidden;
