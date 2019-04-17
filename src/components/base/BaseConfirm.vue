@@ -4,15 +4,15 @@
 			<div class="title">{{ title }}</div>
 			<div class="content">{{ content }}</div>
 			<div class="action">
-				<BaseButton styling="secondary" @click="$emit('cancel')">
-					{{ cancelText }}
+				<BaseButton styling="secondary" @click="handleCancel">
+					{{ cancelText || $lang.base.confirm.cancel }}
 				</BaseButton>
-				<BaseButton styling="primary" @click="$emit('confirm')">
-					{{ confirmText }}
+				<BaseButton styling="primary" @click="handleConfirm">
+					{{ confirmText || $lang.base.confirm.confirm }}
 				</BaseButton>
 			</div>
 		</div>
-		<div class="overlay"></div>
+		<div class="overlay" @click="handleCancel"></div>
 	</div>
 </template>
 
@@ -44,6 +44,16 @@ export default {
 		cancelText: {
 			type: String,
 			default: "",
+		},
+	},
+	methods: {
+		handleConfirm(event) {
+			this.$emit("update:active", false);
+			this.$emit("confirm");
+		},
+		handleCancel(event) {
+			this.$emit("update:active", false);
+			this.$emit("cancel");
 		},
 	},
 };

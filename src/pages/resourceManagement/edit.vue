@@ -93,7 +93,11 @@
 							>
 								{{ $lang.buttons.delete }}
 							</BaseButton>
-							<ConfirmDialog :config="dialog" @confirm="deleteContent" />
+							<BaseConfirm
+								:active.sync="dialog.active"
+								v-bind="dialog"
+								@confirm="deleteContent"
+							/>
 							<BaseButton styling="secondary" @click="$router.go(-1)">
 								{{ $lang.buttons.cancel }}
 							</BaseButton>
@@ -126,8 +130,8 @@ Vue.use(VeeValidate);
 
 import ContentCard from "@/components/resourceManagement/edit/ContentCard";
 
-const ConfirmDialog = () =>
-	import(/* webpackChunkName: "ConfirmDialog" */ "@/components/dialogs/Confirm");
+const BaseConfirm = () =>
+	import(/* webpackChunkName: "BaseConfirm" */ "@/components/base/BaseConfirm");
 
 import ContentTitle from "@/components/resourceManagement/edit/inputs/ContentTitle";
 import ContentDescription from "@/components/resourceManagement/edit/inputs/ContentDescription";
@@ -150,10 +154,8 @@ import api from "@/mixins/api.js";
 import FileUpload from "@/components/resourceManagement/edit/fileUpload/Upload";
 
 export default {
-	name: "ContentForm",
 	components: {
 		ContentCard,
-		ConfirmDialog,
 		ContentTitle,
 		ContentDescription,
 		ContentUrl,
@@ -168,6 +170,7 @@ export default {
 		BaseButton,
 		BaseCard,
 		BaseCheckbox,
+		BaseConfirm,
 
 		FileUpload,
 	},

@@ -57,7 +57,7 @@ export default {
 	methods: {
 		patchResource(resource) {
 			const resourceViewIndex =
-				this.resourceStartIndex + this.resources.indexOf(resource);
+				this.resourceStartIndex + this.resources.indexOf(resource) + 1;
 			return this.$_resourcePatch(resource)
 				.then(() => {
 					this.$toasted.show(`L${resourceViewIndex} - Saved`);
