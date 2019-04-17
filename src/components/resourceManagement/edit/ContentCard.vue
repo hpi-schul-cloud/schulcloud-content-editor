@@ -13,7 +13,7 @@
 			<template slot="head">
 				<h2 class="title">{{ data.title || "Titel" }}</h2>
 				<div class="tags">
-					<img class="icon" src="@/assets/icon-label.svg" />
+					<i class="material-icons">label</i>
 					<span
 						v-for="(tag, index) in (data.tags || []).slice(
 							0,
