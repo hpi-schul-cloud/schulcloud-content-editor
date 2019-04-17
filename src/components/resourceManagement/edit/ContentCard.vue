@@ -55,23 +55,27 @@
 				</div>
 			</template>
 		</BaseCard>
-		<ConfirmDialog :config="dialog" @confirm="onConfirm" />
+		<BaseConfirm
+			:active.sync="dialog.active"
+			v-bind="dialog"
+			@confirm="onConfirm"
+		/>
 	</article>
 </template>
 
 <script>
 /* load confirmDialog async */
-const ConfirmDialog = () =>
-	import(/* webpackChunkName: "confirmDialog" */ "@/components/dialogs/Confirm");
+const BaseConfirm = () =>
+	import(/* webpackChunkName: "BaseConfirm" */ "@/components/base/BaseConfirm");
 import BaseCard from "@/components/base/BaseCard";
 import BaseButton from "@/components/base/BaseButton";
 
 export default {
 	name: "ContentForm",
 	components: {
-		ConfirmDialog,
-		BaseCard,
 		BaseButton,
+		BaseCard,
+		BaseConfirm,
 	},
 	props: {
 		data: {
