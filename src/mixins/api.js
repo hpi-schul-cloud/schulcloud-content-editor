@@ -107,6 +107,10 @@ export default {
 			const idResponse = await this.$_resourceFind(cleanQuery);
 			const ids = idResponse.data.map((resource) => resource._id);
 
+			if (!window.confirm(`${ids.length} Einträge bearbeiten?`)) {
+				throw "abort";
+			}
+
 			const queryString = qs.stringify({
 				"_id[$in]": ids,
 			});

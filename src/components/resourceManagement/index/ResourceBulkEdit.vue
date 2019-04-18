@@ -91,6 +91,16 @@ export default {
 			return inputRows;
 		},
 	},
+	watch: {
+		visibleColoumns: function(to, from) {
+			Object.keys(this.bulkReplace).forEach((key) => {
+				if (!this.visibleColoumns.includes(key)) {
+					this.bulkReplace[key] = undefined;
+					this.bulkFind[key] = undefined;
+				}
+			});
+		},
+	},
 	methods: {
 		updateResource(existing, newResource) {
 			Object.entries(newResource).forEach(([key, value]) => {
