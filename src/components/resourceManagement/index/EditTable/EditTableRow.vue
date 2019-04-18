@@ -19,6 +19,8 @@
 				:name="coloumn"
 				v-bind="getComponent(coloumn).attributes"
 			/>
+			<slot name="editable"></slot>
+			<slot :name="coloumn"></slot>
 		</td>
 		<td style="text-align: center;">
 			<BaseButton type="submit" :form="formId" class="action">
@@ -130,6 +132,7 @@ export default {
 
 <style lang="scss" scoped>
 td {
+	position: relative;
 	padding: 0 4px;
 	overflow: hidden;
 	overflow-x: auto;

@@ -64,7 +64,6 @@ import BaseInput from "@/components/base/BaseInput";
 import api from "@/mixins/api.js";
 
 export default {
-	name: "Login",
 	components: {
 		BaseButton,
 		BaseCard,

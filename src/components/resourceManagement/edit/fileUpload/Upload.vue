@@ -19,7 +19,6 @@ import upload from "@/mixins/upload.js";
 import filetree from "@/mixins/filetree.js";
 
 export default {
-	name: "Upload",
 	components: {
 		Filetree,
 		Dropzone,

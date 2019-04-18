@@ -71,7 +71,6 @@ import BaseCard from "@/components/base/BaseCard";
 import BaseButton from "@/components/base/BaseButton";
 
 export default {
-	name: "ContentForm",
 	components: {
 		BaseButton,
 		BaseCard,

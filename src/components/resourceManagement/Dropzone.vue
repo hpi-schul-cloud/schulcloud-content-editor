@@ -13,7 +13,6 @@
 </template>
 <script>
 export default {
-	name: "Dropzone",
 	data() {
 		return {
 			dragging: false,

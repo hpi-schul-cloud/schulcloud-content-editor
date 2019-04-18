@@ -24,7 +24,7 @@
 				</tr>
 			</tfoot>
 			<tbody>
-				<EditTableRow
+				<BulkEditTableRow
 					v-for="bulkInput in bulkInputs"
 					:key="bulkInput.name"
 					:resource="bulkInput"
@@ -48,12 +48,14 @@
 
 <script>
 import EditTableRow, { keyInputMapping } from "./EditTable/EditTableRow";
+import BulkEditTableRow from "./EditTable/BulkEditTableRows";
 
 export const availableColoumns = keyInputMapping;
 
 export default {
 	components: {
 		EditTableRow,
+		BulkEditTableRow,
 	},
 	props: {
 		bulkInputs: {

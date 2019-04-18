@@ -20,7 +20,6 @@
 import BaseButton from "@/components/base/BaseButton";
 
 export default {
-	name: "BaseConfirm",
 	components: {
 		BaseButton,
 	},

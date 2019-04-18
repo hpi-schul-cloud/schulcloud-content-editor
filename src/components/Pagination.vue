@@ -32,7 +32,6 @@
 import BaseButton from "@/components/base/BaseButton";
 
 export default {
-	name: "Pagination",
 	components: {
 		BaseButton,
 	},

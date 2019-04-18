@@ -34,7 +34,6 @@
 
 <script>
 export default {
-	name: "FiletreeEntry",
 	props: {
 		icon: {
 			type: String,

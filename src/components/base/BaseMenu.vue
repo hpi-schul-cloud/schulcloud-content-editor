@@ -30,7 +30,6 @@
 
 <script>
 export default {
-	name: "BaseMenu",
 	props: {
 		options: {
 			type: Array,

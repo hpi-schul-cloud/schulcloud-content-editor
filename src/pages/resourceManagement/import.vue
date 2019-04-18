@@ -72,7 +72,6 @@ import LoadingBooks from "@/components/LoadingBooks";
 import api from "@/mixins/api.js";
 
 export default {
-	name: "CsvImport",
 	components: {
 		StepProgress,
 		CsvUpload,
