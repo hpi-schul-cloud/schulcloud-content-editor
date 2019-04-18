@@ -92,35 +92,46 @@ export default {
 		},
 	},
 	methods: {
+		updateResource(existing, newResource) {
+			Object.entries(newResource).forEach(([key, value]) => {
+				existing[key] = value;
+			});
+		},
 		patchResource(resource) {
 			const resourceViewIndex =
 				this.resourceStartIndex + this.resources.indexOf(resource) + 1;
 			return this.$_resourcePatch(resource)
-				.then(() => {
+				.then((result) => {
 					this.$toasted.show(`L${resourceViewIndex} - Saved`);
+					this.updateResource(resource, result);
 				})
 				.catch((error) => {
+					console.error(error);
 					this.$toasted.error(`L${resourceViewIndex} - Failed to save`);
 				});
 		},
 		patchBulk(data) {
 			const cleanedData = {};
 			Object.entries(data).forEach(([key, value]) => {
-				if ((value && value.length > 0) || typeof value === "boolean") {
+				if (
+					(value && value.length > 0 && !["name"].includes(value)) ||
+					typeof value === "boolean"
+				) {
 					cleanedData[key] = value;
 				}
 			});
 
-			const cleanQuery = {};
-			Object.entries(this.query).forEach(([key, value]) => {
-				if (!["$limit", "$skip"].includes(key)) {
-					cleanQuery[key] = value;
-				}
-			});
-
-			return this.$_resourceBulkPatch(cleanQuery, cleanedData)
-				.then((result) => {
-					this.$toasted.show(`Patched ${result.length} Resources`);
+			return this.$_resourceBulkPatch(this.query, cleanedData)
+				.then((results) => {
+					this.$toasted.show(`Patched ${results.length} Resources`);
+					const visibleIds = this.resources.map((r) => r._id);
+					const visibleUpdatedResources = results.forEach((newResource) => {
+						const visibileIndex = visibleIds.indexOf(newResource._id);
+						if (visibileIndex === -1) {
+							return;
+						}
+						this.updateResource(this.resources[visibileIndex], newResource);
+					});
 				})
 				.catch((error) => {
 					console.error(error);

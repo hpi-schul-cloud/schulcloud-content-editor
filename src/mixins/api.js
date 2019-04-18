@@ -91,12 +91,31 @@ export default {
 					resourceId
 			);
 		},
-		$_resourceBulkPatch(query, data = {}) {
+		async $_resourceBulkPatch(query, data = {}) {
 			if (!query) {
 				throw new Error("query (first) parameter is required!");
 			}
+
+			const cleanQuery = {};
+			Object.entries(query).forEach(([key, value]) => {
+				if (!["$limit", "$skip"].includes(key)) {
+					cleanQuery[key] = value;
+				}
+			});
+			cleanQuery["$select"] = ["_id"];
+
+			const idResponse = await this.$_resourceFind(cleanQuery);
+			const ids = idResponse.data.map((resource) => resource._id);
+
+			const queryString = qs.stringify({
+				"_id[$in]": ids,
+			});
+
 			return jsonFetch(
-				this.$config.API.contentServerUrl + this.$config.API.pushContentPath,
+				this.$config.API.contentServerUrl +
+					this.$config.API.pushContentPath +
+					"?" +
+					queryString,
 				{
 					method: "PATCH",
 					body: data,
