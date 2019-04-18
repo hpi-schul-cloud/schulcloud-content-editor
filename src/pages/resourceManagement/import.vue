@@ -35,6 +35,13 @@
 				</p>
 			</div>
 		</div>
+		<div v-if="progressbarCurrentStep === 3" class="content">
+			<LoadingBooks v-if="publishedResourcesCount === undefined" />
+			<div v-else style="text-align: center">
+				{{ publishedResourcesCount }} / {{ importedResources.length }} Inhalte
+				konnten veröffentlicht werden.
+			</div>
+		</div>
 		<div class="button-wrapper">
 			<BaseButton
 				v-if="progressbarCurrentStep != 0"
@@ -60,6 +67,7 @@ import MetadataMapping from "@/components/resourceManagement/import/MappingMetad
 import PreviewTable from "@/components/resourceManagement/import/PreviewTable";
 import BaseButton from "@/components/base/BaseButton";
 import BaseCheckbox from "@/components/base/BaseCheckbox";
+import LoadingBooks from "@/components/LoadingBooks";
 
 import api from "@/mixins/api.js";
 
@@ -72,6 +80,7 @@ export default {
 		PreviewTable,
 		BaseButton,
 		BaseCheckbox,
+		LoadingBooks,
 	},
 	mixins: [api],
 	data() {
@@ -80,6 +89,7 @@ export default {
 				{ name: "Datei hochladen" },
 				{ name: "Metadaten zuordnen" },
 				{ name: "Importieren" },
+				{ name: "Fertig" },
 			],
 			progressbarCurrentStep: 0,
 			csv: {
@@ -100,6 +110,7 @@ export default {
 			disabledOptions: [],
 			isPublished: false,
 			maxRows: 5,
+			publishedResourcesCount: undefined,
 		};
 	},
 	computed: {
@@ -115,17 +126,12 @@ export default {
 			let newData = [];
 			this.csv.content.forEach((row, index) => {
 				let resource = {
-					title: "Test",
-					description: "Testbeschreibung",
-					licenses: [],
-					contentCategory: "atomic",
-					mimeType: "image",
-					tags: [],
+					title: "IMPORT" + Date.now().toString() + index,
 					url: "https://schul-cloud.org/",
-					thumbnail: "",
 					providerName: "TestProvider",
 					userId: "0000d231816abba584714c9e",
 					originId: Date.now().toString() + index,
+					isPublished: this.isPublished,
 				};
 				Object.entries(this.metadataFieldMapping).forEach(([key, value]) => {
 					if (key === "tags" || key === "licenses") {
@@ -138,7 +144,6 @@ export default {
 						}
 					}
 				});
-				resource.contentCategory = "atomic";
 
 				newData.push(resource);
 			});
@@ -153,9 +158,9 @@ export default {
 	},
 	methods: {
 		handleNextStep() {
-			if (this.progressbarCurrentStep < 2) {
-				this.incrementCurrentStep();
-			} else this.importCSV();
+			if (this.progressbarCurrentStep === 2) {
+				this.importCSV();
+			} else this.incrementCurrentStep();
 		},
 		handleBackStep() {
 			if (this.progressbarCurrentStep > 0) {
@@ -170,14 +175,25 @@ export default {
 		},
 		importCSV() {
 			let newData = this.importedResources;
+			this.incrementCurrentStep();
 
 			return this.$_resourceCreate(newData)
-				.then((error) => {
+				.then((response) => {
+					if (response.code < 200 && response.code >= 300) {
+						throw new Error(response.message);
+					}
 					this.$toasted.show(`Saved`);
+					this.countPublishedResources(response);
 				})
 				.catch((error) => {
 					this.$toasted.error(`Failed to save`);
 				});
+		},
+		countPublishedResources(array) {
+			let published = array.filter((resource) => {
+				return resource.isPublished === true;
+			});
+			this.publishedResourcesCount = published.length;
 		},
 	},
 };
