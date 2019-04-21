@@ -66,7 +66,7 @@
 		"stylelint-config-recess-order": "^2.0.1",
 		"stylelint-config-standard": "^18.2.0",
 		"stylelint-scss": "^3.5.1",
-		"vue-eslint-parser": "^5.0.0",
+		"vue-eslint-parser": "^6.0.4",
 		"vue-jest": "^3.0.3",
 		"vue-template-compiler": "^2.5.21",
 		"yorkie": "^2.0.0"
