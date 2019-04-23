@@ -101,10 +101,19 @@ export default {
 	// width: 100%;
 	width: calc(100% - 2px);
 	border-collapse: collapse;
+	th {
+		padding: 0 4px;
+		text-align: left;
+		&:last-of-type {
+			text-align: right;
+		}
+	}
 	tbody tr {
+		/*
 		&:nth-of-type(2n) {
 			background-color: #eee;
 		}
+		*/
 		&:hover {
 			background-color: #ccc;
 		}

@@ -19,10 +19,8 @@
 				:name="coloumn"
 				v-bind="getComponent(coloumn).attributes"
 			/>
-			<slot name="editable"></slot>
-			<slot :name="coloumn"></slot>
 		</td>
-		<td style="text-align: center;">
+		<td style="text-align: right;">
 			<BaseButton type="submit" :form="formId" class="action">
 				<i class="material-icons">
 					check
@@ -56,12 +54,18 @@ import { options as MimeTypeOptions } from "@/components/resourceManagement/edit
 import { options as CategoryOptions } from "@/components/resourceManagement/edit/inputs/ContentCategory";
 
 export const keyInputMapping = [
-	{ key: "title", component: TableInput, attributes: { type: "text" } },
-	{ key: "tags", component: TableTags, attributes: {} },
+	{
+		key: "title",
+		component: TableInput,
+		attributes: { type: "text" },
+		type: String,
+	},
+	{ key: "tags", component: TableTags, attributes: {}, type: Array },
 	{
 		key: "mimeType",
 		component: TableSelect,
 		attributes: { options: MimeTypeOptions },
+		type: String,
 	},
 	{
 		key: "contentCategory",
@@ -70,11 +74,13 @@ export const keyInputMapping = [
 		wrapperAttributes: {
 			style: "width: 150px",
 		},
+		type: String,
 	},
 	{
 		key: "description",
 		component: TableTextarea,
 		attributes: {},
+		type: String,
 	},
 	{
 		key: "isPublished",
@@ -83,9 +89,20 @@ export const keyInputMapping = [
 		wrapperAttributes: {
 			class: "fit-content",
 		},
+		type: Boolean,
 	},
-	{ key: "url", component: TableInput, attributes: { type: "url" } },
-	{ key: "thumbnail", component: TableInput, attributes: { type: "url" } },
+	{
+		key: "url",
+		component: TableInput,
+		attributes: { type: "url" },
+		type: String,
+	},
+	{
+		key: "thumbnail",
+		component: TableInput,
+		attributes: { type: "url" },
+		type: String,
+	},
 	{
 		key: "licenses",
 		component: TableTags,
@@ -93,6 +110,7 @@ export const keyInputMapping = [
 		wrapperAttributes: {
 			style: "width: 150px",
 		},
+		type: Array,
 	},
 ];
 
