@@ -2,22 +2,28 @@
 	<table class="fixed">
 		<thead>
 			<tr>
-				<th class="state-column"></th>
+				<th class="iconColumn"></th>
 				<th>Metadaten Felder</th>
+				<th class="iconColumn"></th>
 				<th>CSV-Felder</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr v-for="(value, key) in metadataFieldMapping" :key="key">
-				<td>
+				<td class="icon-column">
 					<i v-if="value.mappedHeader != ''" class="material-icons">
 						done
 					</i>
 				</td>
 				<td>
 					{{ $lang.resources[key] }}
-					<span v-if="value.required" class="required-flag">required</span>
+					<span v-if="value.required" class="required-flag">*</span>
 					<p class="field-description">{{ value.description }}</p>
+				</td>
+				<td class="icon-column">
+					<i class="material-icons">
+						arrow_right_alt
+					</i>
 				</td>
 				<td>
 					<BaseSelect
@@ -95,6 +101,12 @@ th,
 td {
 	border-collapse: collapse;
 	border: 1px solid black;
+	border-right: none;
+	border-left: none;
+}
+
+th {
+	text-align: left;
 }
 
 th,
@@ -106,12 +118,17 @@ table {
 	width: 100%;
 }
 
+.icon-column {
+	width: 50px;
+	text-align: center;
+
+	i {
+		vertical-align: middle;
+	}
+}
+
 .fixed {
 	table-layout: fixed;
-
-	.state-column {
-		width: 40px;
-	}
 }
 .field-description {
 	margin: 0;
@@ -119,8 +136,7 @@ table {
 	color: #828282;
 }
 .required-flag {
-	font-size: 0.7em;
-	font-weight: bold;
-	background: #ecc4c4;
+	font-size: 0.8em;
+	vertical-align: top;
 }
 </style>

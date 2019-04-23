@@ -14,6 +14,7 @@
 				v-model="metadataFieldMapping"
 				:csv-headers="csv.headers"
 			/>
+			<p>* required Felder</p>
 		</div>
 		<div v-if="progressbarCurrentStep === 2" class="content">
 			<h3>Vorschau</h3>
