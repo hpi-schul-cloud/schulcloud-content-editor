@@ -2,9 +2,9 @@
 	<table class="fixed">
 		<thead>
 			<tr>
-				<th class="iconColumn"></th>
+				<th class="icon-column"></th>
 				<th>Metadaten Felder</th>
-				<th class="iconColumn"></th>
+				<th class="icon-column"></th>
 				<th>CSV-Felder</th>
 			</tr>
 		</thead>
