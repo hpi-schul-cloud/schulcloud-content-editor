@@ -22,6 +22,7 @@
 				:header-fields="previewTableHeader"
 				:content="clippedContentRows"
 				:clipped="clipped"
+				:invalid-fields="invalidFields"
 			/>
 			<div class="flex">
 				<h4 class="subtitle">Inhalte veröffentlichen?</h4>
@@ -36,6 +37,7 @@
 					importierten, nicht veröffentlichten Inhalte vervollständigen und
 					anschließend veröffentlichen.
 				</p>
+				<button type="button" @click="validate">Validate</button>
 			</div>
 		</div>
 		<div v-if="progressbarCurrentStep === 3" class="content">
@@ -78,6 +80,8 @@ import BaseCheckbox from "@/components/base/BaseCheckbox";
 import LoadingBooks from "@/components/LoadingBooks";
 
 import api from "@/mixins/api.js";
+
+const Ajv = require("ajv");
 
 export default {
 	components: {
@@ -145,6 +149,7 @@ export default {
 			isPublished: false,
 			maxRows: 5,
 			publishedResourcesCount: undefined,
+			invalidFields: [],
 		};
 	},
 	computed: {
@@ -160,8 +165,6 @@ export default {
 			let newData = [];
 			this.csv.content.forEach((row, index) => {
 				let resource = {
-					title: "IMPORT" + Date.now().toString() + index,
-					url: "https://schul-cloud.org/",
 					providerName: "TestProvider",
 					userId: "0000d231816abba584714c9e",
 					originId: Date.now().toString() + index,
@@ -230,6 +233,51 @@ export default {
 				return resource.isPublished === true;
 			});
 			this.publishedResourcesCount = published.length;
+		},
+		async validate() {
+			let schema = await this.getResourceSchema();
+			delete schema["$schema"];
+
+			let data = [
+				{
+					title: "Test",
+					description: "test2",
+					isPublished: true,
+					originId: "15560252955040",
+					providerName: "TestProvider",
+					contentCategory: "6476",
+					title: "Malen nach Zahlen",
+					url:
+						"https://ssl-static-images.ravensburger.de/images/produktseiten/1024/55872_4.jpg",
+					userId: "0000d231816abba584714c9e",
+				},
+			];
+			const ajv = new Ajv({ allErrors: true, errorDataPath: "property" });
+
+			this.importedResources.forEach((resource) => {
+				const valid = ajv.validate(schema, resource);
+				if (!valid) {
+					ajv.errors.forEach((error) => {
+						// remove the "." from the beginning of the String (error.dataPath)
+						const errorField = error.dataPath.substring(1);
+						if (!this.invalidFields.includes(errorField)) {
+							this.invalidFields.push(errorField);
+						}
+					});
+				}
+			});
+		},
+		getResourceSchema() {
+			return this.$_resourceResourceSchemaGet()
+				.then((response) => {
+					if (response.code < 200 && response.code >= 300) {
+						throw new Error(response.message);
+					}
+					return response;
+				})
+				.catch((error) => {
+					throw new Error(error);
+				});
 		},
 	},
 };

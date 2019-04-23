@@ -91,6 +91,11 @@ export default {
 					resourceId
 			);
 		},
+		$_resourceResourceSchemaGet() {
+			return jsonFetch(
+				this.$config.API.contentServerUrl + "/resources/resource-schema"
+			);
+		},
 		async $_resourceBulkPatch(query, data = {}) {
 			if (!query) {
 				throw new Error("query (first) parameter is required!");
