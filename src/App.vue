@@ -30,7 +30,6 @@ const sidebarItems = Router.options.routes.filter((route) => {
 });
 
 export default {
-	name: "App",
 	components: {
 		TheLogin,
 		TheHeader,

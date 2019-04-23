@@ -19,10 +19,8 @@
 				:name="coloumn"
 				v-bind="getComponent(coloumn).attributes"
 			/>
-			<slot name="editable"></slot>
-			<slot :name="coloumn"></slot>
 		</td>
-		<td style="text-align: center;">
+		<td style="text-align: right;">
 			<BaseButton type="submit" :form="formId" class="action">
 				<i class="material-icons">
 					check
