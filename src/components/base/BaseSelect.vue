@@ -55,12 +55,10 @@ export default {
 		},
 		label: {
 			type: String,
-			default: "",
 			required: true,
 		},
 		name: {
 			type: String,
-			default: "",
 			required: true,
 		},
 		selected: {
@@ -71,7 +69,6 @@ export default {
 		disabled: {
 			type: Boolean,
 			default: false,
-			required: false,
 		},
 	},
 	data() {

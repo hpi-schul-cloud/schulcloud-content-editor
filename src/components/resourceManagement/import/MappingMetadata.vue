@@ -2,26 +2,36 @@
 	<table class="fixed">
 		<thead>
 			<tr>
-				<th class="state-column"></th>
+				<th class="icon-column"></th>
 				<th>Metadaten Felder</th>
+				<th class="icon-column"></th>
 				<th>CSV-Felder</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr v-for="(value, key) in metadataFieldMapping" :key="key">
-				<td>
-					<i v-if="metadataFieldMapping[key] != ''" class="material-icons">
+				<td class="icon-column">
+					<i v-if="value.mappedHeader != ''" class="material-icons">
 						done
 					</i>
 				</td>
-				<td>{{ $lang.resources[key] }}</td>
+				<td>
+					{{ $lang.resources[key] }}
+					<span v-if="value.required" class="required-flag">*</span>
+					<p class="field-description">{{ value.description }}</p>
+				</td>
+				<td class="icon-column">
+					<i class="material-icons">
+						arrow_right_alt
+					</i>
+				</td>
 				<td>
 					<BaseSelect
 						:options="mappingOptions"
 						:disabled-options="disabledOptions"
 						label=""
-						name="FieldMapping"
-						:selected="metadataFieldMapping[key]"
+						name="Mapping"
+						:selected="value.mappedHeader"
 						@input="handleInput($event, key)"
 					/>
 				</td>
@@ -67,15 +77,19 @@ export default {
 			return options;
 		},
 		disabledOptions: function() {
-			const selected = Object.values(this.metadataFieldMapping);
-			return selected.filter((option) => {
-				return option !== this.mappingOptions[0].key;
-			});
+			const values = Object.values(this.metadataFieldMapping);
+			return values
+				.map((value) => {
+					return value.mappedHeader;
+				})
+				.filter((option) => {
+					return option && option !== this.mappingOptions[0].key;
+				});
 		},
 	},
 	methods: {
 		handleInput(event, key) {
-			this.metadataFieldMapping[key] = event;
+			this.metadataFieldMapping[key].mappedHeader = event;
 		},
 	},
 };
@@ -87,6 +101,12 @@ th,
 td {
 	border-collapse: collapse;
 	border: 1px solid black;
+	border-right: none;
+	border-left: none;
+}
+
+th {
+	text-align: left;
 }
 
 th,
@@ -98,11 +118,25 @@ table {
 	width: 100%;
 }
 
+.icon-column {
+	width: 50px;
+	text-align: center;
+
+	i {
+		vertical-align: middle;
+	}
+}
+
 .fixed {
 	table-layout: fixed;
-
-	.state-column {
-		width: 40px;
-	}
+}
+.field-description {
+	margin: 0;
+	font-size: 0.8em;
+	color: #828282;
+}
+.required-flag {
+	font-size: 0.8em;
+	vertical-align: top;
 }
 </style>
