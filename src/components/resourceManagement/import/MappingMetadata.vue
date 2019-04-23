@@ -10,18 +10,22 @@
 		<tbody>
 			<tr v-for="(value, key) in metadataFieldMapping" :key="key">
 				<td>
-					<i v-if="metadataFieldMapping[key] != ''" class="material-icons">
+					<i v-if="value.mappedHeader != ''" class="material-icons">
 						done
 					</i>
 				</td>
-				<td>{{ $lang.resources[key] }}</td>
+				<td>
+					{{ $lang.resources[key] }}
+					<span v-if="value.required" class="required-flag">required</span>
+					<p class="field-description">{{ value.description }}</p>
+				</td>
 				<td>
 					<BaseSelect
 						:options="mappingOptions"
 						:disabled-options="disabledOptions"
 						label=""
-						name="FieldMapping"
-						:selected="metadataFieldMapping[key]"
+						name="Mapping"
+						:selected="value.mappedHeader"
 						@input="handleInput($event, key)"
 					/>
 				</td>
@@ -67,15 +71,19 @@ export default {
 			return options;
 		},
 		disabledOptions: function() {
-			const selected = Object.values(this.metadataFieldMapping);
-			return selected.filter((option) => {
-				return option !== this.mappingOptions[0].key;
-			});
+			const values = Object.values(this.metadataFieldMapping);
+			return values
+				.map((value) => {
+					return value.mappedHeader;
+				})
+				.filter((option) => {
+					return option && option !== this.mappingOptions[0].key;
+				});
 		},
 	},
 	methods: {
 		handleInput(event, key) {
-			this.metadataFieldMapping[key] = event;
+			this.metadataFieldMapping[key].mappedHeader = event;
 		},
 	},
 };
@@ -104,5 +112,15 @@ table {
 	.state-column {
 		width: 40px;
 	}
+}
+.field-description {
+	margin: 0;
+	font-size: 0.8em;
+	color: #828282;
+}
+.required-flag {
+	font-size: 0.7em;
+	font-weight: bold;
+	background: #ecc4c4;
 }
 </style>

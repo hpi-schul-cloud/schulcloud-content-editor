@@ -9,6 +9,7 @@
 			<CsvUpload v-model="csv" />
 		</div>
 		<div v-if="progressbarCurrentStep === 1" class="content">
+			<h3>Mapping</h3>
 			<MetadataMapping
 				v-model="metadataFieldMapping"
 				:csv-headers="csv.headers"
@@ -26,12 +27,13 @@
 				<BaseCheckbox v-model="isPublished" label="published"></BaseCheckbox>
 				<p>
 					<b>! Hinweis:</b>
-					Nur vollständige Inhalte können veröffentlicht werden. Sollten Sie
-					einige Felder im vorherigen Schritt nicht zuordnen können, werden ihre
-					Inhalte als nicht veröffentlicht gespeichert und Sie werden
-					automatisch zu einer gefilterten Ansicht der Verwaltungstabelle
-					umgeleitet. Dort können Sie ihre importierten, nicht veröffentlichten
-					Inhalte vervollständigen und anschließend veröffentlichen.
+					Nur vollständige und valide Inhalte können veröffentlicht werden.
+					Sollten Sie einige Felder im vorherigen Schritt nicht zuordnen können,
+					werden ihre Inhalte als nicht veröffentlicht gespeichert. Im nächsten
+					Schritt haben Sie dann die Möglichkeit, zu einer gefilterten Ansicht
+					der Verwaltungstabelle umgeleitet zu werden. Dort können Sie ihre
+					importierten, nicht veröffentlichten Inhalte vervollständigen und
+					anschließend veröffentlichen.
 				</p>
 			</div>
 		</div>
@@ -52,7 +54,12 @@
 			</BaseButton>
 			<BaseButton
 				styling="primary"
-				:disabled="csv.content.length === 0"
+				:disabled="
+					csv.content.length === 0 ||
+						(progressbarCurrentStep === 1 &&
+							(metadataFieldMapping.title.mappedHeader === '' ||
+								metadataFieldMapping.url.mappedHeader === ''))
+				"
 				@click="handleNextStep"
 			>
 				{{ forwardButtonText }}
@@ -97,14 +104,41 @@ export default {
 				fileName: "",
 			},
 			metadataFieldMapping: {
-				title: "",
-				description: "",
-				licenses: "",
-				contentCategory: "",
-				mimeType: "",
-				tags: "",
-				url: "",
-				thumbnail: "",
+				title: {
+					mappedHeader: "",
+					description: "",
+					required: true,
+				},
+				description: {
+					mappedHeader: "",
+					description: "",
+				},
+				url: {
+					mappedHeader: "",
+					description: "URL where Content is located",
+					required: true,
+				},
+				licenses: {
+					mappedHeader: "",
+					description: "(ex. MIT ...)",
+				},
+				contentCategory: {
+					mappedHeader: "",
+					description: "( ex. atomic, learning-tool ...)",
+				},
+				mimeType: {
+					mappedHeader: "",
+					description: "(ex. image, audio ...)",
+				},
+				tags: {
+					mappedHeader: "",
+					description: "Keywords to search your Content",
+				},
+				thumbnail: {
+					mappedHeader: "",
+					description:
+						"Image-URL which represents the content for the end user",
+				},
 			},
 			disabledOptions: [],
 			isPublished: false,
@@ -134,12 +168,14 @@ export default {
 				};
 				Object.entries(this.metadataFieldMapping).forEach(([key, value]) => {
 					if (key === "tags" || key === "licenses") {
-						if (row[value]) {
-							resource[key] = row[value].split(",").map((each) => each.trim());
+						if (row[value.mappedHeader]) {
+							resource[key] = row[value.mappedHeader]
+								.split(",")
+								.map((each) => each.trim());
 						}
 					} else {
-						if (row[value]) {
-							resource[key] = row[value];
+						if (row[value.mappedHeader]) {
+							resource[key] = row[value.mappedHeader];
 						}
 					}
 				});
