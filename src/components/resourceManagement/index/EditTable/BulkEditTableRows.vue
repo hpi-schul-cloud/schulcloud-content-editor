@@ -9,7 +9,7 @@
 			<div class="table-cell">
 				<component
 					:is="getComponent(coloumn).component"
-					v-model="resource[coloumn]"
+					v-model="resourceInput[coloumn]"
 					:label="coloumn"
 					:name="coloumn"
 					v-bind="getComponent(coloumn).attributes"
@@ -23,7 +23,11 @@
 			</div>
 		</td>
 		<td style="text-align: right;">
-			<BaseButton type="button" class="action">
+			<BaseButton
+				type="button"
+				class="action"
+				@click="$emit('submit', resource)"
+			>
 				<i class="material-icons">
 					check
 				</i>
@@ -36,12 +40,26 @@
 import BaseButton from "@/components/base/BaseButton";
 import EditTableRow, { keyInputMapping } from "./EditTableRow";
 
-const activeObj = {};
-const oldResourceObj = {};
+const constructors = {};
 keyInputMapping.forEach((e) => {
-	oldResourceObj[e.key] = null;
-	activeObj[e.key] = false;
+	constructors[e.key] = e.type;
 });
+
+const getActiveObj = () => {
+	const obj = {};
+	keyInputMapping.forEach((e) => {
+		obj[e.key] = false;
+	});
+	return obj;
+};
+
+const getResourceObj = () => {
+	const obj = {};
+	keyInputMapping.forEach((e) => {
+		obj[e.key] = e.type();
+	});
+	return obj;
+};
 
 export default {
 	components: {
@@ -64,57 +82,42 @@ export default {
 	},
 	data() {
 		return {
-			disabled: true,
-			oldResource: {},
-			active: activeObj,
-			oldActive: {},
+			oldResourceInput: getResourceObj(),
+			resourceInput: getResourceObj(),
+			oldActive: getActiveObj(),
+			active: getActiveObj(),
 		};
 	},
 	watch: {
-		resource: {
+		visibleColoumns: function(to) {
+			Object.keys(constructors).forEach((key) => {
+				if (!this.visibleColoumns.includes(key)) {
+					this.resource[key] = undefined;
+				}
+			});
+		},
+		resourceInput: {
 			handler(to) {
-				const from = this.oldResource;
-				Object.entries(to).forEach(([key, value]) => {
-					const before = from[key];
-					const after = value;
-					const isActive = this.active[key];
-
-					if (after || after === false) {
+				this.getObjDiffs(to, this.oldResourceInput).forEach(([key, value]) => {
+					if (this.isDefined(value)) {
 						this.active[key] = true;
-						this.oldResource[key] = value;
-					} else if (
-						before !== undefined &&
-						isActive &&
-						!after &&
-						after !== false
-					) {
-						this.resource[key] = undefined;
+						this.resource[key] = value;
+					} else {
 						this.active[key] = false;
-						this.oldResource[key] = value;
 					}
+					this.oldResourceInput[key] = this.deepCopy(value);
 				});
 			},
 			deep: true,
 		},
 		active: {
 			handler(to) {
-				const from = this.oldActive;
-				Object.entries(to).forEach(([key, value]) => {
-					const before = from[key];
-					const after = value;
-					if (before !== after) {
-						if (after && this.resource[key] === undefined) {
-							const restoredVal = this.oldResource[key];
-							if (!restoredVal && restoredVal !== false) {
-								restoredVal = "";
-							}
-							this.oldResource[key] = undefined;
-							this.resource[key] = restoredVal;
-						} else if (!after) {
-							this.resource[key] = undefined;
-						}
-						this.oldActive[key] = value;
-					}
+				this.getObjDiffs(to, this.oldActive).forEach(([key, isActive]) => {
+					const value = this.isDefined(this.resourceInput[key])
+						? this.resourceInput[key]
+						: constructors[key]();
+					this.resource[key] = isActive ? value : undefined;
+					this.oldActive[key] = this.deepCopy(isActive);
 				});
 			},
 			deep: true,
@@ -123,6 +126,20 @@ export default {
 	methods: {
 		getComponent(key) {
 			return keyInputMapping.find((coloumn) => coloumn.key === key);
+		},
+		getObjDiffs(objA, objB) {
+			return Object.entries(objA).filter(
+				([key, val]) => JSON.stringify(val) !== JSON.stringify(objB[key])
+			);
+		},
+		isDefined(val) {
+			return (
+				typeof val === "boolean" ||
+				((typeof val === "string" || Array.isArray(val)) && val.length > 0)
+			);
+		},
+		deepCopy(obj) {
+			return typeof obj === "object" ? JSON.parse(JSON.stringify(obj)) : obj;
 		},
 	},
 };
@@ -162,6 +179,7 @@ td {
 .invisible {
 	opacity: 0;
 	&:focus,
+	&:focus-within,
 	&:hover {
 		opacity: 1;
 	}
