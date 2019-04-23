@@ -39,7 +39,7 @@ export default {
 		},
 		$_resourceGet(resourceId) {
 			return jsonFetch(
-				this.$config.API.serverServerUrl +
+				this.$config.API.contentServerUrl +
 					this.$config.API.getContentPath +
 					(resourceId ? resourceId : "")
 			);
@@ -48,7 +48,7 @@ export default {
 			const queryString = qs.stringify(query);
 
 			return jsonFetch(
-				this.$config.API.serverServerUrl +
+				this.$config.API.contentServerUrl +
 					this.$config.API.searchContentPath +
 					"?" +
 					queryString
@@ -102,13 +102,15 @@ export default {
 					cleanQuery[key] = value;
 				}
 			});
+			cleanQuery["$limit"] = "-1";
 			cleanQuery["$select"] = ["_id"];
 
 			const idResponse = await this.$_resourceFind(cleanQuery);
-			const ids = idResponse.data.map((resource) => resource._id);
+
+			const ids = idResponse.map((resource) => resource._id);
 
 			if (!window.confirm(`${ids.length} Einträge bearbeiten?`)) {
-				throw "abort";
+				throw new Error("Edit aborted.");
 			}
 
 			const queryString = qs.stringify({
