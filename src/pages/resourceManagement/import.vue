@@ -38,21 +38,30 @@
 			</div>
 		</div>
 		<div v-if="progressbarCurrentStep === 3" class="content">
-			<LoadingBooks v-if="publishedResourcesCount === undefined" />
-			<div v-else style="text-align: center">
+			<LoadingBooks
+				v-if="publishedResourcesCount === undefined && !importError"
+			/>
+			<div v-if="importError" class="error-wrapper">
+				<i class="material-icons error-icon">error</i>
+				<p>Es konnten keine Inhalte importiert werden.</p>
+				<b>Error:</b>
+				{{ importError }}
+			</div>
+			<div v-if="publishedResourcesCount" style="text-align: center">
 				{{ publishedResourcesCount }} / {{ importedResources.length }} Inhalte
 				konnten veröffentlicht werden.
 			</div>
 		</div>
 		<div class="button-wrapper">
 			<BaseButton
-				v-if="progressbarCurrentStep != 0"
+				v-if="progressbarCurrentStep != 0 && !importError"
 				styling="secondary"
 				@click="handleBackStep"
 			>
 				Zurück
 			</BaseButton>
 			<BaseButton
+				v-if="!importError"
 				styling="primary"
 				:disabled="
 					csv.content.length === 0 ||
@@ -63,6 +72,9 @@
 				@click="handleNextStep"
 			>
 				{{ forwardButtonText }}
+			</BaseButton>
+			<BaseButton v-if="importError" styling="primary" @click="importCSV">
+				Erneut Versuchen
 			</BaseButton>
 		</div>
 	</div>
@@ -151,6 +163,7 @@ export default {
 			maxRows: 5,
 			publishedResourcesCount: undefined,
 			invalidFields: {},
+			importError: "",
 		};
 	},
 	computed: {
@@ -229,7 +242,7 @@ export default {
 
 			return this.$_resourceCreate(newData)
 				.then((response) => {
-					if (response.code < 200 && response.code >= 300) {
+					if (response.code < 200 || response.code >= 300) {
 						throw new Error(response.message);
 					}
 					this.$toasted.show(`Saved`);
@@ -237,7 +250,7 @@ export default {
 				})
 				.catch((error) => {
 					this.$toasted.error(`Failed to save`);
-					this.publishedResourcesCount = 0;
+					this.importError = error.message;
 				});
 		},
 		countPublishedResources(array) {
@@ -304,5 +317,12 @@ export default {
 }
 .subtitle {
 	margin-bottom: 0;
+}
+.error-wrapper {
+	text-align: center;
+	.error-icon {
+		display: block;
+		font-size: 2em;
+	}
 }
 </style>
