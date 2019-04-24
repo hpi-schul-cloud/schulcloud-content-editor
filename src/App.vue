@@ -91,11 +91,14 @@ export default {
 	min-height: 100vh;
 	padding: 0;
 }
+
+$header-height: 56px;
+
 main {
 	flex: 1;
 	// display: contents;
 	max-width: 100% !important;
-	padding-top: 80px;
+	padding-top: $header-height;
 	padding-right: 25px;
 	padding-left: 200px;
 	margin: 0 auto !important;
@@ -104,13 +107,13 @@ main {
 .header {
 	position: fixed;
 	top: 0;
-	height: 80px;
+	height: $header-height;
 	background: white;
 	box-shadow: 0 2px 8px 0 rgb(140, 139, 139);
 }
 .sidebar {
 	position: fixed;
-	top: 80px;
+	top: $header-height;
 	bottom: 0;
 	width: 175px;
 }

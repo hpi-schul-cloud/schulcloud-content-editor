@@ -110,11 +110,12 @@ header {
 	padding: 0 8px;
 
 	img {
-		width: 80px;
+		width: 72px;
 	}
 }
 
 .title {
+	margin: 0;
 	font-size: 32px;
 	font-weight: 500;
 	font-weight: lighter;
