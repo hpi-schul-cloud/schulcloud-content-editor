@@ -2,7 +2,11 @@
 	<div>
 		<table>
 			<tr>
-				<th v-for="(header, index) in headerFields" :key="index">
+				<th
+					v-for="(header, index) in headerFields"
+					:key="index"
+					:class="{ invalid: !!invalidFields.includes(header) }"
+				>
 					{{ header }}
 				</th>
 			</tr>
@@ -32,6 +36,10 @@ export default {
 		clipped: {
 			type: Boolean,
 			default: false,
+		},
+		invalidFields: {
+			type: Array,
+			default: () => [],
 		},
 	},
 	computed: {
@@ -66,5 +74,8 @@ table {
 }
 .text-center {
 	text-align: center;
+}
+.invalid {
+	background: red;
 }
 </style>
