@@ -58,6 +58,9 @@ export const keyInputMapping = [
 		key: "title",
 		component: TableInput,
 		attributes: { type: "text" },
+		wrapperAttributes: {
+			style: "min-width: 200px",
+		},
 		type: String,
 	},
 	{ key: "tags", component: TableTags, attributes: {}, type: Array },

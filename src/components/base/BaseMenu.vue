@@ -66,7 +66,6 @@ export default {
 	align-items: center;
 	justify-content: space-between;
 	min-width: 100%;
-	padding: 8px 16px;
 	font-family: inherit;
 	font-size: 14px;
 	font-weight: 500;

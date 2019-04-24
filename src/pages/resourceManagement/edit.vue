@@ -128,8 +128,7 @@ import VeeValidate from "vee-validate";
 Vue.use(VeeValidate);
 
 import ContentCard from "@/components/resourceManagement/edit/ContentCard";
-const BaseConfirm = () =>
-	import(/* webpackChunkName: "BaseConfirm" */ "@/components/base/BaseConfirm");
+const BaseConfirm = () => import("@/components/base/BaseConfirm");
 
 import ContentTitle from "@/components/resourceManagement/edit/inputs/ContentTitle";
 import ContentDescription from "@/components/resourceManagement/edit/inputs/ContentDescription";
@@ -260,10 +259,9 @@ export default {
 		},
 		loadFiletree() {
 			if (this.editMode) {
-				this.$_resourceFilesGet(this.$route.params.id)
+				return this.$_resourceFilesGet(this.$route.params.id)
 					.then((response) => {
-						// JSON responses are automatically parsed.
-						this.filetree = this.$_normalizeTree(response.data);
+						this.filetree = this.$_normalizeTree(response);
 					})
 					.catch((e) => {
 						this.errors.add(e);
