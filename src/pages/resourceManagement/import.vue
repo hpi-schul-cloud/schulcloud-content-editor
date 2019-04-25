@@ -30,32 +30,38 @@
 				<p>
 					<b>! Hinweis:</b>
 					Nur vollständige und valide Inhalte können veröffentlicht werden.
-					Sollten Sie einige Felder im vorherigen Schritt nicht zuordnen können,
-					werden ihre Inhalte als nicht veröffentlicht gespeichert. Im nächsten
-					Schritt haben Sie dann die Möglichkeit, zu einer gefilterten Ansicht
-					der Verwaltungstabelle umgeleitet zu werden. Dort können Sie ihre
-					importierten, nicht veröffentlichten Inhalte vervollständigen und
-					anschließend veröffentlichen.
 				</p>
-				<button type="button" @click="validate">Validate</button>
+				<ValidationResultDialog
+					:active.sync="showValidationDialog"
+					:validation-results="invalidFields"
+				/>
 			</div>
 		</div>
 		<div v-if="progressbarCurrentStep === 3" class="content">
-			<LoadingBooks v-if="publishedResourcesCount === undefined" />
-			<div v-else style="text-align: center">
+			<LoadingBooks
+				v-if="publishedResourcesCount === undefined && !importError"
+			/>
+			<div v-if="importError" class="error-wrapper">
+				<i class="material-icons error-icon">error</i>
+				<p>Es konnten keine Inhalte importiert werden.</p>
+				<b>Error:</b>
+				{{ importError }}
+			</div>
+			<div v-if="publishedResourcesCount" style="text-align: center">
 				{{ publishedResourcesCount }} / {{ importedResources.length }} Inhalte
 				konnten veröffentlicht werden.
 			</div>
 		</div>
 		<div class="button-wrapper">
 			<BaseButton
-				v-if="progressbarCurrentStep != 0"
+				v-if="progressbarCurrentStep != 0 && !importError"
 				styling="secondary"
 				@click="handleBackStep"
 			>
 				Zurück
 			</BaseButton>
 			<BaseButton
+				v-if="!importError"
 				styling="primary"
 				:disabled="
 					csv.content.length === 0 ||
@@ -67,6 +73,9 @@
 			>
 				{{ forwardButtonText }}
 			</BaseButton>
+			<BaseButton v-if="importError" styling="primary" @click="importCSV">
+				Erneut Versuchen
+			</BaseButton>
 		</div>
 	</div>
 </template>
@@ -75,6 +84,8 @@ import StepProgress from "@/components/StepProgress";
 import CsvUpload from "@/components/resourceManagement/import/CsvUpload";
 import MetadataMapping from "@/components/resourceManagement/import/MappingMetadata";
 import PreviewTable from "@/components/resourceManagement/import/PreviewTable";
+import ValidationResultDialog from "@/components/resourceManagement/import/ValidationResultDialog";
+
 import BaseButton from "@/components/base/BaseButton";
 import BaseCheckbox from "@/components/base/BaseCheckbox";
 import LoadingBooks from "@/components/LoadingBooks";
@@ -89,6 +100,7 @@ export default {
 		CsvUpload,
 		MetadataMapping,
 		PreviewTable,
+		ValidationResultDialog,
 		BaseButton,
 		BaseCheckbox,
 		LoadingBooks,
@@ -96,6 +108,7 @@ export default {
 	mixins: [api],
 	data() {
 		return {
+			showValidationDialog: false,
 			progressbarSteps: [
 				{ name: "Datei hochladen" },
 				{ name: "Metadaten zuordnen" },
@@ -149,7 +162,8 @@ export default {
 			isPublished: false,
 			maxRows: 5,
 			publishedResourcesCount: undefined,
-			invalidFields: [],
+			invalidFields: {},
+			importError: "",
 		};
 	},
 	computed: {
@@ -195,11 +209,22 @@ export default {
 			return this.importedResources.slice(0, this.maxRows);
 		},
 	},
+	watch: {
+		isPublished: function(to, from) {
+			if (to === true) {
+				this.showValidationDialog = true;
+			}
+		},
+	},
 	methods: {
 		handleNextStep() {
+			if (this.progressbarCurrentStep === 1) {
+				this.validate();
+			}
 			if (this.progressbarCurrentStep === 2) {
 				this.importCSV();
-			} else this.incrementCurrentStep();
+			}
+			this.incrementCurrentStep();
 		},
 		handleBackStep() {
 			if (this.progressbarCurrentStep > 0) {
@@ -214,11 +239,10 @@ export default {
 		},
 		importCSV() {
 			let newData = this.importedResources;
-			this.incrementCurrentStep();
 
 			return this.$_resourceCreate(newData)
 				.then((response) => {
-					if (response.code < 200 && response.code >= 300) {
+					if (response.code < 200 || response.code >= 300) {
 						throw new Error(response.message);
 					}
 					this.$toasted.show(`Saved`);
@@ -226,6 +250,7 @@ export default {
 				})
 				.catch((error) => {
 					this.$toasted.error(`Failed to save`);
+					this.importError = error.message;
 				});
 		},
 		countPublishedResources(array) {
@@ -235,23 +260,10 @@ export default {
 			this.publishedResourcesCount = published.length;
 		},
 		async validate() {
+			this.invalidFields = {};
 			let schema = await this.getResourceSchema();
 			delete schema["$schema"];
 
-			let data = [
-				{
-					title: "Test",
-					description: "test2",
-					isPublished: true,
-					originId: "15560252955040",
-					providerName: "TestProvider",
-					contentCategory: "6476",
-					title: "Malen nach Zahlen",
-					url:
-						"https://ssl-static-images.ravensburger.de/images/produktseiten/1024/55872_4.jpg",
-					userId: "0000d231816abba584714c9e",
-				},
-			];
 			const ajv = new Ajv({ allErrors: true, errorDataPath: "property" });
 
 			this.importedResources.forEach((resource) => {
@@ -260,8 +272,12 @@ export default {
 					ajv.errors.forEach((error) => {
 						// remove the "." from the beginning of the String (error.dataPath)
 						const errorField = error.dataPath.substring(1);
-						if (!this.invalidFields.includes(errorField)) {
-							this.invalidFields.push(errorField);
+						if (!Array.isArray(this.invalidFields[errorField])) {
+							// for reactivity in object
+							this.$set(this.invalidFields, errorField, []);
+						}
+						if (!this.invalidFields[errorField].includes(error.message)) {
+							this.invalidFields[errorField].push(error.message);
 						}
 					});
 				}
@@ -301,5 +317,12 @@ export default {
 }
 .subtitle {
 	margin-bottom: 0;
+}
+.error-wrapper {
+	text-align: center;
+	.error-icon {
+		display: block;
+		font-size: 2em;
+	}
 }
 </style>

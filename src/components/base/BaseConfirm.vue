@@ -1,14 +1,18 @@
 <template>
 	<div v-if="active">
 		<div class="dialog-container">
-			<div class="title">{{ title }}</div>
-			<div class="content">{{ content }}</div>
-			<div class="action">
-				<BaseButton styling="secondary" @click="handleCancel">
-					{{ cancelText || $lang.base.confirm.cancel }}
+			<div class="title">
+				<slot name="title">{{ title }}</slot>
+			</div>
+			<div class="content">
+				<slot>{{ content }}</slot>
+			</div>
+			<div v-if="cancelText || confirmText" class="action">
+				<BaseButton v-if="cancelText" styling="secondary" @click="handleCancel">
+					{{ cancelText }}
 				</BaseButton>
-				<BaseButton styling="primary" @click="handleConfirm">
-					{{ confirmText || $lang.base.confirm.confirm }}
+				<BaseButton v-if="confirmText" styling="primary" @click="handleConfirm">
+					{{ confirmText }}
 				</BaseButton>
 			</div>
 		</div>
