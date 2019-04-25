@@ -57,6 +57,9 @@ export default {
 			);
 		},
 		$_resourceCreate(resource) {
+			if (Array.isArray(resource)) {
+				return this.$_resourceBulkCreate(resource);
+			}
 			return jsonFetch(
 				this.$config.API.contentServerUrl + this.$config.API.pushContentPath,
 				{
@@ -98,35 +101,38 @@ export default {
 				this.$config.API.contentServerUrl + "/resources/resource-schema"
 			);
 		},
+		$_resourceBulkCreate(resource) {
+			return jsonFetch(
+				this.$config.API.contentServerUrl +
+					this.$config.API.pushBulkContentPath,
+				{
+					method: "POST",
+					body: resource,
+				}
+			);
+		},
 		async $_resourceBulkPatch(query, data = {}) {
 			if (!query) {
 				throw new Error("query (first) parameter is required!");
 			}
 
-			const cleanQuery = {};
-			Object.entries(query).forEach(([key, value]) => {
-				if (!["$limit", "$skip"].includes(key)) {
-					cleanQuery[key] = value;
-				}
+			const cleanQuery = Object.assign({}, query, {
+				$limit: "-1",
+				$select: ["_id"],
 			});
-			cleanQuery["$limit"] = "-1";
-			cleanQuery["$select"] = ["_id"];
+			delete cleanQuery["$skip"];
 
-			const idResponse = await this.$_resourceFind(cleanQuery);
+			const queryString = qs.stringify(cleanQuery);
 
-			const ids = idResponse.map((resource) => resource._id);
+			const queryResult = await this.$_resourceFind(cleanQuery);
 
-			if (!window.confirm(`${ids.length} Einträge bearbeiten?`)) {
+			if (!window.confirm(`${queryResult.length} Einträge bearbeiten?`)) {
 				throw new Error("Edit aborted.");
 			}
 
-			const queryString = qs.stringify({
-				"_id[$in]": ids,
-			});
-
 			return jsonFetch(
 				this.$config.API.contentServerUrl +
-					this.$config.API.pushContentPath +
+					this.$config.API.pushBulkContentPath +
 					"?" +
 					queryString,
 				{

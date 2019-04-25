@@ -141,8 +141,9 @@ export default {
 					});
 				})
 				.catch((error) => {
-					console.error(error);
-					this.$toasted.error(`Failed to Patch`);
+					this.$toasted.error(
+						error.message ? error.toString() : `Failed to Patch`
+					);
 				});
 		},
 	},
