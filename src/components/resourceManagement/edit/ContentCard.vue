@@ -91,8 +91,8 @@ export default {
 				active: false,
 				title: this.$lang.contentCard.dialog.title,
 				content: this.$lang.contentCard.dialog.content,
-				confirm: this.$lang.contentCard.dialog.confirm,
-				cancle: this.$lang.contentCard.dialog.cancle,
+				confirmText: this.$lang.contentCard.dialog.confirm,
+				cancelText: this.$lang.contentCard.dialog.cancle,
 			},
 		};
 	},
