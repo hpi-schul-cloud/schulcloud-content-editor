@@ -24,13 +24,22 @@
 				:clipped="clipped"
 				:invalid-fields="invalidFields"
 			/>
-			<div class="flex">
+			<div class="flex-column">
 				<h4 class="subtitle">Inhalte veröffentlichen?</h4>
 				<BaseCheckbox v-model="isPublished" label="published"></BaseCheckbox>
-				<p>
-					<b>! Hinweis:</b>
-					Nur vollständige und valide Inhalte können veröffentlicht werden.
-				</p>
+				<div class="flex-row">
+					<p>
+						<b>! Hinweis:</b>
+						Nur vollständige und valide Inhalte werden veröffentlicht.
+					</p>
+					<i
+						v-if="isPublished"
+						class="hint-icon material-icons"
+						@click="showValidationDialog = true"
+					>
+						feedback
+					</i>
+				</div>
 				<ValidationResultDialog
 					:active.sync="showValidationDialog"
 					:validation-results="invalidFields"
@@ -38,30 +47,41 @@
 			</div>
 		</div>
 		<div v-if="progressbarCurrentStep === 3" class="content">
-			<LoadingBooks
-				v-if="publishedResourcesCount === undefined && !importError"
-			/>
-			<div v-if="importError" class="error-wrapper">
-				<i class="material-icons error-icon">error</i>
-				<p>Es konnten keine Inhalte importiert werden.</p>
-				<b>Error:</b>
-				{{ importError }}
+			<LoadingBooks v-if="!importSuccess && !importError" />
+			<div v-if="importError" class="result-wrapper">
+				<img
+					class="result-image"
+					src="https://cdn.shopify.com/s/files/1/1192/5178/products/3D-Book-Character-Sad-wm_large.jpg?v=1515387590"
+				/>
+				<h3 class="result-title">Import fehlgeschlagen</h3>
+				<p class="result-subtitle">Error: {{ importError }}</p>
 			</div>
-			<div v-if="publishedResourcesCount" style="text-align: center">
-				{{ publishedResourcesCount }} / {{ importedResources.length }} Inhalte
-				konnten veröffentlicht werden.
+			<div v-if="importSuccess" class="result-wrapper">
+				<img
+					class="result-image success-icon"
+					src="@/assets/icon-check-outline.svg"
+				/>
+				<p class="result-numbers">
+					{{ this.importSuccess }} / {{ importedResources.length }}
+				</p>
+				<h3 class="result-title">Inhalte erfolgreich importiert</h3>
+				<p v-if="isPublished" class="result-subtitle">
+					davon konnten
+					<b>{{ publishedResourcesCount }}</b>
+					Inhalte veröffentlicht werden
+				</p>
 			</div>
 		</div>
 		<div class="button-wrapper">
 			<BaseButton
-				v-if="progressbarCurrentStep != 0 && !importError"
+				v-if="progressbarCurrentStep != 0 && !importError && !importSuccess"
 				styling="secondary"
 				@click="handleBackStep"
 			>
 				Zurück
 			</BaseButton>
 			<BaseButton
-				v-if="!importError"
+				v-if="!importError && !importSuccess"
 				styling="primary"
 				:disabled="
 					csv.content.length === 0 ||
@@ -76,6 +96,28 @@
 			<BaseButton v-if="importError" styling="primary" @click="importCSV">
 				Erneut Versuchen
 			</BaseButton>
+			<RouterLink v-if="importSuccess" :to="{ name: 'resourceManagement' }">
+				<BaseButton styling="secondary">
+					Zur Verwaltung
+				</BaseButton>
+			</RouterLink>
+			<RouterLink v-if="importSuccess" :to="{ name: 'resourceManagement' }">
+				<BaseButton v-if="importSuccess" styling="primary">
+					Importierte Inhalte ansehen
+				</BaseButton>
+			</RouterLink>
+			<RouterLink
+				v-if="importSuccess"
+				:to="{ name: 'resourceManagement/import' }"
+			>
+				<BaseButton
+					v-if="importSuccess"
+					styling="secondary"
+					@click="resetImport"
+				>
+					Zum Import
+				</BaseButton>
+			</RouterLink>
 		</div>
 	</div>
 </template>
@@ -142,7 +184,8 @@ export default {
 				},
 				contentCategory: {
 					mappedHeader: "",
-					description: "( ex. atomic, learning-tool ...)",
+					description:
+						"has to be one of the Following: 'atomic', 'learning-object', 'proven-learning-object', 'tool'",
 				},
 				mimeType: {
 					mappedHeader: "",
@@ -164,6 +207,7 @@ export default {
 			publishedResourcesCount: undefined,
 			invalidFields: {},
 			importError: "",
+			importSuccess: undefined,
 		};
 	},
 	computed: {
@@ -216,6 +260,9 @@ export default {
 			}
 		},
 	},
+	created: function() {
+		this.resetImport();
+	},
 	methods: {
 		handleNextStep() {
 			if (this.progressbarCurrentStep === 1) {
@@ -238,6 +285,8 @@ export default {
 			this.progressbarCurrentStep = this.progressbarCurrentStep - 1;
 		},
 		importCSV() {
+			this.importError = "";
+			this.importSuccess = undefined;
 			let newData = this.importedResources;
 
 			return this.$_resourceCreate(newData)
@@ -247,6 +296,7 @@ export default {
 					}
 					this.$toasted.show(`Saved`);
 					this.countPublishedResources(response);
+					this.importSuccess = response.length;
 				})
 				.catch((error) => {
 					this.$toasted.error(`Failed to save`);
@@ -295,6 +345,26 @@ export default {
 					throw new Error(error);
 				});
 		},
+		resetImport() {
+			this.showValidationDialog = false;
+			this.progressbarCurrentStep = 0;
+
+			this.csv.headers = [];
+			this.csv.content = [];
+			this.csv.fileName = "";
+
+			Object.entries(this.metadataFieldMapping).forEach(([key, value]) => {
+				value.mappedHeader = "";
+			});
+
+			this.disabledOptions = [];
+			this.isPublished = false;
+
+			this.publishedResourcesCount = undefined;
+			this.invalidFields = {};
+			this.importError = "";
+			this.importSuccess = undefined;
+		},
 	},
 };
 </script>
@@ -308,21 +378,51 @@ export default {
 .button-wrapper {
 	display: flex;
 	justify-content: center;
+	margin: 2em 0;
 }
-.flex {
+.flex-column {
 	display: flex;
 	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+.flex-row {
+	display: flex;
+	flex-direction: row;
 	align-items: center;
 	justify-content: center;
 }
 .subtitle {
 	margin-bottom: 0;
 }
-.error-wrapper {
+.result-wrapper {
 	text-align: center;
-	.error-icon {
-		display: block;
-		font-size: 2em;
+
+	.result-title {
+		margin: 0.2em 0;
+		font-size: 2.5em;
+		font-weight: 400;
 	}
+	.result-subtitle {
+		margin: 0.2em 0;
+		font-size: 1.2em;
+		font-weight: 300;
+	}
+	.result-numbers {
+		margin: 0.1em;
+		font-size: 4em;
+		font-weight: bold;
+	}
+	.result-image {
+		width: 18em;
+		margin: 1em 0;
+
+		&.success-icon {
+			width: 5em;
+		}
+	}
+}
+.hint-icon {
+	cursor: pointer;
 }
 </style>
