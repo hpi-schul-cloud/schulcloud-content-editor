@@ -16,7 +16,9 @@ const jsonFetch = (url, config = {}) => {
 		config.body = JSON.stringify(config.body);
 	}
 
-	return fetch(url, { ...defaultConfig, ...config }).then((res) => res.json());
+	return fetch(url, Object.assign({}, defaultConfig, config)).then((res) =>
+		res.json()
+	);
 };
 
 export default {

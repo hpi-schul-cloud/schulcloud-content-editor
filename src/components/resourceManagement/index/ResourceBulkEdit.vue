@@ -123,10 +123,7 @@ export default {
 		patchBulk(data) {
 			const cleanedData = {};
 			Object.entries(data).forEach(([key, value]) => {
-				if (
-					(value && value.length > 0 && !["name"].includes(value)) ||
-					typeof value === "boolean"
-				) {
+				if (value !== undefined) {
 					cleanedData[key] = value;
 				}
 			});
