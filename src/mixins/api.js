@@ -141,5 +141,34 @@ export default {
 				}
 			);
 		},
+		async $_resourceBulkDelete(query) {
+			if (!query) {
+				throw new Error("query (first) parameter is required!");
+			}
+
+			const cleanQuery = Object.assign({}, query, {
+				$limit: "-1",
+				$select: ["_id"],
+			});
+			delete cleanQuery["$skip"];
+
+			const queryString = qs.stringify(cleanQuery);
+
+			const queryResult = await this.$_resourceFind(cleanQuery);
+
+			if (!window.confirm(`${queryResult.length} Einträge löschen?`)) {
+				throw new Error("Delete aborted.");
+			}
+
+			return jsonFetch(
+				this.$config.API.contentServerUrl +
+					this.$config.API.pushBulkContentPath +
+					"?" +
+					queryString,
+				{
+					method: "DELETE",
+				}
+			);
+		},
 	},
 };

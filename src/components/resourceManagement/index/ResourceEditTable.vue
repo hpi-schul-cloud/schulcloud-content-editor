@@ -30,7 +30,8 @@
 					:resource="bulkInput"
 					:row-name="bulkInput.name"
 					:visible-coloumns="visibleColoumns"
-					@submit="passThroughBulkSubmit"
+					@submit="$emit('patchBulk', $event)"
+					@delete="$emit('deleteBulk')"
 				/>
 				<tr v-if="bulkInputs.length" class="spacer"></tr>
 				<EditTableRow
@@ -39,7 +40,8 @@
 					:resource="resource"
 					:row-name="indexStart + rowIndex + 1"
 					:visible-coloumns="visibleColoumns"
-					@submit="passThroughResourceSubmit"
+					@submit="$emit('patchResource', $event)"
+					@delete="$emit('deleteResource', $event)"
 				/>
 			</tbody>
 		</table>
@@ -79,14 +81,6 @@ export default {
 		return {
 			availableColoumns,
 		};
-	},
-	methods: {
-		passThroughBulkSubmit(resource) {
-			this.$emit("patchBulk", resource);
-		},
-		passThroughResourceSubmit(resource) {
-			this.$emit("patchResource", resource);
-		},
 	},
 };
 </script>

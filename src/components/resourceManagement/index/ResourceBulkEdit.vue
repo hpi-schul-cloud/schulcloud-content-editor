@@ -20,7 +20,9 @@
 			:visible-coloumns="visibleColoumns"
 			:index-start="resourceStartIndex"
 			@patchResource="patchResource"
+			@deleteResource="deleteResource"
 			@patchBulk="patchBulk"
+			@deleteBulk="deleteBulk"
 		/>
 	</div>
 </template>
@@ -33,6 +35,7 @@ import ResourceEditTable, {
 } from "@/components/resourceManagement/index/ResourceEditTable";
 
 import api from "@/mixins/api.js";
+import { setTimeout } from "timers";
 
 const emptyResource = (name) => {
 	const resource = { name };
@@ -120,6 +123,25 @@ export default {
 					this.$toasted.error(`L${resourceViewIndex} - Failed to save`);
 				});
 		},
+		deleteResource(resource) {
+			const resourceViewIndex =
+				this.resourceStartIndex + this.resources.indexOf(resource) + 1;
+
+			return this.$_resourceDelete(resource._id)
+				.then((result) => {
+					this.$toasted.show(`L${resourceViewIndex} - Deleted`);
+					const index = this.resources.findIndex(
+						(item) => item._id === resource._id
+					);
+					if (index !== -1) {
+						this.resources.splice(index, 1);
+					}
+				})
+				.catch((error) => {
+					console.error(error);
+					this.$toasted.error(`L${resourceViewIndex} - Failed to delete`);
+				});
+		},
 		patchBulk(data) {
 			const cleanedData = {};
 			Object.entries(data).forEach(([key, value]) => {
@@ -143,6 +165,20 @@ export default {
 				.catch((error) => {
 					this.$toasted.error(
 						error.message ? error.toString() : `Failed to Patch`
+					);
+				});
+		},
+		deleteBulk() {
+			return this.$_resourceBulkDelete(this.query)
+				.then((results) => {
+					this.$toasted.show(`Deleted ${results.length} Resources`);
+					setTimeout(() => {
+						this.$emit("reload");
+					}, 3000);
+				})
+				.catch((error) => {
+					this.$toasted.error(
+						error.message ? error.toString() : `Failed to Delete`
 					);
 				});
 		},
