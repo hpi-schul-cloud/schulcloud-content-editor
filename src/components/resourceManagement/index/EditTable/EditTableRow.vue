@@ -38,6 +38,11 @@
 					edit
 				</i>
 			</RouterLink>
+			<BaseButton class="action" @click="$emit('delete', resource)">
+				<i class="material-icons">
+					delete
+				</i>
+			</BaseButton>
 		</td>
 	</tr>
 </template>

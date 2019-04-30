@@ -15,6 +15,7 @@
 			:resources="resources"
 			:resource-start-index="(pagination.page - 1) * pagination.itemsPerPage"
 			:query="apiSearchQuery"
+			@reload="loadContent"
 		/>
 		<p v-show="!resources.length">
 			{{ $lang.search.nothing_found }}
@@ -140,7 +141,7 @@ export default {
 
 			// build request url
 			const request =
-				this.searchString.length == 0
+				this.searchString.length === 0
 					? this.$_resourceGet()
 					: this.$_resourceFind(this.apiSearchQuery);
 			return request

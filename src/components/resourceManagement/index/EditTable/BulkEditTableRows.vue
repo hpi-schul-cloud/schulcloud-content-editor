@@ -32,6 +32,11 @@
 					check
 				</i>
 			</BaseButton>
+			<BaseButton type="button" class="action" @click="$emit('delete')">
+				<i class="material-icons">
+					delete
+				</i>
+			</BaseButton>
 		</td>
 	</tr>
 </template>
