@@ -1,5 +1,17 @@
 <template>
+	<RouterLink v-if="to !== undefined" :to="to">
+		<button
+			:class="getClass()"
+			:type="type"
+			:disabled="disabled"
+			v-bind="$attrs"
+			v-on="$listeners"
+		>
+			<slot></slot>
+		</button>
+	</RouterLink>
 	<button
+		v-else
 		:class="getClass()"
 		:type="type"
 		:disabled="disabled"
@@ -32,6 +44,10 @@ export default {
 		styling: {
 			type: String,
 			default: "secondary",
+		},
+		to: {
+			type: [String, Object, undefined],
+			default: undefined,
 		},
 	},
 	methods: {

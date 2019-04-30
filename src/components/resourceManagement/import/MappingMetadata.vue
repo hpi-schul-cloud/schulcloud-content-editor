@@ -1,43 +1,46 @@
 <template>
-	<table class="fixed">
-		<thead>
-			<tr>
-				<th class="icon-column"></th>
-				<th>Metadaten Felder</th>
-				<th class="icon-column"></th>
-				<th>CSV-Felder</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr v-for="(value, key) in metadataFieldMapping" :key="key">
-				<td class="icon-column">
-					<i v-if="value.mappedHeader != ''" class="material-icons">
-						done
-					</i>
-				</td>
-				<td>
-					{{ $lang.resources[key] }}
-					<span v-if="value.required" class="required-flag">*</span>
-					<p class="field-description">{{ value.description }}</p>
-				</td>
-				<td class="icon-column">
-					<i class="material-icons">
-						arrow_right_alt
-					</i>
-				</td>
-				<td>
-					<BaseSelect
-						:options="mappingOptions"
-						:disabled-options="disabledOptions"
-						label=""
-						name="Mapping"
-						:selected="value.mappedHeader"
-						@input="handleInput($event, key)"
-					/>
-				</td>
-			</tr>
-		</tbody>
-	</table>
+	<div>
+		<table class="fixed">
+			<thead>
+				<tr>
+					<th class="icon-column"></th>
+					<th>Metadaten Felder</th>
+					<th class="icon-column"></th>
+					<th>CSV-Felder</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr v-for="(value, key) in metadataFieldMapping" :key="key">
+					<td class="icon-column">
+						<i v-if="value.mappedHeader != ''" class="material-icons">
+							done
+						</i>
+					</td>
+					<td>
+						{{ $lang.resources[key] }}
+						<span v-if="value.required" class="required-flag">*</span>
+						<p class="field-description">{{ value.description }}</p>
+					</td>
+					<td class="icon-column">
+						<i class="material-icons">
+							arrow_right_alt
+						</i>
+					</td>
+					<td>
+						<BaseSelect
+							:options="mappingOptions"
+							:disabled-options="disabledOptions"
+							label=""
+							name="Mapping"
+							:selected="value.mappedHeader"
+							@input="handleInput($event, key)"
+						/>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p>* required Felder</p>
+	</div>
 </template>
 
 <script>
