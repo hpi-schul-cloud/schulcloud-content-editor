@@ -33,7 +33,7 @@
 					@submit="$emit('patchBulk', $event)"
 					@delete="$emit('deleteBulk')"
 				/>
-				<tr v-if="bulkInputs.length" class="spacer"></tr>
+				<tr v-if="bulkInputs.length > 0" class="spacer"></tr>
 
 				<transition
 					v-for="(resource, rowIndex) in resources"

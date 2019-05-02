@@ -69,7 +69,7 @@ export default {
 	data() {
 		return {
 			bulkEdit: true,
-			bulkAdvanced: false,
+			bulkAdvanced: true,
 			bulkReplace: emptyResource("Ersetzen"),
 			bulkFind: emptyResource("Suchen"),
 			availableColoumns,

@@ -10,26 +10,22 @@
 			{{ pagination.totalEntrys }} {{ $lang.search.number_of_found_items }}.
 		</p>
 
-		<transition name="scale" mode="out-in">
-			<div v-if="resources.length">
-				<ResourceBulkEdit
-					:resources="resources"
-					:resource-start-index="
-						(pagination.page - 1) * pagination.itemsPerPage
-					"
-					:query="apiSearchQuery"
-					@reload="loadContent"
-				/>
-				<Pagination :config="pagination" @pageChanged="handlePageChange" />
-			</div>
-			<p v-else>
-				{{ $lang.search.nothing_found }}
-				<br />
-				<small>
-					{{ $lang.search.nothing_found_help }}
-				</small>
-			</p>
-		</transition>
+		<div v-show="resources.length">
+			<ResourceBulkEdit
+				:resources="resources"
+				:resource-start-index="(pagination.page - 1) * pagination.itemsPerPage"
+				:query="apiSearchQuery"
+				@reload="loadContent"
+			/>
+			<Pagination :config="pagination" @pageChanged="handlePageChange" />
+		</div>
+		<p v-show="!resources.length">
+			{{ $lang.search.nothing_found }}
+			<br />
+			<small>
+				{{ $lang.search.nothing_found_help }}
+			</small>
+		</p>
 	</div>
 </template>
 
@@ -159,14 +155,3 @@ export default {
 	},
 };
 </script>
-
-<style lang="scss" scoped>
-.scale-enter-active,
-.scale-leave-active {
-	transition: opacity 0.2s ease-in-out;
-}
-.scale-enter,
-.scale-leave-to {
-	opacity: 0;
-}
-</style>
