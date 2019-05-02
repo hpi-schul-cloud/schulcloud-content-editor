@@ -178,6 +178,9 @@ export default {
 			);
 		},
 	},
+	async created() {
+		this.resourceSchema = await this.getResourceSchema();
+	},
 	methods: {
 		initialDataState() {
 			return {
@@ -201,6 +204,7 @@ export default {
 				invalidFields: {},
 				importError: "",
 				successfullyImported: undefined,
+				resourceSchema: {},
 			};
 		},
 		initializeMetadataFieldMapping() {
@@ -221,7 +225,7 @@ export default {
 		},
 		handleNextStep() {
 			if (this.progressbarCurrentStep === 1) {
-				this.validate();
+				this.validateResourcesBeforeImport();
 			}
 			if (this.progressbarCurrentStep === 2) {
 				this.importCSV();
@@ -261,15 +265,12 @@ export default {
 			});
 			this.publishedResourcesCount = published.length;
 		},
-		async validate() {
+		validateResourcesBeforeImport() {
 			this.invalidFields = {};
-			let schema = await this.getResourceSchema();
-			delete schema["$schema"];
-
 			const ajv = new Ajv({ allErrors: true, errorDataPath: "property" });
 
 			this.importedResources.forEach((resource) => {
-				const valid = ajv.validate(schema, resource);
+				const valid = ajv.validate(this.resourceSchema, resource);
 				if (!valid) {
 					ajv.errors.forEach((error) => {
 						// remove the "." from the beginning of the String (error.dataPath)
@@ -287,6 +288,7 @@ export default {
 		},
 		getResourceSchema() {
 			return this.$_resourceResourceSchemaGet().then((response) => {
+				delete response["$schema"];
 				return response;
 			});
 		},
