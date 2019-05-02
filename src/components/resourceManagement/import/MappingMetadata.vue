@@ -1,5 +1,6 @@
 <template>
 	<div>
+		<h3>Mapping</h3>
 		<table class="fixed">
 			<thead>
 				<tr>
