@@ -139,11 +139,11 @@ export default {
 			// set unique browser url
 			this.updateUrlQuery();
 
+			if (this.searchString.length === 0) {
+				this.apiSearchQuery["_all[$match]"] = undefined;
+			}
 			// build request url
-			const request =
-				this.searchString.length === 0
-					? this.$_resourceGet()
-					: this.$_resourceFind(this.apiSearchQuery);
+			const request = this.$_resourceFind(this.apiSearchQuery);
 			return request
 				.then((data) => {
 					this.resources = data.data;
