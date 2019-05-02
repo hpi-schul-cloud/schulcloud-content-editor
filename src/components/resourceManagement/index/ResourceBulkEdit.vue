@@ -2,7 +2,7 @@
 	<div>
 		<BaseCheckbox v-model="bulkEdit" label="Bulk Edit" />
 		<BaseCheckbox
-			v-if="bulkEdit && false"
+			v-if="bulkEdit"
 			v-model="bulkAdvanced"
 			label="Advanced Bulk Edit"
 		/>
@@ -70,8 +70,8 @@ export default {
 		return {
 			bulkEdit: true,
 			bulkAdvanced: false,
-			bulkReplace: emptyResource("Edit"),
-			bulkFind: emptyResource("Filter"),
+			bulkReplace: emptyResource("Ersetzen"),
+			bulkFind: emptyResource("Suchen"),
 			availableColoumns,
 			visibleColoumns: [
 				"title",
@@ -105,43 +105,51 @@ export default {
 		},
 	},
 	methods: {
+		// HELPER
+		getResourceIndex(resource) {
+			const resourceIndex = this.resources.findIndex(
+				(item) => item._id === resource._id
+			);
+			if (resourceIndex === -1) {
+				throw new Error("Item to delete not found.", resource);
+			}
+			return resourceIndex;
+		},
+		getResourceSearchIndex(resource) {
+			return this.resourceStartIndex + this.resources.indexOf(resource) + 1;
+		},
+		showNetworkError(fallbackMessage) {
+			return (error) => {
+				this.$toasted.error(error.message ? error.toString() : fallbackMessage);
+			};
+		},
 		updateResource(existing, newResource) {
 			Object.entries(newResource).forEach(([key, value]) => {
 				existing[key] = value;
 			});
 		},
+		// EDIT SINGLE
 		patchResource(resource) {
-			const resourceViewIndex =
-				this.resourceStartIndex + this.resources.indexOf(resource) + 1;
+			const resourceViewIndex = this.getResourceSearchIndex(resource);
 			return this.$_resourcePatch(resource)
 				.then((result) => {
 					this.$toasted.show(`L${resourceViewIndex} - Saved`);
 					this.updateResource(resource, result);
 				})
-				.catch((error) => {
-					console.error(error);
-					this.$toasted.error(`L${resourceViewIndex} - Failed to save`);
-				});
+				.catch(this.showNetworkError(`L${resourceViewIndex} - Failed to save`));
 		},
 		deleteResource(resource) {
-			const resourceViewIndex =
-				this.resourceStartIndex + this.resources.indexOf(resource) + 1;
-
+			const resourceViewIndex = this.getResourceSearchIndex(resource);
 			return this.$_resourceDelete(resource._id)
 				.then((result) => {
 					this.$toasted.show(`L${resourceViewIndex} - Deleted`);
-					const index = this.resources.findIndex(
-						(item) => item._id === resource._id
-					);
-					if (index !== -1) {
-						this.resources.splice(index, 1);
-					}
+					this.resources.splice(this.getResourceIndex(resource), 1);
 				})
-				.catch((error) => {
-					console.error(error);
-					this.$toasted.error(`L${resourceViewIndex} - Failed to delete`);
-				});
+				.catch(
+					this.showNetworkError(`L${resourceViewIndex} - Failed to delete`)
+				);
 		},
+		// EDIT BULK
 		patchBulk(data) {
 			const cleanedData = {};
 			Object.entries(data).forEach(([key, value]) => {
@@ -162,11 +170,7 @@ export default {
 						this.updateResource(this.resources[visibileIndex], newResource);
 					});
 				})
-				.catch((error) => {
-					this.$toasted.error(
-						error.message ? error.toString() : `Failed to Patch`
-					);
-				});
+				.catch(this.showNetworkError("Failed to patch"));
 		},
 		deleteBulk() {
 			return this.$_resourceBulkDelete(this.query)
@@ -177,11 +181,7 @@ export default {
 						this.$emit("reload");
 					}, 3000);
 				})
-				.catch((error) => {
-					this.$toasted.error(
-						error.message ? error.toString() : `Failed to Delete`
-					);
-				});
+				.catch(this.showNetworkError("Failed to delete"));
 		},
 	},
 };
