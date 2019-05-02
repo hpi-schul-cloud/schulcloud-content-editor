@@ -67,6 +67,7 @@ export const keyInputMapping = [
 			style: "min-width: 200px",
 		},
 		type: String,
+		required: true,
 	},
 	{ key: "tags", component: TableTags, attributes: {}, type: Array },
 	{
@@ -104,6 +105,7 @@ export const keyInputMapping = [
 		component: TableInput,
 		attributes: { type: "url" },
 		type: String,
+		required: true,
 	},
 	{
 		key: "thumbnail",

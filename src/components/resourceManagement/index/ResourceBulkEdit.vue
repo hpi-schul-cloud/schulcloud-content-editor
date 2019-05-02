@@ -172,6 +172,7 @@ export default {
 			return this.$_resourceBulkDelete(this.query)
 				.then((results) => {
 					this.$toasted.show(`Deleted ${results.length} Resources`);
+					// give the server some time to sync up elasticsearch
 					setTimeout(() => {
 						this.$emit("reload");
 					}, 3000);

@@ -19,6 +19,10 @@
 					v-model="active[coloumn]"
 					class="active-toggle"
 					type="checkbox"
+					:disabled="
+						getComponent(coloumn).required === true &&
+							!isDefined(resourceInput[coloumn])
+					"
 				/>
 			</div>
 		</td>
