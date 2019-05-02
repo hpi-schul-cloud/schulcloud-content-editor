@@ -49,11 +49,11 @@
 
 <script>
 import BaseButton from "@/components/base/BaseButton";
-import TableCheckbox from "./TableCheckbox";
-import TableInput from "./TableInput";
-import TableTextarea from "./TableTextarea";
-import TableSelect from "./TableSelect";
-import TableTags from "./TableTags";
+import TableCheckbox from "./TableInputs/TableCheckbox";
+import TableInput from "./TableInputs/TableInput";
+import TableTextarea from "./TableInputs/TableTextarea";
+import TableSelect from "./TableInputs/TableSelect";
+import TableTags from "./TableInputs/TableTags";
 
 import { options as MimeTypeOptions } from "@/components/resourceManagement/edit/inputs/ContentMimetype";
 import { options as CategoryOptions } from "@/components/resourceManagement/edit/inputs/ContentCategory";

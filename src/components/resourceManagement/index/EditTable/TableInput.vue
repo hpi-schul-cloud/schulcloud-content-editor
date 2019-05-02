@@ -1,41 +1,56 @@
 <template>
-	<input
-		:aria-label="label"
-		v-bind="$attrs"
-		:value="value"
-		@input="$emit('input', $event.target.value)"
+	<component
+		:is="getComponent(attribute).component"
+		v-model="input"
+		:label="attribute"
+		:name="attribute"
+		v-bind="getComponent(attribute).attributes"
 	/>
 </template>
 
 <script>
+import { keyInputMapping } from "./EditTableRow";
+
 export default {
+	model: {
+		prop: "value",
+		event: "update",
+	},
 	props: {
+		attribute: {
+			type: String,
+			required: true,
+			validator: (key) =>
+				keyInputMapping.findIndex((a) => a.key === key) !== -1,
+		},
 		value: {
-			type: String,
-			default: "",
+			type: [String, Number, Boolean, Array, Object],
+			default: undefined,
 		},
-		type: {
-			type: String,
-			required: true,
+	},
+	data() {
+		return {
+			active: false,
+			input: this.emptyValue,
+		};
+	},
+	computed: {
+		emptyValue() {
+			return this.getComponent(this.attribute).type();
 		},
-		label: {
-			type: String,
-			required: true,
+	},
+	watch: {
+		input(to) {
+			this.$emit("update", to);
+		},
+		value(to) {
+			this.input = to;
+		},
+	},
+	methods: {
+		getComponent(key) {
+			return keyInputMapping.find((coloumn) => coloumn.key === key);
 		},
 	},
 };
 </script>
-
-<style lang="scss" scoped>
-input {
-	display: block;
-	width: 100%;
-	height: 100%;
-	line-height: inherit;
-	background: transparent;
-	border: none;
-	&:focus {
-		outline: none;
-	}
-}
-</style>

@@ -13,7 +13,7 @@
 			:add-only-from-autocomplete="true"
 		/>
 
-		<ResourceEditTable
+		<ResourceBulkEditTable
 			:bulk-inputs="bulkInputs"
 			:resources="resources"
 			:header-visible="true"
@@ -30,9 +30,9 @@
 <script>
 import BaseCheckbox from "@/components/base/BaseCheckbox";
 import BaseTags from "@/components/base/BaseTags";
-import ResourceEditTable, {
+import ResourceBulkEditTable, {
 	availableColoumns,
-} from "@/components/resourceManagement/index/ResourceEditTable";
+} from "@/components/resourceManagement/index/ResourceBulkEditTable";
 
 import api from "@/mixins/api.js";
 import { setTimeout } from "timers";
@@ -49,7 +49,7 @@ export default {
 	components: {
 		BaseCheckbox,
 		BaseTags,
-		ResourceEditTable,
+		ResourceBulkEditTable,
 	},
 	mixins: [api],
 	props: {

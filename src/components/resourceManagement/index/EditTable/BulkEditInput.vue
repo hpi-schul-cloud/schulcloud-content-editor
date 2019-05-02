@@ -1,6 +1,6 @@
 <template>
 	<div class="table-cell">
-		<EditInput
+		<TableInput
 			v-model="input"
 			:label="attribute"
 			:attribute="attribute"
@@ -17,12 +17,12 @@
 </template>
 
 <script>
-import EditInput from "./EditInput";
+import TableInput from "./TableInput";
 import { keyInputMapping } from "./EditTableRow";
 
 export default {
 	components: {
-		EditInput,
+		TableInput,
 	},
 	model: {
 		prop: "value",
