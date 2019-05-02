@@ -133,9 +133,6 @@ export default {
 			});
 		},
 		loadContent() {
-			// clear data to show "loading state"
-			//this.resources = []; // TODO add loading animation/transition
-
 			// set unique browser url
 			this.updateUrlQuery();
 
