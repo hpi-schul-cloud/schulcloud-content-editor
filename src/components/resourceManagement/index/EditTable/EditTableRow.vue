@@ -161,6 +161,7 @@ export default {
 <style lang="scss" scoped>
 td {
 	position: relative;
+	max-width: 300px;
 	padding: 0 4px;
 	overflow: hidden;
 	overflow-x: auto;

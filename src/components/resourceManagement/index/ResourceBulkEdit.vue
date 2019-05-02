@@ -1,15 +1,22 @@
 <template>
 	<div>
-		<BaseCheckbox v-model="bulkEdit" label="Bulk Edit" />
+		<BaseCheckbox
+			v-model="bulkEdit"
+			:label="$lang.resourceManagement.bulk.enableBulkEdit"
+		/>
+		<br />
 		<BaseCheckbox
 			v-if="bulkEdit"
 			v-model="bulkAdvanced"
-			label="Advanced Bulk Edit"
+			:label="$lang.resourceManagement.bulk.enableBulkEditAdvanced"
 		/>
+
 		<BaseTags
 			v-model="visibleColoumns"
-			label="Select Coloumns"
-			:autocomplete-items="availableColoumns.map((a) => ({ text: a.key }))"
+			:label="$lang.resourceManagement.bulk.visibleColoumns"
+			:autocomplete-items="
+				availableColoumns.map((a) => ({ text: $lang.resources[a.key] }))
+			"
 			:add-only-from-autocomplete="true"
 		/>
 
@@ -17,7 +24,7 @@
 			:bulk-inputs="bulkInputs"
 			:resources="resources"
 			:header-visible="true"
-			:visible-coloumns="visibleColoumns"
+			:visible-coloumns="visibleColoumnAttributes"
 			:index-start="resourceStartIndex"
 			@patchResource="patchResource"
 			@deleteResource="deleteResource"
@@ -73,13 +80,7 @@ export default {
 			bulkReplace: emptyResource("Ersetzen"),
 			bulkFind: emptyResource("Suchen"),
 			availableColoumns,
-			visibleColoumns: [
-				"title",
-				"isPublished",
-				"contentCategory",
-				"licenses",
-				"description",
-			],
+			visibleColoumns: [],
 		};
 	},
 	computed: {
@@ -87,11 +88,23 @@ export default {
 			const inputRows = [];
 			if (this.bulkEdit) {
 				inputRows.push(this.bulkReplace);
-			}
-			if (this.bulkAdvanced) {
-				inputRows.push(this.bulkFind);
+				if (this.bulkAdvanced) {
+					inputRows.push(this.bulkFind);
+				}
 			}
 			return inputRows;
+		},
+		attributeNameDictionary() {
+			const dict = {};
+			Object.entries(this.$lang.resources).forEach(([key, value]) => {
+				dict[value] = key;
+			});
+			return dict;
+		},
+		visibleColoumnAttributes() {
+			return this.visibleColoumns.map(
+				(name) => this.attributeNameDictionary[name]
+			);
 		},
 	},
 	watch: {
@@ -103,6 +116,17 @@ export default {
 				}
 			});
 		},
+	},
+	created() {
+		[
+			"title",
+			"isPublished",
+			"contentCategory",
+			"licenses",
+			"description",
+		].forEach((attribute) => {
+			this.visibleColoumns.push(this.$lang.resources[attribute]);
+		});
 	},
 	methods: {
 		// HELPER
