@@ -16,9 +16,14 @@ const jsonFetch = (url, config = {}) => {
 		config.body = JSON.stringify(config.body);
 	}
 
-	return fetch(url, Object.assign({}, defaultConfig, config)).then((res) =>
-		res.json()
-	);
+	return fetch(url, Object.assign({}, defaultConfig, config))
+		.then((res) => res.json())
+		.then((res) => {
+			if (res.code < 200 || res.code >= 300) {
+				throw new Error(res.message);
+			}
+			return res;
+		});
 };
 
 export default {

@@ -246,9 +246,6 @@ export default {
 
 			return this.$_resourceCreate(newData)
 				.then((response) => {
-					if (response.code < 200 || response.code >= 300) {
-						throw new Error(response.message);
-					}
 					this.$toasted.show(`Saved`);
 					this.countPublishedResources(response);
 					this.successfullyImported = response.length;
@@ -289,16 +286,9 @@ export default {
 			});
 		},
 		getResourceSchema() {
-			return this.$_resourceResourceSchemaGet()
-				.then((response) => {
-					if (response.code < 200 && response.code >= 300) {
-						throw new Error(response.message);
-					}
-					return response;
-				})
-				.catch((error) => {
-					throw new Error(error);
-				});
+			return this.$_resourceResourceSchemaGet().then((response) => {
+				return response;
+			});
 		},
 		resetImport() {
 			Object.assign(this.$data, this.initialDataState());

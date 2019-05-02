@@ -13,7 +13,7 @@ Vue.prototype.$eventHub = new Vue();
 import Toasted from "vue-toasted";
 const toastOptions = {
 	position: "bottom-left",
-	duration: 2000,
+	duration: 5000,
 };
 Vue.use(Toasted, toastOptions);
 
