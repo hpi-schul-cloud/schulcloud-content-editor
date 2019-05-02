@@ -11,11 +11,13 @@
 			{{ config.numbers }}
 		</p>
 		<h3 class="result-title">{{ config.title }}</h3>
+		<!-- eslint-disable vue/no-v-html -->
 		<p
 			v-if="config.subtitle"
 			class="result-subtitle"
 			v-html="config.subtitle"
-		></p>
+		/>
+		<!-- eslint-enable vue/no-v-html -->
 	</div>
 </template>
 <script>

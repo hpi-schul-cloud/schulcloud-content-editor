@@ -25,15 +25,12 @@
 			</tfoot>
 			<tbody>
 				<BulkEditTableRow
-					v-for="bulkInput in bulkInputs"
-					:key="bulkInput.name"
-					:resource="bulkInput"
-					:row-name="bulkInput.name"
+					:replace="bulkInputs[0]"
+					:search="bulkInputs[1]"
 					:visible-coloumns="visibleColoumns"
 					@submit="$emit('patchBulk', $event)"
 					@delete="$emit('deleteBulk')"
 				/>
-				<tr v-if="bulkInputs.length > 0" class="spacer"></tr>
 
 				<transition
 					v-for="(resource, rowIndex) in resources"
@@ -120,9 +117,6 @@ export default {
 			background-color: #ccc;
 		}
 	}
-}
-.spacer {
-	height: 2rem;
 }
 
 .fade-enter-active,

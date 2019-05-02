@@ -34,6 +34,7 @@
 		"vue-config": "^1.0.0",
 		"vue-cookies": "^1.5.13",
 		"vue-float-action-button": "^0.5.9",
+		"vue-fragment": "^1.5.1",
 		"vue-progressbar": "^0.7.3",
 		"vue-router": "^3.0.6",
 		"vue-toasted": "^1.1.26",
