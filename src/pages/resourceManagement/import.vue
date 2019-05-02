@@ -1,60 +1,44 @@
 <template>
-	<!-- TODO:
-	- Buttons in die Step-Komponenten
-	- Teilüberschriften der Steps in die Step Komponenten schmeißen
-	- v-if an die Step-Komponenten packen und divs entfernen
-	- data() { return reset()}, wobei reset das zurückgibt, was aktuell in data steht + die metadatamapping "methode" oben
--->
+	<!-- TODO: Buttons in die Step-Komponenten (?) -->
 	<div>
 		<h2>CSV-Import</h2>
 		<StepProgress
 			:steps="progressbarSteps"
 			:current-step="progressbarCurrentStep"
 		/>
-		<div v-if="progressbarCurrentStep === 0" class="dropzone content">
-			<CsvUpload v-model="csv" />
-		</div>
-		<div v-if="progressbarCurrentStep === 1" class="content">
-			<h3>Mapping</h3>
+		<div class="content">
+			<CsvUpload
+				v-if="progressbarCurrentStep === 0"
+				v-model="csv"
+				class="dropzone"
+			/>
 			<MetadataMapping
+				v-if="progressbarCurrentStep === 1"
 				v-model="metadataFieldMapping"
 				:csv-headers="csv.headers"
 			/>
-		</div>
-		<div v-if="progressbarCurrentStep === 2" class="content">
-			<h3>Vorschau</h3>
-			<PreviewTable
-				:header-fields="previewTableHeader"
-				:content="clippedContentRows"
-				:clipped="clipped"
-				:invalid-fields="invalidFields"
-			/>
-			<div class="flex-column">
-				<h4 class="subtitle">Inhalte veröffentlichen?</h4>
-				<BaseCheckbox v-model="isPublished" label="published"></BaseCheckbox>
-				<div class="flex-row">
-					<p>
-						<b>! Hinweis:</b>
-						Nur vollständige und valide Inhalte werden veröffentlicht.
-					</p>
-					<i
-						v-if="isPublished"
-						class="hint-icon material-icons"
-						@click="showValidationDialog = true"
-					>
-						feedback
-					</i>
-				</div>
-				<ValidationResultDialog
-					:active.sync="showValidationDialog"
-					:validation-results="invalidFields"
+			<div v-if="progressbarCurrentStep === 2">
+				<PreviewTable
+					:header-fields="previewTableHeader"
+					:content="clippedContentRows"
+					:clipped="clipped"
+					:invalid-fields="invalidFields"
+				/>
+				<PublishFlag v-model="isPublished" :validation-result="invalidFields" />
+			</div>
+			<div v-if="progressbarCurrentStep === 3">
+				<LoadingBooks v-if="!successfullyImported && !importError" />
+				<ResultPage
+					v-if="importError"
+					:config="errorConfig"
+					@result-page-button-clicked="handleButtonClick"
+				/>
+				<ResultPage
+					v-if="successfullyImported"
+					:config="successConfig"
+					@result-page-button-clicked="handleButtonClick"
 				/>
 			</div>
-		</div>
-		<div v-if="progressbarCurrentStep === 3" class="content">
-			<LoadingBooks v-if="!successfullyImported && !importError" />
-			<ResultPage v-if="importError" :config="errorConfig" />
-			<ResultPage v-if="successfullyImported" :config="successConfig" />
 		</div>
 		<div v-if="progressbarCurrentStep < 3" class="button-wrapper">
 			<BaseButton
@@ -72,22 +56,6 @@
 				{{ forwardButtonText }}
 			</BaseButton>
 		</div>
-		<div v-else class="button-wrapper">
-			<BaseButton v-if="importError" styling="primary" @click="importCSV">
-				Erneut Versuchen
-			</BaseButton>
-			<template v-if="successfullyImported">
-				<BaseButton
-					v-for="button in successButtonConfig"
-					:key="button.text"
-					:to="button.to"
-					:styling="button.styling"
-					@click="handleButtonClick(button.clickHandler, $event)"
-				>
-					{{ button.text }}
-				</BaseButton>
-			</template>
-		</div>
 	</div>
 </template>
 <script>
@@ -95,11 +63,10 @@ import StepProgress from "@/components/StepProgress";
 import CsvUpload from "@/components/resourceManagement/import/CsvUpload";
 import MetadataMapping from "@/components/resourceManagement/import/MappingMetadata";
 import PreviewTable from "@/components/resourceManagement/import/PreviewTable";
-import ValidationResultDialog from "@/components/resourceManagement/import/ValidationResultDialog";
+import PublishFlag from "@/components/resourceManagement/import/PublishFlag";
 import ResultPage from "@/components/resourceManagement/import/ResultPage";
 
 import BaseButton from "@/components/base/BaseButton";
-import BaseCheckbox from "@/components/base/BaseCheckbox";
 import LoadingBooks from "@/components/LoadingBooks";
 
 import api from "@/mixins/api.js";
@@ -120,70 +87,20 @@ const metadata = {
 
 const requiredMetadataFields = ["title", "url"];
 
-const metadataFieldMapping = {};
-Object.entries(metadata).forEach(([key, value]) => {
-	metadataFieldMapping[key] = {
-		mappedHeader: "",
-		description: value,
-		required: requiredMetadataFields.includes(key),
-	};
-});
-
 export default {
 	components: {
 		StepProgress,
 		CsvUpload,
 		MetadataMapping,
 		PreviewTable,
-		ValidationResultDialog,
 		BaseButton,
-		BaseCheckbox,
 		LoadingBooks,
 		ResultPage,
+		PublishFlag,
 	},
 	mixins: [api],
 	data() {
-		return {
-			showValidationDialog: false,
-			progressbarSteps: [
-				{ name: "Datei hochladen" },
-				{ name: "Metadaten zuordnen" },
-				{ name: "Importieren" },
-				{ name: "Fertig" },
-			],
-			progressbarCurrentStep: 0,
-			csv: {
-				headers: [],
-				content: [],
-				fileName: "",
-			},
-			metadataFieldMapping,
-			disabledOptions: [],
-			isPublished: false,
-			maxRows: 5,
-			publishedResourcesCount: undefined,
-			invalidFields: {},
-			importError: "",
-			successfullyImported: undefined,
-
-			successButtonConfig: [
-				{
-					text: "Zur Verwaltung",
-					to: { name: "resourceManagement" },
-					styling: "secondary",
-				},
-				{
-					text: "Importierte Inhalte ansehen",
-					to: { name: "resourceManagement" },
-					styling: "primary",
-				},
-				{
-					text: "Zum Import",
-					styling: "secondary",
-					clickHandler: this.resetImport,
-				},
-			],
-		};
+		return this.initialDataState();
 	},
 	computed: {
 		forwardButtonText: function() {
@@ -261,25 +178,54 @@ export default {
 			);
 		},
 	},
-	watch: {
-		isPublished: function(to, from) {
-			if (to === true) {
-				this.showValidationDialog = true;
-			}
-		},
-	},
-	created: function() {
-		this.resetImport();
+	async created() {
+		this.resourceSchema = await this.getResourceSchema();
 	},
 	methods: {
-		handleButtonClick(handler, event) {
-			if (handler) {
-				return handler(event);
+		initialDataState() {
+			return {
+				progressbarSteps: [
+					{ name: "Datei hochladen" },
+					{ name: "Metadaten zuordnen" },
+					{ name: "Importieren" },
+					{ name: "Fertig" },
+				],
+				progressbarCurrentStep: 0,
+				csv: {
+					headers: [],
+					content: [],
+					fileName: "",
+				},
+				metadataFieldMapping: this.initializeMetadataFieldMapping(),
+				disabledOptions: [],
+				isPublished: false,
+				maxRows: 5,
+				publishedResourcesCount: undefined,
+				invalidFields: {},
+				importError: "",
+				successfullyImported: undefined,
+				resourceSchema: {},
+			};
+		},
+		initializeMetadataFieldMapping() {
+			const metadataFieldMapping = {};
+			Object.entries(metadata).forEach(([key, value]) => {
+				metadataFieldMapping[key] = {
+					mappedHeader: "",
+					description: value,
+					required: requiredMetadataFields.includes(key),
+				};
+			});
+			return metadataFieldMapping;
+		},
+		handleButtonClick(payload) {
+			if (payload.handler) {
+				return this[payload.handler](payload.event);
 			}
 		},
 		handleNextStep() {
 			if (this.progressbarCurrentStep === 1) {
-				this.validate();
+				this.validateResourcesBeforeImport();
 			}
 			if (this.progressbarCurrentStep === 2) {
 				this.importCSV();
@@ -319,15 +265,12 @@ export default {
 			});
 			this.publishedResourcesCount = published.length;
 		},
-		async validate() {
+		validateResourcesBeforeImport() {
 			this.invalidFields = {};
-			let schema = await this.getResourceSchema();
-			delete schema["$schema"];
-
 			const ajv = new Ajv({ allErrors: true, errorDataPath: "property" });
 
 			this.importedResources.forEach((resource) => {
-				const valid = ajv.validate(schema, resource);
+				const valid = ajv.validate(this.resourceSchema, resource);
 				if (!valid) {
 					ajv.errors.forEach((error) => {
 						// remove the "." from the beginning of the String (error.dataPath)
@@ -345,28 +288,12 @@ export default {
 		},
 		getResourceSchema() {
 			return this.$_resourceResourceSchemaGet().then((response) => {
+				delete response["$schema"];
 				return response;
 			});
 		},
 		resetImport() {
-			this.showValidationDialog = false;
-			this.progressbarCurrentStep = 0;
-
-			this.csv.headers = [];
-			this.csv.content = [];
-			this.csv.fileName = "";
-
-			Object.entries(this.metadataFieldMapping).forEach(([key, value]) => {
-				value.mappedHeader = "";
-			});
-
-			this.disabledOptions = [];
-			this.isPublished = false;
-
-			this.publishedResourcesCount = undefined;
-			this.invalidFields = {};
-			this.importError = "";
-			this.successfullyImported = undefined;
+			Object.assign(this.$data, this.initialDataState());
 		},
 	},
 };
@@ -377,28 +304,11 @@ export default {
 }
 .dropzone {
 	max-width: 800px;
+	margin: auto;
 }
 .button-wrapper {
 	display: flex;
 	justify-content: center;
 	margin: 2em 0;
-}
-.flex-column {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-}
-.flex-row {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
-}
-.subtitle {
-	margin-bottom: 0;
-}
-.hint-icon {
-	cursor: pointer;
 }
 </style>

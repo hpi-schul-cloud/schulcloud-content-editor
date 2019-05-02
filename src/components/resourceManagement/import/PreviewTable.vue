@@ -1,5 +1,6 @@
 <template>
 	<div>
+		<h3>Vorschau</h3>
 		<table>
 			<tr>
 				<th v-for="(header, index) in headerFields" :key="index">

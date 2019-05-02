@@ -18,15 +18,72 @@
 			v-html="config.subtitle"
 		/>
 		<!-- eslint-enable vue/no-v-html -->
+
+		<div class="button-wrapper">
+			<BaseButton
+				v-if="config.type === 'error'"
+				styling="primary"
+				@click="
+					$emit('result-page-button-clicked', {
+						handler: 'importCSV',
+						event: $event,
+					})
+				"
+			>
+				Erneut Versuchen
+			</BaseButton>
+			<template v-else>
+				<BaseButton
+					v-for="button in successButtonConfig"
+					:key="button.text"
+					:to="button.to"
+					:styling="button.styling"
+					@click="
+						$emit('result-page-button-clicked', {
+							handler: button.clickHandler,
+							event: $event,
+						})
+					"
+				>
+					{{ button.text }}
+				</BaseButton>
+			</template>
+		</div>
 	</div>
 </template>
 <script>
+import BaseButton from "@/components/base/BaseButton";
+
 export default {
+	components: {
+		BaseButton,
+	},
 	props: {
 		config: {
 			type: Object,
 			required: true,
 		},
+	},
+	data() {
+		return {
+			successButtonConfig: [
+				{
+					text: "Zur Verwaltung",
+					to: { name: "resourceManagement" },
+					styling: "secondary",
+				},
+				{
+					text: "Importierte Inhalte ansehen",
+					to: { name: "resourceManagement" },
+					styling: "primary",
+				},
+				{
+					text: "Zum Import",
+					styling: "secondary",
+					clickHandler: "resetImport",
+				},
+			],
+		};
 	},
 };
 </script>
@@ -56,6 +113,11 @@ export default {
 		&.success-icon {
 			width: 5em;
 		}
+	}
+	.button-wrapper {
+		display: flex;
+		justify-content: center;
+		margin: 2em 0;
 	}
 }
 </style>
