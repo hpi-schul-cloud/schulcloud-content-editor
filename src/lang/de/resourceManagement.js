@@ -15,6 +15,9 @@ const bulk = {
 	replace: "Ersetzen",
 	search: "Suchen",
 	visibleColoumns: "Sichtbare Spalten",
+	wip: "Verarbeite Anfrage",
+	confirmPatch: (n) => `${n} Resource${n ? "n" : ""} bearbeiten?`,
+	confirmDelete: (n) => `${n} Resource${n ? "n" : ""} löschen?`,
 };
 
 export default {

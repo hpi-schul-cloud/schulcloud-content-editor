@@ -1,19 +1,15 @@
 <template>
 	<Fragment>
-		<tr v-if="replace">
-			<!-- REPLACE INPUTS -->
+		<!-- SEARCH INPUTS -->
+		<tr v-if="search">
 			<td style="text-align: right;">
-				{{ $lang.resourceManagement.bulk.replace }}
+				{{ $lang.resourceManagement.bulk.search }}
 			</td>
 			<td v-for="coloumn in visibleColoumns" :key="coloumn">
-				<BulkEditInput
-					v-model="replace[coloumn]"
-					:attribute="coloumn"
-					:validate-required="true"
-				/>
+				<BulkEditInput v-model="search[coloumn]" :attribute="coloumn" />
 			</td>
 			<!-- ACTIONS -->
-			<td style="text-align: right;" :rowspan="search ? 2 : 1">
+			<td style="text-align: right;" :rowspan="2">
 				<BaseButton
 					type="button"
 					class="action"
@@ -30,13 +26,34 @@
 				</BaseButton>
 			</td>
 		</tr>
-		<!-- SEARCH INPUTS -->
-		<tr v-if="search">
+		<tr v-if="replace">
+			<!-- REPLACE INPUTS -->
 			<td style="text-align: right;">
-				{{ $lang.resourceManagement.bulk.search }}
+				{{ $lang.resourceManagement.bulk.replace }}
 			</td>
 			<td v-for="coloumn in visibleColoumns" :key="coloumn">
-				<BulkEditInput v-model="search[coloumn]" :attribute="coloumn" />
+				<BulkEditInput
+					v-model="replace[coloumn]"
+					:attribute="coloumn"
+					:validate-required="true"
+				/>
+			</td>
+			<!-- ACTIONS -->
+			<td v-if="!search" style="text-align: right;" :rowspan="1">
+				<BaseButton
+					type="button"
+					class="action"
+					@click="$emit('submit', replace)"
+				>
+					<i class="material-icons">
+						check
+					</i>
+				</BaseButton>
+				<BaseButton type="button" class="action" @click="$emit('delete')">
+					<i class="material-icons">
+						delete
+					</i>
+				</BaseButton>
 			</td>
 		</tr>
 		<!-- EMPTY ROW (SPACER) -->

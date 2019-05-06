@@ -31,6 +31,13 @@
 			@patchBulk="patchBulk"
 			@deleteBulk="deleteBulk"
 		/>
+		<button @click="inProgress = !inProgress" />
+		<BaseConfirm :active="inProgress">
+			<p slot="title" style="text-align:center">
+				{{ $lang.resourceManagement.bulk.wip }}
+			</p>
+			<LoadingBooks />
+		</BaseConfirm>
 	</div>
 </template>
 
@@ -40,6 +47,8 @@ import BaseTags from "@/components/base/BaseTags";
 import ResourceBulkEditTable, {
 	availableColoumns,
 } from "@/components/resourceManagement/index/ResourceBulkEditTable";
+import BaseConfirm from "@/components/base/BaseConfirm";
+import LoadingBooks from "@/components/LoadingBooks";
 
 import api from "@/mixins/api.js";
 import { setTimeout } from "timers";
@@ -57,6 +66,8 @@ export default {
 		BaseCheckbox,
 		BaseTags,
 		ResourceBulkEditTable,
+		BaseConfirm,
+		LoadingBooks,
 	},
 	mixins: [api],
 	props: {
@@ -81,6 +92,7 @@ export default {
 			bulkFind: emptyResource("Suchen"),
 			availableColoumns,
 			visibleColoumns: [],
+			inProgress: false,
 		};
 	},
 	computed: {
@@ -174,7 +186,7 @@ export default {
 				);
 		},
 		// EDIT BULK
-		patchBulk(data) {
+		async patchBulk(data) {
 			function removeUndefined(obj) {
 				const cleanedData = {};
 				Object.entries(obj).forEach(([key, value]) => {
@@ -222,6 +234,12 @@ export default {
 				})
 			);
 
+			const affectedItems = await this.$_resourceFindAmount(replaceQuery);
+			if (!window.confirm(`${affectedItems} Einträge bearbeiten?`)) {
+				return;
+			}
+			this.inProgress = true;
+
 			return this.$_resourceBulkPatch(replaceQuery, removeUndefined(data))
 				.then((results) => {
 					this.$toasted.show(`Patched ${results.length} Resources`);
@@ -234,9 +252,22 @@ export default {
 						this.updateResource(this.resources[visibileIndex], newResource);
 					});
 				})
-				.catch(this.showNetworkError("Failed to patch"));
+				.catch(this.showNetworkError("Failed to patch"))
+				.finally(() => {
+					this.inProgress = false;
+				});
 		},
-		deleteBulk() {
+		async deleteBulk() {
+			const affectedItems = await this.$_resourceFindAmount(this.query);
+			if (
+				!window.confirm(
+					this.$lang.resourceManagement.bulk.confirmPatch(affectedItems)
+				)
+			) {
+				return;
+			}
+			this.inProgress = true;
+
 			return this.$_resourceBulkDelete(this.query)
 				.then((results) => {
 					this.$toasted.show(`Deleted ${results.length} Resources`);
@@ -245,7 +276,10 @@ export default {
 						this.$emit("reload");
 					}, 3000);
 				})
-				.catch(this.showNetworkError("Failed to delete"));
+				.catch(this.showNetworkError("Failed to delete"))
+				.finally(() => {
+					this.inProgress = false;
+				});
 		},
 	},
 };
