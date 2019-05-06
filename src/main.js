@@ -9,6 +9,10 @@ import store from "./store";
 // Global event bus
 Vue.prototype.$eventHub = new Vue();
 
+// PortalVue
+import PortalVue from "portal-vue";
+Vue.use(PortalVue);
+
 // Toasts
 import Toasted from "vue-toasted";
 const toastOptions = {

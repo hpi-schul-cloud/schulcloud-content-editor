@@ -1,38 +1,54 @@
 <template>
 	<div>
-		<BaseCheckbox v-model="bulkEdit" label="Bulk Edit" />
 		<BaseCheckbox
-			v-if="bulkEdit && false"
-			v-model="bulkAdvanced"
-			label="Advanced Bulk Edit"
+			v-model="bulkEdit"
+			:label="$lang.resourceManagement.bulk.enableBulkEdit"
 		/>
+		<br />
+		<BaseCheckbox
+			v-if="bulkEdit"
+			v-model="bulkAdvanced"
+			:label="$lang.resourceManagement.bulk.enableBulkEditAdvanced"
+		/>
+
 		<BaseTags
 			v-model="visibleColoumns"
-			label="Select Coloumns"
-			:autocomplete-items="availableColoumns.map((a) => ({ text: a.key }))"
+			:label="$lang.resourceManagement.bulk.visibleColoumns"
+			:autocomplete-items="
+				availableColoumns.map((a) => ({ text: $lang.resources[a.key] }))
+			"
 			:add-only-from-autocomplete="true"
 		/>
 
-		<ResourceEditTable
+		<ResourceBulkEditTable
 			:bulk-inputs="bulkInputs"
 			:resources="resources"
 			:header-visible="true"
-			:visible-coloumns="visibleColoumns"
+			:visible-coloumns="visibleColoumnAttributes"
 			:index-start="resourceStartIndex"
 			@patchResource="patchResource"
 			@deleteResource="deleteResource"
 			@patchBulk="patchBulk"
 			@deleteBulk="deleteBulk"
 		/>
+		<button @click="inProgress = !inProgress" />
+		<BaseConfirm :active="inProgress">
+			<p slot="title" style="text-align:center">
+				{{ $lang.resourceManagement.bulk.wip }}
+			</p>
+			<LoadingBooks />
+		</BaseConfirm>
 	</div>
 </template>
 
 <script>
 import BaseCheckbox from "@/components/base/BaseCheckbox";
 import BaseTags from "@/components/base/BaseTags";
-import ResourceEditTable, {
+import ResourceBulkEditTable, {
 	availableColoumns,
-} from "@/components/resourceManagement/index/ResourceEditTable";
+} from "@/components/resourceManagement/index/ResourceBulkEditTable";
+import BaseConfirm from "@/components/base/BaseConfirm";
+import LoadingBooks from "@/components/LoadingBooks";
 
 import api from "@/mixins/api.js";
 import { setTimeout } from "timers";
@@ -49,7 +65,9 @@ export default {
 	components: {
 		BaseCheckbox,
 		BaseTags,
-		ResourceEditTable,
+		ResourceBulkEditTable,
+		BaseConfirm,
+		LoadingBooks,
 	},
 	mixins: [api],
 	props: {
@@ -69,17 +87,12 @@ export default {
 	data() {
 		return {
 			bulkEdit: true,
-			bulkAdvanced: false,
-			bulkReplace: emptyResource("Edit"),
-			bulkFind: emptyResource("Filter"),
+			bulkAdvanced: true,
+			bulkReplace: emptyResource("Ersetzen"),
+			bulkFind: emptyResource("Suchen"),
 			availableColoumns,
-			visibleColoumns: [
-				"title",
-				"isPublished",
-				"contentCategory",
-				"licenses",
-				"description",
-			],
+			visibleColoumns: [],
+			inProgress: false,
 		};
 	},
 	computed: {
@@ -87,11 +100,23 @@ export default {
 			const inputRows = [];
 			if (this.bulkEdit) {
 				inputRows.push(this.bulkReplace);
-			}
-			if (this.bulkAdvanced) {
-				inputRows.push(this.bulkFind);
+				if (this.bulkAdvanced) {
+					inputRows.push(this.bulkFind);
+				}
 			}
 			return inputRows;
+		},
+		attributeNameDictionary() {
+			const dict = {};
+			Object.entries(this.$lang.resources).forEach(([key, value]) => {
+				dict[value] = key;
+			});
+			return dict;
+		},
+		visibleColoumnAttributes() {
+			return this.visibleColoumns.map(
+				(name) => this.attributeNameDictionary[name]
+			);
 		},
 	},
 	watch: {
@@ -104,53 +129,118 @@ export default {
 			});
 		},
 	},
+	created() {
+		[
+			"title",
+			"isPublished",
+			"contentCategory",
+			"licenses",
+			"description",
+		].forEach((attribute) => {
+			this.visibleColoumns.push(this.$lang.resources[attribute]);
+		});
+	},
 	methods: {
+		// HELPER
+		getResourceIndex(resource) {
+			const resourceIndex = this.resources.findIndex(
+				(item) => item._id === resource._id
+			);
+			if (resourceIndex === -1) {
+				throw new Error("Item to delete not found.", resource);
+			}
+			return resourceIndex;
+		},
+		getResourceSearchIndex(resource) {
+			return this.resourceStartIndex + this.resources.indexOf(resource) + 1;
+		},
+		showNetworkError(fallbackMessage) {
+			return (error) => {
+				this.$toasted.error(error.message ? error.toString() : fallbackMessage);
+			};
+		},
 		updateResource(existing, newResource) {
 			Object.entries(newResource).forEach(([key, value]) => {
 				existing[key] = value;
 			});
 		},
+		// EDIT SINGLE
 		patchResource(resource) {
-			const resourceViewIndex =
-				this.resourceStartIndex + this.resources.indexOf(resource) + 1;
+			const resourceViewIndex = this.getResourceSearchIndex(resource);
 			return this.$_resourcePatch(resource)
 				.then((result) => {
 					this.$toasted.show(`L${resourceViewIndex} - Saved`);
 					this.updateResource(resource, result);
 				})
-				.catch((error) => {
-					console.error(error);
-					this.$toasted.error(`L${resourceViewIndex} - Failed to save`);
-				});
+				.catch(this.showNetworkError(`L${resourceViewIndex} - Failed to save`));
 		},
 		deleteResource(resource) {
-			const resourceViewIndex =
-				this.resourceStartIndex + this.resources.indexOf(resource) + 1;
-
+			const resourceViewIndex = this.getResourceSearchIndex(resource);
 			return this.$_resourceDelete(resource._id)
 				.then((result) => {
 					this.$toasted.show(`L${resourceViewIndex} - Deleted`);
-					const index = this.resources.findIndex(
-						(item) => item._id === resource._id
-					);
-					if (index !== -1) {
-						this.resources.splice(index, 1);
-					}
+					this.resources.splice(this.getResourceIndex(resource), 1);
 				})
-				.catch((error) => {
-					console.error(error);
-					this.$toasted.error(`L${resourceViewIndex} - Failed to delete`);
-				});
+				.catch(
+					this.showNetworkError(`L${resourceViewIndex} - Failed to delete`)
+				);
 		},
-		patchBulk(data) {
-			const cleanedData = {};
-			Object.entries(data).forEach(([key, value]) => {
-				if (value !== undefined) {
-					cleanedData[key] = value;
-				}
-			});
+		// EDIT BULK
+		async patchBulk(data) {
+			function removeUndefined(obj) {
+				const cleanedData = {};
+				Object.entries(obj).forEach(([key, value]) => {
+					if (value !== undefined) {
+						cleanedData[key] = value;
+					}
+				});
+				return cleanedData;
+			}
 
-			return this.$_resourceBulkPatch(this.query, cleanedData)
+			function flattenQuery(queryObj, isRoot = true) {
+				const flatObj = {};
+
+				for (var key in queryObj) {
+					// key not in obj
+					if (!queryObj.hasOwnProperty(key)) continue;
+
+					// is nested?
+					if (typeof queryObj[key] == "object" && queryObj[key] !== null) {
+						var flatObject = flattenQuery(queryObj[key], false);
+						for (var nestedKey in flatObject) {
+							// key not in obj
+							if (!flatObject.hasOwnProperty(nestedKey)) continue;
+							if (isRoot) {
+								flatObj[key + nestedKey] = flatObject[nestedKey];
+							} else {
+								flatObj["[" + key + "]" + nestedKey] = flatObject[nestedKey];
+							}
+						}
+					} else {
+						if (!isRoot) {
+							flatObj["[" + key + "]"] = queryObj[key];
+						} else {
+							flatObj[key] = queryObj[key];
+						}
+					}
+				}
+				return flatObj;
+			}
+
+			const replaceQuery = removeUndefined(
+				flattenQuery({
+					...this.query,
+					$replace: this.bulkFind,
+				})
+			);
+
+			const affectedItems = await this.$_resourceFindAmount(replaceQuery);
+			if (!window.confirm(`${affectedItems} Einträge bearbeiten?`)) {
+				return;
+			}
+			this.inProgress = true;
+
+			return this.$_resourceBulkPatch(replaceQuery, removeUndefined(data))
 				.then((results) => {
 					this.$toasted.show(`Patched ${results.length} Resources`);
 					const visibleIds = this.resources.map((r) => r._id);
@@ -162,13 +252,22 @@ export default {
 						this.updateResource(this.resources[visibileIndex], newResource);
 					});
 				})
-				.catch((error) => {
-					this.$toasted.error(
-						error.message ? error.toString() : `Failed to Patch`
-					);
+				.catch(this.showNetworkError("Failed to patch"))
+				.finally(() => {
+					this.inProgress = false;
 				});
 		},
-		deleteBulk() {
+		async deleteBulk() {
+			const affectedItems = await this.$_resourceFindAmount(this.query);
+			if (
+				!window.confirm(
+					this.$lang.resourceManagement.bulk.confirmPatch(affectedItems)
+				)
+			) {
+				return;
+			}
+			this.inProgress = true;
+
 			return this.$_resourceBulkDelete(this.query)
 				.then((results) => {
 					this.$toasted.show(`Deleted ${results.length} Resources`);
@@ -177,10 +276,9 @@ export default {
 						this.$emit("reload");
 					}, 3000);
 				})
-				.catch((error) => {
-					this.$toasted.error(
-						error.message ? error.toString() : `Failed to Delete`
-					);
+				.catch(this.showNetworkError("Failed to delete"))
+				.finally(() => {
+					this.inProgress = false;
 				});
 		},
 	},

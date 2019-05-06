@@ -26,9 +26,17 @@ const jsonFetch = (url, config = {}) => {
 		});
 };
 
+export const unpaginateQuery = (query) => {
+	const cleanQuery = Object.assign({}, query, {
+		$limit: "-1",
+	});
+	delete cleanQuery["$skip"];
+	return cleanQuery;
+};
+
 export default {
 	methods: {
-		$_login(data) {
+		async $_login(data) {
 			return jsonFetch(
 				this.$config.API.serverServerUrl + this.$config.API.authPath,
 				{
@@ -37,21 +45,21 @@ export default {
 				}
 			);
 		},
-		$_userGet(userId) {
+		async $_userGet(userId) {
 			return jsonFetch(
 				this.$config.API.serverServerUrl +
 					this.$config.API.userInfoPath +
 					userId
 			);
 		},
-		$_resourceGet(resourceId) {
+		async $_resourceGet(resourceId) {
 			return jsonFetch(
 				this.$config.API.contentServerUrl +
 					this.$config.API.getContentPath +
 					(resourceId ? resourceId : "")
 			);
 		},
-		$_resourceFind(query) {
+		async $_resourceFind(query) {
 			const queryString = qs.stringify(query);
 
 			return jsonFetch(
@@ -61,7 +69,15 @@ export default {
 					queryString
 			);
 		},
-		$_resourceCreate(resource) {
+		async $_resourceFindAmount(query) {
+			const newQuery = {
+				...unpaginateQuery(query),
+				$select: [],
+			};
+			const queryResult = await this.$_resourceFind(newQuery);
+			return queryResult.length;
+		},
+		async $_resourceCreate(resource) {
 			if (Array.isArray(resource)) {
 				return this.$_resourceBulkCreate(resource);
 			}
@@ -73,7 +89,7 @@ export default {
 				}
 			);
 		},
-		$_resourcePatch(resource) {
+		async $_resourcePatch(resource) {
 			return jsonFetch(
 				this.$config.API.contentServerUrl +
 					this.$config.API.pushContentPath +
@@ -84,7 +100,7 @@ export default {
 				}
 			);
 		},
-		$_resourceDelete(resourceId) {
+		async $_resourceDelete(resourceId) {
 			return jsonFetch(
 				this.$config.API.contentServerUrl +
 					this.$config.API.pushContentPath +
@@ -94,19 +110,19 @@ export default {
 				}
 			);
 		},
-		$_resourceFilesGet(resourceId) {
+		async $_resourceFilesGet(resourceId) {
 			return jsonFetch(
 				this.$config.API.contentServerUrl +
 					this.$config.API.getFiletreePath +
 					resourceId
 			);
 		},
-		$_resourceResourceSchemaGet() {
+		async $_resourceResourceSchemaGet() {
 			return jsonFetch(
 				this.$config.API.contentServerUrl + "/resources/resource-schema"
 			);
 		},
-		$_resourceBulkCreate(resource) {
+		async $_resourceBulkCreate(resource) {
 			return jsonFetch(
 				this.$config.API.contentServerUrl +
 					this.$config.API.pushBulkContentPath,
@@ -121,19 +137,7 @@ export default {
 				throw new Error("query (first) parameter is required!");
 			}
 
-			const cleanQuery = Object.assign({}, query, {
-				$limit: "-1",
-				$select: ["_id"],
-			});
-			delete cleanQuery["$skip"];
-
-			const queryString = qs.stringify(cleanQuery);
-
-			const queryResult = await this.$_resourceFind(cleanQuery);
-
-			if (!window.confirm(`${queryResult.length} Einträge bearbeiten?`)) {
-				throw new Error("Edit aborted.");
-			}
+			const queryString = qs.stringify(unpaginateQuery(query));
 
 			return jsonFetch(
 				this.$config.API.contentServerUrl +
@@ -151,19 +155,7 @@ export default {
 				throw new Error("query (first) parameter is required!");
 			}
 
-			const cleanQuery = Object.assign({}, query, {
-				$limit: "-1",
-				$select: ["_id"],
-			});
-			delete cleanQuery["$skip"];
-
-			const queryString = qs.stringify(cleanQuery);
-
-			const queryResult = await this.$_resourceFind(cleanQuery);
-
-			if (!window.confirm(`${queryResult.length} Einträge löschen?`)) {
-				throw new Error("Delete aborted.");
-			}
+			const queryString = qs.stringify(unpaginateQuery(query));
 
 			return jsonFetch(
 				this.$config.API.contentServerUrl +

@@ -1,23 +1,35 @@
 <template>
-	<div v-if="active">
-		<div class="dialog-container">
-			<div class="title">
-				<slot name="title">{{ title }}</slot>
+	<portal to="app">
+		<transition name="fade">
+			<div v-if="active" class="dialog-container">
+				<div class="title">
+					<slot name="title">{{ title }}</slot>
+				</div>
+				<div class="content">
+					<slot>{{ content }}</slot>
+				</div>
+				<div v-if="cancelText || confirmText" class="action">
+					<BaseButton
+						v-if="cancelText"
+						styling="secondary"
+						@click="handleCancel"
+					>
+						{{ cancelText }}
+					</BaseButton>
+					<BaseButton
+						v-if="confirmText"
+						styling="primary"
+						@click="handleConfirm"
+					>
+						{{ confirmText }}
+					</BaseButton>
+				</div>
 			</div>
-			<div class="content">
-				<slot>{{ content }}</slot>
-			</div>
-			<div v-if="cancelText || confirmText" class="action">
-				<BaseButton v-if="cancelText" styling="secondary" @click="handleCancel">
-					{{ cancelText }}
-				</BaseButton>
-				<BaseButton v-if="confirmText" styling="primary" @click="handleConfirm">
-					{{ confirmText }}
-				</BaseButton>
-			</div>
-		</div>
-		<div class="overlay" @click="handleCancel"></div>
-	</div>
+		</transition>
+		<transition name="fade">
+			<div v-if="active" class="overlay" @click="handleCancel" />
+		</transition>
+	</portal>
 </template>
 
 <script>
@@ -100,5 +112,14 @@ export default {
 		justify-content: flex-end;
 		margin: 32px 0 0;
 	}
+}
+
+.fade-enter-active,
+.fade-leave-active {
+	transition: opacity 0.3s;
+}
+.fade-enter,
+.fade-leave-to {
+	opacity: 0;
 }
 </style>

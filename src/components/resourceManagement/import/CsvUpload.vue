@@ -2,6 +2,7 @@
 	<div>
 		<Dropzone @drop.prevent="handleDrop">
 			<label class="input-label">
+				<i class="material-icons upload-icon">cloud_upload</i>
 				Lade hier eine CSV-Datei hoch
 				<input
 					class="hidden-but-accessible"
@@ -111,5 +112,11 @@ export default {
 	flex: 1;
 	padding: 2em;
 	text-align: center;
+	cursor: pointer;
+}
+.upload-icon {
+	display: block;
+	font-size: 5em;
+	color: #aaa;
 }
 </style>

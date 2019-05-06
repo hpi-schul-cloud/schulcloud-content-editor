@@ -35,7 +35,7 @@ body {
 }
 
 .bookshelf_wrapper {
-	padding-top: 150px;
+	padding: 150px 100px 0;
 	transform: scaleX(-1);
 }
 

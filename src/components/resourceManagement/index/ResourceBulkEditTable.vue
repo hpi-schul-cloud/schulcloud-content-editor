@@ -25,24 +25,28 @@
 			</tfoot>
 			<tbody>
 				<BulkEditTableRow
-					v-for="bulkInput in bulkInputs"
-					:key="bulkInput.name"
-					:resource="bulkInput"
-					:row-name="bulkInput.name"
+					:replace="bulkInputs[0]"
+					:search="bulkInputs[1]"
 					:visible-coloumns="visibleColoumns"
 					@submit="$emit('patchBulk', $event)"
 					@delete="$emit('deleteBulk')"
 				/>
-				<tr v-if="bulkInputs.length" class="spacer"></tr>
-				<EditTableRow
+
+				<transition
 					v-for="(resource, rowIndex) in resources"
 					:key="resource._id"
-					:resource="resource"
-					:row-name="indexStart + rowIndex + 1"
-					:visible-coloumns="visibleColoumns"
-					@submit="$emit('patchResource', $event)"
-					@delete="$emit('deleteResource', $event)"
-				/>
+					name="fade"
+					mode="out-in"
+				>
+					<EditTableRow
+						:key="resource._id"
+						:resource="resource"
+						:row-name="indexStart + rowIndex + 1"
+						:visible-coloumns="visibleColoumns"
+						@submit="$emit('patchResource', $event)"
+						@delete="$emit('deleteResource', $event)"
+					/>
+				</transition>
 			</tbody>
 		</table>
 	</div>
@@ -108,26 +112,19 @@ export default {
 			background-color: #eee;
 		}
 		*/
+
 		&:hover {
 			background-color: #ccc;
 		}
 	}
 }
-.spacer {
-	height: 2rem;
-}
 
-/*
-table.sticky {
-	th {
-		position: sticky;
-		z-index: 1;
-		font-size: 1.1em;
-		background: #fff;
-	}
-	thead th {
-		top: 80px;
-	}
+.fade-enter-active,
+.fade-leave-active {
+	transition: opacity 0.3s;
 }
-*/
+.fade-enter,
+.fade-leave-to {
+	opacity: 0;
+}
 </style>
