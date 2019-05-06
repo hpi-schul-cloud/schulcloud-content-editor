@@ -28,6 +28,15 @@ const jsonFetch = (url, config = {}) => {
 
 export default {
 	methods: {
+		$_resourceValidate(resource) {
+			return jsonFetch(
+				this.$config.API.contentServerUrl + "/resources/validation/",
+				{
+					method: "POST",
+					body: resource,
+				}
+			);
+		},
 		$_login(data) {
 			return jsonFetch(
 				this.$config.API.serverServerUrl + this.$config.API.authPath,

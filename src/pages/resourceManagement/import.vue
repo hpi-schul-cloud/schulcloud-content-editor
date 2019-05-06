@@ -266,7 +266,7 @@ export default {
 			this.publishedResourcesCount = published.length;
 		},
 		validateResourcesBeforeImport() {
-			this.invalidFields = {};
+			/* this.invalidFields = {};
 			const ajv = new Ajv({ allErrors: true, errorDataPath: "property" });
 
 			this.importedResources.forEach((resource) => {
@@ -284,7 +284,14 @@ export default {
 						}
 					});
 				}
-			});
+			});*/
+			return this.$_resourceValidate(this.importedResources)
+				.then((result) => {
+					this.invalidFields = result;
+				})
+				.catch((error) => {
+					console.error(error);
+				});
 		},
 		getResourceSchema() {
 			return this.$_resourceResourceSchemaGet().then((response) => {
