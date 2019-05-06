@@ -175,14 +175,54 @@ export default {
 		},
 		// EDIT BULK
 		patchBulk(data) {
-			const cleanedData = {};
-			Object.entries(data).forEach(([key, value]) => {
-				if (value !== undefined) {
-					cleanedData[key] = value;
-				}
-			});
+			function removeUndefined(obj) {
+				const cleanedData = {};
+				Object.entries(obj).forEach(([key, value]) => {
+					if (value !== undefined) {
+						cleanedData[key] = value;
+					}
+				});
+				return cleanedData;
+			}
 
-			return this.$_resourceBulkPatch(this.query, cleanedData)
+			function flattenQuery(queryObj, isRoot = true) {
+				const flatObj = {};
+
+				for (var key in queryObj) {
+					// key not in obj
+					if (!queryObj.hasOwnProperty(key)) continue;
+
+					// is nested?
+					if (typeof queryObj[key] == "object" && queryObj[key] !== null) {
+						var flatObject = flattenQuery(queryObj[key], false);
+						for (var nestedKey in flatObject) {
+							// key not in obj
+							if (!flatObject.hasOwnProperty(nestedKey)) continue;
+							if (isRoot) {
+								flatObj[key + nestedKey] = flatObject[nestedKey];
+							} else {
+								flatObj["[" + key + "]" + nestedKey] = flatObject[nestedKey];
+							}
+						}
+					} else {
+						if (!isRoot) {
+							flatObj["[" + key + "]"] = queryObj[key];
+						} else {
+							flatObj[key] = queryObj[key];
+						}
+					}
+				}
+				return flatObj;
+			}
+
+			const replaceQuery = removeUndefined(
+				flattenQuery({
+					...this.query,
+					$replace: this.bulkFind,
+				})
+			);
+
+			return this.$_resourceBulkPatch(replaceQuery, removeUndefined(data))
 				.then((results) => {
 					this.$toasted.show(`Patched ${results.length} Resources`);
 					const visibleIds = this.resources.map((r) => r._id);

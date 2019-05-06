@@ -1,6 +1,7 @@
 <template>
 	<Fragment>
 		<tr v-if="replace">
+			<!-- REPLACE INPUTS -->
 			<td style="text-align: right;">
 				{{ $lang.resourceManagement.bulk.replace }}
 			</td>
@@ -29,14 +30,16 @@
 				</BaseButton>
 			</td>
 		</tr>
+		<!-- SEARCH INPUTS -->
 		<tr v-if="search">
 			<td style="text-align: right;">
 				{{ $lang.resourceManagement.bulk.search }}
 			</td>
 			<td v-for="coloumn in visibleColoumns" :key="coloumn">
-				<BulkEditInput v-model="replace[coloumn]" :attribute="coloumn" />
+				<BulkEditInput v-model="search[coloumn]" :attribute="coloumn" />
 			</td>
 		</tr>
+		<!-- EMPTY ROW (SPACER) -->
 		<tr v-if="replace" class="spacer"></tr>
 	</Fragment>
 </template>
