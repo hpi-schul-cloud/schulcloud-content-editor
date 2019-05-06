@@ -1,37 +1,19 @@
 <template>
-	<Fragment>
-		<!-- SEARCH INPUTS -->
-		<tr v-if="search">
+	<Fragment v-if="replace">
+		<tr>
 			<td style="text-align: right;">
-				{{ $lang.resourceManagement.bulk.search }}
+				<div v-if="search" class="divider">
+					{{ $lang.resourceManagement.bulk.search }}
+				</div>
+				<div>{{ $lang.resourceManagement.bulk.replace }}</div>
 			</td>
 			<td v-for="coloumn in visibleColoumns" :key="coloumn">
-				<BulkEditInput v-model="search[coloumn]" :attribute="coloumn" />
-			</td>
-			<!-- ACTIONS -->
-			<td style="text-align: right;" :rowspan="2">
-				<BaseButton
-					type="button"
-					class="action"
-					@click="$emit('submit', replace)"
-				>
-					<i class="material-icons">
-						check
-					</i>
-				</BaseButton>
-				<BaseButton type="button" class="action" @click="$emit('delete')">
-					<i class="material-icons">
-						delete
-					</i>
-				</BaseButton>
-			</td>
-		</tr>
-		<tr v-if="replace">
-			<!-- REPLACE INPUTS -->
-			<td style="text-align: right;">
-				{{ $lang.resourceManagement.bulk.replace }}
-			</td>
-			<td v-for="coloumn in visibleColoumns" :key="coloumn">
+				<BulkEditInput
+					v-if="search"
+					v-model="search[coloumn]"
+					:attribute="coloumn"
+					:class="{ divider: search }"
+				/>
 				<BulkEditInput
 					v-model="replace[coloumn]"
 					:attribute="coloumn"
@@ -39,7 +21,7 @@
 				/>
 			</td>
 			<!-- ACTIONS -->
-			<td v-if="!search" style="text-align: right;" :rowspan="1">
+			<td style="text-align: right;" :rowspan="1">
 				<BaseButton
 					type="button"
 					class="action"
@@ -57,7 +39,7 @@
 			</td>
 		</tr>
 		<!-- EMPTY ROW (SPACER) -->
-		<tr v-if="replace" class="spacer"></tr>
+		<tr class="spacer"></tr>
 	</Fragment>
 </template>
 
@@ -110,6 +92,9 @@ td {
 	&:focus-within:not(:last-of-type) {
 		box-shadow: inset 0 0 0 2px var(--primaryColor);
 	}
+}
+.divider {
+	border-bottom: 1px solid #333;
 }
 .action {
 	padding: 0;
