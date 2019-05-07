@@ -34,6 +34,20 @@ export const unpaginateQuery = (query) => {
 	return cleanQuery;
 };
 
+const stringify = (query) => {
+	const newQuery = {};
+	// undefined --> null
+	// include empty arrays ?key=&...
+	Object.entries(query).forEach(([key, value]) => {
+		if (Array.isArray(value) && value.length === 0) {
+			newQuery[key] = [null];
+		} else {
+			newQuery[key] = value === undefined ? null : value;
+		}
+	});
+	return qs.stringify(newQuery);
+};
+
 export default {
 	methods: {
 		async $_login(data) {
@@ -136,8 +150,7 @@ export default {
 			if (!query) {
 				throw new Error("query (first) parameter is required!");
 			}
-
-			const queryString = qs.stringify(unpaginateQuery(query));
+			const queryString = stringify(unpaginateQuery(query));
 
 			return jsonFetch(
 				this.$config.API.contentServerUrl +
@@ -155,7 +168,7 @@ export default {
 				throw new Error("query (first) parameter is required!");
 			}
 
-			const queryString = qs.stringify(unpaginateQuery(query));
+			const queryString = stringify(unpaginateQuery(query));
 
 			return jsonFetch(
 				this.$config.API.contentServerUrl +
