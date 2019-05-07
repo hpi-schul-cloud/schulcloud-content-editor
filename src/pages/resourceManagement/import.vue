@@ -16,6 +16,7 @@
 				v-if="progressbarCurrentStep === 1"
 				v-model="metadataFieldMapping"
 				:csv-headers="csv.headers"
+				:valid-options="validCSVHeaders"
 			/>
 			<div v-if="progressbarCurrentStep === 2">
 				<PreviewTable
@@ -27,7 +28,9 @@
 				<PublishFlag v-model="isPublished" :validation-result="invalidFields" />
 			</div>
 			<div v-if="progressbarCurrentStep === 3">
-				<LoadingBooks v-if="!successfullyImported && !importError" />
+				<LoadingBooks v-if="!successfullyImported && !importError">
+					<h3 style="text-align: center">... Inhalte werden importiert ...</h3>
+				</LoadingBooks>
 				<ResultPage
 					v-if="importError"
 					:config="errorConfig"
@@ -46,7 +49,7 @@
 				styling="secondary"
 				@click="handleBackStep"
 			>
-				Zurück
+				{{ backwardButtonText }}
 			</BaseButton>
 			<BaseButton
 				styling="primary"
@@ -70,6 +73,8 @@ import BaseButton from "@/components/base/BaseButton";
 import LoadingBooks from "@/components/LoadingBooks";
 
 import api from "@/mixins/api.js";
+import { validate } from "@babel/types";
+import { valid } from "semver";
 
 const Ajv = require("ajv");
 
@@ -103,6 +108,28 @@ export default {
 		return this.initialDataState();
 	},
 	computed: {
+		validCSVHeaders() {
+			let validHeaders = {};
+			this.csv.headers.forEach((header) => {
+				validHeaders[header] = true;
+			});
+
+			this.csv.content.forEach((row) => {
+				if (!Object.values(validHeaders).includes(true)) {
+					return validHeaders;
+				}
+				Object.keys(validHeaders).forEach((header) => {
+					if (row[header] === "") {
+						validHeaders[header] = false;
+					}
+				});
+			});
+			return validHeaders;
+		},
+		backwardButtonText: function() {
+			if (this.progressbarCurrentStep === 1) return "Zurücksetzen";
+			else return "Zurück";
+		},
 		forwardButtonText: function() {
 			if (this.progressbarCurrentStep === 2) return "Importieren";
 			else return "Nächster Schritt";
@@ -233,9 +260,12 @@ export default {
 			this.incrementCurrentStep();
 		},
 		handleBackStep() {
-			if (this.progressbarCurrentStep > 0) {
-				this.decrementCurrentStep();
+			if (this.progressbarCurrentStep <= 0) return;
+			if (this.progressbarCurrentStep === 1) {
+				this.resetImport();
+				return;
 			}
+			this.decrementCurrentStep();
 		},
 		incrementCurrentStep() {
 			this.progressbarCurrentStep = this.progressbarCurrentStep + 1;

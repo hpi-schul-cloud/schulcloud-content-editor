@@ -9,6 +9,7 @@
 			<li class="book_item sixth"></li>
 		</ul>
 		<div class="shelf"></div>
+		<slot></slot>
 	</div>
 </template>
 <script>
@@ -36,7 +37,6 @@ body {
 
 .bookshelf_wrapper {
 	padding-top: 150px;
-	transform: scaleX(-1);
 }
 
 .books_list {
@@ -44,6 +44,7 @@ body {
 	width: 300px;
 	padding: 0;
 	margin: 0 auto;
+	transform: scaleX(-1);
 }
 
 .book_item {

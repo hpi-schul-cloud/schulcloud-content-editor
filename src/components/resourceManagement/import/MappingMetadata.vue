@@ -64,6 +64,10 @@ export default {
 			type: Array,
 			required: true,
 		},
+		validOptions: {
+			type: Object,
+			required: true,
+		},
 	},
 	computed: {
 		mappingOptions: function() {
@@ -81,14 +85,19 @@ export default {
 			return options;
 		},
 		disabledOptions: function() {
-			const values = Object.values(this.metadataFieldMapping);
-			return values
+			let disabledValues = Object.values(this.metadataFieldMapping)
 				.map((value) => {
 					return value.mappedHeader;
 				})
 				.filter((option) => {
 					return option && option !== this.mappingOptions[0].key;
 				});
+
+			Object.entries(this.validOptions).forEach(([key, value]) => {
+				if (value === false) disabledValues.push(key);
+			});
+
+			return disabledValues;
 		},
 	},
 	methods: {

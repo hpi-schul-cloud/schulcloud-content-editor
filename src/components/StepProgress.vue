@@ -72,9 +72,14 @@ ul.progressbar {
 .progressbar li.active::after {
 	background: var(--darkGrey);
 }
-.progressbar li.active::before,
+.progressbar li.active::before {
+	color: white;
+	background: var(--primaryColor);
+	border-color: var(--primaryColor);
+}
 .progressbar li.done::before {
 	color: white;
+	content: "\2713";
 	background: var(--darkGrey);
 	border-color: var(--darkGrey);
 }

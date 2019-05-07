@@ -1,23 +1,25 @@
 <template>
-	<div class="center-column">
-		<h4 class="title">Inhalte veröffentlichen?</h4>
+	<div>
+		<h3 class="title">Inhalte veröffentlichen?</h3>
 		<BaseCheckbox
 			v-model="isPublished"
 			label="published"
 			@input="$emit('input', $event)"
-		></BaseCheckbox>
-		<div class="center-row">
-			<p>
+		>
+			<template v-if="isPublished" slot="icon">
+				<i
+					class="hint-icon material-icons"
+					@click.prevent="showValidationDialog = true"
+				>
+					feedback
+				</i>
+			</template>
+		</BaseCheckbox>
+		<div>
+			<p class="hint-text">
 				<b>! Hinweis:</b>
 				Nur vollständige und valide Inhalte werden veröffentlicht.
 			</p>
-			<i
-				v-if="isPublished"
-				class="hint-icon material-icons"
-				@click="showValidationDialog = true"
-			>
-				feedback
-			</i>
 		</div>
 		<ValidationResultDialog
 			:active.sync="showValidationDialog"
@@ -68,20 +70,11 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.center-column {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-}
-.center-row {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
-}
 .title {
-	margin-bottom: 0;
+	margin: 2em 0 0.5em;
+}
+.hint-text {
+	margin: 0.5em 0;
 }
 .hint-icon {
 	cursor: pointer;

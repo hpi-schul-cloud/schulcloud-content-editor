@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<h3>Vorschau</h3>
+		<h3 class="title">Vorschau</h3>
 		<table>
 			<tr>
 				<th v-for="(header, index) in headerFields" :key="index">
@@ -50,6 +50,9 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.title {
+	margin: 2em 0 1em;
+}
 table,
 th,
 td {
