@@ -31,7 +31,7 @@
 			@patchBulk="patchBulk"
 			@deleteBulk="deleteBulk"
 		/>
-		<button @click="inProgress = !inProgress" />
+
 		<BaseConfirm :active="inProgress">
 			<p slot="title" style="text-align:center">
 				{{ $lang.resourceManagement.bulk.wip }}
