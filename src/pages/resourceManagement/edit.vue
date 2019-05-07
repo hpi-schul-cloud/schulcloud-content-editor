@@ -35,6 +35,13 @@
 								label="published"
 							></BaseCheckbox>
 						</div>
+						<div class="wrapper">
+							<h4 class="subtitle">Inhalte schützen?</h4>
+							<BaseCheckbox
+								v-model="data.isProtected"
+								label="Inhalte schützen?"
+							/>
+						</div>
 						<ContentHostingProvider v-model="hostingOption" />
 						<template v-if="hostingOption === 'hostedExternally'">
 							<ContentUrl
@@ -188,6 +195,7 @@ export default {
 				tags: [],
 				files: { delete: [], save: [] },
 				isPublished: false,
+				isProtected: false,
 			},
 			dialog: {
 				active: false,

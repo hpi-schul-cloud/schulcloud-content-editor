@@ -4,6 +4,7 @@ export default {
 	createdAt: "Erstellt",
 	description: "Beschreibung",
 	isPublished: "Veröffentlicht",
+	isProtected: "DRM Schutz",
 	licenses: "Lizenzen",
 	mimeType: "mimetype",
 	originId: "Origin ID",

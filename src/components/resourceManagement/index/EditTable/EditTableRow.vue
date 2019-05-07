@@ -101,6 +101,15 @@ export const keyInputMapping = [
 		type: Boolean,
 	},
 	{
+		key: "isProtected",
+		component: TableCheckbox,
+		attributes: { type: "checkbox" },
+		wrapperAttributes: {
+			class: "fit-content",
+		},
+		type: Boolean,
+	},
+	{
 		key: "url",
 		component: TableInput,
 		attributes: { type: "url" },
