@@ -13,6 +13,8 @@
 		</main>
 		<TheFAB />
 		<TheFooter class="footer" />
+
+		<portal-target name="app"></portal-target>
 	</div>
 </template>
 

@@ -2,29 +2,31 @@
 	<div>
 		<Searchbar
 			v-model.lazy="searchString"
-			:label="$lang.search.searchbar.label"
-			:placeholder="$lang.search.searchbar.placeholder"
+			:label="$lang.resourceManagement.search.searchbar.label"
+			:placeholder="$lang.resourceManagement.search.searchbar.placeholder"
 		/>
 
 		<p>
-			{{ pagination.totalEntrys }} {{ $lang.search.number_of_found_items }}.
+			{{ pagination.totalEntrys }}
+			{{ $lang.resourceManagement.search.number_of_found_items }}.
 		</p>
 
-		<ResourceBulkEdit
-			v-show="true || resources.length"
-			:resources="resources"
-			:resource-start-index="(pagination.page - 1) * pagination.itemsPerPage"
-			:query="apiSearchQuery"
-			@reload="loadContent"
-		/>
+		<div v-show="resources.length">
+			<ResourceBulkEdit
+				:resources="resources"
+				:resource-start-index="(pagination.page - 1) * pagination.itemsPerPage"
+				:query="apiSearchQuery"
+				@reload="loadContent"
+			/>
+			<Pagination :config="pagination" @pageChanged="handlePageChange" />
+		</div>
 		<p v-show="!resources.length">
-			{{ $lang.search.nothing_found }}
+			{{ $lang.resourceManagement.search.nothing_found }}
 			<br />
 			<small>
-				{{ $lang.search.nothing_found_help }}
+				{{ $lang.resourceManagement.search.nothing_found_help }}
 			</small>
 		</p>
-		<Pagination :config="pagination" @pageChanged="handlePageChange" />
 	</div>
 </template>
 
@@ -97,13 +99,13 @@ export default {
 			path: this.$route.path,
 			actions: [
 				{
-					title: "Inhalt erstellen",
+					title: this.$lang.resourceManagement.create,
 					icon: "create",
 					event: "navigate",
 					payload: { name: "resourceManagement/create" },
 				},
 				{
-					title: "Inhalte importieren",
+					title: this.$lang.resourceManagement.import,
 					icon: "import_export",
 					event: "navigate",
 					payload: { name: "resourceManagement/import" },
@@ -133,9 +135,6 @@ export default {
 			});
 		},
 		loadContent() {
-			// clear data to show "loading state"
-			//this.resources = []; // TODO add loading animation/transition
-
 			// set unique browser url
 			this.updateUrlQuery();
 
