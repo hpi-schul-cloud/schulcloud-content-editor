@@ -13,7 +13,7 @@ export default {
 		pushContentPath: "/resources/",
 		pushBulkContentPath: "/resources/bulk/",
 		searchContentPath: "/search/",
-		viewContentPath: "/redirect/",
+		viewContentPath: "/content/redirect/",
 		fileUploadPath: "/files/upload/",
 		hostingEntry: "/files/get/",
 	},
