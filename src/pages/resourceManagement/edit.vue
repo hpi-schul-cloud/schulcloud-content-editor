@@ -185,6 +185,7 @@ export default {
 	data() {
 		return {
 			data: {
+				originId: Date.now().toString(), // TODO FIX
 				providerName: "Cornelsen",
 				url: "",
 				title: "",
