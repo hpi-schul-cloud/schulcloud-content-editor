@@ -10,37 +10,43 @@
 			<i class="material-icons">feedback</i>
 		</template>
 		<template>
-			<p class="infotext">
-				Ihre Inhalte können nur veröffentlicht werden, wenn sie vollständig und
-				valide sind. Folgende Spalten sind dies nicht:
+			<p v-if="valid" class="infotext">
+				Ihre Inhalten sind valide und vollständig, daher können sie
+				veröffentlicht werden.
 			</p>
-			<table>
-				<tr>
-					<th>Spalte</th>
-					<th>Validierungs Fehler</th>
-				</tr>
-				<tr v-for="(value, key) in validationResults" :key="key">
-					<td>{{ key }}</td>
-					<td>
-						<p
-							v-for="(errorMessage, index) in value"
-							:key="index"
-							class="tabletext"
-						>
-							{{ errorMessage }}
-						</p>
-					</td>
-				</tr>
-			</table>
+			<template v-else>
+				<p class="infotext">
+					Ihre Inhalte können nur veröffentlicht werden, wenn sie vollständig
+					und valide sind. Folgende Spalten sind dies nicht:
+				</p>
+				<table>
+					<tr>
+						<th>Spalte</th>
+						<th>Validierungs Fehler</th>
+					</tr>
+					<tr v-for="(value, key) in validationResults" :key="key">
+						<td>{{ key }}</td>
+						<td>
+							<p
+								v-for="(errorMessage, index) in value"
+								:key="index"
+								class="tabletext"
+							>
+								{{ errorMessage }}
+							</p>
+						</td>
+					</tr>
+				</table>
 
-			<p class="infotext">
-				Sie können ihre Inhalte dennoch importieren, sie werden dann als
-				"nicht-öffentlich" gespeichert. Im nächsten Schritt haben Sie dann die
-				Möglichkeit, zu einer gefilterten Ansicht der Verwaltungstabelle
-				umgeleitet zu werden. Dort können Sie ihre importierten, nicht
-				veröffentlichten Inhalte vervollständigen und anschließend
-				veröffentlichen.
-			</p>
+				<p class="infotext">
+					Sie können ihre Inhalte dennoch importieren, sie werden dann als
+					"nicht-öffentlich" gespeichert. Im nächsten Schritt haben Sie dann die
+					Möglichkeit, zu einer gefilterten Ansicht der Verwaltungstabelle
+					umgeleitet zu werden. Dort können Sie ihre importierten, nicht
+					veröffentlichten Inhalte vervollständigen und anschließend
+					veröffentlichen.
+				</p>
+			</template>
 		</template>
 	</BaseConfirm>
 </template>
@@ -58,6 +64,11 @@ export default {
 		},
 		active: {
 			type: Boolean,
+		},
+	},
+	computed: {
+		valid: function() {
+			return Object.keys(this.validationResults).length === 0;
 		},
 	},
 	methods: {

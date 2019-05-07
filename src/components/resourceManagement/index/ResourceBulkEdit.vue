@@ -31,7 +31,6 @@
 			@patchBulk="patchBulk"
 			@deleteBulk="deleteBulk"
 		/>
-
 		<BaseConfirm :active="inProgress">
 			<p slot="title" style="text-align:center">
 				{{ $lang.resourceManagement.bulk.wip }}
@@ -199,7 +198,6 @@ export default {
 
 			function flattenQuery(queryObj, isRoot = true) {
 				const flatObj = {};
-
 				for (const key in queryObj) {
 					// key not in obj
 					if (!queryObj.hasOwnProperty(key)) continue;
@@ -229,6 +227,7 @@ export default {
 				}
 				return flatObj;
 			}
+
 			const replaceQuery = removeUndefined(
 				flattenQuery({
 					...this.query,
