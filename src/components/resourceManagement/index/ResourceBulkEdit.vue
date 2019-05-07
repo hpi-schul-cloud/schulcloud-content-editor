@@ -31,7 +31,6 @@
 			@patchBulk="patchBulk"
 			@deleteBulk="deleteBulk"
 		/>
-		<button @click="inProgress = !inProgress" />
 		<BaseConfirm :active="inProgress">
 			<p slot="title" style="text-align:center">
 				{{ $lang.resourceManagement.bulk.wip }}
@@ -199,14 +198,16 @@ export default {
 
 			function flattenQuery(queryObj, isRoot = true) {
 				const flatObj = {};
-
-				for (var key in queryObj) {
+				for (const key in queryObj) {
 					// key not in obj
 					if (!queryObj.hasOwnProperty(key)) continue;
 
 					// is nested?
-					if (typeof queryObj[key] == "object" && queryObj[key] !== null) {
-						var flatObject = flattenQuery(queryObj[key], false);
+					if (
+						typeof queryObj[key] === "object" &&
+						!Array.isArray(queryObj[key])
+					) {
+						const flatObject = flattenQuery(queryObj[key], false);
 						for (var nestedKey in flatObject) {
 							// key not in obj
 							if (!flatObject.hasOwnProperty(nestedKey)) continue;
