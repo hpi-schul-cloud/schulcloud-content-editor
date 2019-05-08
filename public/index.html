@@ -36,7 +36,8 @@
 			onload="this.rel='stylesheet'"
 		/>
 		<script>
-			window.onload = function() {
+			// https://dassur.ma/things/lazyloading/
+			window.addEventListener("load", () => {
 				const lazyloads = document.querySelectorAll("noscript.lazyload");
 				// This container is the HTML parser
 				const container = document.createElement("div");
@@ -47,7 +48,7 @@
 						parent.insertBefore(n, lazyload)
 					);
 				});
-			};
+			});
 		</script>
 		<!-- Start Single Page Apps for GitHub Pages -->
 		<script type="text/javascript">
@@ -89,17 +90,6 @@
 			})(window.location);
 		</script>
 		<!-- End Single Page Apps for GitHub Pages -->
-
-		<!-- TODO remove/replace -->
-		<!-- required by vue-fab -->
-		<link
-			rel="stylesheet"
-			href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css"
-		/>
-		<link
-			rel="stylesheet"
-			href="https://fonts.googleapis.com/icon?family=Material+Icons"
-		/>
 	</head>
 	<body>
 		<noscript>

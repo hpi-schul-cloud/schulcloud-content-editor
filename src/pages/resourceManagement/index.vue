@@ -99,14 +99,14 @@ export default {
 			path: this.$route.path,
 			actions: [
 				{
-					title: this.$lang.resourceManagement.create,
 					icon: "create",
+					text: this.$lang.resourceManagement.create,
 					event: "navigate",
 					payload: { name: "resourceManagement/create" },
 				},
 				{
-					title: this.$lang.resourceManagement.import,
 					icon: "import_export",
+					text: this.$lang.resourceManagement.import,
 					event: "navigate",
 					payload: { name: "resourceManagement/import" },
 				},

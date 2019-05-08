@@ -21,11 +21,10 @@ const toastOptions = {
 };
 Vue.use(Toasted, toastOptions);
 
-// FAB
-import VueFab from "vue-float-action-button";
-Vue.use(VueFab, {
-	iconType: "MaterialDesign",
-});
+// Material Ripple
+import Ripple from "vue-ripple-directive";
+Ripple.zIndex = 5;
+Vue.directive("ripple", Ripple);
 
 // Cookie access
 import VueCookies from "vue-cookies";
