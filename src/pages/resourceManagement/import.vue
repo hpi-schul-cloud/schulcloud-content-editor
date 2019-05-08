@@ -92,6 +92,7 @@ const requiredMetadataFields = ["title", "url"];
 
 const chunkSize = 250;
 
+// Promise-trick that sets a timeout allowing the browser to render UI or handle User events before executing resolve
 const promiseYield = (duration) => {
 	return new Promise((resolve, reject) => {
 		setTimeout(resolve, duration);
@@ -177,7 +178,7 @@ export default {
 		},
 		forwardButtonDisabled: function() {
 			return (
-				this.csv.content.length === 0 ||
+				this.csv.fileName === "" ||
 				(this.progressbarCurrentStep === 1 &&
 					(this.metadataFieldMapping.title.mappedHeader === "" ||
 						this.metadataFieldMapping.url.mappedHeader === ""))
@@ -285,7 +286,14 @@ export default {
 				});
 				return resource;
 			};
+			// calculate the first rows synchronously, to display the previewTable quickly
+			const firstResources = this.csv.content.splice(
+				0,
+				Math.min(this.csv.content.length, this.maxRows)
+			);
+			this.importedResources.push(...firstResources.map(formatResource));
 
+			// create array of chunks, which will be formatted asynchronously with the PromiseYield trick (timeout of 0s allows browser to render UI or handle user events in between)
 			const chunkPromises = this.chunkArray(this.csv.content, chunkSize).map(
 				(resources) => {
 					return promiseYield(0).then(() => {
@@ -293,21 +301,12 @@ export default {
 					});
 				}
 			);
-			// const formatPromises = this.csv.content.map(formatResource);
+
 			return Promise.all(chunkPromises).then((chunks) => {
 				chunks.forEach((resources) => {
 					this.importedResources.push(...resources);
 				});
 			});
-			/*
-			// TODO calc first 5, then rest
-			return new Promise(async (resolve) => {
-				await  Promise.all(formatPromises);
-				this.importedResources.push(...resources);
-				await Promise.all(formatPromises);
-				this.importedResources.push(...resources);
-			})
-			*/
 		},
 		importCSV() {
 			this.importError = "";
@@ -352,6 +351,7 @@ export default {
 				}
 			};
 
+			// validation asynchronously in chunks (timeout for 0s trick) so that the browser can handle user events in between
 			const chunkPromises = this.chunkArray(
 				this.importedResources,
 				chunkSize
@@ -360,11 +360,7 @@ export default {
 					return resources.map(validateResource);
 				});
 			});
-			return Promise.all(chunkPromises).then((chunks) => {
-				chunks.forEach((resources) => {
-					this.importedResources.push(...resources);
-				});
-			});
+			return Promise.all(chunkPromises);
 		},
 		getResourceSchema() {
 			return this.$_resourceResourceSchemaGet().then((response) => {
