@@ -47,7 +47,7 @@ export default {
 	padding: 16px;
 	cursor: pointer;
 	border-radius: 5em;
-	box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
 
 	.fab-icon {
 		user-select: none;
