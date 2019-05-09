@@ -9,12 +9,14 @@ const loadView = (path) => {
 
 import resourceManagement from "./resourceManagement";
 import statistics from "./statistics";
+import video from "./video";
 
 const routes = [
 	{ path: "/", redirect: "/resources", name: "main" },
 	// Plugins:
 	...resourceManagement,
 	...statistics,
+	...video,
 ];
 
 export default new Router({
