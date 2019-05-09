@@ -4861,6 +4861,15 @@ fd-slicer@~1.1.0:
   dependencies:
     pend "~1.2.0"
 
+feathersjs-filter-ui@^0.0.8:
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/feathersjs-filter-ui/-/feathersjs-filter-ui-0.0.8.tgz#3cb8c3c7bb542c7bf3090e28c3b7dd1029d37fe7"
+  integrity sha512-YDXgmuButkKN9zd3cLTmc3hXUJBYCDY/xE8rBFauOnxUGN2Nm16JtMh6OM4mC9DuAkYCiBe/czD5dvdL2PXC3g==
+  dependencies:
+    core-js "^2.6.5"
+    vue "^2.6.10"
+    vue-material latest
+
 figgy-pudding@^3.5.1:
   version "3.5.1"
   resolved "https://registry.yarnpkg.com/figgy-pudding/-/figgy-pudding-3.5.1.tgz#862470112901c727a0e495a80744bd5baa1d6790"
@@ -13014,6 +13023,11 @@ vue-loader@^15.7.0:
     loader-utils "^1.1.0"
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
+
+vue-material@latest:
+  version "1.0.0-beta-10.2"
+  resolved "https://registry.yarnpkg.com/vue-material/-/vue-material-1.0.0-beta-10.2.tgz#c3effea97e0c5a0c696b0051d5ef9c6e6cf2a5ed"
+  integrity sha512-DXOUXm6M8zbeJ6LPvP1h/0EhXmCkxNGz2dM/0q4w+lsT9uTaos+YDrwQvJBJcxil3fEw6oHCfhG/peWks+8v7Q==
 
 vue-progressbar@^0.7.3:
   version "0.7.5"

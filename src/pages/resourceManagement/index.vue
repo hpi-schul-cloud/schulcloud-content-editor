@@ -6,6 +6,12 @@
 			:placeholder="$lang.resourceManagement.search.searchbar.placeholder"
 		/>
 
+		<FeathersFilter
+			add-label="Filter hinzufügen"
+			:filter="JSON.stringify(filter)"
+			:handle-url="true"
+			@newFilter="updateFilter"
+		/>
 		<p>
 			{{ pagination.totalEntrys }}
 			{{ $lang.resourceManagement.search.number_of_found_items }}.
@@ -31,6 +37,11 @@
 </template>
 
 <script>
+import Vue from "vue";
+import FeathersFilter from "feathersjs-filter-ui";
+
+Vue.use(FeathersFilter);
+
 import Searchbar from "@/components/Searchbar";
 import Pagination from "@/components/Pagination";
 import ResourceBulkEdit from "@/components/resourceManagement/index/ResourceBulkEdit";
@@ -39,6 +50,7 @@ import api from "@/mixins/api.js";
 
 export default {
 	components: {
+		FeathersFilter,
 		Searchbar,
 		Pagination,
 		ResourceBulkEdit,
@@ -59,6 +71,88 @@ export default {
 				},
 			},
 			resources: [],
+			filter: [
+				{
+					type: "select",
+					title: "Multi Select",
+					displayTemplate: "Selections: %1",
+					property: "prop1",
+					multiple: true,
+					expanded: true,
+					options: [
+						["option-1", "option 1"],
+						["option-2", "option 2"],
+						["option-3", "option 3"],
+						["option-4", "option 4"],
+						["option-5", "option 5"],
+						["option-6", "option 6"],
+						["option-7", "option 7"],
+						["option-8", "option 8"],
+						["option-9", "option 9"],
+					],
+					defaultSelection: ["option-1", "option-2"],
+				},
+				{
+					type: "select",
+					title: "Single Select",
+					displayTemplate: "Selection: %1",
+					property: "prop2",
+					multiple: false,
+					expanded: true,
+					options: [
+						["option-1", "option 1"],
+						["option-2", "option 2"],
+						["option-3", "option 3"],
+						["option-4", "option 4"],
+					],
+					defaultSelection: "option-3",
+				},
+				{
+					type: "date",
+					title: "Date From",
+					displayTemplate: "Date starting at: %1",
+					property: "createdAt",
+					mode: "from",
+				},
+				{
+					type: "date",
+					title: "Date from to",
+					displayTemplate: "Date from: %1 to: %2",
+					property: "updatedAt",
+					mode: "fromto",
+					defaultFromDate: new Date(),
+					defaultToDate: new Date(),
+				},
+				{
+					type: "sort",
+					title: "Sort",
+					displayTemplate: "sort by: %1",
+					options: [["createdAt", "created"], ["updatedAt", "updated"]],
+					defaultSelection: "updatedAt",
+					defaultOrder: "DESC",
+				},
+				{
+					type: "limit",
+					title: "$limit",
+					displayTemplate: "Items per page: %1",
+					options: [10, 25, 50, 100, 250, 500],
+					defaultSelection: 25,
+				},
+				{
+					type: "boolean",
+					title: "Boolean",
+					options: {
+						publicSubmissions: "Public submissions",
+						teamSubmissions: "Team submissions",
+					},
+					defaultSelection: {
+						publicSubmissions: true,
+					},
+					applyNegated: {
+						teamSubmissions: [true, true],
+					},
+				},
+			],
 		};
 	},
 	computed: {
