@@ -4861,10 +4861,10 @@ fd-slicer@~1.1.0:
   dependencies:
     pend "~1.2.0"
 
-feathersjs-filter-ui@^0.0.8:
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/feathersjs-filter-ui/-/feathersjs-filter-ui-0.0.8.tgz#3cb8c3c7bb542c7bf3090e28c3b7dd1029d37fe7"
-  integrity sha512-YDXgmuButkKN9zd3cLTmc3hXUJBYCDY/xE8rBFauOnxUGN2Nm16JtMh6OM4mC9DuAkYCiBe/czD5dvdL2PXC3g==
+feathersjs-filter-ui@^0.0.13:
+  version "0.0.13"
+  resolved "https://registry.yarnpkg.com/feathersjs-filter-ui/-/feathersjs-filter-ui-0.0.13.tgz#a66f80197ce1c2cd803abeb9d7ebeeb29c1792f0"
+  integrity sha512-F9fGHHGF271BgTA0dZs08Bl+fU/uAGX8zCLY2qFK4e5bKXo0/vmp02XZmGutVABAXODTDyYFRddda/GleAnc+g==
   dependencies:
     core-js "^2.6.5"
     vue "^2.6.10"

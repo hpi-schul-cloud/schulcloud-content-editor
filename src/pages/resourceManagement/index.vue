@@ -8,8 +8,11 @@
 
 		<FeathersFilter
 			add-label="Filter hinzufügen"
-			:filter="JSON.stringify(filter)"
+			apply-label="Filtern"
+			cancle-label="Abbrechen"
 			:handle-url="true"
+			:consistent-order="true"
+			:filter="filter"
 			@newFilter="updateFilter"
 		/>
 		<p>
@@ -73,91 +76,40 @@ export default {
 			resources: [],
 			filter: [
 				{
-					type: "select",
-					title: "Multi Select",
-					displayTemplate: "Selections: %1",
-					property: "prop1",
-					multiple: true,
-					expanded: true,
-					options: [
-						["option-1", "option 1"],
-						["option-2", "option 2"],
-						["option-3", "option 3"],
-						["option-4", "option 4"],
-						["option-5", "option 5"],
-						["option-6", "option 6"],
-						["option-7", "option 7"],
-						["option-8", "option 8"],
-						["option-9", "option 9"],
-					],
-					defaultSelection: ["option-1", "option-2"],
-				},
-				{
-					type: "select",
-					title: "Single Select",
-					displayTemplate: "Selection: %1",
-					property: "prop2",
-					multiple: false,
-					expanded: true,
-					options: [
-						["option-1", "option 1"],
-						["option-2", "option 2"],
-						["option-3", "option 3"],
-						["option-4", "option 4"],
-					],
-					defaultSelection: "option-3",
-				},
-				{
-					type: "date",
-					title: "Date From",
-					displayTemplate: "Date starting at: %1",
-					property: "createdAt",
-					mode: "from",
-				},
-				{
-					type: "date",
-					title: "Date from to",
-					displayTemplate: "Date from: %1 to: %2",
-					property: "updatedAt",
-					mode: "fromto",
-					defaultFromDate: new Date(),
-					defaultToDate: new Date(),
-				},
-				{
 					type: "sort",
-					title: "Sort",
-					displayTemplate: "sort by: %1",
-					options: [["createdAt", "created"], ["updatedAt", "updated"]],
+					title: "Sortieren nach",
+					displayTemplate: "Sortieren nach: %1",
+					options: Object.entries(this.$lang.resources),
 					defaultSelection: "updatedAt",
 					defaultOrder: "DESC",
 				},
 				{
 					type: "limit",
-					title: "$limit",
-					displayTemplate: "Items per page: %1",
+					title: "Einträge pro Seite",
+					displayTemplate: "Einträge pro Seite: %1",
 					options: [10, 25, 50, 100, 250, 500],
-					defaultSelection: 25,
+					defaultSelection: 50,
 				},
 				{
 					type: "boolean",
-					title: "Boolean",
+					title: "Status",
 					options: {
-						publicSubmissions: "Public submissions",
-						teamSubmissions: "Team submissions",
-					},
-					defaultSelection: {
-						publicSubmissions: true,
+						isPublished: this.$lang.resources.isPublished,
+						isProtected: this.$lang.resources.isProtected,
 					},
 					applyNegated: {
-						teamSubmissions: [true, true],
+						isPublished: [false, true],
+						isProtected: [false, true],
 					},
 				},
 			],
+			filterQuery: {},
 		};
 	},
 	computed: {
 		apiSearchQuery() {
 			return {
+				...this.filterQuery,
 				$limit: this.pagination.itemsPerPage,
 				$skip: this.pagination.itemsPerPage * (this.pagination.page - 1),
 				"_all[$match]": this.searchString,
@@ -212,6 +164,13 @@ export default {
 		window.onhashchange = this.handleUrlChange;
 	},
 	methods: {
+		updateFilter([feathersQuery, urlQuery]) {
+			if (feathersQuery.$limit) {
+				this.pagination.itemsPerPage = feathersQuery.$limit;
+			}
+			this.filterQuery = feathersQuery;
+			this.loadContent();
+		},
 		handlePageChange(page) {
 			this.pagination.page = page;
 			this.loadContent();
