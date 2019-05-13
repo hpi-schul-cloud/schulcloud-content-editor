@@ -38,6 +38,7 @@ label {
 	font-size: 1.15em;
 	line-height: 32px;
 	color: #757575;
+	user-select: none;
 	background: rgba(255, 255, 255, 0);
 	border: none;
 
