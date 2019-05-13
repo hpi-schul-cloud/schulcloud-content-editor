@@ -71,6 +71,10 @@ label {
 </style>
 <style lang="scss">
 .tag-input {
+	font-size: 0.9rem;
+	.ti-selected-item {
+		background-color: var(--primaryColor);
+	}
 	.ti-input {
 		padding: 1px 0;
 		border: 0;
@@ -81,7 +85,7 @@ label {
 	}
 	&.vue-tags-input {
 		max-width: 100%;
-		color: #1d1d1d;
+		color: #333;
 		background: none;
 		border-radius: 20px;
 
@@ -90,15 +94,14 @@ label {
 
 			.ti-new-tag-input {
 				font-size: 1rem;
-				color: #757575;
+				color: #333;
 				background: none;
 			}
 		}
 	}
 	.ti-tag {
-		font-size: 1rem;
-		color: #757575;
-		background-color: #e7e7e7;
+		color: #333;
+		background-color: #fff;
 		border: 1px solid #333;
 
 		&.ti-tag.ti-deletion-mark {

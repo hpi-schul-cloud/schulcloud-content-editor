@@ -15,4 +15,6 @@ export default {
 	updatedAt: "Aktualisiert",
 	url: "URL",
 	userId: "Ersteller",
+	createdAt: "Erstellt am",
+	updatedAt: "Aktualisiert am",
 };

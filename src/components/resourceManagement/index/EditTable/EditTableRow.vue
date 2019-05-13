@@ -131,6 +131,20 @@ export const keyInputMapping = [
 		},
 		type: Array,
 	},
+	{
+		key: "createdAt",
+		component: TableInput,
+		attributes: { type: "date", readonly: true },
+		wrapperAttributes: {},
+		type: String,
+	},
+	{
+		key: "updatedAt",
+		component: TableInput,
+		attributes: { type: "date", readonly: true },
+		wrapperAttributes: {},
+		type: String,
+	},
 ];
 
 export default {
