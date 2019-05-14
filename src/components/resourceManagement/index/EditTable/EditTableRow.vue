@@ -54,6 +54,7 @@ import TableInput from "./TableInputs/TableInput";
 import TableTextarea from "./TableInputs/TableTextarea";
 import TableSelect from "./TableInputs/TableSelect";
 import TableTags from "./TableInputs/TableTags";
+import DateInput from "./TableInputs/TableDate";
 
 import { options as MimeTypeOptions } from "@/components/resourceManagement/edit/inputs/ContentMimetype";
 import { options as CategoryOptions } from "@/components/resourceManagement/edit/inputs/ContentCategory";
@@ -133,15 +134,15 @@ export const keyInputMapping = [
 	},
 	{
 		key: "createdAt",
-		component: TableInput,
-		attributes: { type: "date", readonly: true },
+		component: DateInput,
+		attributes: { readonly: true },
 		wrapperAttributes: {},
 		type: String,
 	},
 	{
 		key: "updatedAt",
-		component: TableInput,
-		attributes: { type: "date", readonly: true },
+		component: DateInput,
+		attributes: { readonly: true },
 		wrapperAttributes: {},
 		type: String,
 	},
