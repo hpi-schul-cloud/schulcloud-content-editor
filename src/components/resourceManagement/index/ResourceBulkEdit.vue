@@ -7,12 +7,12 @@
 		<br />
 		<BaseCheckbox
 			v-if="bulkEdit"
-			v-model="bulkAdvanced"
+			v-model="bulkAdvancedEdit"
 			:label="$lang.resourceManagement.bulk.enableBulkEditAdvanced"
 		/>
 
 		<BaseTags
-			v-model="visibleColoumns"
+			v-model="visibleColoumnNames"
 			:label="$lang.resourceManagement.bulk.visibleColoumns"
 			:autocomplete-items="
 				availableColoumns.map((a) => ({ text: $lang.resources[a.key] }))
@@ -24,7 +24,7 @@
 			:bulk-inputs="bulkInputs"
 			:resources="resources"
 			:header-visible="true"
-			:visible-coloumns="visibleColoumnAttributes"
+			:visible-coloumns="visibleColoumns"
 			:index-start="resourceStartIndex"
 			@patchResource="patchResource"
 			@deleteResource="deleteResource"
@@ -85,12 +85,9 @@ export default {
 	},
 	data() {
 		return {
-			bulkEdit: true,
-			bulkAdvanced: true,
 			bulkReplace: emptyResource("Ersetzen"),
 			bulkFind: emptyResource("Suchen"),
 			availableColoumns,
-			visibleColoumns: [],
 			inProgress: false,
 		};
 	},
@@ -99,7 +96,7 @@ export default {
 			const inputRows = [];
 			if (this.bulkEdit) {
 				inputRows.push(this.bulkReplace);
-				if (this.bulkAdvanced) {
+				if (this.bulkAdvancedEdit) {
 					inputRows.push(this.bulkFind);
 				}
 			}
@@ -112,32 +109,51 @@ export default {
 			});
 			return dict;
 		},
-		visibleColoumnAttributes() {
-			return this.visibleColoumns.map(
-				(name) => this.attributeNameDictionary[name]
-			);
+		visibleColoumnNames: {
+			get() {
+				return this.visibleColoumns.map(
+					(attribute) => this.$lang.resources[attribute]
+				);
+			},
+			set(value) {
+				this.visibleColoumns = value.map(
+					(name) => this.attributeNameDictionary[name]
+				);
+			},
 		},
-	},
-	watch: {
-		visibleColoumns: function(to, from) {
-			Object.keys(this.bulkReplace).forEach((key) => {
-				if (!this.visibleColoumns.includes(key)) {
-					this.bulkReplace[key] = undefined;
-					this.bulkFind[key] = undefined;
-				}
-			});
+		bulkEdit: {
+			get() {
+				return this.$store.state.resourceManagement.bulk.bulkEnabled;
+			},
+			set(value) {
+				this.$store.commit("resourceManagement/bulk/setBulkEnabled", value);
+			},
 		},
-	},
-	created() {
-		[
-			"title",
-			"isPublished",
-			"contentCategory",
-			"licenses",
-			"description",
-		].forEach((attribute) => {
-			this.visibleColoumns.push(this.$lang.resources[attribute]);
-		});
+		bulkAdvancedEdit: {
+			get() {
+				return this.$store.state.resourceManagement.bulk.bulkAdvancedEnabled;
+			},
+			set(value) {
+				this.$store.commit(
+					"resourceManagement/bulk/setBulkAdvancedEnabled",
+					value
+				);
+			},
+		},
+		visibleColoumns: {
+			get() {
+				return this.$store.state.resourceManagement.bulk.visibleColoumns;
+			},
+			set(value) {
+				Object.keys(this.bulkReplace).forEach((key) => {
+					if (!this.visibleColoumns.includes(key)) {
+						this.bulkReplace[key] = undefined;
+						this.bulkFind[key] = undefined;
+					}
+				});
+				this.$store.commit("resourceManagement/bulk/setVisibleColoumns", value);
+			},
+		},
 	},
 	methods: {
 		// HELPER

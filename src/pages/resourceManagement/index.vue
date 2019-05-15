@@ -6,6 +6,15 @@
 			:placeholder="$lang.resourceManagement.search.searchbar.placeholder"
 		/>
 
+		<FeathersFilter
+			add-label="Filter hinzufügen"
+			apply-label="Filtern"
+			cancle-label="Abbrechen"
+			:handle-url="true"
+			:consistent-order="true"
+			:filter="filter"
+			@newFilter="updateFilter"
+		/>
 		<p>
 			{{ pagination.totalEntrys }}
 			{{ $lang.resourceManagement.search.number_of_found_items }}.
@@ -31,6 +40,11 @@
 </template>
 
 <script>
+import Vue from "vue";
+import FeathersFilter from "feathersjs-filter-ui";
+
+Vue.use(FeathersFilter);
+
 import Searchbar from "@/components/Searchbar";
 import Pagination from "@/components/Pagination";
 import ResourceBulkEdit from "@/components/resourceManagement/index/ResourceBulkEdit";
@@ -39,6 +53,7 @@ import api from "@/mixins/api.js";
 
 export default {
 	components: {
+		FeathersFilter,
 		Searchbar,
 		Pagination,
 		ResourceBulkEdit,
@@ -59,11 +74,42 @@ export default {
 				},
 			},
 			resources: [],
+			filter: [
+				{
+					type: "sort",
+					title: "Sortieren nach",
+					displayTemplate: "Sortieren nach: %1",
+					options: Object.entries(this.$lang.resources),
+					defaultSelection: "updatedAt",
+					defaultOrder: "DESC",
+				},
+				{
+					type: "limit",
+					title: "Einträge pro Seite",
+					displayTemplate: "Einträge pro Seite: %1",
+					options: [10, 25, 50, 100, 250, 500],
+					defaultSelection: 50,
+				},
+				{
+					type: "boolean",
+					title: "Status",
+					options: {
+						isPublished: this.$lang.resources.isPublished,
+						isProtected: this.$lang.resources.isProtected,
+					},
+					applyNegated: {
+						isPublished: [false, true],
+						isProtected: [true, false],
+					},
+				},
+			],
+			filterQuery: {},
 		};
 	},
 	computed: {
 		apiSearchQuery() {
 			return {
+				...this.filterQuery,
 				$limit: this.pagination.itemsPerPage,
 				$skip: this.pagination.itemsPerPage * (this.pagination.page - 1),
 				"_all[$match]": this.searchString,
@@ -99,14 +145,14 @@ export default {
 			path: this.$route.path,
 			actions: [
 				{
-					title: this.$lang.resourceManagement.create,
 					icon: "create",
+					text: this.$lang.resourceManagement.create,
 					event: "navigate",
 					payload: { name: "resourceManagement/create" },
 				},
 				{
-					title: this.$lang.resourceManagement.import,
 					icon: "import_export",
+					text: this.$lang.resourceManagement.import,
 					event: "navigate",
 					payload: { name: "resourceManagement/import" },
 				},
@@ -118,6 +164,13 @@ export default {
 		window.onhashchange = this.handleUrlChange;
 	},
 	methods: {
+		updateFilter([feathersQuery, urlQuery]) {
+			if (feathersQuery.$limit) {
+				this.pagination.itemsPerPage = feathersQuery.$limit;
+			}
+			this.filterQuery = feathersQuery;
+			this.loadContent();
+		},
 		handlePageChange(page) {
 			this.pagination.page = page;
 			this.loadContent();

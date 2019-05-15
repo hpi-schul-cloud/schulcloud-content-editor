@@ -69,16 +69,14 @@
 						<template v-if="hostingOption === 'hostedExternally'">
 							<ContentUrl
 								v-model="data.url"
-								v-validate
-								data-vv-name="url"
+								v-validate="{ url: { require_host: false } }"
 								data-vv-rules="required|url"
 								:error="errors.first('url')"
 							/>
 							<ContentUrlThumbnail
 								v-model="data.thumbnail"
-								v-validate
+								v-validate="{ url: { require_host: false } }"
 								data-vv-name="thumbnail"
-								data-vv-rules="url"
 								:error="errors.first('thumbnail')"
 							/>
 						</template>
@@ -210,7 +208,7 @@ export default {
 	data() {
 		return {
 			data: {
-				originId: Date.now().toString(),
+				originId: Date.now().toString(), // TODO FIX
 				providerName: "Cornelsen",
 				url: "",
 				title: "",
@@ -314,10 +312,6 @@ export default {
 		submitContent() {
 			// deep copy to remove reactivity
 			const newData = JSON.parse(JSON.stringify(this.data));
-			newData.patchResourceUrl =
-				this.hostingOption === "hostedAtSchulcloud" &&
-				!newData.url.startsWith("http");
-
 			const request = this.editMode
 				? this.$_resourcePatch(newData)
 				: this.$_resourceCreate(newData);

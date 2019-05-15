@@ -4,12 +4,12 @@ Vue.use(Vuex);
 
 import createPersistedState from "vuex-persistedstate";
 import ui from "./ui";
+import resourceManagement from "./resourceManagement";
 
 export default new Vuex.Store({
-	plugins: [
-		/* createPersistedState() */
-	],
+	plugins: [createPersistedState()],
 	modules: {
 		ui,
+		resourceManagement,
 	},
 });

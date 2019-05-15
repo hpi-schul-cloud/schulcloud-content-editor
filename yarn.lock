@@ -4861,6 +4861,15 @@ fd-slicer@~1.1.0:
   dependencies:
     pend "~1.2.0"
 
+feathersjs-filter-ui@^0.0.13:
+  version "0.0.13"
+  resolved "https://registry.yarnpkg.com/feathersjs-filter-ui/-/feathersjs-filter-ui-0.0.13.tgz#a66f80197ce1c2cd803abeb9d7ebeeb29c1792f0"
+  integrity sha512-F9fGHHGF271BgTA0dZs08Bl+fU/uAGX8zCLY2qFK4e5bKXo0/vmp02XZmGutVABAXODTDyYFRddda/GleAnc+g==
+  dependencies:
+    core-js "^2.6.5"
+    vue "^2.6.10"
+    vue-material latest
+
 figgy-pudding@^3.5.1:
   version "3.5.1"
   resolved "https://registry.yarnpkg.com/figgy-pudding/-/figgy-pudding-3.5.1.tgz#862470112901c727a0e495a80744bd5baa1d6790"
@@ -12877,6 +12886,11 @@ vee-validate@^2.2.3:
   resolved "https://registry.yarnpkg.com/vee-validate/-/vee-validate-2.2.5.tgz#b2951c210b8b712766db436bea67b555decbbea2"
   integrity sha512-YzPxVqeSaoiO9OL2S+O1BZhsIkwubb9hrXeNQDeGIXautwZs2hWCYq2A6iL9zWcTY7H5z99JaZzH3P+dCVfNqw==
 
+velocity-animate@^1.5.2:
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/velocity-animate/-/velocity-animate-1.5.2.tgz#5a351d75fca2a92756f5c3867548b873f6c32105"
+  integrity sha512-m6EXlCAMetKztO1ppBhGU1/1MR3IiEevO6ESq6rcrSQ3Q77xYSW13jkfXW88o4xMrkXJhy/U7j4wFR/twMB0Eg==
+
 vendors@^1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/vendors/-/vendors-1.0.2.tgz#7fcb5eef9f5623b156bcea89ec37d63676f21801"
@@ -12973,11 +12987,6 @@ vue-eslint-parser@^5.0.0:
     esquery "^1.0.1"
     lodash "^4.17.11"
 
-vue-float-action-button@^0.5.9:
-  version "0.5.9"
-  resolved "https://registry.yarnpkg.com/vue-float-action-button/-/vue-float-action-button-0.5.9.tgz#36069fdebd2d24c25170ee9720076a4711ee4713"
-  integrity sha512-vL/ZkZGaqjEi/aBiAUphgp/2KyLQyLZ6Rz+XbkJESkZhJ2+fY6qFteR52rFXTut+JrIy8Pe4OT8eEk281SZ3Bw==
-
 vue-fragment@^1.5.1:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/vue-fragment/-/vue-fragment-1.5.1.tgz#44c070d55ed1e9a6c698ef57a5c83f64bb06feeb"
@@ -13015,10 +13024,22 @@ vue-loader@^15.7.0:
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
 
+vue-material@latest:
+  version "1.0.0-beta-10.2"
+  resolved "https://registry.yarnpkg.com/vue-material/-/vue-material-1.0.0-beta-10.2.tgz#c3effea97e0c5a0c696b0051d5ef9c6e6cf2a5ed"
+  integrity sha512-DXOUXm6M8zbeJ6LPvP1h/0EhXmCkxNGz2dM/0q4w+lsT9uTaos+YDrwQvJBJcxil3fEw6oHCfhG/peWks+8v7Q==
+
 vue-progressbar@^0.7.3:
   version "0.7.5"
   resolved "https://registry.yarnpkg.com/vue-progressbar/-/vue-progressbar-0.7.5.tgz#414730892252b1e45582d4979dec93038e007f79"
   integrity sha512-VeNG/inMsFbvdCTS7lJ1gjDAKSUZdqkhW9gS1tb0we1rqFKxR+BCEiVUgw5C84vODKb14M2GWHTw0WVdpoVg6g==
+
+vue-ripple-directive@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/vue-ripple-directive/-/vue-ripple-directive-2.0.1.tgz#817ae4bc2874cbf01d8a018c8e8d97c8cadb6355"
+  integrity sha512-jXZEX6uZpo89wxmdcw02uFpsMBpm1pxjQ60uqghNLQ8H8ju9eon2vE0+vvSWJ1WGCOTEfxGDR4InabJJu5f1GA==
+  dependencies:
+    vue "^2.2.1"
 
 vue-router@^3.0.6:
   version "3.0.6"
@@ -13051,7 +13072,7 @@ vue-toasted@^1.1.26:
   resolved "https://registry.yarnpkg.com/vue-toasted/-/vue-toasted-1.1.26.tgz#1333d1a42157ab78389c3810023a49ba94e69c7b"
   integrity sha512-Z4/gfPcqdzsRvif7UITrZOkh3C6jm0yQKJyr9kX31IGWXor5dNipE1Sc5SnlL5RLmY7vlLa+SqIjc9Gbpy7V0g==
 
-vue@^2.5.16, vue@^2.6.10:
+vue@^2.2.1, vue@^2.5.16, vue@^2.6.10:
   version "2.6.10"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.10.tgz#a72b1a42a4d82a721ea438d1b6bf55e66195c637"
   integrity sha512-ImThpeNU9HbdZL3utgMCq0oiMzAkt1mcgy3/E6zWC/G6AaQoeuFdsl9nDhTDU3X1R6FK7nsIUuRACVcjI+A2GQ==

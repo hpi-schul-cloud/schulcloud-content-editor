@@ -73,8 +73,6 @@ import BaseButton from "@/components/base/BaseButton";
 import LoadingBooks from "@/components/LoadingBooks";
 
 import api from "@/mixins/api.js";
-import { validate } from "@babel/types";
-import { valid } from "semver";
 
 const Ajv = require("ajv");
 
@@ -91,6 +89,15 @@ const metadata = {
 };
 
 const requiredMetadataFields = ["title", "url"];
+
+const chunkSize = 250;
+
+// Promise-trick that sets a timeout allowing the browser to render UI or handle User events before executing resolve
+const promiseYield = (duration) => {
+	return new Promise((resolve, reject) => {
+		setTimeout(resolve, duration);
+	});
+};
 
 export default {
 	components: {
@@ -138,33 +145,6 @@ export default {
 			let header = Object.keys(this.metadataFieldMapping);
 			return header;
 		},
-		importedResources: function() {
-			let newData = [];
-			this.csv.content.forEach((row, index) => {
-				let resource = {
-					providerName: "TestProvider",
-					userId: JSON.parse(localStorage.getItem("userInfo"))._id,
-					originId: Date.now().toString() + index,
-					isPublished: this.isPublished,
-				};
-				Object.entries(this.metadataFieldMapping).forEach(([key, value]) => {
-					if (key === "tags" || key === "licenses") {
-						if (row[value.mappedHeader]) {
-							resource[key] = row[value.mappedHeader]
-								.split(",")
-								.map((each) => each.trim());
-						}
-					} else {
-						if (row[value.mappedHeader]) {
-							resource[key] = row[value.mappedHeader];
-						}
-					}
-				});
-
-				newData.push(resource);
-			});
-			return newData;
-		},
 		clipped: function() {
 			return this.importedResources.length > this.maxRows;
 		},
@@ -198,7 +178,7 @@ export default {
 		},
 		forwardButtonDisabled: function() {
 			return (
-				this.csv.content.length === 0 ||
+				this.csv.fileName === "" ||
 				(this.progressbarCurrentStep === 1 &&
 					(this.metadataFieldMapping.title.mappedHeader === "" ||
 						this.metadataFieldMapping.url.mappedHeader === ""))
@@ -232,6 +212,7 @@ export default {
 				importError: "",
 				successfullyImported: undefined,
 				resourceSchema: {},
+				importedResources: [],
 			};
 		},
 		initializeMetadataFieldMapping() {
@@ -251,13 +232,13 @@ export default {
 			}
 		},
 		handleNextStep() {
-			if (this.progressbarCurrentStep === 1) {
-				this.validateResourcesBeforeImport();
-			}
+			this.incrementCurrentStep();
 			if (this.progressbarCurrentStep === 2) {
+				this.formatImportedResources().then(this.validateResourcesBeforeImport);
+			}
+			if (this.progressbarCurrentStep === 3) {
 				this.importCSV();
 			}
-			this.incrementCurrentStep();
 		},
 		handleBackStep() {
 			if (this.progressbarCurrentStep <= 0) return;
@@ -272,6 +253,60 @@ export default {
 		},
 		decrementCurrentStep() {
 			this.progressbarCurrentStep = this.progressbarCurrentStep - 1;
+		},
+		chunkArray(arr, len) {
+			var chunks = [],
+				i = 0,
+				n = arr.length;
+			while (i < n) {
+				chunks.push(arr.slice(i, (i += len)));
+			}
+			return chunks;
+		},
+		formatImportedResources() {
+			const formatResource = (row, index) => {
+				let resource = {
+					providerName: "TestProvider",
+					userId: JSON.parse(localStorage.getItem("userInfo"))._id,
+					originId: Date.now().toString() + index,
+					isPublished: this.isPublished,
+				};
+				Object.entries(this.metadataFieldMapping).forEach(([key, value]) => {
+					if (key === "tags" || key === "licenses") {
+						if (row[value.mappedHeader]) {
+							resource[key] = row[value.mappedHeader]
+								.split(",")
+								.map((each) => each.trim());
+						}
+					} else {
+						if (row[value.mappedHeader]) {
+							resource[key] = row[value.mappedHeader];
+						}
+					}
+				});
+				return resource;
+			};
+			// calculate the first rows synchronously, to display the previewTable quickly
+			const firstResources = this.csv.content.splice(
+				0,
+				Math.min(this.csv.content.length, this.maxRows)
+			);
+			this.importedResources.push(...firstResources.map(formatResource));
+
+			// create array of chunks, which will be formatted asynchronously with the PromiseYield trick (timeout of 0s allows browser to render UI or handle user events in between)
+			const chunkPromises = this.chunkArray(this.csv.content, chunkSize).map(
+				(resources) => {
+					return promiseYield(0).then(() => {
+						return resources.map(formatResource);
+					});
+				}
+			);
+
+			return Promise.all(chunkPromises).then((chunks) => {
+				chunks.forEach((resources) => {
+					this.importedResources.push(...resources);
+				});
+			});
 		},
 		importCSV() {
 			this.importError = "";
@@ -299,7 +334,7 @@ export default {
 			this.invalidFields = {};
 			const ajv = new Ajv({ allErrors: true, errorDataPath: "property" });
 
-			this.importedResources.forEach((resource) => {
+			const validateResource = (resource) => {
 				const valid = ajv.validate(this.resourceSchema, resource);
 				if (!valid) {
 					ajv.errors.forEach((error) => {
@@ -314,7 +349,18 @@ export default {
 						}
 					});
 				}
+			};
+
+			// validation asynchronously in chunks (timeout for 0s trick) so that the browser can handle user events in between
+			const chunkPromises = this.chunkArray(
+				this.importedResources,
+				chunkSize
+			).map((resources) => {
+				return promiseYield(0).then(() => {
+					return resources.map(validateResource);
+				});
 			});
+			return Promise.all(chunkPromises);
 		},
 		getResourceSchema() {
 			return this.$_resourceResourceSchemaGet().then((response) => {

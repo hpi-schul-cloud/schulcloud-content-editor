@@ -1,6 +1,6 @@
 <template>
-	<Fragment v-if="replace">
-		<tr>
+	<Fragment>
+		<tr v-if="replace !== undefined">
 			<td style="text-align: right;">
 				<div v-if="search" class="divider">
 					{{ $lang.resourceManagement.bulk.search }}
@@ -39,7 +39,7 @@
 			</td>
 		</tr>
 		<!-- EMPTY ROW (SPACER) -->
-		<tr class="spacer"></tr>
+		<tr v-if="replace !== undefined" class="spacer"></tr>
 	</Fragment>
 </template>
 
@@ -71,7 +71,7 @@ export default {
 	},
 	watch: {
 		visibleColoumns: function(to) {
-			Object.keys(this.replace).forEach((key) => {
+			Object.keys(this.replace || {}).forEach((key) => {
 				if (!this.visibleColoumns.includes(key)) {
 					this.replace[key] = undefined;
 				}

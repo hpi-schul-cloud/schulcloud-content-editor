@@ -1,0 +1,128 @@
+<template>
+	<div class="fab-position">
+		<FabMain
+			class="fab-main"
+			:config="cfg"
+			:open="open"
+			@click="handleMainClick(cfg)"
+		/>
+		<!-- <transition name="fade"> -->
+		<div class="actions-container">
+			<transition-group
+				name="staggered-fade"
+				tag="div"
+				:css="false"
+				@before-enter="beforeEnter"
+				@enter="enter"
+				@leave="leave"
+			>
+				<FabOption
+					v-for="option in options"
+					:key="option.icon"
+					class="action"
+					:config="option"
+					@click="handleActionClick(option)"
+				/>
+			</transition-group>
+		</div>
+		<!-- </transition> -->
+	</div>
+</template>
+
+<script>
+import FabMain from "./FabMain";
+import FabOption from "./FabOption";
+
+import Velocity from "velocity-animate";
+
+export default {
+	components: { FabMain, FabOption },
+	props: {
+		config: {
+			type: Object,
+			required: true,
+		},
+	},
+	data() {
+		return {
+			open: false,
+		};
+	},
+	computed: {
+		cfg() {
+			return Object.assign({ icon: "add" }, this.config);
+		},
+		options() {
+			return this.open ? this.cfg.options : [];
+		},
+	},
+	methods: {
+		handleMainClick(targetConfig) {
+			if (!this.cfg.options || this.cfg.options.length !== 0) {
+				this.open = !this.open;
+			} else {
+				this.$emit(targetConfig.event, targetConfig.payload);
+			}
+		},
+		handleActionClick(targetConfig) {
+			this.open = false;
+			this.$emit(targetConfig.event, targetConfig.payload);
+		},
+		beforeEnter: function(el) {
+			el.style.opacity = 0;
+			el.style.height = 0;
+		},
+		enter: function(el, done) {
+			var delay = el.dataset.index * 150;
+			setTimeout(function() {
+				Velocity(el, { opacity: 1, height: "40px" }, { complete: done });
+			}, delay);
+		},
+		leave: function(el, done) {
+			var delay = el.dataset.index * 150;
+			setTimeout(function() {
+				Velocity(el, { opacity: 0, height: 0 }, { complete: done });
+			}, delay);
+		},
+	},
+};
+</script>
+
+<style lang="scss" scoped>
+.fab-position {
+	position: fixed;
+	right: 5rem;
+	bottom: 2.5rem;
+	z-index: 10;
+}
+.fab-main {
+	z-index: 2;
+}
+.actions-container {
+	position: absolute;
+	bottom: 100%;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.staggered-transition {
+	opacity: 1;
+	transition: all 0.5s ease;
+}
+.staggered-enter,
+.staggered-leave {
+	opacity: 0;
+}
+
+/*
+.fade-enter-active,
+.fade-leave-active {
+	transition: opacity 0.3s, transform 0.3s;
+}
+.fade-enter,
+.fade-leave-to {
+	opacity: 0;
+	transform: translateX(-50%) translateY(0.5em);
+}
+*/
+</style>
