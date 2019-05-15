@@ -19,7 +19,6 @@ let mgp = new Mgplay();
 
 export default {
 	name: "Play",
-	props: ["mediaid", "idx"],
 	data() {
 		return {
 			status: null,

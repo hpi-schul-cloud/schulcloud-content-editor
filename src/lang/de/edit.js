@@ -21,6 +21,7 @@ export default {
 		entrypointSelector: "Einstiegspunkt",
 		thumbnailSelector: "Thumbnail",
 		thumbnailAutogenerate: "Automatisch generieren",
+		drmOptions: "Metadaten",
 	},
 	dialog: {
 		title: "Inhalt löschen?",

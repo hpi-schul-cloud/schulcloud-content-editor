@@ -42,6 +42,29 @@
 								label="Inhalte schützen?"
 							/>
 						</div>
+						<div v-if="data.isProtected">
+							<BaseCheckbox
+								v-model="data.drmOptions.pdfIsProtected"
+								label="Pdf schützen?"
+							/>
+							<BaseCheckbox
+								v-model="data.drmOptions.videoIsProtected"
+								label="Video schützen?"
+							/>
+							<BaseCheckbox
+								v-model="data.drmOptions.watermark"
+								label="Wasserzeichen"
+							/>
+							<div
+								:style="{
+									border: '3px solid grey',
+									padding: '50px',
+									margin: '20px',
+								}"
+							>
+								<ContentDrmOptions v-model="data.drmOptions" />
+							</div>
+						</div>
 						<ContentHostingProvider v-model="hostingOption" />
 						<template v-if="hostingOption === 'hostedExternally'">
 							<ContentUrl
@@ -148,6 +171,7 @@ import ContentTags from "@/components/resourceManagement/edit/inputs/ContentTags
 import ContentHostingProvider from "@/components/resourceManagement/edit/inputs/ContentHostingProvider";
 import ContentEntrypointSelector from "@/components/resourceManagement/edit/inputs/ContentEntrypointSelector";
 import ContentThumbnailSelector from "@/components/resourceManagement/edit/inputs/ContentThumbnailSelector";
+import ContentDrmOptions from "@/components/resourceManagement/edit/inputs/ContentDrmOptions";
 import BaseButton from "@/components/base/BaseButton";
 import BaseCard from "@/components/base/BaseCard";
 import BaseCheckbox from "@/components/base/BaseCheckbox";
@@ -171,6 +195,7 @@ export default {
 		ContentHostingProvider,
 		ContentEntrypointSelector,
 		ContentThumbnailSelector,
+		ContentDrmOptions,
 		BaseButton,
 		BaseCard,
 		BaseCheckbox,
@@ -194,6 +219,7 @@ export default {
 				contentCategory: "",
 				licenses: ["Test License"],
 				tags: [],
+				drmOptions: { exif: {} },
 				files: { delete: [], save: [] },
 				isPublished: false,
 				isProtected: false,
@@ -255,6 +281,9 @@ export default {
 					.then((data) => {
 						// JSON responses are automatically parsed.
 						this.data = data;
+						if (!this.data.drmOptions) {
+							this.data.drmOptions = {};
+						}
 						this.hostingOption = (this.data.url || "").startsWith(
 							this.$config.API.contentServerUrl + this.$config.API.hostingEntry
 						)
