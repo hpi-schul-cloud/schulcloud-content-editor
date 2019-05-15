@@ -7,6 +7,7 @@
 			class="tag-input"
 			:tags="value.map((item) => ({ text: item }))"
 			:placeholder="placeholder"
+			:autocomplete-items="filteredAutocompleteItems"
 			@tags-changed="tagsChanged"
 		/>
 	</div>
@@ -32,6 +33,10 @@ export default {
 			type: String,
 			default: "",
 		},
+		autocompleteItems: {
+			type: Array,
+			default: () => [],
+		},
 		max: {
 			type: Number,
 			default: 10,
@@ -47,6 +52,13 @@ export default {
 				},
 			],
 		};
+	},
+	computed: {
+		filteredAutocompleteItems() {
+			return this.autocompleteItems.filter(
+				(i) => i.text.toLowerCase().indexOf(this.newTag.toLowerCase()) !== -1
+			);
+		},
 	},
 	methods: {
 		tagsChanged(newTags) {
