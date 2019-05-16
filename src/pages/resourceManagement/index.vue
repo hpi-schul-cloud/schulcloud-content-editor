@@ -99,7 +99,7 @@ export default {
 					},
 					applyNegated: {
 						isPublished: [false, true],
-						isProtected: [false, true],
+						isProtected: [true, false],
 					},
 				},
 			],

@@ -71,7 +71,7 @@ export default {
 	},
 	watch: {
 		visibleColoumns: function(to) {
-			Object.keys(this.replace).forEach((key) => {
+			Object.keys(this.replace || {}).forEach((key) => {
 				if (!this.visibleColoumns.includes(key)) {
 					this.replace[key] = undefined;
 				}
