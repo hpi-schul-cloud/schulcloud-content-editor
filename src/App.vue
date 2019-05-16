@@ -31,6 +31,8 @@ const sidebarItems = Router.options.routes.filter((route) => {
 	return !!route.sidebarTitle;
 });
 
+import { mapGetters } from "vuex";
+
 export default {
 	components: {
 		TheLogin,
@@ -41,12 +43,16 @@ export default {
 	},
 	data() {
 		return {
-			jwt: localStorage.getItem("jwt"),
 			primaryColor: getComputedStyle(document.documentElement).getPropertyValue(
 				"--primaryColor"
 			),
 			sidebarItems,
 		};
+	},
+	computed: {
+		...mapGetters("user", {
+			jwt: "getJwt",
+		}),
 	},
 	created() {
 		this.$Progress.start();

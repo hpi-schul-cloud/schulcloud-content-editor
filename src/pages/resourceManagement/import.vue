@@ -72,6 +72,7 @@ import ResultPage from "@/components/resourceManagement/import/ResultPage";
 import BaseButton from "@/components/base/BaseButton";
 import LoadingBooks from "@/components/LoadingBooks";
 
+import { mapGetters } from "vuex";
 import api from "@/mixins/api.js";
 
 const Ajv = require("ajv");
@@ -115,6 +116,11 @@ export default {
 		return this.initialDataState();
 	},
 	computed: {
+		computed: {
+			...mapGetters("user", {
+				userInfo: "getUser",
+			}),
+		},
 		validCSVHeaders() {
 			let validHeaders = {};
 			this.csv.headers.forEach((header) => {
@@ -267,7 +273,7 @@ export default {
 			const formatResource = (row, index) => {
 				let resource = {
 					providerName: "TestProvider",
-					userId: JSON.parse(localStorage.getItem("userInfo"))._id,
+					userId: this.userInfo._id,
 					originId: Date.now().toString() + index,
 					isPublished: this.isPublished,
 				};

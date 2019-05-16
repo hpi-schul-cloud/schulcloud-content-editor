@@ -21,6 +21,7 @@
 
 <script>
 import BaseMenu from "@/components/base/BaseMenu";
+import { mapGetters } from "vuex";
 
 export default {
 	components: {
@@ -29,11 +30,13 @@ export default {
 	data() {
 		return {
 			title: "Schul-Cloud Content",
-			jwt: localStorage.getItem("jwt"),
-			userInfo: JSON.parse(localStorage.getItem("userInfo")) || {},
 		};
 	},
 	computed: {
+		...mapGetters("user", {
+			jwt: "getJwt",
+			userInfo: "getUser",
+		}),
 		MenuOptions() {
 			return [
 				{ text: this.userInfo.displayName },
@@ -57,9 +60,7 @@ export default {
 			}
 		},
 		logout() {
-			localStorage.clear();
-			this.$cookies.remove("jwt");
-			window.location.href = "/";
+			return this.$store.dispatch("user/logout");
 		},
 	},
 };
