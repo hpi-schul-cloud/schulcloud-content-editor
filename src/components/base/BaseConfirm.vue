@@ -11,15 +11,15 @@
 				<div v-if="cancelText || confirmText" class="action">
 					<BaseButton
 						v-if="cancelText"
-						styling="secondary"
 						@click="handleCancel"
+						styling="secondary"
 					>
 						{{ cancelText }}
 					</BaseButton>
 					<BaseButton
 						v-if="confirmText"
-						styling="primary"
 						@click="handleConfirm"
+						styling="primary"
 					>
 						{{ confirmText }}
 					</BaseButton>
@@ -27,7 +27,7 @@
 			</div>
 		</transition>
 		<transition name="fade">
-			<div v-if="active" class="overlay" @click="handleCancel" />
+			<div v-if="active" @click="handleCancel" class="overlay" />
 		</transition>
 	</portal>
 </template>

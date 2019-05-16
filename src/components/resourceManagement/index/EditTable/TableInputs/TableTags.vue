@@ -3,10 +3,10 @@
 		v-model="newTag"
 		:aria-label="label"
 		v-bind="$attrs"
-		class="table-tag-input"
 		:tags="value.map((item) => ({ text: item }))"
 		:placeholder="placeholder"
 		@tags-changed="tagsChanged"
+		class="table-tag-input"
 	/>
 </template>
 

@@ -1,27 +1,27 @@
 <template>
 	<div class="fab-position">
 		<FabMain
-			class="fab-main"
 			:config="cfg"
 			:open="open"
 			@click="handleMainClick(cfg)"
+			class="fab-main"
 		/>
 		<!-- <transition name="fade"> -->
 		<div class="actions-container">
 			<transition-group
-				name="staggered-fade"
-				tag="div"
 				:css="false"
 				@before-enter="beforeEnter"
 				@enter="enter"
 				@leave="leave"
+				name="staggered-fade"
+				tag="div"
 			>
 				<FabOption
 					v-for="option in options"
 					:key="option.icon"
-					class="action"
 					:config="option"
 					@click="handleActionClick(option)"
+					class="action"
 				/>
 			</transition-group>
 		</div>

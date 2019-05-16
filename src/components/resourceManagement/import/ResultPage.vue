@@ -14,8 +14,8 @@
 		<!-- eslint-disable vue/no-v-html -->
 		<p
 			v-if="config.subtitle"
-			class="result-subtitle"
 			v-html="config.subtitle"
+			class="result-subtitle"
 		/>
 		<!-- eslint-enable vue/no-v-html -->
 

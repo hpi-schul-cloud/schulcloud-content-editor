@@ -1,9 +1,9 @@
 <template>
 	<BaseConfirm
 		:active="active"
-		confirm-text="Verstanden"
 		@confirm="onConfirm"
 		@update:active="$emit('update:active', $event)"
+		confirm-text="Verstanden"
 	>
 		<template slot="title">
 			Hinweis

@@ -3,13 +3,13 @@
 		<h3 class="title">Inhalte veröffentlichen?</h3>
 		<BaseCheckbox
 			v-model="isPublished"
-			label="published"
 			@input="$emit('input', $event)"
+			label="published"
 		>
-			<template v-if="isPublished" slot="icon">
+			<template slot="icon" v-if="isPublished">
 				<i
-					class="hint-icon material-icons"
 					@click.prevent="showValidationDialog = true"
+					class="hint-icon material-icons"
 				>
 					feedback
 				</i>

@@ -5,10 +5,10 @@
 				<i class="material-icons upload-icon">cloud_upload</i>
 				Lade hier eine CSV-Datei hoch
 				<input
+					@input="handleFileChosen"
 					class="hidden-but-accessible"
 					type="file"
 					accept=".csv"
-					@input="handleFileChosen"
 				/>
 			</label>
 		</Dropzone>

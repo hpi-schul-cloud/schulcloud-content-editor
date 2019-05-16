@@ -7,7 +7,7 @@
 			<RouterLink to="/" style="flex: 1">
 				<h2 class="title" style="flex: 1">{{ title }}</h2>
 			</RouterLink>
-			<div v-if="jwt" id="button-wrapper">
+			<div id="button-wrapper" v-if="jwt">
 				<BaseMenu :options="MenuOptions" @input="handleMenuClick($event)">
 					<img src="http://i.pravatar.cc/50" class="user-avatar" />
 					<template slot="MenuTitle">

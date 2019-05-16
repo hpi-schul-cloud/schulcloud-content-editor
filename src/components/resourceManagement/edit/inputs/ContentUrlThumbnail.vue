@@ -1,13 +1,13 @@
 <template>
 	<div class="wrapper">
 		<BaseInput
-			name="thumbnail"
 			:value="value"
-			type="text"
 			:label="$lang.edit.form.thumbnail_url"
-			placeholder="https://..."
 			:error="error"
 			@input="$emit('input', $event)"
+			name="thumbnail"
+			type="text"
+			placeholder="https://..."
 		/>
 	</div>
 </template>

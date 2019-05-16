@@ -11,6 +11,7 @@
 				:id="formId"
 				@submit.prevent="handleFormSubmit(resource)"
 			></form>
+			<!-- eslint-disable-next-line vue/require-component-is -->
 			<component
 				:is="getComponent(coloumn).component"
 				v-model="resource[coloumn]"
@@ -21,24 +22,24 @@
 			/>
 		</td>
 		<td style="text-align: right;">
-			<BaseButton type="submit" :form="formId" class="action">
+			<BaseButton :form="formId" type="submit" class="action">
 				<i class="material-icons">
 					check
 				</i>
 			</BaseButton>
 			<RouterLink
 				v-if="resource._id"
-				class="action"
 				:to="{
 					name: 'resourceManagement/edit',
 					params: { id: resource._id },
 				}"
+				class="action"
 			>
 				<i class="material-icons">
 					edit
 				</i>
 			</RouterLink>
-			<BaseButton class="action" @click="$emit('delete', resource)">
+			<BaseButton @click="$emit('delete', resource)" class="action">
 				<i class="material-icons">
 					delete
 				</i>

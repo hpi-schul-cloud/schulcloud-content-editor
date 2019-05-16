@@ -36,8 +36,8 @@
 					<div>
 						<BaseButton
 							v-if="data._id"
-							styling="secondary"
 							@click="dialog.active = true"
+							styling="secondary"
 						>
 							{{ $lang.buttons.open }}
 						</BaseButton>

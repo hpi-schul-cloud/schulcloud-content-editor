@@ -4,11 +4,11 @@
 		<VueTagsInput
 			v-model="newTag"
 			v-bind="$attrs"
-			class="tag-input"
 			:tags="value.map((item) => ({ text: item }))"
 			:placeholder="placeholder"
 			:autocomplete-items="filteredAutocompleteItems"
 			@tags-changed="tagsChanged"
+			class="tag-input"
 		/>
 	</div>
 </template>

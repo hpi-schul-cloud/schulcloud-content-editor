@@ -2,10 +2,10 @@
 	<div
 		v-ripple
 		v-bind="$attrs"
-		class="fab-container"
 		:class="{ open }"
 		:style="{ background: config.background, color: config.color }"
 		v-on="$listeners"
+		class="fab-container"
 	>
 		<transition name="spin" mode="out-in">
 			<i

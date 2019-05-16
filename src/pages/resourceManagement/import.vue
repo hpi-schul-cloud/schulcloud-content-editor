@@ -46,15 +46,15 @@
 		<div v-if="progressbarCurrentStep < 3" class="button-wrapper">
 			<BaseButton
 				v-if="progressbarCurrentStep != 0"
-				styling="secondary"
 				@click="handleBackStep"
+				styling="secondary"
 			>
 				{{ backwardButtonText }}
 			</BaseButton>
 			<BaseButton
-				styling="primary"
 				:disabled="forwardButtonDisabled"
 				@click="handleNextStep"
+				styling="primary"
 			>
 				{{ forwardButtonText }}
 			</BaseButton>

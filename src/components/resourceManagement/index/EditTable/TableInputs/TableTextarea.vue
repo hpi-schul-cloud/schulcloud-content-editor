@@ -3,8 +3,8 @@
 		:aria-label="label"
 		v-bind="$attrs"
 		:value="value"
-		rows="1"
 		@input="$emit('input', $event.target.value)"
+		rows="1"
 	/>
 </template>
 

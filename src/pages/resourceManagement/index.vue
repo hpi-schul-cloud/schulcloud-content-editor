@@ -7,13 +7,13 @@
 		/>
 
 		<FeathersFilter
-			add-label="Filter hinzufügen"
-			apply-label="Filtern"
-			cancle-label="Abbrechen"
 			:handle-url="true"
 			:consistent-order="true"
 			:filter="filter"
 			@newFilter="updateFilter"
+			add-label="Filter hinzufügen"
+			apply-label="Filtern"
+			cancle-label="Abbrechen"
 		/>
 		<p>
 			{{ pagination.totalEntrys }}

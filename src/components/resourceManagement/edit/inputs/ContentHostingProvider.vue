@@ -2,10 +2,10 @@
 	<div class="wrapper">
 		<BaseSelect
 			:label="$lang.edit.form.hosting"
-			name="Hosting"
 			:options="options"
 			:selected="value"
 			@input="$emit('input', $event)"
+			name="Hosting"
 		/>
 	</div>
 </template>

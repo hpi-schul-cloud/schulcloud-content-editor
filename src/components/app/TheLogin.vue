@@ -7,18 +7,18 @@
 			<template slot="body">
 				<BaseInput
 					v-model="login.username"
+					:label="$lang.login.username"
 					name="username"
 					type="text"
-					:label="$lang.login.username"
 					placeholder="Benutzername *"
 					required
 				/>
 				<BaseInput
 					ref="passwordInput"
 					v-model="login.password"
-					name="password"
 					:type="pwInputType"
 					:label="$lang.login.password"
+					name="password"
 					placeholder="Passwort *"
 					required
 				>
@@ -26,17 +26,17 @@
 						<span class="visibility-icon-wrapper">
 							<BaseButton
 								v-if="pwVisible"
-								styling="secondary"
 								:round-shape="true"
 								@click="toggleVisibility"
+								styling="secondary"
 							>
 								<i class="material-icons">visibility</i>
 							</BaseButton>
 							<BaseButton
 								v-else
-								styling="secondary"
 								:round-shape="true"
 								@click="toggleVisibility"
+								styling="secondary"
 							>
 								<i class="material-icons">visibility_off</i>
 							</BaseButton>

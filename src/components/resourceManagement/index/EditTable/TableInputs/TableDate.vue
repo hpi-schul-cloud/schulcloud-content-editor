@@ -1,9 +1,9 @@
 <template>
 	<input
 		:aria-label="label"
-		type="datetime-local"
 		v-bind="$attrs"
 		:value="formattedDate"
+		type="datetime-local"
 	/>
 </template>
 

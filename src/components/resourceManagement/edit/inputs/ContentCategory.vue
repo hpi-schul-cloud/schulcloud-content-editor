@@ -2,10 +2,10 @@
 	<div class="wrapper">
 		<BaseSelect
 			:label="getLabel"
-			name="Kategorie"
 			:options="options"
 			:selected="value"
 			@input="$emit('input', $event)"
+			name="Kategorie"
 		/>
 	</div>
 </template>

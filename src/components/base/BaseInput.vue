@@ -5,12 +5,12 @@
 		</label>
 		<input
 			v-bind="$attrs"
-			class="input"
 			:name="name"
 			:type="type"
 			:value="value"
 			:placeholder="placeholder"
 			@input="$emit('input', $event.target.value)"
+			class="input"
 		/>
 		<slot name="icon"></slot>
 		<span v-if="!!error" class="invalid">{{ error }}</span>

@@ -2,11 +2,11 @@
 	<div class="wrapper">
 		<BaseSelect
 			:label="$lang.edit.form.entrypointSelector"
-			name="Entrypoint"
 			:options="options"
 			:selected="value"
 			:disabled="disabled || !files.length"
 			@input="$emit('input', $event)"
+			name="Entrypoint"
 		/>
 	</div>
 </template>

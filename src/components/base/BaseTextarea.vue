@@ -2,12 +2,12 @@
 	<div class="wrapper">
 		<label :class="{ invalid: !!error }" :for="name">{{ label }}</label>
 		<textarea
-			class="textarea"
 			:name="name"
 			:maxlength="maxlength"
 			:value="value"
 			:placeholder="placeholder"
 			@input="$emit('input', $event.target.value)"
+			class="textarea"
 		/>
 		<span v-if="!!error" class="invalid">{{ error }}</span>
 	</div>

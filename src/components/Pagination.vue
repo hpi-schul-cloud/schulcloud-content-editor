@@ -1,27 +1,27 @@
 <template>
 	<div class="pagination">
 		<BaseButton
-			styling="secondary"
 			:disabled="config.page == 1"
 			:raised="config.page != 1"
 			:round-shape="true"
-			class="pagination-button"
 			@click="config.page -= 1"
+			styling="secondary"
+			class="pagination-button"
 		>
 			<i class="material-icons">arrow_back</i>
 		</BaseButton>
 
-		<BaseButton id="page-number" styling="primary" :raised="true">
-			<input v-model.lazy="pageString" type="number" min="1" :max="maxPages" />
+		<BaseButton id="page-number" :raised="true" styling="primary">
+			<input v-model.lazy="pageString" :max="maxPages" type="number" min="1" />
 		</BaseButton>
 
 		<BaseButton
-			styling="secondary"
 			:disabled="config.page == maxPages"
 			:raised="config.page != maxPages"
 			:round-shape="true"
-			class="pagination-button"
 			@click="config.page += 1"
+			styling="secondary"
+			class="pagination-button"
 		>
 			<i class="material-icons">arrow_forward</i>
 		</BaseButton>

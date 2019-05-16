@@ -4,7 +4,7 @@
 		<vue-progress-bar />
 		<!--eslint-enable-->
 		<TheHeader class="header" />
-		<TheSidebar class="sidebar" :items="sidebarItems" />
+		<TheSidebar :items="sidebarItems" class="sidebar" />
 		<main class="container-fluid-max">
 			<Transition name="fade" mode="out-in" appear>
 				<RouterView v-if="jwt" />

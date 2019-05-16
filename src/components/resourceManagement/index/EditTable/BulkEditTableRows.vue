@@ -21,17 +21,17 @@
 				/>
 			</td>
 			<!-- ACTIONS -->
-			<td style="text-align: right;" :rowspan="1">
+			<td :rowspan="1" style="text-align: right;">
 				<BaseButton
+					@click="$emit('submit', replace)"
 					type="button"
 					class="action"
-					@click="$emit('submit', replace)"
 				>
 					<i class="material-icons">
 						check
 					</i>
 				</BaseButton>
-				<BaseButton type="button" class="action" @click="$emit('delete')">
+				<BaseButton @click="$emit('delete')" type="button" class="action">
 					<i class="material-icons">
 						delete
 					</i>

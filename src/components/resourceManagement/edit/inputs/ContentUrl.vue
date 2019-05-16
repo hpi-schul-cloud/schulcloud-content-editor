@@ -1,12 +1,12 @@
 <template>
 	<BaseInput
-		name="url"
 		:value="value"
-		type="text"
 		:label="getLabel"
-		placeholder="https://..."
 		:error="error"
 		@input="$emit('input', $event)"
+		name="url"
+		type="text"
+		placeholder="https://..."
 	/>
 </template>
 

@@ -2,10 +2,10 @@
 	<div class="wrapper">
 		<BaseSelect
 			:label="$lang.edit.form.mimetype"
-			name="Mimetype"
 			:options="options"
 			:selected="value"
 			@input="$emit('input', $event)"
+			name="Mimetype"
 		/>
 	</div>
 </template>

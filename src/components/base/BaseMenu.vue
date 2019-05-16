@@ -1,12 +1,12 @@
 <template>
 	<div class="menu-wrapper">
 		<button
-			type="button"
 			:class="{
 				select_button: true,
 				expand: expanded,
 			}"
 			@click="toggleExpansion"
+			type="button"
 		>
 			<slot>
 				<slot name="MenuTitle" />

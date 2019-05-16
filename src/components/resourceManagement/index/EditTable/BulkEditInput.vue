@@ -9,9 +9,9 @@
 		/>
 		<input
 			v-model="active"
+			:disabled="isInputRequired && validateRequired && !isInputDefined"
 			class="active-toggle"
 			type="checkbox"
-			:disabled="isInputRequired && validateRequired && !isInputDefined"
 		/>
 	</div>
 </template>
