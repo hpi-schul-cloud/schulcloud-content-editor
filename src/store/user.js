@@ -12,10 +12,10 @@ const getters = {
 };
 
 const mutations = {
-	SET_JWT(state, jwt) {
+	_SET_JWT(state, jwt) {
 		state.jwt = jwt;
 	},
-	SET_USER(state, user) {
+	_SET_USER(state, user) {
 		state.user = user;
 	},
 };
@@ -43,12 +43,12 @@ const actions = {
 			configFile.API.serverServerUrl + configFile.API.userInfoPath + userId
 		);
 
-		commit("SET_JWT", accessToken);
-		commit("SET_USER", user);
+		commit("_SET_JWT", accessToken);
+		commit("_SET_USER", user);
 	},
 	LOGOUT({ commit }) {
-		commit("SET_JWT", undefined);
-		commit("SET_USER", undefined);
+		commit("_SET_JWT", undefined);
+		commit("_SET_USER", undefined);
 		localStorage.clear();
 	},
 };
