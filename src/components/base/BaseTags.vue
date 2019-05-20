@@ -80,46 +80,51 @@ label {
 .no-numbers {
 	color: red;
 }
-</style>
-<style lang="scss">
-.tag-input {
-	font-size: 0.9rem;
-	.ti-selected-item {
-		background-color: var(--primaryColor);
+
+div.tag-input {
+	width: 100%;
+	max-width: 100%;
+	overflow: auto;
+	font-size: 0.9em;
+	color: #1d1d1d;
+	background: transparent;
+	border-radius: 0;
+	&::-webkit-scrollbar {
+		width: 0;
+		height: 0;
+		background: transparent;
 	}
-	.ti-input {
+}
+/deep/ {
+	.ti-input[class~="ti-input"] {
+		width: 100%;
 		padding: 1px 0;
 		border: 0;
 		border-bottom: 1px solid grey;
-	}
-	&.ti-focus .ti-input {
-		border-color: var(--primaryColor);
-	}
-	&.vue-tags-input {
-		max-width: 100%;
-		color: #333;
-		background: none;
-		border-radius: 20px;
+		.ti-tags {
+			flex-wrap: nowrap;
+			.ti-tag {
+				font-size: 1em;
+				color: inherit;
+				background-color: transparent;
+				border: 0;
+				box-shadow: inset 0 0 0 1px #333;
 
-		.ti-new-tag-input-wrapper {
-			padding: 0;
-
-			.ti-new-tag-input {
-				font-size: 1rem;
-				color: #333;
-				background: none;
+				&.ti-deletion-mark {
+					color: #fff;
+					background-color: var(--primaryColor);
+					border-color: #fff;
+				}
 			}
 		}
 	}
-	.ti-tag {
-		color: #333;
-		background-color: #fff;
-		border: 1px solid #333;
+	.ti-new-tag-input-wrapper[class~="ti-new-tag-input-wrapper"] {
+		padding: 0;
 
-		&.ti-tag.ti-deletion-mark {
-			color: #fff;
-			background-color: var(--primaryColor);
-			border-color: #fff;
+		.ti-new-tag-input {
+			font-size: 1rem;
+			color: #757575;
+			background: none;
 		}
 	}
 }
