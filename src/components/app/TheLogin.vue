@@ -62,6 +62,7 @@ import BaseCard from "@/components/base/BaseCard";
 import BaseInput from "@/components/base/BaseInput";
 
 import api from "@/mixins/api.js";
+import { mapActions } from "vuex";
 
 export default {
 	components: {
@@ -87,9 +88,12 @@ export default {
 		}
 	},
 	methods: {
+		...mapActions("user", {
+			submitLogin: "LOGIN",
+		}),
 		validateBeforeSubmit() {
 			if (this.login.username != "" && this.login.password != "") {
-				return this.$store.dispatch("user/login", this.login);
+				return this.submitLogin(this.login);
 			}
 		},
 		toggleVisibility() {

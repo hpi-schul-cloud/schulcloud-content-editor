@@ -7,15 +7,15 @@ const state = {
 };
 
 const getters = {
-	getJwt: (state) => state.jwt,
-	getUser: (state) => state.user,
+	GET_JWT: (state) => state.jwt,
+	GET_USER: (state) => state.user,
 };
 
 const mutations = {
-	setJwt(state, jwt) {
+	SET_JWT(state, jwt) {
 		state.jwt = jwt;
 	},
-	setUser(state, user) {
+	SET_USER(state, user) {
 		state.user = user;
 	},
 };
@@ -27,7 +27,7 @@ const decodeJwt = (jwt) => {
 };
 
 const actions = {
-	async login({ commit }, data) {
+	async LOGIN({ commit }, data) {
 		const { accessToken } = await jsonFetch(
 			configFile.API.serverServerUrl + configFile.API.authPath,
 			{
@@ -43,12 +43,12 @@ const actions = {
 			configFile.API.serverServerUrl + configFile.API.userInfoPath + userId
 		);
 
-		commit("setJwt", accessToken);
-		commit("setUser", user);
+		commit("SET_JWT", accessToken);
+		commit("SET_USER", user);
 	},
-	logout({ commit }) {
-		commit("setJwt", undefined);
-		commit("setUser", undefined);
+	LOGOUT({ commit }) {
+		commit("SET_JWT", undefined);
+		commit("SET_USER", undefined);
 		localStorage.clear();
 	},
 };

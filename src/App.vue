@@ -51,7 +51,7 @@ export default {
 	},
 	computed: {
 		...mapGetters("user", {
-			jwt: "getJwt",
+			jwt: "GET_JWT",
 		}),
 	},
 	created() {

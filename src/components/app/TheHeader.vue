@@ -19,7 +19,7 @@
 
 <script>
 import BaseMenu from "@/components/base/BaseMenu";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
 	components: {
@@ -32,8 +32,8 @@ export default {
 	},
 	computed: {
 		...mapGetters("user", {
-			jwt: "getJwt",
-			userInfo: "getUser",
+			jwt: "GET_JWT",
+			userInfo: "GET_USER",
 		}),
 		MenuOptions() {
 			return [
@@ -49,6 +49,9 @@ export default {
 		this.$eventHub.$off("abc");
 	},
 	methods: {
+		...mapActions("user", {
+			logout: "LOGOUT",
+		}),
 		logEvent() {
 			this.$router.go("/event");
 		},
@@ -56,9 +59,6 @@ export default {
 			if (ev.actionOnClick) {
 				this[ev.actionOnClick]();
 			}
-		},
-		logout() {
-			return this.$store.dispatch("user/logout");
 		},
 	},
 };

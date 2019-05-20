@@ -118,7 +118,7 @@ export default {
 	computed: {
 		computed: {
 			...mapGetters("user", {
-				userInfo: "getUser",
+				userInfo: "GET_USER",
 			}),
 		},
 		validCSVHeaders() {

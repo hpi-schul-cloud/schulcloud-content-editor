@@ -210,7 +210,7 @@ export default {
 	},
 	computed: {
 		...mapGetters("user", {
-			userInfo: "getUser",
+			userInfo: "GET_USER",
 		}),
 		isFormValid() {
 			return Object.keys(this.fields).every((key) => this.fields[key].valid);
