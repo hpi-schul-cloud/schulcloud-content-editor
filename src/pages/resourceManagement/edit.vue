@@ -152,6 +152,7 @@ import BaseCheckbox from "@/components/base/BaseCheckbox";
 
 import filetree from "@/mixins/filetree.js";
 import api from "@/mixins/api.js";
+import { mapGetters } from "vuex";
 
 import FileUpload from "@/components/resourceManagement/edit/fileUpload/Upload";
 
@@ -203,12 +204,14 @@ export default {
 				confirmText: this.$lang.edit.dialog.confirm,
 				cancelText: this.$lang.edit.dialog.cancle,
 			},
-			userInfo: JSON.parse(localStorage.getItem("userInfo")) || {},
 			filetree: { objects: [] },
 			hostingOption: "",
 		};
 	},
 	computed: {
+		...mapGetters("user", {
+			userInfo: "GET_USER",
+		}),
 		isFormValid() {
 			return Object.keys(this.fields).every((key) => this.fields[key].valid);
 		},

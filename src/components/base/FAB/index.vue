@@ -6,7 +6,6 @@
 			@click="handleMainClick(cfg)"
 			class="fab-main"
 		/>
-		<!-- <transition name="fade"> -->
 		<div class="actions-container">
 			<transition-group
 				:css="false"
@@ -25,7 +24,6 @@
 				/>
 			</transition-group>
 		</div>
-		<!-- </transition> -->
 	</div>
 </template>
 
@@ -42,6 +40,9 @@ export default {
 			type: Object,
 			required: true,
 		},
+		isOpen: {
+			type: Boolean,
+		},
 	},
 	data() {
 		return {
@@ -54,6 +55,16 @@ export default {
 		},
 		options() {
 			return this.open ? this.cfg.options : [];
+		},
+	},
+	watch: {
+		isOpen: function(to) {
+			if (to !== this.open) {
+				this.open = to;
+			}
+		},
+		open: function(to) {
+			this.$emit("update:isOpen", to);
 		},
 	},
 	methods: {

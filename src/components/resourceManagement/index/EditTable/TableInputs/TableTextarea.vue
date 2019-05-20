@@ -26,7 +26,7 @@ export default {
 <style lang="scss" scoped>
 textarea {
 	display: block;
-	width: 100%;
+	min-width: 250px;
 	height: 100%;
 	padding: 0;
 	margin: 0;

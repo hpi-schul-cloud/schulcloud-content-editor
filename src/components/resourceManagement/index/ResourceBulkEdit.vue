@@ -51,6 +51,7 @@ import LoadingBooks from "@/components/LoadingBooks";
 
 import api from "@/mixins/api.js";
 import { setTimeout } from "timers";
+import { mapMutations } from "vuex";
 
 const emptyResource = (name) => {
 	const resource = { name };
@@ -126,7 +127,7 @@ export default {
 				return this.$store.state.resourceManagement.bulk.bulkEnabled;
 			},
 			set(value) {
-				this.$store.commit("resourceManagement/bulk/setBulkEnabled", value);
+				this.setBulkEnabled(value);
 			},
 		},
 		bulkAdvancedEdit: {
@@ -134,10 +135,7 @@ export default {
 				return this.$store.state.resourceManagement.bulk.bulkAdvancedEnabled;
 			},
 			set(value) {
-				this.$store.commit(
-					"resourceManagement/bulk/setBulkAdvancedEnabled",
-					value
-				);
+				this.setBulkAdvancedEnabled(value);
 			},
 		},
 		visibleColoumns: {
@@ -151,18 +149,23 @@ export default {
 						this.bulkFind[key] = undefined;
 					}
 				});
-				this.$store.commit("resourceManagement/bulk/setVisibleColoumns", value);
+				this.setVisibleColoumns(value);
 			},
 		},
 	},
 	methods: {
+		...mapMutations("resourceManagement/bulk", {
+			setVisibleColoumns: "SET_VISIBLE_COLOUMNS",
+			setBulkEnabled: "SET_BULK_ENABLED",
+			setBulkAdvancedEnabled: "SET_BULK_ADVANCED_ENABLED",
+		}),
 		// HELPER
 		getResourceIndex(resource) {
 			const resourceIndex = this.resources.findIndex(
 				(item) => item._id === resource._id
 			);
 			if (resourceIndex === -1) {
-				throw new Error("Item to delete not found.", resource);
+				throw new Error("Item not found." + JSON.stringify(resource));
 			}
 			return resourceIndex;
 		},

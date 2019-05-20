@@ -50,6 +50,7 @@ import Pagination from "@/components/Pagination";
 import ResourceBulkEdit from "@/components/resourceManagement/index/ResourceBulkEdit";
 
 import api from "@/mixins/api.js";
+import { mapMutations } from "vuex";
 
 export default {
 	components: {
@@ -158,12 +159,15 @@ export default {
 				},
 			],
 		};
-		this.$store.commit("ui/registerFab", config);
+		this.registerFab(config);
 
 		this.loadContent();
 		window.onhashchange = this.handleUrlChange;
 	},
 	methods: {
+		...mapMutations("ui", {
+			registerFab: "REGISTER_FAB",
+		}),
 		updateFilter([feathersQuery, urlQuery]) {
 			if (feathersQuery.$limit) {
 				this.pagination.itemsPerPage = feathersQuery.$limit;

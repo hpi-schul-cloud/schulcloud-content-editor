@@ -15,6 +15,11 @@ const routes = [
 	// Plugins:
 	...resourceManagement,
 	...statistics,
+	{
+		path: "*",
+		name: "404",
+		component: "404.vue",
+	},
 ];
 
 export default new Router({

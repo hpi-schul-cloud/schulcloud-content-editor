@@ -1,6 +1,6 @@
 import qs from "query-string";
 
-const jsonFetch = (url, config = {}) => {
+export const jsonFetch = (url, config = {}) => {
 	const defaultConfig = {
 		headers: {
 			"Content-Type": "application/json",
@@ -50,22 +50,6 @@ const stringify = (query) => {
 
 export default {
 	methods: {
-		async $_login(data) {
-			return jsonFetch(
-				this.$config.API.serverServerUrl + this.$config.API.authPath,
-				{
-					method: "POST",
-					body: data,
-				}
-			);
-		},
-		async $_userGet(userId) {
-			return jsonFetch(
-				this.$config.API.serverServerUrl +
-					this.$config.API.userInfoPath +
-					userId
-			);
-		},
 		async $_resourceGet(resourceId) {
 			return jsonFetch(
 				this.$config.API.contentServerUrl +

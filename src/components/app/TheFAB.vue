@@ -1,6 +1,9 @@
 <template>
 	<div>
-		<FAB v-if="showFab" :config="fabConfig" @click="handleClick" />
+		<FAB :isOpen.sync="fabOpen" :config="fabConfig" @click="handleClick" />
+		<transition name="fade">
+			<div v-if="fabOpen" @click="fabOpen = false" class="overlay" />
+		</transition>
 	</div>
 </template>
 
@@ -11,12 +14,17 @@ export default {
 	components: {
 		FAB,
 	},
+	data() {
+		return {
+			fabOpen: false,
+		};
+	},
 	computed: {
 		showFab() {
-			return this.$store.getters["ui/isFabVisible"](this.$route.path);
+			return !!this.fabActions.length;
 		},
 		fabActions() {
-			return this.$store.getters["ui/fabActions"](this.$route.path).map(
+			return this.$store.getters["ui/GET_FAB_ACTIONS"](this.$route.path).map(
 				(action) => {
 					return {
 						...action,
@@ -64,3 +72,22 @@ export default {
 	},
 };
 </script>
+<style lang="scss" scoped>
+.overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 2;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.3);
+}
+.fade-enter-active,
+.fade-leave-active {
+	transition: opacity 0.3s;
+}
+.fade-enter,
+.fade-leave-to {
+	opacity: 0;
+}
+</style>

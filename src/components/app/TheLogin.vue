@@ -62,6 +62,7 @@ import BaseCard from "@/components/base/BaseCard";
 import BaseInput from "@/components/base/BaseInput";
 
 import api from "@/mixins/api.js";
+import { mapActions } from "vuex";
 
 export default {
 	components: {
@@ -87,40 +88,13 @@ export default {
 		}
 	},
 	methods: {
+		...mapActions("user", {
+			submitLogin: "LOGIN",
+		}),
 		validateBeforeSubmit() {
 			if (this.login.username != "" && this.login.password != "") {
-				return this.getToken();
+				return this.submitLogin(this.login);
 			}
-		},
-		getToken() {
-			this.$_login(this.login)
-				.then((data) => {
-					const jwt = data.accessToken;
-					localStorage.setItem("jwt", jwt);
-					this.$cookies.set(
-						"jwt",
-						jwt,
-						new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
-					);
-					this.getUserInfo(jwt);
-				})
-				.catch((e) => {
-					alert("Login fehlgeschlagen!");
-					console.error(e); // eslint-disable-line no-console
-				});
-		},
-		getUserInfo(jwt) {
-			const base64Url = jwt.split(".")[1];
-			const base64 = base64Url.replace("-", "+").replace("_", "/");
-			const payload = JSON.parse(window.atob(base64));
-			this.$_userGet(payload.userId)
-				.then((data) => {
-					localStorage.setItem("userInfo", JSON.stringify(data));
-					this.$router.go();
-				})
-				.catch((e) => {
-					console.error(e); // eslint-disable-line no-console
-				});
 		},
 		toggleVisibility() {
 			this.pwVisible = !this.pwVisible;

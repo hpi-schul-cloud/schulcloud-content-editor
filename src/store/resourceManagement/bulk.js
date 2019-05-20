@@ -12,13 +12,13 @@ const getters = {
 };
 
 const mutations = {
-	setVisibleColoumns(state, value) {
+	SET_VISIBLE_COLOUMNS(state, value) {
 		state.visibleColoumns = value;
 	},
-	setBulkEnabled(state, value) {
+	SET_BULK_ENABLED(state, value) {
 		state.bulkEnabled = value;
 	},
-	setBulkAdvancedEnabled(state, value) {
+	SET_BULK_ADVANCED_ENABLED(state, value) {
 		state.bulkAdvancedEnabled = value;
 	},
 };
