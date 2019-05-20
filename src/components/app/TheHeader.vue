@@ -1,20 +1,18 @@
 <template>
 	<header>
-		<div class="flex">
-			<span class="logo">
-				<img src="@/assets/cloud-transparent.svg" />
-			</span>
-			<RouterLink to="/" style="flex: 1">
-				<h2 class="title" style="flex: 1">{{ title }}</h2>
-			</RouterLink>
-			<div id="button-wrapper" v-if="jwt">
-				<BaseMenu :options="MenuOptions" @input="handleMenuClick($event)">
-					<img src="http://i.pravatar.cc/50" class="user-avatar" />
-					<template slot="MenuTitle">
-						{{ userInfo.displayName }}
-					</template>
-				</BaseMenu>
-			</div>
+		<span class="logo">
+			<img src="@/assets/cloud-transparent.svg" />
+		</span>
+		<RouterLink to="/" style="flex: 1">
+			<h2 class="title" style="flex: 1">{{ title }}</h2>
+		</RouterLink>
+		<div id="button-wrapper" v-if="jwt">
+			<BaseMenu :options="MenuOptions" @input="handleMenuClick($event)">
+				<img src="http://i.pravatar.cc/50" class="user-avatar" />
+				<template slot="MenuTitle">
+					{{ userInfo.displayName }}
+				</template>
+			</BaseMenu>
 		</div>
 	</header>
 </template>
@@ -71,26 +69,23 @@ header {
 	top: 0;
 	left: 0;
 	z-index: 3;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
 	width: 100%;
 	box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14),
 		0 1px 3px 0 rgba(0, 0, 0, 0.12);
 
-	.flex {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		justify-content: space-between;
+	@media (max-width: 730px) {
+		justify-content: space-around;
+	}
 
-		@media (max-width: 730px) {
-			justify-content: space-around;
-		}
+	a {
+		text-decoration: none;
 
-		a {
+		&:hover {
 			text-decoration: none;
-
-			&:hover {
-				text-decoration: none;
-			}
 		}
 	}
 
@@ -105,13 +100,13 @@ header {
 
 .logo {
 	display: flex;
-	align-items: center;
 	justify-content: center;
 	width: 175px;
-	padding: 0 8px;
+	height: 100%;
 
 	img {
-		width: 72px;
+		padding: 8px;
+		object-fit: contain;
 	}
 }
 
