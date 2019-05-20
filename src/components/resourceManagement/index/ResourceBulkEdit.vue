@@ -165,7 +165,7 @@ export default {
 				(item) => item._id === resource._id
 			);
 			if (resourceIndex === -1) {
-				throw new Error("Item to delete not found.", resource);
+				throw new Error("Item not found." + JSON.stringify(resource));
 			}
 			return resourceIndex;
 		},
