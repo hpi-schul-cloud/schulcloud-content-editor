@@ -17,14 +17,7 @@ export default {
 	mixins: [api],
 	data() {
 		return {
-			accentColor: "",
-			totalContent: 0,
-			mostClickedContent: [],
-		};
-	},
-	computed: {
-		importedResources() {
-			return {
+			importedResources: {
 				labels: [
 					"January",
 					"February",
@@ -37,19 +30,20 @@ export default {
 				datasets: [
 					{
 						label: "published Articles",
-						backgroundColor: this.accentColor,
+						backgroundColor: getComputedStyle(
+							document.documentElement
+						).getPropertyValue("--accentColor"),
 						data: [40, 39, 10, 40, 39, 80, 40],
 					},
 				],
-			};
-		},
+			},
+			totalContent: 0,
+			mostClickedContent: [],
+		};
 	},
 	created() {
 		this.getTotalContent();
 		this.getMostClicked();
-		this.accentColor = getComputedStyle(
-			document.documentElement
-		).getPropertyValue("--accentColor");
 	},
 	methods: {
 		getTotalContent() {
