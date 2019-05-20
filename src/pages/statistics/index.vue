@@ -2,34 +2,54 @@
 	<div>
 		<h2 style="margin-bottom: 0" class="title">{{ $lang.stats.title }}</h2>
 		<div class="subheading">{{ $lang.stats.article }}: {{ totalContent }}</div>
-		<div class="subheading">{{ $lang.stats.most_clicked }}:</div>
-		<div class="grid">
-			<div
-				v-for="item in mostClickedContent"
-				:key="item.id"
-				class="card-wrapper grid-xs-12 grid-s-6 grid-m-6 grid-l-4 grid-xl-4 height-100"
-			>
-				<b>{{ $lang.stats.clicks }}: {{ item.clickCount }}</b>
-				<pre>{{ JSON.stringify(item, null, 2) }}</pre>
-			</div>
-		</div>
+		<lineChart :chartdata="importedResources" />
 	</div>
 </template>
 
 <script>
 import api from "@/mixins/api.js";
+import lineChart from "@/components/statistics/lineChart";
 
 export default {
+	components: {
+		lineChart,
+	},
 	mixins: [api],
 	data() {
 		return {
+			accentColor: "",
 			totalContent: 0,
 			mostClickedContent: [],
 		};
 	},
+	computed: {
+		importedResources() {
+			return {
+				labels: [
+					"January",
+					"February",
+					"March",
+					"April",
+					"May",
+					"June",
+					"July",
+				],
+				datasets: [
+					{
+						label: "published Articles",
+						backgroundColor: this.accentColor,
+						data: [40, 39, 10, 40, 39, 80, 40],
+					},
+				],
+			};
+		},
+	},
 	created() {
 		this.getTotalContent();
 		this.getMostClicked();
+		this.accentColor = getComputedStyle(
+			document.documentElement
+		).getPropertyValue("--accentColor");
 	},
 	methods: {
 		getTotalContent() {
