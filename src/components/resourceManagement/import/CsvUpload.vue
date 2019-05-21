@@ -1,16 +1,9 @@
 <template>
 	<div>
-		<Dropzone @drop.prevent="handleDrop">
-			<label class="input-label">
-				<i class="material-icons upload-icon">cloud_upload</i>
+		<Dropzone @files="handleFileChosen" :inputAttributes="{ accept: '.csv' }">
+			<template slot="description">
 				Lade hier eine CSV-Datei hoch
-				<input
-					@input="handleFileChosen"
-					class="hidden-but-accessible"
-					type="file"
-					accept=".csv"
-				/>
-			</label>
+			</template>
 		</Dropzone>
 		<div v-if="csv.content.length != 0" class="loaded-csv-entries">
 			{{ csv.content.length }}
@@ -37,12 +30,8 @@ export default {
 		},
 	},
 	methods: {
-		handleDrop(ev) {
-			this.loadCSV(ev.dataTransfer.files[0]);
-		},
-		handleFileChosen(ev) {
-			let file = ev.target.files[0];
-			this.loadCSV(file);
+		handleFileChosen(files) {
+			this.loadCSV(files[0]);
 		},
 		loadCSV(file) {
 			if (!file.type === "application/vnd.ms-excel") {
@@ -102,21 +91,5 @@ export default {
 		display: block;
 		font-size: initial;
 	}
-}
-.hidden-but-accessible {
-	position: absolute;
-	width: 0;
-	height: 0;
-}
-.input-label {
-	flex: 1;
-	padding: 2em;
-	text-align: center;
-	cursor: pointer;
-}
-.upload-icon {
-	display: block;
-	font-size: 5em;
-	color: #aaa;
 }
 </style>

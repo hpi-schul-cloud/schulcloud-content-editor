@@ -1,6 +1,18 @@
 <template>
 	<div class="upload-wrapper">
-		<Dropzone @drop.prevent="handleDropEvent">Drop your files here!</Dropzone>
+		<Dropzone
+			@drop.prevent="handleDropEvent"
+			:inputAttributes="{ multiple: true }"
+		>
+			<template slot="description">
+				Drag your files here
+			</template>
+			<template slot="input">
+				<br />
+				<!-- clear slot to remove input field -->
+				<!-- we only support drag & drop currently -->
+			</template>
+		</Dropzone>
 		<div id="filetree" v-show="filetree.objects.length !== 0">
 			<h4>Your uploaded Files:</h4>
 			<Filetree
