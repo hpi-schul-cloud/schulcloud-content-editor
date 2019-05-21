@@ -1,18 +1,21 @@
 <template>
 	<div class="table-cell">
-		<TableInput
-			v-model="input"
-			:label="attribute"
-			:attribute="attribute"
-			:name="attribute"
-			:class="{ input: true, invisible: !active }"
-		/>
-		<input
-			v-model="active"
-			:disabled="isInputRequired && validateRequired && !isInputDefined"
-			class="active-toggle"
-			type="checkbox"
-		/>
+		<template v-if="!isInputReadonly">
+			<TableInput
+				v-model="input"
+				:label="attribute"
+				:attribute="attribute"
+				:name="attribute"
+				:class="{ input: true, invisible: !active }"
+			/>
+			<input
+				v-model="active"
+				:disabled="isInputRequired && validateRequired && !isInputDefined"
+				class="active-toggle"
+				type="checkbox"
+			/>
+		</template>
+		<span v-else class="readonly-hint">value is readonly</span>
 	</div>
 </template>
 
@@ -53,8 +56,11 @@ export default {
 		emptyValue() {
 			return this.getComponent(this.attribute).type();
 		},
-		isInputRequired(key) {
+		isInputRequired() {
 			return this.getComponent(this.attribute).required;
+		},
+		isInputReadonly() {
+			return this.getComponent(this.attribute).attributes.readonly;
 		},
 		isInputDefined() {
 			return this.isDefined(this.input);
@@ -112,5 +118,8 @@ export default {
 }
 input[type="checkbox"][disabled] {
 	display: none;
+}
+.readonly-hint {
+	opacity: 0.5;
 }
 </style>

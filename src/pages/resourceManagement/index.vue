@@ -161,7 +161,7 @@ export default {
 		};
 		this.registerFab(config);
 
-		this.loadContent();
+		// this.loadContent();
 		window.onhashchange = this.handleUrlChange;
 	},
 	methods: {

@@ -25,13 +25,19 @@
 				<BaseButton
 					@click="$emit('submit', replace)"
 					type="button"
+					tabindex="0"
 					class="action"
 				>
 					<i class="material-icons">
 						check
 					</i>
 				</BaseButton>
-				<BaseButton @click="$emit('delete')" type="button" class="action">
+				<BaseButton
+					@click="$emit('delete')"
+					type="button"
+					class="action"
+					tabindex="0"
+				>
 					<i class="material-icons">
 						delete
 					</i>
@@ -99,6 +105,9 @@ td {
 .action {
 	padding: 0;
 	margin: 0 0.25em;
+	&:focus {
+		outline: auto;
+	}
 }
 .spacer {
 	height: 2rem;

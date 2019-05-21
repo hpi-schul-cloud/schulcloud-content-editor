@@ -46,9 +46,9 @@
 						<template v-if="hostingOption === 'hostedExternally'">
 							<ContentUrl
 								v-model="data.url"
-								v-validate="{ url: { require_host: false } }"
+								v-validate="{ required: true, url: { require_host: false } }"
 								:error="errors.first('url')"
-								data-vv-rules="required|url"
+								data-vv-name="url"
 							/>
 							<ContentUrlThumbnail
 								v-model="data.thumbnail"
@@ -61,24 +61,27 @@
 							<ContentEntrypointSelector
 								v-show="hostingOption === 'hostedAtSchulcloud'"
 								v-model="data.url"
-								v-validate
+								v-validate="{ required: true, url: { require_host: false } }"
 								:error="errors.first('entrypointSelector')"
 								:disabled="filetree.objects.length === 0"
 								:files="entrypointFiles"
 								:resource-id="$route.params.id || ''"
 								data-vv-name="entrypointSelector"
-								FIX-data-vv-rules="{required: true, url: {require_protocol: false, require_host: false, allow_protocol_relative_urls: true}}"
 							/>
 							<ContentThumbnailSelector
 								v-show="hostingOption === 'hostedAtSchulcloud'"
 								v-model="data.thumbnail"
-								v-validate
+								v-validate="{
+									required: true,
+									url: {
+										require_host: false,
+									},
+								}"
 								:error="errors.first('thumbnailSelector')"
 								:disabled="filetree.objects.length === 0"
 								:files="thumbnailFiles"
 								:resource-id="$route.params.id || ''"
 								data-vv-name="thumbnailSelector"
-								FIX-data-vv-rules="{required: true, url: {require_protocol: false, require_host: false, allow_protocol_relative_urls: true}}"
 							/>
 							<FileUpload
 								v-show="hostingOption === 'hostedAtSchulcloud'"
