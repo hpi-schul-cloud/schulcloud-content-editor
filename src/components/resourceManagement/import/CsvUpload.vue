@@ -34,12 +34,19 @@ export default {
 			this.loadCSV(files[0]);
 		},
 		loadCSV(file) {
-			if (!file.type === "application/vnd.ms-excel") {
+			if (!file) {
+				console.error("no file loaded");
+			}
+			if (file.type !== "application/vnd.ms-excel") {
 				// TODO is CSV always of this type?
-				return alert("Wrong file type! Please choose a csv-file.");
+				return this.$toasted.error(
+					"Wrong file type! Please choose a csv-file."
+				);
 			}
 			if (!window.FileReader) {
-				return alert("FileReader is not supported in this browser.");
+				return this.$toasted.error(
+					"FileReader is not supported in this browser."
+				);
 			}
 
 			this.csv.fileName = file.name;

@@ -84,7 +84,6 @@ label {
 div.tag-input {
 	width: 100%;
 	max-width: 100%;
-	overflow: auto;
 	font-size: 0.9em;
 	color: #1d1d1d;
 	background: transparent;
@@ -126,6 +125,9 @@ div.tag-input {
 			color: #757575;
 			background: none;
 		}
+	}
+	.ti-autocomplete[class~="ti-autocomplete"] .ti-selected-item {
+		background-color: var(--primaryColor);
 	}
 }
 </style>
