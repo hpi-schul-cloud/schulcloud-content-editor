@@ -6,7 +6,7 @@
 			</template>
 			<template slot="body">
 				<BaseInput
-					v-model="login.email"
+					v-model="login.username"
 					:label="$lang.login.username"
 					name="username"
 					type="text"
@@ -74,9 +74,8 @@ export default {
 	data() {
 		return {
 			login: {
-				email: "",
+				username: "",
 				password: "",
-				strategy: "local",
 			},
 			pwInputType: "password",
 			pwVisible: false,
@@ -93,7 +92,7 @@ export default {
 			submitLogin: "LOGIN",
 		}),
 		validateBeforeSubmit() {
-			if (this.login.email != "" && this.login.password != "") {
+			if (this.login.username != "" && this.login.password != "") {
 				return this.submitLogin(this.login);
 			}
 		},
