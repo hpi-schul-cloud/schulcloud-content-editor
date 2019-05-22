@@ -46,6 +46,21 @@ const actions = {
 		commit("_SET_JWT", accessToken);
 		commit("_SET_USER", user);
 	},
+	async REGISTRATION({ commit }, data) {
+		return new Promise((resolve, reject) => {
+			jsonFetch(configFile.API.contentServerUrl + configFile.API.userInfoPath, {
+				method: "POST",
+				body: data,
+			}).then(
+				(response) => {
+					resolve(response);
+				},
+				(error) => {
+					reject(error);
+				}
+			);
+		});
+	},
 	LOGOUT({ commit }) {
 		commit("_SET_JWT", undefined);
 		commit("_SET_USER", undefined);

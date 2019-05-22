@@ -17,8 +17,8 @@
 					v-model="userData.email"
 					:label="$lang.registration.username"
 					name="username"
-					type="text"
-					placeholder="Benutzername *"
+					type="email"
+					placeholder="E-Mail-Adresse *"
 					required
 				/>
 				<BaseInput
@@ -51,6 +51,13 @@
 						</span>
 					</template>
 				</BaseInput>
+				<BaseInput
+					v-model="userData.organisation"
+					:label="$lang.registration.organisation"
+					name="organisation"
+					type="text"
+					placeholder="Firma *"
+				/>
 			</template>
 			<template slot="footer">
 				<div class="button_wrapper">
@@ -82,6 +89,7 @@ export default {
 				fullName: "",
 				email: "",
 				password: "",
+				organisation: "",
 				strategy: "local",
 			},
 			pwInputType: "password",
@@ -98,7 +106,15 @@ export default {
 				this.userData.password != "" &&
 				this.userData.fullName != ""
 			) {
-				return this.submitRegistration(this.userData);
+				return this.submitRegistration(this.userData).then(
+					(response) => {
+						this.$toasted.show(`Registratrated`);
+						this.clearForm();
+					},
+					(error) => {
+						this.$toasted.error(`Failed to registrate` + error);
+					}
+				);
 			}
 		},
 		toggleVisibility() {
@@ -108,6 +124,15 @@ export default {
 			} else {
 				this.pwInputType = "password";
 			}
+		},
+		clearForm() {
+			this.userData = {
+				fullName: "",
+				email: "",
+				password: "",
+				organisation: "",
+				strategy: "local",
+			};
 		},
 	},
 };

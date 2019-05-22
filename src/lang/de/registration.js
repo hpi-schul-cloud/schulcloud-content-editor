@@ -2,5 +2,6 @@ export default {
 	title: "Registrierung",
 	username: "Benutzername",
 	password: "Passwort",
-	fullName: "vollständiger Name",
+	fullName: "Vollständiger Name",
+	organisation: "Firma",
 };

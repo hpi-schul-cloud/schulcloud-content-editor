@@ -1,6 +1,5 @@
 import Vue from "vue";
 import Router from "vue-router";
-import registrationComponent from "@/components/app/TheRegistration.vue";
 Vue.use(Router);
 
 const loadView = (path) => {
@@ -16,7 +15,11 @@ const routes = [
 	// Plugins:
 	...resourceManagement,
 	...statistics,
-	{ path: "/registration", name: "registration", component: "404.vue" },
+	{
+		path: "/registration",
+		name: "registration",
+		component: "registration.vue",
+	},
 	{
 		path: "*",
 		name: "404",
