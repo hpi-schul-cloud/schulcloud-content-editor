@@ -116,11 +116,9 @@ export default {
 		return this.initialDataState();
 	},
 	computed: {
-		computed: {
-			...mapGetters("user", {
-				userInfo: "GET_USER",
-			}),
-		},
+		...mapGetters("user", {
+			userInfo: "GET_USER",
+		}),
 		validCSVHeaders() {
 			let validHeaders = {};
 			this.csv.headers.forEach((header) => {
