@@ -22,6 +22,7 @@ export default {
 		thumbnailSelector: "Thumbnail",
 		thumbnailAutogenerate: "Automatisch generieren",
 		drmOptions: "Metadaten",
+		watermarkSelector: "Wasserzeichen",
 	},
 	dialog: {
 		title: "Inhalt löschen?",

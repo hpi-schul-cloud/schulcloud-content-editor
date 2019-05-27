@@ -42,6 +42,7 @@
 								label="Inhalte schützen?"
 							/>
 						</div>
+
 						<div v-if="data.isProtected">
 							<BaseCheckbox
 								v-model="data.drmOptions.pdfIsProtected"
@@ -62,6 +63,17 @@
 									margin: '20px',
 								}"
 							>
+								<ContentWatermarkSelector
+									v-show="data.drmOptions.watermark === true"
+									v-model="data.drmOptions.watermarkImage"
+									v-validate
+									data-vv-name="watermarkSelector"
+									FIX-data-vv-rules="{required: true, url: {require_protocol: false, require_host: false, allow_protocol_relative_urls: true}}"
+									:error="errors.first('watermarkSelector')"
+									:disabled="filetree.objects.length === 0"
+									:files="thumbnailFiles"
+									:resource-id="$route.params.id || ''"
+								/>
 								<ContentDrmOptions v-model="data.drmOptions" />
 							</div>
 						</div>
@@ -173,6 +185,7 @@ import ContentDrmOptions from "@/components/resourceManagement/edit/inputs/Conte
 import BaseButton from "@/components/base/BaseButton";
 import BaseCard from "@/components/base/BaseCard";
 import BaseCheckbox from "@/components/base/BaseCheckbox";
+import ContentWatermarkSelector from "@/components/resourceManagement/edit/inputs/ContentWatermarkSelector";
 
 import filetree from "@/mixins/filetree.js";
 import api from "@/mixins/api.js";
@@ -198,6 +211,7 @@ export default {
 		BaseCard,
 		BaseCheckbox,
 		BaseConfirm,
+		ContentWatermarkSelector,
 
 		FileUpload,
 	},
@@ -303,20 +317,6 @@ export default {
 						// JSON responses are automatically parsed.
 						// this.data = data;
 						Object.assign(this.data, data);
-						/*
-						if (!this.data.drmOptions) {
-							this.$set(this.data, "drmOptions", {
-								pdfIsProtected:false,
-								videoIsProtected:false,
-								watermark:false,
-								exif: {
-									CreatorAddress: undefined,
-									CreatorWorkURL: undefined,
-									Description: undefined
-								} 
-							});
-						}
-						*/
 						this.hostingOption = (this.data.url || "").startsWith(
 							this.$config.API.contentServerUrl + this.$config.API.hostingEntry
 						)
