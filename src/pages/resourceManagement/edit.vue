@@ -217,10 +217,12 @@ export default {
 				contentCategory: "",
 				licenses: ["Test License"],
 				tags: [],
-				drmOptions: { exif: {} },
+				drmOptions: {
+					exif: {},
+				},
 				files: { delete: [], save: [] },
 				isPublished: false,
-				isProtected: false,
+				isProtected: undefined,
 			},
 			dialog: {
 				active: false,
@@ -264,12 +266,33 @@ export default {
 		$route() {
 			this.loadContent();
 		},
+		data: {
+			handler: function(to) {
+				if (to.isProtected === undefined) {
+					to.isProtected = this.getObjValues(this.data.drmOptions, []).some(
+						(val) => val
+					);
+				}
+			},
+			deep: true,
+		},
 	},
 	created() {
 		this.loadContent();
 		this.loadFiletree();
 	},
 	methods: {
+		getObjValues(objs, returnArray) {
+			let objArray = Object.values(objs);
+			objArray.forEach((obj) => {
+				if (!(typeof obj == "object")) {
+					returnArray.push(obj);
+				} else {
+					this.getObjValues(obj, returnArray);
+				}
+			});
+			return returnArray;
+		},
 		handleFiletreeUpdate(newFiletree) {
 			this.filetree = newFiletree;
 		},
@@ -278,10 +301,22 @@ export default {
 				return this.$_resourceGet(this.$route.params.id)
 					.then((data) => {
 						// JSON responses are automatically parsed.
-						this.data = data;
+						// this.data = data;
+						Object.assign(this.data, data);
+						/*
 						if (!this.data.drmOptions) {
-							this.data.drmOptions = {};
+							this.$set(this.data, "drmOptions", {
+								pdfIsProtected:false,
+								videoIsProtected:false,
+								watermark:false,
+								exif: {
+									CreatorAddress: undefined,
+									CreatorWorkURL: undefined,
+									Description: undefined
+								} 
+							});
 						}
+						*/
 						this.hostingOption = (this.data.url || "").startsWith(
 							this.$config.API.contentServerUrl + this.$config.API.hostingEntry
 						)
