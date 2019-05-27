@@ -35,6 +35,7 @@
 								label="published"
 							></BaseCheckbox>
 						</div>
+
 						<div class="wrapper">
 							<h4 class="subtitle">Inhalte schützen?</h4>
 							<BaseCheckbox
@@ -56,13 +57,51 @@
 								v-model="data.drmOptions.watermark"
 								label="Wasserzeichen"
 							/>
-							<div
-								:style="{
-									border: '3px solid grey',
-									padding: '50px',
-									margin: '20px',
-								}"
-							>
+							<div class="drm_options">
+								<div class="watermark_positioning">
+									<div class="pictur_box"></div>
+									<div>
+										<input
+											v-model="data.drmOptions.yWatermarkPosition"
+											type="range"
+											class="vertical_slider"
+											min="1"
+											max="100"
+											@change="
+												changeWatermarkPosition(
+													data.drmOptions.xWatermarkPosition,
+													data.drmOptions.yWatermarkPosition
+												)
+											"
+										/>
+									</div>
+									<input
+										v-model="data.drmOptions.xWatermarkPosition"
+										class="horizontal_slider"
+										type="range"
+										min="1"
+										max="100"
+										@change="
+											changeWatermarkPosition(
+												data.drmOptions.xWatermarkPosition,
+												data.drmOptions.yWatermarkPosition
+											)
+										"
+									/>
+									<div id="watermark_box"></div>
+								</div>
+								<h1 id="id1">My Heading 1</h1>
+								<button
+									type="button"
+									@click="
+										changeWatermarkPosition(
+											data.drmOptions.xWatermarkPosition,
+											data.drmOptions.yWatermarkPosition
+										)
+									"
+								>
+									Click Me!
+								</button>
 								<ContentWatermarkSelector
 									v-show="data.drmOptions.watermark === true"
 									v-model="data.drmOptions.watermarkImage"
@@ -296,6 +335,26 @@ export default {
 		this.loadFiletree();
 	},
 	methods: {
+		changeWatermarkPosition(xWatermarkPosition, yWatermarkPosition) {
+			// TODO add Scaling with .style.transform.scale(scaleFactor)
+			if (xWatermarkPosition === undefined) {
+				xWatermarkPosition = 50;
+			} else if (yWatermarkPosition === undefined) {
+				yWatermarkPosition = 50;
+			}
+
+			xWatermarkPosition -= 50;
+			yWatermarkPosition -= 50;
+
+			let ymax = 180;
+			let ypos = (ymax / 100) * yWatermarkPosition;
+			let xmax = 180;
+			let xpos = (xmax / 100) * xWatermarkPosition;
+
+			const currentPos = (document.getElementById(
+				"watermark_box"
+			).style.transform = "translate(" + xpos + "px," + ypos + "px" + ")");
+		},
 		getObjValues(objs, returnArray) {
 			let objArray = Object.values(objs);
 			objArray.forEach((obj) => {
@@ -400,5 +459,77 @@ h3 {
 .button_wrapper {
 	display: flex;
 	justify-content: space-between;
+}
+.vertical_slider {
+	width: 200px;
+	height: 15px;
+	background: #d3d3d3;
+	border-radius: 5px;
+	outline: none;
+	opacity: 0.7;
+	-webkit-transition: 0.2s;
+	transition: opacity 0.2s;
+	transform: rotate(90deg) translate(92px, 87px);
+	-webkit-appearance: none;
+}
+.horizontal_slider {
+	width: 200px;
+	height: 15px;
+	background: #d3d3d3;
+	border-radius: 5px;
+	outline: none;
+	opacity: 0.7;
+	-webkit-transition: 0.2s;
+	transition: opacity 0.2s;
+	transform: translate(-203px, 185px);
+	-webkit-appearance: none;
+}
+.drm_options {
+	padding: 50px;
+	margin: 20px;
+	border: 3px solid grey;
+}
+.pictur_box {
+	float: left;
+	width: 200px;
+	height: 200px;
+	border: 3px solid grey;
+}
+#watermark_box {
+	width: 40px;
+	height: 40px;
+	margin-top: 47px;
+	margin-left: 89px;
+	border: 3px solid grey;
+}
+
+.watermark_positioning {
+	width: 500px;
+	height: 230px;
+	overflow: hidden;
+}
+
+.third {
+	position: relative;
+	top: 100px;
+	width: 100px;
+}
+.vertical_slider::-webkit-slider-thumb {
+	width: 25px;
+	height: 25px;
+	cursor: pointer;
+	background: rgb(76, 160, 175);
+	border-radius: 50%;
+	-webkit-appearance: none;
+	appearance: none;
+}
+.horizontal_slider::-webkit-slider-thumb {
+	width: 25px;
+	height: 25px;
+	cursor: pointer;
+	background: rgb(76, 160, 175);
+	border-radius: 50%;
+	-webkit-appearance: none;
+	appearance: none;
 }
 </style>
