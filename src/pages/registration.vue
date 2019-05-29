@@ -6,19 +6,11 @@
 			</template>
 			<template slot="body">
 				<BaseInput
-					v-model="userData.fullName"
-					:label="$lang.registration.fullName"
-					name="fullName"
-					type="text"
-					placeholder="Vorname Nachname *"
-					required
-				/>
-				<BaseInput
-					v-model="userData.email"
+					v-model="userData.username"
 					:label="$lang.registration.username"
 					name="username"
-					type="email"
-					placeholder="E-Mail-Adresse *"
+					type="text"
+					placeholder="Benutzername *"
 					required
 				/>
 				<BaseInput
@@ -51,6 +43,30 @@
 						</span>
 					</template>
 				</BaseInput>
+				<BaseInput
+					v-model="userData.email"
+					:label="$lang.registration.email"
+					name="email"
+					type="email"
+					placeholder="E-Mail-Adresse *"
+					required
+				/>
+				<BaseInput
+					v-model="userData.forename"
+					:label="$lang.registration.forename"
+					name="forename"
+					type="text"
+					placeholder="Vorname *"
+					required
+				/>
+				<BaseInput
+					v-model="userData.familyname"
+					:label="$lang.registration.familyname"
+					name="familyname"
+					type="text"
+					placeholder="Nachname *"
+					required
+				/>
 				<BaseInput
 					v-model="userData.organisation"
 					:label="$lang.registration.organisation"
@@ -86,11 +102,12 @@ export default {
 	data() {
 		return {
 			userData: {
-				fullName: "",
+				familyname: "",
+				forename: "",
 				email: "",
+				username: "",
 				password: "",
 				organisation: "",
-				strategy: "local",
 			},
 			pwInputType: "password",
 			pwVisible: false,
@@ -104,7 +121,9 @@ export default {
 			if (
 				this.userData.email != "" &&
 				this.userData.password != "" &&
-				this.userData.fullName != ""
+				this.userData.forename != "" &&
+				this.userData.familyname != "" &&
+				this.userData.username != ""
 			) {
 				return this.submitRegistration(this.userData).then(
 					(response) => {
@@ -127,11 +146,12 @@ export default {
 		},
 		clearForm() {
 			this.userData = {
-				fullName: "",
+				familyname: "",
+				forename: "",
 				email: "",
+				username: "",
 				password: "",
 				organisation: "",
-				strategy: "local",
 			};
 		},
 	},
