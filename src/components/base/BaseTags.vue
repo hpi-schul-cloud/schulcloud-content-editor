@@ -84,7 +84,7 @@ label {
 div.tag-input {
 	width: 100%;
 	max-width: 100%;
-	overflow: auto;
+	overflow: visible;
 	font-size: 0.9em;
 	color: #1d1d1d;
 	background: transparent;

@@ -9,6 +9,7 @@ export default {
 	mimeType: "mimetype",
 	originId: "Origin ID",
 	providerName: "Anbieter",
+	providerId: "Anbieter ID",
 	tags: "Tags",
 	thumbnail: "Thumbnail",
 	title: "Titel",

@@ -32,7 +32,7 @@
 			</template>
 			<template slot="footer">
 				<div class="button_wrapper">
-					<div class="provider-name">{{ data.providerName }}</div>
+					<div class="provider-name">{{ providerName }}</div>
 					<div>
 						<BaseButton
 							v-if="data._id"
@@ -69,6 +69,8 @@
 const BaseConfirm = () => import("@/components/base/BaseConfirm");
 import BaseCard from "@/components/base/BaseCard";
 import BaseButton from "@/components/base/BaseButton";
+import { mapGetters, mapActions } from "vuex";
+import api from "@/mixins/api.js";
 
 export default {
 	components: {
@@ -95,6 +97,7 @@ export default {
 				confirmText: this.$lang.contentCard.dialog.confirm,
 				cancelText: this.$lang.contentCard.dialog.cancle,
 			},
+			providerName: "",
 		};
 	},
 	methods: {
@@ -106,7 +109,19 @@ export default {
 				"_blank"
 			);
 		},
+		getProviderName() {
+			return this.$_providerNameGetById(this.userInfo.providerId);
+		},
 	},
+	computed: {
+		...mapGetters("user", {
+			userInfo: "GET_USER",
+		}),
+	},
+	async created() {
+		this.providerName = await this.getProviderName();
+	},
+	mixins: [api],
 };
 </script>
 

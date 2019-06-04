@@ -270,7 +270,7 @@ export default {
 		formatImportedResources() {
 			const formatResource = (row, index) => {
 				let resource = {
-					providerName: "TestProvider",
+					providerId: this.userInfo.providerId,
 					userId: this.userInfo._id,
 					originId: Date.now().toString() + index,
 					isPublished: this.isPublished,

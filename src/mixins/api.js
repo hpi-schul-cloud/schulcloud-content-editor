@@ -50,6 +50,13 @@ const stringify = (query) => {
 
 export default {
 	methods: {
+		async $_providerNameGetById(providerId) {
+			return jsonFetch(
+				this.$config.API.contentServerUrl +
+					this.$config.API.getProviderPath +
+					(providerId ? providerId : "")
+			);
+		},
 		async $_resourceGet(resourceId) {
 			return jsonFetch(
 				this.$config.API.contentServerUrl +
