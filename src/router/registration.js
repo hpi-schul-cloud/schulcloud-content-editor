@@ -8,7 +8,7 @@ export default [
 		sidebarTitle: "Nutzerverwaltung",
 		sidebarIcon: "supervisor_account",
 		beforeEnter: (to, from, next) => {
-			if (store.state.user.user.role === "User") {
+			if (store.state.user.user.role === "user") {
 				next(from);
 			} else {
 				next();

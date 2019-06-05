@@ -1,7 +1,7 @@
 <template>
 	<form id="loginForm" @submit.prevent="validateBeforeSubmit">
 		<h2>Registrierung</h2>
-		<div v-if="userRole === 'Superhero'">
+		<div v-if="userRole === 'superhero'">
 			<h3>Anbieter</h3>
 			<ProviderDataInput v-model="providerData" />
 		</div>
@@ -50,10 +50,10 @@ export default {
 				this.userData.familyname != "" &&
 				this.userData.username != ""
 			) {
-				if (this.userRole === "Superhero" && this.providerData.name != "") {
+				if (this.userRole === "superhero" && this.providerData.name != "") {
 					// SC creates new provider and its Admin
 					this.registerProviderWithAdmin();
-				} else if (this.userRole === "Admin") {
+				} else if (this.userRole === "admin") {
 					// Admin of a provider creates his colleagues
 					this.registerUser();
 				}
