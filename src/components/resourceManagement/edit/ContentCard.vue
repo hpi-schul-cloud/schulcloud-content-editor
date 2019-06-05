@@ -78,6 +78,7 @@ export default {
 		BaseCard,
 		BaseConfirm,
 	},
+	mixins: [api],
 	props: {
 		data: {
 			type: Object,
@@ -100,6 +101,14 @@ export default {
 			providerName: "",
 		};
 	},
+	computed: {
+		...mapGetters("user", {
+			userInfo: "GET_USER",
+		}),
+	},
+	created() {
+		this.getProvider();
+	},
 	methods: {
 		onConfirm() {
 			window.open(
@@ -119,15 +128,6 @@ export default {
 				});
 		},
 	},
-	computed: {
-		...mapGetters("user", {
-			userInfo: "GET_USER",
-		}),
-	},
-	created() {
-		this.getProvider();
-	},
-	mixins: [api],
 };
 </script>
 

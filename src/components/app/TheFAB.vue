@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div v-if="showFab">
 		<FAB :isOpen.sync="fabOpen" :config="fabConfig" @click="handleClick" />
 		<transition name="fade">
 			<div v-if="fabOpen" @click="fabOpen = false" class="overlay" />

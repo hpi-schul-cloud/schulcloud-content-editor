@@ -27,10 +27,6 @@ import TheSidebar from "@/components/app/TheSidebar";
 import TheFooter from "@/components/app/TheFooter";
 import Router from "@/router/index.js";
 
-const sidebarItems = Router.options.routes.filter((route) => {
-	return !!route.sidebarTitle;
-});
-
 import { mapGetters } from "vuex";
 
 export default {
@@ -46,13 +42,21 @@ export default {
 			primaryColor: getComputedStyle(document.documentElement).getPropertyValue(
 				"--primaryColor"
 			),
-			sidebarItems,
 		};
 	},
 	computed: {
 		...mapGetters("user", {
 			jwt: "GET_JWT",
+			userInfo: "GET_USER",
 		}),
+		sidebarItems() {
+			return Router.options.routes.filter((route) => {
+				if (this.userInfo.role === "User") {
+					return;
+					!!route.sidebarTitle && route.name !== "userManagement/registration";
+				} else return !!route.sidebarTitle;
+			});
+		},
 	},
 	created() {
 		this.$Progress.start();

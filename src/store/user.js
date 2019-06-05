@@ -46,12 +46,30 @@ const actions = {
 		commit("_SET_JWT", accessToken);
 		commit("_SET_USER", user);
 	},
-	async REGISTRATION({ commit }, data) {
+	async REGISTER_USER({ commit }, data) {
 		return new Promise((resolve, reject) => {
 			jsonFetch(configFile.API.contentServerUrl + configFile.API.userInfoPath, {
 				method: "POST",
 				body: data,
 			}).then(
+				(response) => {
+					resolve(response);
+				},
+				(error) => {
+					reject(error);
+				}
+			);
+		});
+	},
+	async REGISTER_PROVIDER({ commit }, data) {
+		return new Promise((resolve, reject) => {
+			jsonFetch(
+				configFile.API.contentServerUrl + configFile.API.getProviderPath,
+				{
+					method: "POST",
+					body: data,
+				}
+			).then(
 				(response) => {
 					resolve(response);
 				},
