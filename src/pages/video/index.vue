@@ -60,21 +60,12 @@ export default {
 				this.dash = standard.data.dash;
 				this.hls3 = standard.data.hls3;
 				this.thumb = standard.data.thumb;
-				this.id = route.query.videoId;
+				this.recouceId = route.query.recouceId;
 				this.name = route.query.videoId;
 				mgp.play(
-					"http:" +
-						"//" +
-						"localhost:3000" +
-						"/play/" +
-						this.owner +
-						"/" +
-						this.id +
-						"/",
+					`http://localhost:4040/files/get/${this.recouceId}/${this.name}/`,
 					standard.data
 				);
-
-				// alert(JSON.stringify(this.assets));
 			})
 			.catch((e) => {
 				this.errors.push(e);
