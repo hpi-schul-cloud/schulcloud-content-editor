@@ -109,8 +109,14 @@ export default {
 				"_blank"
 			);
 		},
-		getProviderName() {
-			return this.$_providerNameGetById(this.userInfo.providerId);
+		getProvider() {
+			return this.$_providerGetById(this.userInfo.providerId)
+				.then((provider) => {
+					this.providerName = provider.name;
+				})
+				.catch((error) => {
+					this.providerName = "";
+				});
 		},
 	},
 	computed: {
@@ -118,8 +124,8 @@ export default {
 			userInfo: "GET_USER",
 		}),
 	},
-	async created() {
-		this.providerName = await this.getProviderName();
+	created() {
+		this.getProvider();
 	},
 	mixins: [api],
 };
