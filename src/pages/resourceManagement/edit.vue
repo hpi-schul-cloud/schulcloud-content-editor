@@ -35,7 +35,6 @@
 								label="published"
 							></BaseCheckbox>
 						</div>
-
 						<div class="wrapper">
 							<h4 class="subtitle">Inhalte schützen?</h4>
 							<BaseCheckbox
@@ -44,7 +43,7 @@
 							/>
 						</div>
 
-						<div v-if="data.isProtected">
+						<div v-show="data.isProtected">
 							<BaseCheckbox
 								v-model="data.drmOptions.pdfIsProtected"
 								label="Pdf schützen?"
@@ -56,63 +55,82 @@
 							<BaseCheckbox
 								v-model="data.drmOptions.watermark"
 								label="Wasserzeichen"
+								@click.native="
+									changeWatermarkPosition(
+										data.drmOptions.xWatermarkPosition || undefined,
+										data.drmOptions.yWatermarkPosition || undefined,
+										data.drmOptions.watermarkBoxSize || undefined
+									)
+								"
 							/>
 							<div class="drm_options">
-								<div class="watermark_positioning">
-									<div class="pictur_box"></div>
-									<div>
+								<div v-show="data.drmOptions.watermark === true">
+									<div class="watermark_positioning">
+										<div>
+											<input
+												v-model="data.drmOptions.watermarkBoxSize"
+												type="range"
+												class="top_slider"
+												min="10"
+												max="100"
+												@change="
+													changeWatermarkPosition(
+														data.drmOptions.xWatermarkPosition,
+														data.drmOptions.yWatermarkPosition,
+														data.drmOptions.watermarkBoxSize
+													)
+												"
+											/>
+										</div>
+										<div class="pictur_box">
+											<div id="watermark_box" ref="watermark_box"></div>
+										</div>
+										<div>
+											<input
+												v-model="data.drmOptions.yWatermarkPosition"
+												type="range"
+												class="vertical_slider"
+												min="0"
+												max="100"
+												@change="
+													changeWatermarkPosition(
+														data.drmOptions.xWatermarkPosition,
+														data.drmOptions.yWatermarkPosition,
+														data.drmOptions.watermarkBoxSize
+													)
+												"
+											/>
+										</div>
 										<input
-											v-model="data.drmOptions.yWatermarkPosition"
+											v-model="data.drmOptions.xWatermarkPosition"
+											class="horizontal_slider"
 											type="range"
-											class="vertical_slider"
-											min="1"
+											min="0"
 											max="100"
 											@change="
 												changeWatermarkPosition(
 													data.drmOptions.xWatermarkPosition,
-													data.drmOptions.yWatermarkPosition
+													data.drmOptions.yWatermarkPosition,
+													data.drmOptions.watermarkBoxSize
 												)
 											"
 										/>
 									</div>
-									<input
-										v-model="data.drmOptions.xWatermarkPosition"
-										class="horizontal_slider"
-										type="range"
-										min="1"
-										max="100"
-										@change="
-											changeWatermarkPosition(
-												data.drmOptions.xWatermarkPosition,
-												data.drmOptions.yWatermarkPosition
-											)
-										"
+									<BaseCheckbox
+										v-model="data.drmOptions.watermarkExceedFrame"
+										label="Watermark Exceed Frame"
 									/>
-									<div id="watermark_box"></div>
+									<ContentWatermarkSelector
+										v-model="data.drmOptions.watermarkImage"
+										v-validate
+										data-vv-name="watermarkSelector"
+										FIX-data-vv-rules="{required: true, url: {require_protocol: false, require_host: false, allow_protocol_relative_urls: true}}"
+										:error="errors.first('watermarkSelector')"
+										:disabled="filetree.objects.length === 0"
+										:files="thumbnailFiles"
+										:resource-id="$route.params.id || ''"
+									/>
 								</div>
-								<h1 id="id1">My Heading 1</h1>
-								<button
-									type="button"
-									@click="
-										changeWatermarkPosition(
-											data.drmOptions.xWatermarkPosition,
-											data.drmOptions.yWatermarkPosition
-										)
-									"
-								>
-									Click Me!
-								</button>
-								<ContentWatermarkSelector
-									v-show="data.drmOptions.watermark === true"
-									v-model="data.drmOptions.watermarkImage"
-									v-validate
-									data-vv-name="watermarkSelector"
-									FIX-data-vv-rules="{required: true, url: {require_protocol: false, require_host: false, allow_protocol_relative_urls: true}}"
-									:error="errors.first('watermarkSelector')"
-									:disabled="filetree.objects.length === 0"
-									:files="thumbnailFiles"
-									:resource-id="$route.params.id || ''"
-								/>
 								<ContentDrmOptions v-model="data.drmOptions" />
 							</div>
 						</div>
@@ -335,25 +353,31 @@ export default {
 		this.loadFiletree();
 	},
 	methods: {
-		changeWatermarkPosition(xWatermarkPosition, yWatermarkPosition) {
-			// TODO add Scaling with .style.transform.scale(scaleFactor)
-			if (xWatermarkPosition === undefined) {
-				xWatermarkPosition = 50;
-			} else if (yWatermarkPosition === undefined) {
-				yWatermarkPosition = 50;
-			}
+		allDataLoaded() {
+			this.changeWatermarkPosition(
+				this.data.drmOptions.xWatermarkPosition,
+				this.data.drmOptions.yWatermarkPosition,
+				this.data.drmOptions.watermarkBoxSize
+			);
+		},
+		changeWatermarkPosition(
+			xWatermarkPosition = 50,
+			yWatermarkPosition = 50,
+			watermarkBoxSize = 55
+		) {
+			watermarkBoxSize *= 2;
+			this.$refs.watermark_box.style.height = watermarkBoxSize + "px";
+			this.$refs.watermark_box.style.width = watermarkBoxSize + "px";
+			xWatermarkPosition =
+				(xWatermarkPosition / 100) * (200 - watermarkBoxSize);
+			yWatermarkPosition =
+				(yWatermarkPosition / 100) * (200 - watermarkBoxSize);
 
-			xWatermarkPosition -= 50;
-			yWatermarkPosition -= 50;
+			let ypos = yWatermarkPosition - 4;
+			let xpos = xWatermarkPosition - 4;
 
-			let ymax = 180;
-			let ypos = (ymax / 100) * yWatermarkPosition;
-			let xmax = 180;
-			let xpos = (xmax / 100) * xWatermarkPosition;
-
-			const currentPos = (document.getElementById(
-				"watermark_box"
-			).style.transform = "translate(" + xpos + "px," + ypos + "px" + ")");
+			this.$refs.watermark_box.style.transform =
+				"translate(" + xpos + "px," + ypos + "px" + ")";
 		},
 		getObjValues(objs, returnArray) {
 			let objArray = Object.values(objs);
@@ -381,6 +405,9 @@ export default {
 						)
 							? "hostedAtSchulcloud"
 							: "hostedExternally";
+					})
+					.then(() => {
+						this.allDataLoaded();
 					})
 					.catch((e) => {
 						this.errors.add(e);
@@ -460,6 +487,17 @@ h3 {
 	display: flex;
 	justify-content: space-between;
 }
+.top_slider {
+	width: 200px;
+	height: 15px;
+	background: #d3d3d3;
+	border-radius: 5px;
+	outline: none;
+	opacity: 0.7;
+	-webkit-transition: 0.2s;
+	transition: opacity 0.2s;
+	-webkit-appearance: none;
+}
 .vertical_slider {
 	width: 200px;
 	height: 15px;
@@ -490,22 +528,24 @@ h3 {
 	border: 3px solid grey;
 }
 .pictur_box {
+	position: relative;
 	float: left;
 	width: 200px;
 	height: 200px;
 	border: 3px solid grey;
 }
 #watermark_box {
+	position: absolute;
 	width: 40px;
 	height: 40px;
-	margin-top: 47px;
-	margin-left: 89px;
+	margin-top: 0;
+	margin-left: 0;
 	border: 3px solid grey;
 }
 
 .watermark_positioning {
 	width: 500px;
-	height: 230px;
+	height: 250px;
 	overflow: hidden;
 }
 
@@ -515,6 +555,15 @@ h3 {
 	width: 100px;
 }
 .vertical_slider::-webkit-slider-thumb {
+	width: 25px;
+	height: 25px;
+	cursor: pointer;
+	background: rgb(76, 160, 175);
+	border-radius: 50%;
+	-webkit-appearance: none;
+	appearance: none;
+}
+.top_slider::-webkit-slider-thumb {
 	width: 25px;
 	height: 25px;
 	cursor: pointer;
