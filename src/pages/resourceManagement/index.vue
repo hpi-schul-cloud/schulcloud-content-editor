@@ -9,7 +9,7 @@
 		<VueFilterUi
 			:filter="filter"
 			:parser="parser"
-			@newFilter="updateFilter"
+			@newQuery="updateFilter"
 			label-add="Filter hinzufügen"
 			label-apply="Filtern"
 			label-cancle="Abbrechen"
@@ -159,7 +159,7 @@ export default {
 		...mapMutations("ui", {
 			registerFab: "REGISTER_FAB",
 		}),
-		updateFilter([feathersQuery, urlQuery]) {
+		updateFilter(feathersQuery) {
 			if (feathersQuery.$limit) {
 				this.pagination.itemsPerPage = feathersQuery.$limit;
 			}

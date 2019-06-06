@@ -4887,13 +4887,6 @@ fd-slicer@~1.1.0:
   dependencies:
     pend "~1.2.0"
 
-feathersjs-filter-ui@^0.1.3:
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/feathersjs-filter-ui/-/feathersjs-filter-ui-0.1.3.tgz#39be495db90745af34915d63341e15f088e569f7"
-  integrity sha512-MunN88StolZOv5XK7RkcyADvnuFjN1EEI0hoV4CHJegNAPxt9JjWFh4QPt3H/Xg68Mk9xZUsoxXHle+iDS9smA==
-  dependencies:
-    vue "^2.6.10"
-
 figgy-pudding@^3.5.1:
   version "3.5.1"
   resolved "https://registry.yarnpkg.com/figgy-pudding/-/figgy-pudding-3.5.1.tgz#862470112901c727a0e495a80744bd5baa1d6790"
@@ -8151,7 +8144,7 @@ longest@^1.0.0:
   resolved "https://registry.yarnpkg.com/longest/-/longest-1.0.1.tgz#30a0b2da38f73770e8294a0d22e6625ed77d0097"
   integrity sha1-MKCy2jj3N3DoKUoNIuZiXtd9AJc=
 
-loose-envify@^1.0.0:
+loose-envify@^1.0.0, loose-envify@^1.2.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/loose-envify/-/loose-envify-1.4.0.tgz#71ee51fa7be4caec1a63839f7e682d8132d30caf"
   integrity sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==
@@ -12947,6 +12940,13 @@ vue-chartjs@^3.4.2:
   resolved "https://registry.yarnpkg.com/vue-chartjs/-/vue-chartjs-3.4.2.tgz#0323e6a99a10a68f38d426899c3994f48596fd23"
   integrity sha512-EhoXUJ17+9isMLhJpOliS++xE5z5FM8iAVytIqnKofByVMr8AISRL/SCy3zvWbvzhjgQPStd9y6adMF5bnWQdg==
 
+vue-clickout@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/vue-clickout/-/vue-clickout-1.0.0.tgz#a353015465a693827435e1ab8a350f5d895dbcb0"
+  integrity sha512-mYGihgRBti1jX5OBn2t7QkmEIgcCIbPewMWpk1NHMWqUSGM+vnvqzKFz3rw3omUYElFWE0rtkPINTLfQO7QiqA==
+  dependencies:
+    loose-envify "^1.2.0"
+
 vue-config@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/vue-config/-/vue-config-1.0.0.tgz#f6e6704845808fbfa3b17300fc7ffd624c2ca42e"
@@ -12992,6 +12992,14 @@ vue-eslint-parser@^6.0.4:
     espree "^5.0.0"
     esquery "^1.0.1"
     lodash "^4.17.11"
+
+vue-filter-ui@^0.3.3:
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/vue-filter-ui/-/vue-filter-ui-0.3.3.tgz#3a4fc9273a50d4009914f7f4ba7e530d449caf17"
+  integrity sha512-HetmbtgW41ZINewNzQeu333I+xaVV4S/5GODhOmYglpM/CrGFiFosIjIs4lpBB+xBkVLteSPsv0/5m0p5mU/xg==
+  dependencies:
+    vue "^2.6.10"
+    vue-clickout "^1.0.0"
 
 vue-fragment@^1.5.1:
   version "1.5.1"
