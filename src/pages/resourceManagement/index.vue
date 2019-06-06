@@ -41,8 +41,7 @@
 
 <script>
 import Vue from "vue";
-import VueFilterUi, { parser } from "vue-filter-ui";
-
+import VueFilterUi, { parser, inputs } from "vue-filter-ui";
 import Searchbar from "@/components/Searchbar";
 import Pagination from "@/components/Pagination";
 import ResourceBulkEdit from "@/components/resourceManagement/index/ResourceBulkEdit";
@@ -83,7 +82,7 @@ export default {
 						{
 							attribute: "$limit",
 							operator: "=",
-							design: "Radio",
+							input: inputs.Radio,
 							options: [
 								{ value: 10, label: "10" },
 								{ value: 25, label: "25" },
