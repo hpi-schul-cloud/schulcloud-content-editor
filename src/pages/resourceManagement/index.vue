@@ -6,14 +6,14 @@
 			:placeholder="$lang.resourceManagement.search.searchbar.placeholder"
 		/>
 
-		<FeathersFilter
-			:handle-url="true"
-			:consistent-order="true"
+		<VueFilterUi
 			:filter="filter"
+			:parser="parser"
 			@newFilter="updateFilter"
-			add-label="Filter hinzufügen"
-			apply-label="Filtern"
-			cancle-label="Abbrechen"
+			label-add="Filter hinzufügen"
+			label-apply="Filtern"
+			label-cancle="Abbrechen"
+			label-remove="Entfernen"
 		/>
 		<p>
 			{{ pagination.totalEntrys }}
@@ -41,9 +41,7 @@
 
 <script>
 import Vue from "vue";
-import FeathersFilter from "feathersjs-filter-ui";
-
-Vue.use(FeathersFilter);
+import VueFilterUi, { parser } from "vue-filter-ui";
 
 import Searchbar from "@/components/Searchbar";
 import Pagination from "@/components/Pagination";
@@ -54,7 +52,7 @@ import { mapMutations } from "vuex";
 
 export default {
 	components: {
-		FeathersFilter,
+		VueFilterUi,
 		Searchbar,
 		Pagination,
 		ResourceBulkEdit,
@@ -75,33 +73,27 @@ export default {
 				},
 			},
 			resources: [],
+			parser: parser.FeathersJS,
 			filter: [
 				{
-					type: "sort",
-					title: "Sortieren nach",
-					displayTemplate: "Sortieren nach: %1",
-					options: Object.entries(this.$lang.resources),
-					defaultSelection: "updatedAt",
-					defaultOrder: "DESC",
-				},
-				{
-					type: "limit",
 					title: "Einträge pro Seite",
-					displayTemplate: "Einträge pro Seite: %1",
-					options: [10, 25, 50, 100, 250, 500],
-					defaultSelection: 50,
-				},
-				{
-					type: "boolean",
-					title: "Status",
-					options: {
-						isPublished: this.$lang.resources.isPublished,
-						isProtected: this.$lang.resources.isProtected,
-					},
-					applyNegated: {
-						isPublished: [false, true],
-						isProtected: [true, false],
-					},
+					chipTemplate: "Einträge pro Seite: %1",
+					required: true,
+					filter: [
+						{
+							attribute: "$limit",
+							operator: "=",
+							design: "Radio",
+							options: [
+								{ value: 10, label: "10" },
+								{ value: 25, label: "25" },
+								{ value: 50, label: "50" },
+								{ value: 100, label: "100" },
+								{ value: 250, label: "250" },
+								{ value: 500, label: "500" },
+							],
+						},
+					],
 				},
 			],
 			filterQuery: {},
@@ -206,7 +198,7 @@ export default {
 					this.pagination.totalEntrys = data.total;
 				})
 				.catch((error) => {
-					console.error(e);
+					console.error(error);
 					this.$toasted.error(error);
 				});
 		},
