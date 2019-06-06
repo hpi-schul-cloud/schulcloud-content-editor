@@ -73,7 +73,7 @@
 												class="top_slider"
 												min="10"
 												max="100"
-												@change="
+												@input="
 													changeWatermarkPosition(
 														data.drmOptions.xWatermarkPosition,
 														data.drmOptions.yWatermarkPosition,
@@ -92,7 +92,7 @@
 												class="vertical_slider"
 												min="0"
 												max="100"
-												@change="
+												@input="
 													changeWatermarkPosition(
 														data.drmOptions.xWatermarkPosition,
 														data.drmOptions.yWatermarkPosition,
@@ -107,7 +107,7 @@
 											type="range"
 											min="0"
 											max="100"
-											@change="
+											@input="
 												changeWatermarkPosition(
 													data.drmOptions.xWatermarkPosition,
 													data.drmOptions.yWatermarkPosition,
