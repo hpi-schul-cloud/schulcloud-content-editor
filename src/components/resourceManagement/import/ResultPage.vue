@@ -60,7 +60,17 @@ export default {
 				},
 				{
 					text: "Importierte Inhalte ansehen",
-					to: { name: "resourceManagement" },
+					to: {
+						name: "resourceManagement",
+						props: {
+							defaultQuery: {
+								createdAt: {
+									$gt: Date.now() - 2 * 60 * 1000, // now before 5 mins
+								},
+								userId: this.$store.getters["user/GET_USER"]._id,
+							},
+						},
+					},
 					styling: "primary",
 				},
 				{

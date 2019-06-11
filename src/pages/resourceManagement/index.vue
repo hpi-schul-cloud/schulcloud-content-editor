@@ -5,7 +5,19 @@
 			:label="$lang.resourceManagement.search.searchbar.label"
 			:placeholder="$lang.resourceManagement.search.searchbar.placeholder"
 		/>
+		<div v-if="hasDefaultQuery" class="remove-predefined-filter">
+			<i class="material-icons">warning</i>
 
+			Aufgrund von vordefinierten Filtern siehst du nur einen Teil der Daten.
+			<router-link
+				:to="{ name: 'resourceManagement' }"
+				@click="this.loadContent()"
+			>
+				<BaseButton :raised="true" styling="primary">
+					alle Inhalte anzeigen
+				</BaseButton>
+			</router-link>
+		</div>
 		<VueFilterUi
 			:filter="$_filterConfig"
 			:parser="parser"
@@ -45,6 +57,7 @@ import VueFilterUi, { parser } from "vue-filter-ui";
 import Searchbar from "@/components/Searchbar";
 import Pagination from "@/components/Pagination";
 import ResourceBulkEdit from "@/components/resourceManagement/index/ResourceBulkEdit";
+import BaseButton from "@/components/base/BaseButton";
 
 import filter from "@/mixins/resourceFilter.js";
 import api from "@/mixins/api.js";
@@ -52,12 +65,19 @@ import { mapMutations } from "vuex";
 
 export default {
 	components: {
+		BaseButton,
 		VueFilterUi,
 		Searchbar,
 		Pagination,
 		ResourceBulkEdit,
 	},
 	mixins: [api, filter],
+	props: {
+		defaultQuery: {
+			type: Object,
+			default: () => ({}),
+		},
+	},
 	data() {
 		return {
 			searchString: this.$route.query.q || "",
@@ -78,8 +98,12 @@ export default {
 		};
 	},
 	computed: {
+		hasDefaultQuery() {
+			return !!Object.keys(this.defaultQuery).length;
+		},
 		apiSearchQuery() {
 			return {
+				...this.defaultQuery,
 				...this.filterQuery,
 				$limit: this.pagination.itemsPerPage,
 				$skip: this.pagination.itemsPerPage * (this.pagination.page - 1),
@@ -88,6 +112,9 @@ export default {
 		},
 	},
 	watch: {
+		defaultQuery: function() {
+			this.loadContent();
+		},
 		searchString: function(to, from) {
 			if (to === from) {
 				return;
@@ -183,3 +210,14 @@ export default {
 	},
 };
 </script>
+
+<style lang="scss" scoped>
+.remove-predefined-filter {
+	display: flex;
+	align-items: center;
+	float: right;
+	i {
+		margin-right: 0.5rem;
+	}
+}
+</style>
