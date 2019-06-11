@@ -5,7 +5,7 @@ export default {
 	isPublished: "Veröffentlicht",
 	isProtected: "DRM Schutz",
 	licenses: "Lizenzen",
-	mimeType: "mimetype",
+	mimeType: "Datentyp",
 	originId: "Origin ID",
 	providerName: "Anbieter",
 	tags: "Tags",

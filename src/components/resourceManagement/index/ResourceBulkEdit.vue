@@ -1,5 +1,14 @@
 <template>
 	<div>
+		<BaseTags
+			v-model="visibleColoumnNames"
+			:label="$lang.resourceManagement.bulk.visibleColoumns"
+			:autocomplete-items="
+				availableColoumns.map((a) => ({ text: $lang.resources[a.key] }))
+			"
+			:add-only-from-autocomplete="true"
+		/>
+
 		<BaseCheckbox
 			v-model="bulkEdit"
 			:label="$lang.resourceManagement.bulk.enableBulkEdit"
@@ -9,15 +18,6 @@
 			v-if="bulkEdit"
 			v-model="bulkAdvancedEdit"
 			:label="$lang.resourceManagement.bulk.enableBulkEditAdvanced"
-		/>
-
-		<BaseTags
-			v-model="visibleColoumnNames"
-			:label="$lang.resourceManagement.bulk.visibleColoumns"
-			:autocomplete-items="
-				availableColoumns.map((a) => ({ text: $lang.resources[a.key] }))
-			"
-			:add-only-from-autocomplete="true"
 		/>
 
 		<ResourceBulkEditTable

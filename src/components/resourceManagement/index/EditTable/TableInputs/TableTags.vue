@@ -57,7 +57,7 @@ export default {
 <style lang="scss" scoped>
 div.table-tag-input {
 	max-width: 100%;
-	overflow: auto;
+	overflow: initial;
 	font-size: 0.8em;
 	color: #1d1d1d;
 	background: transparent;
@@ -96,6 +96,11 @@ div.table-tag-input {
 			font-size: 1rem;
 			color: #757575;
 			background: none;
+		}
+	}
+	.ti-autocomplete[class~="ti-autocomplete"] {
+		.ti-selected-item {
+			background-color: var(--primaryColor);
 		}
 	}
 }

@@ -15,12 +15,18 @@ const resourceAttributes = [
 	"updatedAt",
 ];
 
+import { options as mimeTypes } from "@/components/resourceManagement/edit/inputs/ContentMimetype.vue";
+
 export default {
 	computed: {
 		$_filterConfig() {
 			const resourceOptions = resourceAttributes.map((attr) => {
 				return { value: attr, label: this.$lang.resources[attr] };
 			});
+			const mimeTypeOptions = mimeTypes.map((m) => ({
+				value: m.key,
+				label: m.value,
+			}));
 			return [
 				{
 					title: "Einträge pro Seite",
@@ -116,6 +122,18 @@ export default {
 								{ value: undefined, label: "undefined" },
 								{ value: true, label: "true" },
 							],
+						},
+					],
+				},
+				{
+					title: "Datentyp",
+					chipTemplate: "Datentyp: %1",
+					filter: [
+						{
+							attribute: "mimeType",
+							operator: "=",
+							input: inputs.Select,
+							options: mimeTypeOptions,
 						},
 					],
 				},
