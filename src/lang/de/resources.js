@@ -1,7 +1,6 @@
 // login.js
 export default {
 	contentCategory: "Kategorie",
-	createdAt: "Erstellt",
 	description: "Beschreibung",
 	isPublished: "Veröffentlicht",
 	isProtected: "DRM Schutz",
@@ -12,7 +11,6 @@ export default {
 	tags: "Tags",
 	thumbnail: "Thumbnail",
 	title: "Titel",
-	updatedAt: "Aktualisiert",
 	url: "URL",
 	userId: "Ersteller",
 	createdAt: "Erstellt am",

@@ -7,8 +7,8 @@
 		/>
 
 		<VueFilterUi
-			:filter="filter"
-			:parser="parser"
+			:filter="$_filterConfig"
+			:parser="parser.FeathersJS"
 			@newQuery="updateFilter"
 			label-add="Filter hinzufügen"
 			label-apply="Filtern"
@@ -41,11 +41,12 @@
 
 <script>
 import Vue from "vue";
-import VueFilterUi, { parser, inputs } from "vue-filter-ui";
+import VueFilterUi, { parser } from "vue-filter-ui";
 import Searchbar from "@/components/Searchbar";
 import Pagination from "@/components/Pagination";
 import ResourceBulkEdit from "@/components/resourceManagement/index/ResourceBulkEdit";
 
+import filter from "@/mixins/resourceFilter.js";
 import api from "@/mixins/api.js";
 import { mapMutations } from "vuex";
 
@@ -56,7 +57,7 @@ export default {
 		Pagination,
 		ResourceBulkEdit,
 	},
-	mixins: [api],
+	mixins: [api, filter],
 	data() {
 		return {
 			searchString: this.$route.query.q || "",
@@ -72,29 +73,7 @@ export default {
 				},
 			},
 			resources: [],
-			parser: parser.FeathersJS,
-			filter: [
-				{
-					title: "Einträge pro Seite",
-					chipTemplate: "Einträge pro Seite: %1",
-					required: true,
-					filter: [
-						{
-							attribute: "$limit",
-							operator: "=",
-							input: inputs.Radio,
-							options: [
-								{ value: 10, label: "10" },
-								{ value: 25, label: "25" },
-								{ value: 50, label: "50" },
-								{ value: 100, label: "100" },
-								{ value: 250, label: "250" },
-								{ value: 500, label: "500" },
-							],
-						},
-					],
-				},
-			],
+			parser,
 			filterQuery: {},
 		};
 	},

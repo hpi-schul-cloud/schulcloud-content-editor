@@ -35,6 +35,7 @@ export const unpaginateQuery = (query) => {
 };
 
 const stringify = (query) => {
+	query = flattenQuery(query);
 	const newQuery = {};
 	// undefined --> null
 	// include empty arrays ?key=&...
@@ -48,6 +49,35 @@ const stringify = (query) => {
 	return qs.stringify(newQuery);
 };
 
+const flattenQuery = (queryObj, isRoot = true) => {
+	const flatObj = {};
+	for (const key in queryObj) {
+		// key not in obj
+		if (!queryObj.hasOwnProperty(key)) continue;
+
+		// is nested?
+		if (typeof queryObj[key] === "object" && !Array.isArray(queryObj[key])) {
+			const flatObject = flattenQuery(queryObj[key], false);
+			for (var nestedKey in flatObject) {
+				// key not in obj
+				if (!flatObject.hasOwnProperty(nestedKey)) continue;
+				if (isRoot) {
+					flatObj[key + nestedKey] = flatObject[nestedKey];
+				} else {
+					flatObj["[" + key + "]" + nestedKey] = flatObject[nestedKey];
+				}
+			}
+		} else {
+			if (!isRoot) {
+				flatObj["[" + key + "]"] = queryObj[key];
+			} else {
+				flatObj[key] = queryObj[key];
+			}
+		}
+	}
+	return flatObj;
+};
+
 export default {
 	methods: {
 		async $_resourceGet(resourceId) {
@@ -58,7 +88,7 @@ export default {
 			);
 		},
 		async $_resourceFind(query) {
-			const queryString = qs.stringify(query);
+			const queryString = stringify(query);
 
 			return jsonFetch(
 				this.$config.API.contentServerUrl +
