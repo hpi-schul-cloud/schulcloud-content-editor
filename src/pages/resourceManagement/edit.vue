@@ -365,6 +365,10 @@ export default {
 			yWatermarkPosition = 50,
 			watermarkBoxSize = 55
 		) {
+			this.data.drmOptions.xWatermarkPosition = xWatermarkPosition;
+			this.data.drmOptions.yWatermarkPosition = yWatermarkPosition;
+			this.data.drmOptions.watermarkBoxSize = watermarkBoxSize;
+
 			watermarkBoxSize *= 2;
 			this.$refs.watermark_box.style.height = watermarkBoxSize + "px";
 			this.$refs.watermark_box.style.width = watermarkBoxSize + "px";
