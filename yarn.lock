@@ -12993,10 +12993,10 @@ vue-eslint-parser@^6.0.4:
     esquery "^1.0.1"
     lodash "^4.17.11"
 
-vue-filter-ui@^0.3.3:
-  version "0.3.3"
-  resolved "https://registry.yarnpkg.com/vue-filter-ui/-/vue-filter-ui-0.3.3.tgz#3a4fc9273a50d4009914f7f4ba7e530d449caf17"
-  integrity sha512-HetmbtgW41ZINewNzQeu333I+xaVV4S/5GODhOmYglpM/CrGFiFosIjIs4lpBB+xBkVLteSPsv0/5m0p5mU/xg==
+vue-filter-ui@^0.3.5:
+  version "0.3.5"
+  resolved "https://registry.yarnpkg.com/vue-filter-ui/-/vue-filter-ui-0.3.5.tgz#62d017e2a85ab5513efcf52731623bed0c46a19e"
+  integrity sha512-BKdoH6CxRI0nRS7fcRsTohu3udPcbvLJNLJ5opeqw7sb9YqnE9YsZNY+5fjLyKockseRWVns49eTBs8AsxlGoQ==
   dependencies:
     vue "^2.6.10"
     vue-clickout "^1.0.0"

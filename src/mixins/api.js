@@ -34,21 +34,6 @@ export const unpaginateQuery = (query) => {
 	return cleanQuery;
 };
 
-const stringify = (query) => {
-	query = flattenQuery(query);
-	const newQuery = {};
-	// undefined --> null
-	// include empty arrays ?key=&...
-	Object.entries(query).forEach(([key, value]) => {
-		if (Array.isArray(value) && value.length === 0) {
-			newQuery[key] = [null];
-		} else {
-			newQuery[key] = value === undefined ? null : value;
-		}
-	});
-	return qs.stringify(newQuery);
-};
-
 const flattenQuery = (queryObj, isRoot = true) => {
 	const flatObj = {};
 	for (const key in queryObj) {
@@ -76,6 +61,32 @@ const flattenQuery = (queryObj, isRoot = true) => {
 		}
 	}
 	return flatObj;
+};
+
+const removeUndefined = (obj) => {
+	const cleanedData = {};
+	Object.entries(obj).forEach(([key, value]) => {
+		if (value !== undefined) {
+			cleanedData[key] = value;
+		}
+	});
+	return cleanedData;
+};
+
+const stringify = (query) => {
+	const newQuery = {};
+	// undefined --> null
+	// include empty arrays ?key=&...
+	Object.entries(removeUndefined(flattenQuery(query))).forEach(
+		([key, value]) => {
+			if (Array.isArray(value) && value.length === 0) {
+				newQuery[key] = [null];
+			} else {
+				newQuery[key] = value === undefined ? null : value;
+			}
+		}
+	);
+	return qs.stringify(newQuery);
 };
 
 export default {

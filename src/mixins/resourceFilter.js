@@ -68,7 +68,7 @@ export default {
 				{
 					title: "Feld enthält",
 					chipTemplate: ([attribute, value]) =>
-						`${this.$lang.resources[attribute]}: ${value}`,
+						`${this.$lang.resources[attribute]} enthält: ${value}`,
 					parser: {
 						generator: (filterGroupConfig, values) => {
 							const configs = filterGroupConfig.filter;
@@ -92,35 +92,30 @@ export default {
 					],
 				},
 				{
-					title: "Titel",
-					chipTemplate: `Titel enthält: %1`,
-					filter: [
-						{
-							attribute: "title[$match]",
-							operator: "=",
-							input: inputs.InputText,
+					title: "Veröffentlicht?",
+					chipTemplate: ([isPublished]) =>
+						isPublished ? "veröffentlicht" : "unveröffentlicht",
+					parser: {
+						generator: (filterGroupConfig, values) => {
+							const configs = filterGroupConfig.filter;
+							const value = values[configs[0].id];
+							if (value === false) return { "isPublished[$ne]": true };
+							if (value === true) {
+								return { isPublished: true };
+							}
+							return {};
 						},
-					],
-				},
-				{
-					title: "Beschreibung",
-					chipTemplate: `Beschreibung enthält: %1`,
+					},
 					filter: [
 						{
-							attribute: "description[$match]",
+							attribute: "isPublished",
 							operator: "=",
-							input: inputs.InputText,
-						},
-					],
-				},
-				{
-					title: "Lizenz",
-					chipTemplate: `Lizenz: %1`,
-					filter: [
-						{
-							attribute: "licenses[$match]",
-							operator: "=",
-							input: inputs.InputText,
+							input: inputs.TriSwitch,
+							options: [
+								{ value: false, label: "false" },
+								{ value: undefined, label: "undefined" },
+								{ value: true, label: "true" },
+							],
 						},
 					],
 				},

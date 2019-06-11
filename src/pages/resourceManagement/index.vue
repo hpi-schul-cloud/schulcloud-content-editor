@@ -8,7 +8,7 @@
 
 		<VueFilterUi
 			:filter="$_filterConfig"
-			:parser="parser.FeathersJS"
+			:parser="parser"
 			@newQuery="updateFilter"
 			label-add="Filter hinzufügen"
 			label-apply="Filtern"
@@ -73,7 +73,7 @@ export default {
 				},
 			},
 			resources: [],
-			parser,
+			parser: parser.FeathersJS,
 			filterQuery: {},
 		};
 	},
