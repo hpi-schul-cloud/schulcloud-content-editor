@@ -5,15 +5,27 @@
 			:label="$lang.resourceManagement.search.searchbar.label"
 			:placeholder="$lang.resourceManagement.search.searchbar.placeholder"
 		/>
+		<div v-if="hasDefaultQuery" class="remove-predefined-filter">
+			<i class="material-icons">warning</i>
 
-		<FeathersFilter
-			:handle-url="true"
-			:consistent-order="true"
-			:filter="filter"
-			@newFilter="updateFilter"
-			add-label="Filter hinzufügen"
-			apply-label="Filtern"
-			cancle-label="Abbrechen"
+			Aufgrund von vordefinierten Filtern siehst du nur einen Teil der Daten.
+			<router-link
+				:to="{ name: 'resourceManagement' }"
+				@click="this.loadContent()"
+			>
+				<BaseButton :raised="true" styling="primary">
+					alle Inhalte anzeigen
+				</BaseButton>
+			</router-link>
+		</div>
+		<VueFilterUi
+			:filter="$_filterConfig"
+			:parser="parser"
+			@newQuery="updateFilter"
+			label-add="Filter hinzufügen"
+			label-apply="Filtern"
+			label-cancle="Abbrechen"
+			label-remove="Entfernen"
 		/>
 		<p>
 			{{ pagination.totalEntrys }}
@@ -41,25 +53,31 @@
 
 <script>
 import Vue from "vue";
-import FeathersFilter from "feathersjs-filter-ui";
-
-Vue.use(FeathersFilter);
-
+import VueFilterUi, { parser } from "vue-filter-ui";
 import Searchbar from "@/components/Searchbar";
 import Pagination from "@/components/Pagination";
 import ResourceBulkEdit from "@/components/resourceManagement/index/ResourceBulkEdit";
+import BaseButton from "@/components/base/BaseButton";
 
+import filter from "@/mixins/resourceFilter.js";
 import api from "@/mixins/api.js";
 import { mapMutations } from "vuex";
 
 export default {
 	components: {
-		FeathersFilter,
+		BaseButton,
+		VueFilterUi,
 		Searchbar,
 		Pagination,
 		ResourceBulkEdit,
 	},
-	mixins: [api],
+	mixins: [api, filter],
+	props: {
+		defaultQuery: {
+			type: Object,
+			default: () => ({}),
+		},
+	},
 	data() {
 		return {
 			searchString: this.$route.query.q || "",
@@ -75,41 +93,17 @@ export default {
 				},
 			},
 			resources: [],
-			filter: [
-				{
-					type: "sort",
-					title: "Sortieren nach",
-					displayTemplate: "Sortieren nach: %1",
-					options: Object.entries(this.$lang.resources),
-					defaultSelection: "updatedAt",
-					defaultOrder: "DESC",
-				},
-				{
-					type: "limit",
-					title: "Einträge pro Seite",
-					displayTemplate: "Einträge pro Seite: %1",
-					options: [10, 25, 50, 100, 250, 500],
-					defaultSelection: 50,
-				},
-				{
-					type: "boolean",
-					title: "Status",
-					options: {
-						isPublished: this.$lang.resources.isPublished,
-						isProtected: this.$lang.resources.isProtected,
-					},
-					applyNegated: {
-						isPublished: [false, true],
-						isProtected: [true, false],
-					},
-				},
-			],
+			parser: parser.FeathersJS,
 			filterQuery: {},
 		};
 	},
 	computed: {
+		hasDefaultQuery() {
+			return !!Object.keys(this.defaultQuery).length;
+		},
 		apiSearchQuery() {
 			return {
+				...this.defaultQuery,
 				...this.filterQuery,
 				$limit: this.pagination.itemsPerPage,
 				$skip: this.pagination.itemsPerPage * (this.pagination.page - 1),
@@ -118,6 +112,9 @@ export default {
 		},
 	},
 	watch: {
+		defaultQuery: function() {
+			this.loadContent();
+		},
 		searchString: function(to, from) {
 			if (to === from) {
 				return;
@@ -168,7 +165,7 @@ export default {
 		...mapMutations("ui", {
 			registerFab: "REGISTER_FAB",
 		}),
-		updateFilter([feathersQuery, urlQuery]) {
+		updateFilter(feathersQuery) {
 			if (feathersQuery.$limit) {
 				this.pagination.itemsPerPage = feathersQuery.$limit;
 			}
@@ -206,10 +203,21 @@ export default {
 					this.pagination.totalEntrys = data.total;
 				})
 				.catch((error) => {
-					console.error(e);
+					console.error(error);
 					this.$toasted.error(error);
 				});
 		},
 	},
 };
 </script>
+
+<style lang="scss" scoped>
+.remove-predefined-filter {
+	display: flex;
+	align-items: center;
+	float: right;
+	i {
+		margin-right: 0.5rem;
+	}
+}
+</style>

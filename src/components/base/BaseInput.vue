@@ -52,7 +52,7 @@ export default {
 .wrapper {
 	position: relative;
 	width: 100%;
-	margin: 1.5em 0;
+	margin: 0.5rem 0 1rem;
 }
 label {
 	font-size: 0.9em;

@@ -70,7 +70,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .wrapper {
-	margin: 1.5em 0;
+	margin: 0.5rem 0 1rem;
 }
 label {
 	font-size: 0.9em;
@@ -84,7 +84,7 @@ label {
 div.tag-input {
 	width: 100%;
 	max-width: 100%;
-	overflow: visible;
+	overflow: initial;
 	font-size: 0.9em;
 	color: #1d1d1d;
 	background: transparent;
@@ -125,6 +125,11 @@ div.tag-input {
 			font-size: 1rem;
 			color: #757575;
 			background: none;
+		}
+	}
+	.ti-autocomplete[class~="ti-autocomplete"] {
+		.ti-selected-item {
+			background-color: var(--primaryColor);
 		}
 	}
 }

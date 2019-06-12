@@ -47,14 +47,10 @@ export default {
 	},
 	methods: {
 		getTotalContent() {
-			return this.$_resourceGet()
-				.then((data) => {
-					// JSON responses are automatically parsed.
-					this.totalContent = data.total;
-				})
-				.catch((e) => {
-					this.errors.push(e);
-				});
+			return this.$_resourceGet().then((data) => {
+				// JSON responses are automatically parsed.
+				this.totalContent = data.total;
+			});
 		},
 		getMostClicked() {
 			// apiQuery
@@ -62,14 +58,10 @@ export default {
 				"$sort[clickCount]": -1,
 				$limit: 3,
 			};
-			return this.$_resourceFind(apiQuery)
-				.then((data) => {
-					// JSON responses are automatically parsed.
-					this.mostClickedContent = data.data;
-				})
-				.catch((e) => {
-					this.errors.push(e);
-				});
+			return this.$_resourceFind(apiQuery).then((data) => {
+				// JSON responses are automatically parsed.
+				this.mostClickedContent = data.data;
+			});
 		},
 	},
 };

@@ -1,5 +1,14 @@
 <template>
 	<div>
+		<BaseTags
+			v-model="visibleColoumnNames"
+			:label="$lang.resourceManagement.bulk.visibleColoumns"
+			:autocomplete-items="
+				availableColoumns.map((a) => ({ text: $lang.resources[a.key] }))
+			"
+			:add-only-from-autocomplete="true"
+		/>
+
 		<BaseCheckbox
 			v-model="bulkEdit"
 			:label="$lang.resourceManagement.bulk.enableBulkEdit"
@@ -9,15 +18,6 @@
 			v-if="bulkEdit"
 			v-model="bulkAdvancedEdit"
 			:label="$lang.resourceManagement.bulk.enableBulkEditAdvanced"
-		/>
-
-		<BaseTags
-			v-model="visibleColoumnNames"
-			:label="$lang.resourceManagement.bulk.visibleColoumns"
-			:autocomplete-items="
-				availableColoumns.map((a) => ({ text: $lang.resources[a.key] }))
-			"
-			:add-only-from-autocomplete="true"
 		/>
 
 		<ResourceBulkEditTable
@@ -215,44 +215,10 @@ export default {
 				return cleanedData;
 			}
 
-			function flattenQuery(queryObj, isRoot = true) {
-				const flatObj = {};
-				for (const key in queryObj) {
-					// key not in obj
-					if (!queryObj.hasOwnProperty(key)) continue;
-
-					// is nested?
-					if (
-						typeof queryObj[key] === "object" &&
-						!Array.isArray(queryObj[key])
-					) {
-						const flatObject = flattenQuery(queryObj[key], false);
-						for (var nestedKey in flatObject) {
-							// key not in obj
-							if (!flatObject.hasOwnProperty(nestedKey)) continue;
-							if (isRoot) {
-								flatObj[key + nestedKey] = flatObject[nestedKey];
-							} else {
-								flatObj["[" + key + "]" + nestedKey] = flatObject[nestedKey];
-							}
-						}
-					} else {
-						if (!isRoot) {
-							flatObj["[" + key + "]"] = queryObj[key];
-						} else {
-							flatObj[key] = queryObj[key];
-						}
-					}
-				}
-				return flatObj;
-			}
-
-			const replaceQuery = removeUndefined(
-				flattenQuery({
-					...this.query,
-					$replace: this.bulkFind,
-				})
-			);
+			const replaceQuery = removeUndefined({
+				...this.query,
+				$replace: this.bulkFind,
+			});
 
 			const affectedItems = await this.$_resourceFindAmount(replaceQuery);
 			if (!window.confirm(`${affectedItems} Einträge bearbeiten?`)) {
