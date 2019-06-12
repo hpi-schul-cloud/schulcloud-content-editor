@@ -62,7 +62,7 @@ export default {
 					text: "Importierte Inhalte ansehen",
 					to: {
 						name: "resourceManagement",
-						props: {
+						params: {
 							defaultQuery: {
 								createdAt: {
 									$gt: Date.now() - 2 * 60 * 1000, // now before 5 mins
