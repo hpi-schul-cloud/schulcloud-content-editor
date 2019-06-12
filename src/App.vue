@@ -4,8 +4,8 @@
 		<vue-progress-bar />
 		<!--eslint-enable-->
 		<TheHeader class="header" />
-		<TheSidebar :items="sidebarItems" class="sidebar" />
-		<main class="container-fluid-max">
+		<TheSidebar v-if="jwt" :items="sidebarItems" class="sidebar" />
+		<main :class="{ 'with-sidebar': !!jwt }">
 			<Transition name="fade" mode="out-in" appear>
 				<RouterView v-if="jwt" />
 			</Transition>
@@ -112,8 +112,11 @@ main {
 	max-width: 100% !important;
 	padding-top: $header-height;
 	padding-right: 25px;
-	padding-left: 200px;
+	padding-left: 25px;
 	margin: 0 auto !important;
+	&.with-sidebar {
+		padding-left: 200px;
+	}
 }
 
 .header {
