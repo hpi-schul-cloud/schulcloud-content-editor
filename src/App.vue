@@ -51,7 +51,7 @@ export default {
 		}),
 		sidebarItems() {
 			return Router.options.routes.filter((route) => {
-				if (this.userInfo.role === "user") {
+				if ((this.userInfo || {}).role === "user") {
 					return;
 					!!route.sidebarTitle && route.name !== "userManagement/registration";
 				} else return !!route.sidebarTitle;

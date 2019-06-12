@@ -34,7 +34,7 @@ export default {
 			userInfo: "GET_USER",
 		}),
 		userRole() {
-			return this.userInfo.role || "Superhero"; //TODO:
+			return (this.userInfo || {}).role || "Superhero"; //TODO:
 		},
 	},
 	methods: {
