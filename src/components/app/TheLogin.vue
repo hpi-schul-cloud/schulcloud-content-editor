@@ -76,6 +76,7 @@ export default {
 			login: {
 				username: "",
 				password: "",
+				strategy: "local",
 			},
 			pwInputType: "password",
 			pwVisible: false,

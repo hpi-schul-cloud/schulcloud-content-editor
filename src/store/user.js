@@ -29,7 +29,7 @@ const decodeJwt = (jwt) => {
 const actions = {
 	async LOGIN({ commit }, data) {
 		const { accessToken } = await jsonFetch(
-			configFile.API.serverServerUrl + configFile.API.authPath,
+			configFile.API.contentServerUrl + configFile.API.authPath,
 			{
 				method: "POST",
 				body: data,
@@ -40,11 +40,44 @@ const actions = {
 		const { userId } = decodeJwt(accessToken);
 
 		const user = await jsonFetch(
-			configFile.API.serverServerUrl + configFile.API.userInfoPath + userId
+			configFile.API.contentServerUrl + configFile.API.userInfoPath + userId
 		);
 
 		commit("_SET_JWT", accessToken);
 		commit("_SET_USER", user);
+	},
+	async REGISTER_USER({ commit }, data) {
+		return new Promise((resolve, reject) => {
+			jsonFetch(configFile.API.contentServerUrl + configFile.API.userInfoPath, {
+				method: "POST",
+				body: data,
+			}).then(
+				(response) => {
+					resolve(response);
+				},
+				(error) => {
+					reject(error);
+				}
+			);
+		});
+	},
+	async REGISTER_PROVIDER({ commit }, data) {
+		return new Promise((resolve, reject) => {
+			jsonFetch(
+				configFile.API.contentServerUrl + configFile.API.getProviderPath,
+				{
+					method: "POST",
+					body: data,
+				}
+			).then(
+				(response) => {
+					resolve(response);
+				},
+				(error) => {
+					reject(error);
+				}
+			);
+		});
 	},
 	LOGOUT({ commit }) {
 		commit("_SET_JWT", undefined);

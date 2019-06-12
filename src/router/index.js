@@ -9,12 +9,14 @@ const loadView = (path) => {
 
 import resourceManagement from "./resourceManagement";
 import statistics from "./statistics";
+import registration from "./registration";
 
 const routes = [
 	{ path: "/", redirect: "/resources", name: "main" },
 	// Plugins:
 	...resourceManagement,
 	...statistics,
+	...registration,
 	{
 		path: "*",
 		name: "404",

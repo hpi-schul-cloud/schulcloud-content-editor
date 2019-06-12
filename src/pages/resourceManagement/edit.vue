@@ -185,7 +185,7 @@ export default {
 		return {
 			data: {
 				originId: Date.now().toString(), // TODO FIX
-				providerName: "Cornelsen",
+				providerId: "",
 				url: "",
 				title: "",
 				description: "",
@@ -243,6 +243,7 @@ export default {
 		},
 	},
 	created() {
+		this.data.providerId = this.userInfo.providerId;
 		this.loadContent();
 		this.loadFiletree();
 	},

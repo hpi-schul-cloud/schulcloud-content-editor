@@ -91,6 +91,16 @@ const stringify = (query) => {
 
 export default {
 	methods: {
+		async $_providerGetById(providerId) {
+			if (!providerId) {
+				throw new Error("missing providerId");
+			}
+			return jsonFetch(
+				this.$config.API.contentServerUrl +
+					this.$config.API.getProviderPath +
+					providerId
+			);
+		},
 		async $_resourceGet(resourceId) {
 			return jsonFetch(
 				this.$config.API.contentServerUrl +

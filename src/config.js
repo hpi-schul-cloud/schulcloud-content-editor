@@ -16,6 +16,7 @@ export default {
 		viewContentPath: "/redirect/",
 		fileUploadPath: "/files/upload/",
 		hostingEntry: "/files/get/",
+		getProviderPath: "/provider/",
 	},
 	card: {
 		displayedTags: 9,

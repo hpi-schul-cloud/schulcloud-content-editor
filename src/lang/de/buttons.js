@@ -8,6 +8,7 @@ export default {
 	edit: "bearbeiten",
 	list: "Liste",
 	login: "Anmelden",
+	registrate: "Registrieren",
 	logout: "Abmelden",
 	open: "öffnen",
 	save: "speichern",

@@ -9,9 +9,6 @@
 		<div id="button-wrapper" v-if="jwt">
 			<BaseMenu :options="MenuOptions" @input="handleMenuClick($event)">
 				<img src="http://i.pravatar.cc/50" class="user-avatar" />
-				<template slot="MenuTitle">
-					{{ userInfo.displayName }}
-				</template>
 			</BaseMenu>
 		</div>
 	</header>
@@ -37,7 +34,7 @@ export default {
 		}),
 		MenuOptions() {
 			return [
-				{ text: this.userInfo.displayName },
+				{ text: this.userInfo.forename + " " + this.userInfo.familyname },
 				{ text: this.$lang.buttons.logout, actionOnClick: "logout" },
 			];
 		},
