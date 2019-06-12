@@ -9,10 +9,7 @@
 			<i class="material-icons">warning</i>
 
 			Aufgrund von vordefinierten Filtern siehst du nur einen Teil der Daten.
-			<router-link
-				:to="{ name: 'resourceManagement' }"
-				@click="this.loadContent()"
-			>
+			<router-link :to="{ name: 'resourceManagement' }" @click="loadContent()">
 				<BaseButton :raised="true" styling="primary">
 					alle Inhalte anzeigen
 				</BaseButton>
