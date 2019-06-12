@@ -113,7 +113,6 @@ main {
 	padding-top: $header-height;
 	padding-right: 25px;
 	padding-left: 25px;
-	margin: 0 auto !important;
 	&.with-sidebar {
 		padding-left: 200px;
 	}
