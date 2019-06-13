@@ -78,7 +78,11 @@ export default {
 					this.userData.providerId = response._id;
 					this.submitUserRegistration(this.userData).then(
 						(response) => {
-							this.$toasted.show(`Registratrated`);
+							this.$toasted.show(
+								`Registrated ${this.userData.forename} ${
+									this.userData.familyname
+								}`
+							);
 							this.clearForm();
 						},
 						(error) => {
