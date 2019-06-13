@@ -9,11 +9,9 @@
 			<i class="material-icons">warning</i>
 
 			Aufgrund von vordefinierten Filtern siehst du nur einen Teil der Daten.
-			<router-link :to="{ name: 'resourceManagement' }" @click="loadContent()">
-				<BaseButton :raised="true" styling="primary">
-					alle Inhalte anzeigen
-				</BaseButton>
-			</router-link>
+			<BaseButton :raised="true" @click="reload()" styling="primary">
+				alle Inhalte anzeigen
+			</BaseButton>
 		</div>
 		<VueFilterUi
 			:filter="$_filterConfig"
@@ -162,6 +160,9 @@ export default {
 		...mapMutations("ui", {
 			registerFab: "REGISTER_FAB",
 		}),
+		reload() {
+			location.reload();
+		},
 		updateFilter(feathersQuery) {
 			if (feathersQuery.$limit) {
 				this.pagination.itemsPerPage = feathersQuery.$limit;
@@ -177,6 +178,7 @@ export default {
 			this.searchString = this.$route.query.q;
 			this.pagination.page = parseInt(this.$route.query.p);
 		},
+		/*
 		updateUrlQuery() {
 			this.$router.push({
 				query: {
@@ -185,9 +187,10 @@ export default {
 				},
 			});
 		},
+		*/
 		loadContent() {
 			// set unique browser url
-			this.updateUrlQuery();
+			// this.updateUrlQuery();
 
 			if (this.searchString.length === 0) {
 				this.apiSearchQuery["_all[$match]"] = undefined;
