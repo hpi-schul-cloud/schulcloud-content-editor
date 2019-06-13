@@ -62,6 +62,7 @@ export default {
 		registerUser() {
 			// Admin can only create users of its own company
 			this.userData.providerId = this.userInfo.providerId;
+			this.userData.role = "user";
 			this.submitUserRegistration(this.userData).then(
 				(response) => {
 					this.$toasted.show(`Registratrated`);
@@ -76,6 +77,7 @@ export default {
 			return this.submitProviderRegistration(this.providerData).then(
 				(response) => {
 					this.userData.providerId = response._id;
+					this.userData.role = "admin";
 					this.submitUserRegistration(this.userData).then(
 						(response) => {
 							this.$toasted.show(
