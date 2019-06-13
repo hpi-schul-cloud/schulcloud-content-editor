@@ -14,4 +14,5 @@ export default {
 	save: "speichern",
 	search: "suchen",
 	stats: "Statistik",
+	dropzone: "Dateien zum Hochladen hier hin ziehen.",
 };

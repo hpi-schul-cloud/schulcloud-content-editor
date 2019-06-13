@@ -3,7 +3,6 @@ export default {
 	contentCategory: "Kategorie",
 	description: "Beschreibung",
 	isPublished: "Veröffentlicht",
-	isProtected: "DRM Schutz",
 	licenses: "Lizenzen",
 	mimeType: "Datentyp",
 	originId: "Origin ID",
