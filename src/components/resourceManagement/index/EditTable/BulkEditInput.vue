@@ -18,7 +18,7 @@
 
 <script>
 import TableInput from "./TableInput";
-import { keyInputMapping } from "./EditTableRow";
+import { resourceInputMapping } from "@/mixins/inputMappings";
 
 export default {
 	components: {
@@ -33,7 +33,7 @@ export default {
 			type: String,
 			required: true,
 			validator: (key) =>
-				keyInputMapping.findIndex((a) => a.key === key) !== -1,
+				resourceInputMapping.findIndex((a) => a.key === key) !== -1,
 		},
 		value: {
 			type: [String, Number, Array, Boolean, Object],
@@ -75,7 +75,7 @@ export default {
 	},
 	methods: {
 		getComponent(key) {
-			return keyInputMapping.find((coloumn) => coloumn.key === key);
+			return resourceInputMapping.find((coloumn) => coloumn.key === key);
 		},
 		isDefined(val) {
 			return (

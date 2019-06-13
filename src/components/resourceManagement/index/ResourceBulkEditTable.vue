@@ -45,6 +45,7 @@
 						:visible-coloumns="visibleColoumns"
 						@submit="$emit('patchResource', $event)"
 						@delete="$emit('deleteResource', $event)"
+						:keyInputMapping="availableColoumns"
 					/>
 				</transition>
 			</tbody>
@@ -53,10 +54,11 @@
 </template>
 
 <script>
-import EditTableRow, { keyInputMapping } from "./EditTable/EditTableRow";
+import EditTableRow from "./EditTable/EditTableRow";
+import { resourceInputMapping } from "@/mixins/inputMappings";
 import BulkEditTableRow from "./EditTable/BulkEditTableRows";
 
-export const availableColoumns = keyInputMapping;
+export const availableColoumns = resourceInputMapping;
 
 export default {
 	components: {

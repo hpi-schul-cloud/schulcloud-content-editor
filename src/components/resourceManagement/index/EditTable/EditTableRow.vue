@@ -50,104 +50,6 @@
 
 <script>
 import BaseButton from "@/components/base/BaseButton";
-import TableCheckbox from "./TableInputs/TableCheckbox";
-import TableInput from "./TableInputs/TableInput";
-import TableTextarea from "./TableInputs/TableTextarea";
-import TableSelect from "./TableInputs/TableSelect";
-import TableTags from "./TableInputs/TableTags";
-import DateInput from "./TableInputs/TableDate";
-
-import { options as MimeTypeOptions } from "@/components/resourceManagement/edit/inputs/ContentMimetype";
-import { options as CategoryOptions } from "@/components/resourceManagement/edit/inputs/ContentCategory";
-
-export const keyInputMapping = [
-	{
-		key: "title",
-		component: TableInput,
-		attributes: { type: "text" },
-		wrapperAttributes: {
-			style: "min-width: 200px",
-		},
-		type: String,
-		required: true,
-	},
-	{ key: "tags", component: TableTags, attributes: {}, type: Array },
-	{
-		key: "mimeType",
-		component: TableSelect,
-		attributes: { options: MimeTypeOptions },
-		type: String,
-	},
-	{
-		key: "contentCategory",
-		component: TableSelect,
-		attributes: { options: CategoryOptions },
-		wrapperAttributes: {
-			style: "width: 150px",
-		},
-		type: String,
-	},
-	{
-		key: "description",
-		component: TableTextarea,
-		attributes: {},
-		type: String,
-	},
-	{
-		key: "isPublished",
-		component: TableCheckbox,
-		attributes: { type: "checkbox" },
-		wrapperAttributes: {
-			class: "fit-content",
-		},
-		type: Boolean,
-	},
-	{
-		key: "isProtected",
-		component: TableCheckbox,
-		attributes: { type: "checkbox" },
-		wrapperAttributes: {
-			class: "fit-content",
-		},
-		type: Boolean,
-	},
-	{
-		key: "url",
-		component: TableInput,
-		attributes: { type: "url" },
-		type: String,
-		required: true,
-	},
-	{
-		key: "thumbnail",
-		component: TableInput,
-		attributes: { type: "url" },
-		type: String,
-	},
-	{
-		key: "licenses",
-		component: TableTags,
-		attributes: {},
-		wrapperAttributes: {
-			style: "width: 150px",
-		},
-		type: Array,
-	},
-	{
-		key: "createdAt",
-		component: DateInput,
-		attributes: { readonly: true },
-		wrapperAttributes: {},
-		type: String,
-	},
-	{
-		key: "updatedAt",
-		component: DateInput,
-		attributes: { readonly: true },
-		wrapperAttributes: {},
-		type: String,
-	},
-];
 
 export default {
 	components: {
@@ -166,6 +68,10 @@ export default {
 			type: Array,
 			default: () => [],
 		},
+		keyInputMapping: {
+			type: Array,
+			required: true,
+		},
 	},
 	computed: {
 		formId() {
@@ -174,7 +80,7 @@ export default {
 	},
 	methods: {
 		getComponent(key) {
-			return keyInputMapping.find((coloumn) => coloumn.key === key);
+			return this.keyInputMapping.find((coloumn) => coloumn.key === key);
 		},
 		handleFormSubmit(resource) {
 			this.$emit("submit", resource);
