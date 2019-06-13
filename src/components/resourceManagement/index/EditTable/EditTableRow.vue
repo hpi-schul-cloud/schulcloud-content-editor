@@ -22,13 +22,18 @@
 			/>
 		</td>
 		<td style="text-align: right;">
-			<BaseButton :form="formId" type="submit" class="action">
+			<BaseButton
+				v-if="actionConfig.submit"
+				:form="formId"
+				type="submit"
+				class="action"
+			>
 				<i class="material-icons">
 					check
 				</i>
 			</BaseButton>
 			<RouterLink
-				v-if="resource._id"
+				v-if="resource._id && actionConfig.edit"
 				:to="{
 					name: 'resourceManagement/edit',
 					params: { id: resource._id },
@@ -39,7 +44,11 @@
 					edit
 				</i>
 			</RouterLink>
-			<BaseButton @click="isModalActive = true" class="action">
+			<BaseButton
+				v-if="actionConfig.delete"
+				@click="isModalActive = true"
+				class="action"
+			>
 				<i class="material-icons">
 					delete
 				</i>
@@ -84,6 +93,14 @@ export default {
 		keyInputMapping: {
 			type: Array,
 			required: true,
+		},
+		actionConfig: {
+			type: Object,
+			default: () => ({
+				submit: true,
+				edit: true,
+				delete: true,
+			}),
 		},
 	},
 	data() {

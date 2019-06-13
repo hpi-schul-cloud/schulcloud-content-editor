@@ -16,9 +16,10 @@
 					v-for="(user, index) in tmpUsers"
 					:key="user._id"
 					:resource="user"
-					:rowName="index"
+					:rowName="index + 1"
 					:visibleColoumns="TableMapping.map((a) => a.key)"
 					:keyInputMapping="TableMapping"
+					:actionConfig="{ submit: true, delete: true }"
 					@submit="submitUser"
 					@delete="deleteUser"
 				/>
@@ -100,10 +101,24 @@ export default {
 			removeUser: "REMOVE_USER",
 		}),
 		submitUser(event) {
-			this.patchUser(event);
+			this.patchUser(event).then(
+				(response) => {
+					this.$toasted.show(`Changed`);
+				},
+				(error) => {
+					this.$toasted.error(`Failed to change user` + error);
+				}
+			);
 		},
 		deleteUser(event) {
-			this.removeUser(event);
+			this.removeUser(event).then(
+				(response) => {
+					this.$toasted.show(`Deleted`);
+				},
+				(error) => {
+					this.$toasted.error(`Failed to delete user` + error);
+				}
+			);
 		},
 	},
 	computed: {
