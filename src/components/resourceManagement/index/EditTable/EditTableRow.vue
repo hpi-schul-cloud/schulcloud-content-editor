@@ -39,21 +39,34 @@
 					edit
 				</i>
 			</RouterLink>
-			<BaseButton @click="$emit('delete', resource)" class="action">
+			<BaseButton @click="isModalActive = true" class="action">
 				<i class="material-icons">
 					delete
 				</i>
 			</BaseButton>
+			<template v-if="isModalActive">
+				<BaseConfirm
+					@confirm="handleDelete()"
+					@cancle="isModalActive = false"
+					:active.sync="isModalActive"
+					:content="`Soll der Eintrag ${rowName} wirklich gelöscht werden`"
+					title="Eintrag löschen?"
+					confirm-text="Ja"
+					cancel-text="Nein"
+				/>
+			</template>
 		</td>
 	</tr>
 </template>
 
 <script>
 import BaseButton from "@/components/base/BaseButton";
+import BaseConfirm from "@/components/base/BaseConfirm";
 
 export default {
 	components: {
 		BaseButton,
+		BaseConfirm,
 	},
 	props: {
 		resource: {
@@ -73,6 +86,11 @@ export default {
 			required: true,
 		},
 	},
+	data() {
+		return {
+			isModalActive: false,
+		};
+	},
 	computed: {
 		formId() {
 			return `table-form-${this.rowName}`;
@@ -84,6 +102,11 @@ export default {
 		},
 		handleFormSubmit(resource) {
 			this.$emit("submit", resource);
+			this.isModalActive = false;
+		},
+		handleDelete() {
+			this.$emit("delete", this.resource);
+			this.isModalActive = false;
 		},
 	},
 };
