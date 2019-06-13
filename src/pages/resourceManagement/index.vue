@@ -97,7 +97,11 @@ export default {
 			return !!Object.keys(this.defaultQuery).length;
 		},
 		apiSearchQuery() {
+			const { providerId, role } = this.$store.getters["user/GET_USER"];
+			const restrictToProviderQuery =
+				role === "superhero" ? {} : { providerId };
 			return {
+				...restrictToProviderQuery,
 				...this.defaultQuery,
 				...this.filterQuery,
 				$limit: this.pagination.itemsPerPage,
