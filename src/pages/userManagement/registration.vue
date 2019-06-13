@@ -65,7 +65,9 @@ export default {
 			this.userData.role = "user";
 			this.submitUserRegistration(this.userData).then(
 				(response) => {
-					this.$toasted.show(`Registratrated`);
+					this.$toasted.show(
+						`Registrated ${this.userData.forename} ${this.userData.familyname}`
+					);
 					this.clearForm();
 				},
 				(error) => {

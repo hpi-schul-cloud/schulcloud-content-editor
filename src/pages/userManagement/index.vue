@@ -130,6 +130,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 table {
+	width: 100%;
 	border-collapse: collapse;
 }
 </style>
