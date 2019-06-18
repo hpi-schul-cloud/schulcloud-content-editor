@@ -1,18 +1,7 @@
 <template>
 	<div>
-		<BaseCheckbox
-			v-model="bulkEdit"
-			:label="$lang.resourceManagement.bulk.enableBulkEdit"
-		/>
-		<br />
-		<BaseCheckbox
-			v-if="bulkEdit"
-			v-model="bulkAdvanced"
-			:label="$lang.resourceManagement.bulk.enableBulkEditAdvanced"
-		/>
-
 		<BaseTags
-			v-model="visibleColoumns"
+			v-model="visibleColoumnNames"
 			:label="$lang.resourceManagement.bulk.visibleColoumns"
 			:autocomplete-items="
 				availableColoumns.map((a) => ({ text: $lang.resources[a.key] }))
@@ -20,11 +9,22 @@
 			:add-only-from-autocomplete="true"
 		/>
 
+		<BaseCheckbox
+			v-model="bulkEdit"
+			:label="$lang.resourceManagement.bulk.enableBulkEdit"
+		/>
+		<br />
+		<BaseCheckbox
+			v-if="bulkEdit"
+			v-model="bulkAdvancedEdit"
+			:label="$lang.resourceManagement.bulk.enableBulkEditAdvanced"
+		/>
+
 		<ResourceBulkEditTable
 			:bulk-inputs="bulkInputs"
 			:resources="resources"
 			:header-visible="true"
-			:visible-coloumns="visibleColoumnAttributes"
+			:visible-coloumns="visibleColoumns"
 			:index-start="resourceStartIndex"
 			@patchResource="patchResource"
 			@deleteResource="deleteResource"
@@ -51,6 +51,7 @@ import LoadingBooks from "@/components/LoadingBooks";
 
 import api from "@/mixins/api.js";
 import { setTimeout } from "timers";
+import { mapMutations } from "vuex";
 
 const emptyResource = (name) => {
 	const resource = { name };
@@ -85,12 +86,9 @@ export default {
 	},
 	data() {
 		return {
-			bulkEdit: true,
-			bulkAdvanced: true,
 			bulkReplace: emptyResource("Ersetzen"),
 			bulkFind: emptyResource("Suchen"),
 			availableColoumns,
-			visibleColoumns: [],
 			inProgress: false,
 		};
 	},
@@ -99,7 +97,7 @@ export default {
 			const inputRows = [];
 			if (this.bulkEdit) {
 				inputRows.push(this.bulkReplace);
-				if (this.bulkAdvanced) {
+				if (this.bulkAdvancedEdit) {
 					inputRows.push(this.bulkFind);
 				}
 			}
@@ -112,41 +110,62 @@ export default {
 			});
 			return dict;
 		},
-		visibleColoumnAttributes() {
-			return this.visibleColoumns.map(
-				(name) => this.attributeNameDictionary[name]
-			);
+		visibleColoumnNames: {
+			get() {
+				return this.visibleColoumns.map(
+					(attribute) => this.$lang.resources[attribute]
+				);
+			},
+			set(value) {
+				this.visibleColoumns = value.map(
+					(name) => this.attributeNameDictionary[name]
+				);
+			},
 		},
-	},
-	watch: {
-		visibleColoumns: function(to, from) {
-			Object.keys(this.bulkReplace).forEach((key) => {
-				if (!this.visibleColoumns.includes(key)) {
-					this.bulkReplace[key] = undefined;
-					this.bulkFind[key] = undefined;
-				}
-			});
+		bulkEdit: {
+			get() {
+				return this.$store.state.resourceManagement.bulk.bulkEnabled;
+			},
+			set(value) {
+				this.setBulkEnabled(value);
+			},
 		},
-	},
-	created() {
-		[
-			"title",
-			"isPublished",
-			"contentCategory",
-			"licenses",
-			"description",
-		].forEach((attribute) => {
-			this.visibleColoumns.push(this.$lang.resources[attribute]);
-		});
+		bulkAdvancedEdit: {
+			get() {
+				return this.$store.state.resourceManagement.bulk.bulkAdvancedEnabled;
+			},
+			set(value) {
+				this.setBulkAdvancedEnabled(value);
+			},
+		},
+		visibleColoumns: {
+			get() {
+				return this.$store.state.resourceManagement.bulk.visibleColoumns;
+			},
+			set(value) {
+				Object.keys(this.bulkReplace).forEach((key) => {
+					if (!this.visibleColoumns.includes(key)) {
+						this.bulkReplace[key] = undefined;
+						this.bulkFind[key] = undefined;
+					}
+				});
+				this.setVisibleColoumns(value);
+			},
+		},
 	},
 	methods: {
+		...mapMutations("resourceManagement/bulk", {
+			setVisibleColoumns: "SET_VISIBLE_COLOUMNS",
+			setBulkEnabled: "SET_BULK_ENABLED",
+			setBulkAdvancedEnabled: "SET_BULK_ADVANCED_ENABLED",
+		}),
 		// HELPER
 		getResourceIndex(resource) {
 			const resourceIndex = this.resources.findIndex(
 				(item) => item._id === resource._id
 			);
 			if (resourceIndex === -1) {
-				throw new Error("Item to delete not found.", resource);
+				throw new Error("Item not found." + JSON.stringify(resource));
 			}
 			return resourceIndex;
 		},
@@ -196,44 +215,10 @@ export default {
 				return cleanedData;
 			}
 
-			function flattenQuery(queryObj, isRoot = true) {
-				const flatObj = {};
-				for (const key in queryObj) {
-					// key not in obj
-					if (!queryObj.hasOwnProperty(key)) continue;
-
-					// is nested?
-					if (
-						typeof queryObj[key] === "object" &&
-						!Array.isArray(queryObj[key])
-					) {
-						const flatObject = flattenQuery(queryObj[key], false);
-						for (var nestedKey in flatObject) {
-							// key not in obj
-							if (!flatObject.hasOwnProperty(nestedKey)) continue;
-							if (isRoot) {
-								flatObj[key + nestedKey] = flatObject[nestedKey];
-							} else {
-								flatObj["[" + key + "]" + nestedKey] = flatObject[nestedKey];
-							}
-						}
-					} else {
-						if (!isRoot) {
-							flatObj["[" + key + "]"] = queryObj[key];
-						} else {
-							flatObj[key] = queryObj[key];
-						}
-					}
-				}
-				return flatObj;
-			}
-
-			const replaceQuery = removeUndefined(
-				flattenQuery({
-					...this.query,
-					$replace: this.bulkFind,
-				})
-			);
+			const replaceQuery = removeUndefined({
+				...this.query,
+				$replace: this.bulkFind,
+			});
 
 			const affectedItems = await this.$_resourceFindAmount(replaceQuery);
 			if (!window.confirm(`${affectedItems} Einträge bearbeiten?`)) {

@@ -2,10 +2,10 @@
 	<div class="wrapper">
 		<BaseSelect
 			:label="$lang.edit.form.mimetype"
-			name="Mimetype"
 			:options="options"
 			:selected="value"
 			@input="$emit('input', $event)"
+			name="Mimetype"
 		/>
 	</div>
 </template>
@@ -45,6 +45,6 @@ export default {
 
 <style lang="scss" scoped>
 .wrapper {
-	margin: 1.5em 0;
+	margin: 0.5rem 0 1rem;
 }
 </style>

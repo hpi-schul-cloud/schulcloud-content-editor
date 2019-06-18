@@ -1,12 +1,12 @@
 <template>
 	<BaseInput
-		name="title"
 		:value="value"
-		type="text"
 		:label="getLabel"
-		placeholder="Malen nach Zahlen"
 		:error="error"
 		@input="$emit('input', $event)"
+		name="title"
+		type="text"
+		placeholder="Malen nach Zahlen"
 	/>
 </template>
 

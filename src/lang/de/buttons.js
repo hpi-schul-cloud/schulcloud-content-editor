@@ -8,9 +8,11 @@ export default {
 	edit: "bearbeiten",
 	list: "Liste",
 	login: "Anmelden",
+	registrate: "Registrieren",
 	logout: "Abmelden",
 	open: "öffnen",
 	save: "speichern",
 	search: "suchen",
 	stats: "Statistik",
+	dropzone: "Dateien zum Hochladen hier hin ziehen.",
 };

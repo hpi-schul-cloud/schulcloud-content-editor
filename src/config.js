@@ -13,9 +13,10 @@ export default {
 		pushContentPath: "/resources/",
 		pushBulkContentPath: "/resources/bulk/",
 		searchContentPath: "/search/",
-		viewContentPath: "/content/redirect/",
+		viewContentPath: "/redirect/",
 		fileUploadPath: "/files/upload/",
 		hostingEntry: "/files/get/",
+		getProviderPath: "/provider/",
 	},
 	card: {
 		displayedTags: 9,

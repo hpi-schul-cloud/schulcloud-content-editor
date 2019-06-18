@@ -8,26 +8,26 @@
 					!file.state ||
 						['new', 'modified', 'upload-error'].includes(file.state)
 				"
+				@click.stop="$emit('delete', file.id, file.name)"
 				type="button"
 				class="btn-icon btn-delete"
-				@click.stop="$emit('delete', file.id, file.name)"
 			>
 				<i class="material-icons">close</i>
 			</button>
 			<button
 				v-if="['deleted', 'updated'].includes(file.state)"
+				@click.stop="$emit('restore', file.id, file.name)"
 				type="button"
 				class="btn-icon btn-restore"
-				@click.stop="$emit('restore', file.id, file.name)"
 			>
 				<i class="material-icons">restore_page</i>
 			</button>
 		</template>
 		<progress
 			v-if="file.progress !== undefined"
+			:value="file.progress"
 			class="progress"
 			max="100"
-			:value="file.progress"
 		/>
 	</div>
 </template>

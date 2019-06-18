@@ -31,10 +31,10 @@
 						<BaseSelect
 							:options="mappingOptions"
 							:disabled-options="disabledOptions"
-							label=""
-							name="Mapping"
 							:selected="value.mappedHeader"
 							@input="handleInput($event, key)"
+							label=""
+							name="Mapping"
 						/>
 					</td>
 				</tr>

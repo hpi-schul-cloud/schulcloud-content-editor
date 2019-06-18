@@ -5,12 +5,12 @@
 		</label>
 		<input
 			v-bind="$attrs"
-			class="input"
 			:name="name"
 			:type="type"
 			:value="value"
 			:placeholder="placeholder"
 			@input="$emit('input', $event.target.value)"
+			class="input"
 		/>
 		<slot name="icon"></slot>
 		<span v-if="!!error" class="invalid">{{ error }}</span>
@@ -52,7 +52,7 @@ export default {
 .wrapper {
 	position: relative;
 	width: 100%;
-	margin: 1.5em 0;
+	margin: 0.5rem 0 1rem;
 }
 label {
 	font-size: 0.9em;

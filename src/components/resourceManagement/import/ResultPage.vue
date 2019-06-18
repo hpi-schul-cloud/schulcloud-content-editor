@@ -14,40 +14,26 @@
 		<!-- eslint-disable vue/no-v-html -->
 		<p
 			v-if="config.subtitle"
-			class="result-subtitle"
 			v-html="config.subtitle"
+			class="result-subtitle"
 		/>
 		<!-- eslint-enable vue/no-v-html -->
 
 		<div class="button-wrapper">
 			<BaseButton
-				v-if="config.type === 'error'"
-				styling="primary"
+				v-for="button in buttonConfig"
+				:key="button.text"
+				:to="button.to"
+				:styling="button.styling"
 				@click="
 					$emit('result-page-button-clicked', {
-						handler: 'importCSV',
+						handler: button.clickHandler,
 						event: $event,
 					})
 				"
 			>
-				Erneut Versuchen
+				{{ button.text }}
 			</BaseButton>
-			<template v-else>
-				<BaseButton
-					v-for="button in successButtonConfig"
-					:key="button.text"
-					:to="button.to"
-					:styling="button.styling"
-					@click="
-						$emit('result-page-button-clicked', {
-							handler: button.clickHandler,
-							event: $event,
-						})
-					"
-				>
-					{{ button.text }}
-				</BaseButton>
-			</template>
 		</div>
 	</div>
 </template>
@@ -74,7 +60,17 @@ export default {
 				},
 				{
 					text: "Importierte Inhalte ansehen",
-					to: { name: "resourceManagement" },
+					to: {
+						name: "resourceManagement",
+						params: {
+							defaultQuery: {
+								createdAt: {
+									$gt: Date.now() - 2 * 60 * 1000, // now before 5 mins
+								},
+								userId: this.$store.getters["user/GET_USER"]._id,
+							},
+						},
+					},
 					styling: "primary",
 				},
 				{
@@ -83,7 +79,26 @@ export default {
 					clickHandler: "resetImport",
 				},
 			],
+			errorButtonConfig: [
+				{
+					text: "Zum Import",
+					styling: "secondary",
+					clickHandler: "resetImport",
+				},
+				{
+					text: "Erneut Versuchen",
+					styling: "primary",
+					clickHandler: "importCSV",
+				},
+			],
 		};
+	},
+	computed: {
+		buttonConfig() {
+			if (this.config.type === "error") {
+				return this.errorButtonConfig;
+			} else return this.successButtonConfig;
+		},
 	},
 };
 </script>

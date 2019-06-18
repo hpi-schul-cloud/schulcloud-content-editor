@@ -1,11 +1,11 @@
 <template>
 	<BaseSelect
 		:label="$lang.edit.form.thumbnailSelector"
-		name="Thumbnail"
 		:options="options"
 		:selected="value"
 		:disabled="disabled || !files.length"
 		@input="$emit('input', $event)"
+		name="Thumbnail"
 	/>
 </template>
 

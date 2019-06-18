@@ -21,11 +21,10 @@ const toastOptions = {
 };
 Vue.use(Toasted, toastOptions);
 
-// FAB
-import VueFab from "vue-float-action-button";
-Vue.use(VueFab, {
-	iconType: "MaterialDesign",
-});
+// Material Ripple
+import Ripple from "vue-ripple-directive";
+Ripple.zIndex = 5;
+Vue.directive("ripple", Ripple);
 
 // Cookie access
 import VueCookies from "vue-cookies";
@@ -44,8 +43,8 @@ Vue.use(VueLang, { default: "de" });
 // Progressbar
 import VueProgressBar from "vue-progressbar";
 const progressbarOptions = {
-	color: "#ffffff",
-	failedColor: "#874b4b",
+	color: "var(--accentColor)",
+	failedColor: "var(--errorColor)",
 	thickness: "5px",
 	transition: {
 		speed: "1s",

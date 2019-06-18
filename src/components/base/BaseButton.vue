@@ -1,4 +1,5 @@
 <template>
+	<!-- eslint-disable vue/valid-template-root -->
 	<RouterLink v-if="to !== undefined" :to="to">
 		<button
 			:class="getClass()"

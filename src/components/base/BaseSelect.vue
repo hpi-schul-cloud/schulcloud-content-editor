@@ -2,7 +2,6 @@
 	<div class="select-wrapper">
 		<label v-if="label" :for="name">{{ label }}</label>
 		<button
-			type="button"
 			:class="{
 				select_button: true,
 				disabled: disabled === true,
@@ -10,6 +9,7 @@
 			}"
 			:disabled="disabled"
 			@click="expandSelect"
+			type="button"
 		>
 			{{ getContent() }}
 			<i :class="{ 'material-icons': true, rotate: expanded }">
@@ -29,8 +29,8 @@
 			>
 				<button
 					:disabled="disabledOptions.includes(option.key)"
-					type="button"
 					@click="selectOption(option)"
+					type="button"
 				>
 					{{ option.value }}
 				</button>

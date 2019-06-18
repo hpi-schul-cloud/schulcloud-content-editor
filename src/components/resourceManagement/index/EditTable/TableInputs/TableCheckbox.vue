@@ -2,12 +2,12 @@
 	<label>
 		<input
 			:aria-label="label"
-			type="checkbox"
 			v-bind="$attrs"
 			:checked="value"
 			:value="label"
 			:name="name"
 			@change="$emit('input', $event.target.checked)"
+			type="checkbox"
 		/>
 	</label>
 </template>

@@ -4,7 +4,8 @@
 			<template slot="media">
 				<img
 					:src="
-						data.thumbnail ||
+						data.fullThumbnail ||
+							data.thumbnail ||
 							'data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=='
 					"
 					:alt="'Thumbnail for ~' + data.title + '~'"
@@ -31,12 +32,12 @@
 			</template>
 			<template slot="footer">
 				<div class="button_wrapper">
-					<div class="provider-name">{{ data.providerName }}</div>
+					<div class="provider-name">{{ providerName }}</div>
 					<div>
 						<BaseButton
 							v-if="data._id"
-							styling="secondary"
 							@click="dialog.active = true"
+							styling="secondary"
 						>
 							{{ $lang.buttons.open }}
 						</BaseButton>
@@ -68,6 +69,8 @@
 const BaseConfirm = () => import("@/components/base/BaseConfirm");
 import BaseCard from "@/components/base/BaseCard";
 import BaseButton from "@/components/base/BaseButton";
+import { mapGetters, mapActions } from "vuex";
+import api from "@/mixins/api.js";
 
 export default {
 	components: {
@@ -75,6 +78,7 @@ export default {
 		BaseCard,
 		BaseConfirm,
 	},
+	mixins: [api],
 	props: {
 		data: {
 			type: Object,
@@ -94,16 +98,34 @@ export default {
 				confirmText: this.$lang.contentCard.dialog.confirm,
 				cancelText: this.$lang.contentCard.dialog.cancle,
 			},
+			providerName: "",
 		};
+	},
+	computed: {
+		...mapGetters("user", {
+			userInfo: "GET_USER",
+		}),
+	},
+	created() {
+		this.getProvider();
 	},
 	methods: {
 		onConfirm() {
 			window.open(
-				this.$config.API.serverServerUrl +
+				this.$config.API.contentServerUrl +
 					this.$config.API.viewContentPath +
 					this.data._id,
 				"_blank"
 			);
+		},
+		getProvider() {
+			return this.$_providerGetById(this.userInfo.providerId)
+				.then((provider) => {
+					this.providerName = provider.name;
+				})
+				.catch((error) => {
+					this.providerName = "";
+				});
 		},
 	},
 };

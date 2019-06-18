@@ -3,8 +3,8 @@
 		:aria-label="label"
 		v-bind="$attrs"
 		:value="value"
-		rows="1"
 		@input="$emit('input', $event.target.value)"
+		rows="1"
 	/>
 </template>
 
@@ -26,7 +26,7 @@ export default {
 <style lang="scss" scoped>
 textarea {
 	display: block;
-	width: 100%;
+	min-width: 250px;
 	height: 100%;
 	padding: 0;
 	margin: 0;

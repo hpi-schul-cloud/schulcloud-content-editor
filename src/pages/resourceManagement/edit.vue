@@ -12,16 +12,16 @@
 						<ContentTitle
 							v-model="data.title"
 							v-validate
+							:error="errors.first('title')"
 							data-vv-name="title"
 							data-vv-rules="required"
-							:error="errors.first('title')"
 						/>
 						<ContentDescription
 							v-model="data.description"
 							v-validate
+							:error="errors.first('description')"
 							data-vv-name="description"
 							data-vv-rules="max:500|required"
-							:error="errors.first('description')"
 						/>
 						<ContentLicense v-model="data.licenses" />
 						<ContentCategory v-model="data.contentCategory" />
@@ -35,28 +35,19 @@
 								label="published"
 							></BaseCheckbox>
 						</div>
-						<div class="wrapper">
-							<h4 class="subtitle">Inhalte schützen?</h4>
-							<BaseCheckbox
-								v-model="data.isProtected"
-								label="Inhalte schützen?"
-							/>
-						</div>
 						<ContentHostingProvider v-model="hostingOption" />
 						<template v-if="hostingOption === 'hostedExternally'">
 							<ContentUrl
 								v-model="data.url"
-								v-validate
-								data-vv-name="url"
-								data-vv-rules="required|url"
+								v-validate="{ url: { require_host: false } }"
 								:error="errors.first('url')"
+								data-vv-rules="required|url"
 							/>
 							<ContentUrlThumbnail
 								v-model="data.thumbnail"
-								v-validate
-								data-vv-name="thumbnail"
-								data-vv-rules="url"
+								v-validate="{ url: { require_host: false } }"
 								:error="errors.first('thumbnail')"
+								data-vv-name="thumbnail"
 							/>
 						</template>
 						<template>
@@ -64,23 +55,23 @@
 								v-show="hostingOption === 'hostedAtSchulcloud'"
 								v-model="data.url"
 								v-validate
-								data-vv-name="entrypointSelector"
-								FIX-data-vv-rules="{required: true, url: {require_protocol: false, require_host: false, allow_protocol_relative_urls: true}}"
 								:error="errors.first('entrypointSelector')"
 								:disabled="filetree.objects.length === 0"
 								:files="entrypointFiles"
 								:resource-id="$route.params.id || ''"
+								data-vv-name="entrypointSelector"
+								FIX-data-vv-rules="{required: true, url: {require_protocol: false, require_host: false, allow_protocol_relative_urls: true}}"
 							/>
 							<ContentThumbnailSelector
 								v-show="hostingOption === 'hostedAtSchulcloud'"
 								v-model="data.thumbnail"
 								v-validate
-								data-vv-name="thumbnailSelector"
-								FIX-data-vv-rules="{required: true, url: {require_protocol: false, require_host: false, allow_protocol_relative_urls: true}}"
 								:error="errors.first('thumbnailSelector')"
 								:disabled="filetree.objects.length === 0"
 								:files="thumbnailFiles"
 								:resource-id="$route.params.id || ''"
+								data-vv-name="thumbnailSelector"
+								FIX-data-vv-rules="{required: true, url: {require_protocol: false, require_host: false, allow_protocol_relative_urls: true}}"
 							/>
 							<FileUpload
 								v-show="hostingOption === 'hostedAtSchulcloud'"
@@ -95,8 +86,8 @@
 						<div class="button_wrapper">
 							<BaseButton
 								v-if="$route.params.id"
-								styling="secondary"
 								@click="dialog.active = true"
+								styling="secondary"
 							>
 								{{ $lang.buttons.delete }}
 							</BaseButton>
@@ -105,13 +96,13 @@
 								v-bind="dialog"
 								@confirm="deleteContent"
 							/>
-							<BaseButton styling="secondary" @click="$router.go(-1)">
+							<BaseButton @click="$router.go(-1)" styling="secondary">
 								{{ $lang.buttons.cancel }}
 							</BaseButton>
 							<BaseButton
+								:disabled="!isFormValid"
 								form="contentForm"
 								type="submit"
-								:disabled="!isFormValid"
 							>
 								{{ $lang.buttons.save }}
 							</BaseButton>
@@ -154,6 +145,7 @@ import BaseCheckbox from "@/components/base/BaseCheckbox";
 
 import filetree from "@/mixins/filetree.js";
 import api from "@/mixins/api.js";
+import { mapGetters } from "vuex";
 
 import FileUpload from "@/components/resourceManagement/edit/fileUpload/Upload";
 
@@ -185,8 +177,8 @@ export default {
 	data() {
 		return {
 			data: {
-				originId: Date.now().toString(),
-				providerName: "Cornelsen",
+				originId: Date.now().toString(), // TODO FIX
+				providerId: "",
 				url: "",
 				title: "",
 				description: "",
@@ -205,12 +197,14 @@ export default {
 				confirmText: this.$lang.edit.dialog.confirm,
 				cancelText: this.$lang.edit.dialog.cancle,
 			},
-			userInfo: JSON.parse(localStorage.getItem("userInfo")) || {},
 			filetree: { objects: [] },
 			hostingOption: "",
 		};
 	},
 	computed: {
+		...mapGetters("user", {
+			userInfo: "GET_USER",
+		}),
 		isFormValid() {
 			return Object.keys(this.fields).every((key) => this.fields[key].valid);
 		},
@@ -242,6 +236,7 @@ export default {
 		},
 	},
 	created() {
+		this.data.providerId = this.userInfo.providerId;
 		this.loadContent();
 		this.loadFiletree();
 	},
@@ -285,10 +280,6 @@ export default {
 		submitContent() {
 			// deep copy to remove reactivity
 			const newData = JSON.parse(JSON.stringify(this.data));
-			newData.patchResourceUrl =
-				this.hostingOption === "hostedAtSchulcloud" &&
-				!newData.url.startsWith("http");
-
 			const request = this.editMode
 				? this.$_resourcePatch(newData)
 				: this.$_resourceCreate(newData);

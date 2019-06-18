@@ -2,11 +2,11 @@
 	<div class="wrapper">
 		<BaseSelect
 			:label="$lang.edit.form.entrypointSelector"
-			name="Entrypoint"
 			:options="options"
 			:selected="value"
 			:disabled="disabled || !files.length"
 			@input="$emit('input', $event)"
+			name="Entrypoint"
 		/>
 	</div>
 </template>
@@ -48,6 +48,6 @@ export default {
 
 <style lang="scss" scoped>
 .wrapper {
-	margin: 1.5em 0;
+	margin: 0.5rem 0 1rem;
 }
 </style>

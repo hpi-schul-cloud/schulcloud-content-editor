@@ -1,6 +1,6 @@
 <template>
-	<Fragment v-if="replace">
-		<tr>
+	<Fragment>
+		<tr v-if="replace !== undefined">
 			<td style="text-align: right;">
 				<div v-if="search" class="divider">
 					{{ $lang.resourceManagement.bulk.search }}
@@ -21,17 +21,17 @@
 				/>
 			</td>
 			<!-- ACTIONS -->
-			<td style="text-align: right;" :rowspan="1">
+			<td :rowspan="1" style="text-align: right;">
 				<BaseButton
+					@click="$emit('submit', replace)"
 					type="button"
 					class="action"
-					@click="$emit('submit', replace)"
 				>
 					<i class="material-icons">
 						check
 					</i>
 				</BaseButton>
-				<BaseButton type="button" class="action" @click="$emit('delete')">
+				<BaseButton @click="$emit('delete')" type="button" class="action">
 					<i class="material-icons">
 						delete
 					</i>
@@ -39,7 +39,7 @@
 			</td>
 		</tr>
 		<!-- EMPTY ROW (SPACER) -->
-		<tr class="spacer"></tr>
+		<tr v-if="replace !== undefined" class="spacer"></tr>
 	</Fragment>
 </template>
 
@@ -71,7 +71,7 @@ export default {
 	},
 	watch: {
 		visibleColoumns: function(to) {
-			Object.keys(this.replace).forEach((key) => {
+			Object.keys(this.replace || {}).forEach((key) => {
 				if (!this.visibleColoumns.includes(key)) {
 					this.replace[key] = undefined;
 				}
