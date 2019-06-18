@@ -1,12 +1,12 @@
 <template>
 	<div class="wrapper">
 		<BaseInput
-			name="thumbnail"
 			:value="value"
-			type="text"
 			:label="$lang.edit.form.thumbnail_url"
-			placeholder="https://..."
 			:error="error"
+			name="thumbnail"
+			type="text"
+			placeholder="https://..."
 			@input="$emit('input', $event)"
 		/>
 	</div>
@@ -34,6 +34,6 @@ export default {
 
 <style lang="scss" scoped>
 .wrapper {
-	margin: 1.5em 0;
+	margin: 0.5rem 0 1rem;
 }
 </style>

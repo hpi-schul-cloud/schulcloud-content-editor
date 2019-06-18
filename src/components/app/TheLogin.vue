@@ -7,18 +7,18 @@
 			<template slot="body">
 				<BaseInput
 					v-model="login.username"
+					:label="$lang.login.username"
 					name="username"
 					type="text"
-					:label="$lang.login.username"
 					placeholder="Benutzername *"
 					required
 				/>
 				<BaseInput
 					ref="passwordInput"
 					v-model="login.password"
-					name="password"
 					:type="pwInputType"
 					:label="$lang.login.password"
+					name="password"
 					placeholder="Passwort *"
 					required
 				>
@@ -26,16 +26,16 @@
 						<span class="visibility-icon-wrapper">
 							<BaseButton
 								v-if="pwVisible"
-								styling="secondary"
 								:round-shape="true"
+								styling="secondary"
 								@click="toggleVisibility"
 							>
 								<i class="material-icons">visibility</i>
 							</BaseButton>
 							<BaseButton
 								v-else
-								styling="secondary"
 								:round-shape="true"
+								styling="secondary"
 								@click="toggleVisibility"
 							>
 								<i class="material-icons">visibility_off</i>
@@ -62,6 +62,7 @@ import BaseCard from "@/components/base/BaseCard";
 import BaseInput from "@/components/base/BaseInput";
 
 import api from "@/mixins/api.js";
+import { mapActions } from "vuex";
 
 export default {
 	components: {
@@ -75,6 +76,7 @@ export default {
 			login: {
 				username: "",
 				password: "",
+				strategy: "local",
 			},
 			pwInputType: "password",
 			pwVisible: false,
@@ -87,40 +89,13 @@ export default {
 		}
 	},
 	methods: {
+		...mapActions("user", {
+			submitLogin: "LOGIN",
+		}),
 		validateBeforeSubmit() {
 			if (this.login.username != "" && this.login.password != "") {
-				return this.getToken();
+				return this.submitLogin(this.login);
 			}
-		},
-		getToken() {
-			this.$_login(this.login)
-				.then((data) => {
-					const jwt = data.accessToken;
-					localStorage.setItem("jwt", jwt);
-					this.$cookies.set(
-						"jwt",
-						jwt,
-						new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
-					);
-					this.getUserInfo(jwt);
-				})
-				.catch((e) => {
-					alert("Login fehlgeschlagen!");
-					console.error(e); // eslint-disable-line no-console
-				});
-		},
-		getUserInfo(jwt) {
-			const base64Url = jwt.split(".")[1];
-			const base64 = base64Url.replace("-", "+").replace("_", "/");
-			const payload = JSON.parse(window.atob(base64));
-			this.$_userGet(payload.userId)
-				.then((data) => {
-					localStorage.setItem("userInfo", JSON.stringify(data));
-					this.$router.go();
-				})
-				.catch((e) => {
-					console.error(e); // eslint-disable-line no-console
-				});
 		},
 		toggleVisibility() {
 			this.pwVisible = !this.pwVisible;

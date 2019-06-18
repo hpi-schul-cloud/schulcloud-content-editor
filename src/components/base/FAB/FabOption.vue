@@ -1,5 +1,5 @@
 <template>
-	<div class="action-container" v-bind="$attrs" v-on="$listeners">
+	<div v-bind="$attrs" class="action-container" v-on="$listeners">
 		<span v-ripple class="action-icon">
 			<i class="material-icons">
 				{{ config.icon }}

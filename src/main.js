@@ -43,8 +43,8 @@ Vue.use(VueLang, { default: "de" });
 // Progressbar
 import VueProgressBar from "vue-progressbar";
 const progressbarOptions = {
-	color: "#ffffff",
-	failedColor: "#874b4b",
+	color: "var(--accentColor)",
+	failedColor: "var(--errorColor)",
 	thickness: "5px",
 	transition: {
 		speed: "1s",

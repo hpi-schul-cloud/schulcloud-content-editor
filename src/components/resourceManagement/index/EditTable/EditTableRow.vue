@@ -11,6 +11,7 @@
 				:id="formId"
 				@submit.prevent="handleFormSubmit(resource)"
 			></form>
+			<!-- eslint-disable-next-line vue/require-component-is -->
 			<component
 				:is="getComponent(coloumn).component"
 				v-model="resource[coloumn]"
@@ -21,136 +22,60 @@
 			/>
 		</td>
 		<td style="text-align: right;">
-			<BaseButton type="submit" :form="formId" class="action">
+			<BaseButton
+				v-if="actionConfig.submit"
+				:form="formId"
+				type="submit"
+				class="action"
+			>
 				<i class="material-icons">
 					check
 				</i>
 			</BaseButton>
 			<RouterLink
-				v-if="resource._id"
-				class="action"
+				v-if="resource._id && actionConfig.edit"
 				:to="{
 					name: 'resourceManagement/edit',
 					params: { id: resource._id },
 				}"
+				class="action"
 			>
 				<i class="material-icons">
 					edit
 				</i>
 			</RouterLink>
-			<BaseButton class="action" @click="$emit('delete', resource)">
+			<BaseButton
+				v-if="actionConfig.delete"
+				class="action"
+				@click="isModalActive = true"
+			>
 				<i class="material-icons">
 					delete
 				</i>
 			</BaseButton>
+			<template v-if="isModalActive">
+				<BaseConfirm
+					:active.sync="isModalActive"
+					:content="`Soll der Eintrag ${rowName} wirklich gelöscht werden`"
+					title="Eintrag löschen?"
+					confirm-text="Ja"
+					cancel-text="Nein"
+					@confirm="handleDelete()"
+					@cancle="isModalActive = false"
+				/>
+			</template>
 		</td>
 	</tr>
 </template>
 
 <script>
 import BaseButton from "@/components/base/BaseButton";
-import TableCheckbox from "./TableInputs/TableCheckbox";
-import TableInput from "./TableInputs/TableInput";
-import TableTextarea from "./TableInputs/TableTextarea";
-import TableSelect from "./TableInputs/TableSelect";
-import TableTags from "./TableInputs/TableTags";
-import DateInput from "./TableInputs/TableDate";
-
-import { options as MimeTypeOptions } from "@/components/resourceManagement/edit/inputs/ContentMimetype";
-import { options as CategoryOptions } from "@/components/resourceManagement/edit/inputs/ContentCategory";
-
-export const keyInputMapping = [
-	{
-		key: "title",
-		component: TableInput,
-		attributes: { type: "text" },
-		wrapperAttributes: {
-			style: "min-width: 200px",
-		},
-		type: String,
-		required: true,
-	},
-	{ key: "tags", component: TableTags, attributes: {}, type: Array },
-	{
-		key: "mimeType",
-		component: TableSelect,
-		attributes: { options: MimeTypeOptions },
-		type: String,
-	},
-	{
-		key: "contentCategory",
-		component: TableSelect,
-		attributes: { options: CategoryOptions },
-		wrapperAttributes: {
-			style: "width: 150px",
-		},
-		type: String,
-	},
-	{
-		key: "description",
-		component: TableTextarea,
-		attributes: {},
-		type: String,
-	},
-	{
-		key: "isPublished",
-		component: TableCheckbox,
-		attributes: { type: "checkbox" },
-		wrapperAttributes: {
-			class: "fit-content",
-		},
-		type: Boolean,
-	},
-	{
-		key: "isProtected",
-		component: TableCheckbox,
-		attributes: { type: "checkbox" },
-		wrapperAttributes: {
-			class: "fit-content",
-		},
-		type: Boolean,
-	},
-	{
-		key: "url",
-		component: TableInput,
-		attributes: { type: "url" },
-		type: String,
-		required: true,
-	},
-	{
-		key: "thumbnail",
-		component: TableInput,
-		attributes: { type: "url" },
-		type: String,
-	},
-	{
-		key: "licenses",
-		component: TableTags,
-		attributes: {},
-		wrapperAttributes: {
-			style: "width: 150px",
-		},
-		type: Array,
-	},
-	{
-		key: "createdAt",
-		component: DateInput,
-		attributes: { readonly: true },
-		wrapperAttributes: {},
-		type: String,
-	},
-	{
-		key: "updatedAt",
-		component: DateInput,
-		attributes: { readonly: true },
-		wrapperAttributes: {},
-		type: String,
-	},
-];
+import BaseConfirm from "@/components/base/BaseConfirm";
 
 export default {
 	components: {
 		BaseButton,
+		BaseConfirm,
 	},
 	props: {
 		resource: {
@@ -165,6 +90,23 @@ export default {
 			type: Array,
 			default: () => [],
 		},
+		keyInputMapping: {
+			type: Array,
+			required: true,
+		},
+		actionConfig: {
+			type: Object,
+			default: () => ({
+				submit: true,
+				edit: true,
+				delete: true,
+			}),
+		},
+	},
+	data() {
+		return {
+			isModalActive: false,
+		};
 	},
 	computed: {
 		formId() {
@@ -173,10 +115,15 @@ export default {
 	},
 	methods: {
 		getComponent(key) {
-			return keyInputMapping.find((coloumn) => coloumn.key === key);
+			return this.keyInputMapping.find((coloumn) => coloumn.key === key);
 		},
 		handleFormSubmit(resource) {
 			this.$emit("submit", resource);
+			this.isModalActive = false;
+		},
+		handleDelete() {
+			this.$emit("delete", this.resource);
+			this.isModalActive = false;
 		},
 	},
 };

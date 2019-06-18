@@ -2,11 +2,11 @@
 	<div class="wrapper">
 		<label :class="{ invalid: !!error }" :for="name">{{ label }}</label>
 		<textarea
-			class="textarea"
 			:name="name"
 			:maxlength="maxlength"
 			:value="value"
 			:placeholder="placeholder"
+			class="textarea"
 			@input="$emit('input', $event.target.value)"
 		/>
 		<span v-if="!!error" class="invalid">{{ error }}</span>
@@ -46,7 +46,7 @@ export default {
 
 <style lang="scss" scoped>
 .wrapper {
-	margin: 1.5em 0;
+	margin: 0.5rem 0 1rem;
 }
 label {
 	font-size: 0.9em;

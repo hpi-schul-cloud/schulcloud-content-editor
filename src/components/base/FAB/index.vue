@@ -1,17 +1,16 @@
 <template>
 	<div class="fab-position">
 		<FabMain
-			class="fab-main"
 			:config="cfg"
 			:open="open"
+			class="fab-main"
 			@click="handleMainClick(cfg)"
 		/>
-		<!-- <transition name="fade"> -->
 		<div class="actions-container">
 			<transition-group
+				:css="false"
 				name="staggered-fade"
 				tag="div"
-				:css="false"
 				@before-enter="beforeEnter"
 				@enter="enter"
 				@leave="leave"
@@ -19,13 +18,12 @@
 				<FabOption
 					v-for="option in options"
 					:key="option.icon"
-					class="action"
 					:config="option"
+					class="action"
 					@click="handleActionClick(option)"
 				/>
 			</transition-group>
 		</div>
-		<!-- </transition> -->
 	</div>
 </template>
 
@@ -42,6 +40,9 @@ export default {
 			type: Object,
 			required: true,
 		},
+		isOpen: {
+			type: Boolean,
+		},
 	},
 	data() {
 		return {
@@ -54,6 +55,16 @@ export default {
 		},
 		options() {
 			return this.open ? this.cfg.options : [];
+		},
+	},
+	watch: {
+		isOpen: function(to) {
+			if (to !== this.open) {
+				this.open = to;
+			}
+		},
+		open: function(to) {
+			this.$emit("update:isOpen", to);
 		},
 	},
 	methods: {

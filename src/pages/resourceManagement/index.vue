@@ -5,15 +5,22 @@
 			:label="$lang.resourceManagement.search.searchbar.label"
 			:placeholder="$lang.resourceManagement.search.searchbar.placeholder"
 		/>
+		<div v-if="hasDefaultQuery" class="remove-predefined-filter">
+			<i class="material-icons">warning</i>
 
-		<FeathersFilter
-			add-label="Filter hinzufügen"
-			apply-label="Filtern"
-			cancle-label="Abbrechen"
-			:handle-url="true"
-			:consistent-order="true"
-			:filter="filter"
-			@newFilter="updateFilter"
+			Aufgrund von vordefinierten Filtern siehst du nur einen Teil der Daten.
+			<BaseButton :raised="true" styling="primary" @click="reload()">
+				alle Inhalte anzeigen
+			</BaseButton>
+		</div>
+		<VueFilterUi
+			:filter="$_filterConfig"
+			:parser="parser"
+			label-add="Filter hinzufügen"
+			label-apply="Filtern"
+			label-cancle="Abbrechen"
+			label-remove="Entfernen"
+			@newQuery="updateFilter"
 		/>
 		<p>
 			{{ pagination.totalEntrys }}
@@ -41,24 +48,31 @@
 
 <script>
 import Vue from "vue";
-import FeathersFilter from "feathersjs-filter-ui";
-
-Vue.use(FeathersFilter);
-
+import VueFilterUi, { parser } from "vue-filter-ui";
 import Searchbar from "@/components/Searchbar";
 import Pagination from "@/components/Pagination";
 import ResourceBulkEdit from "@/components/resourceManagement/index/ResourceBulkEdit";
+import BaseButton from "@/components/base/BaseButton";
 
+import filter from "@/mixins/resourceFilter.js";
 import api from "@/mixins/api.js";
+import { mapMutations } from "vuex";
 
 export default {
 	components: {
-		FeathersFilter,
+		BaseButton,
+		VueFilterUi,
 		Searchbar,
 		Pagination,
 		ResourceBulkEdit,
 	},
-	mixins: [api],
+	mixins: [api, filter],
+	props: {
+		defaultQuery: {
+			type: Object,
+			default: () => ({}),
+		},
+	},
 	data() {
 		return {
 			searchString: this.$route.query.q || "",
@@ -74,41 +88,21 @@ export default {
 				},
 			},
 			resources: [],
-			filter: [
-				{
-					type: "sort",
-					title: "Sortieren nach",
-					displayTemplate: "Sortieren nach: %1",
-					options: Object.entries(this.$lang.resources),
-					defaultSelection: "updatedAt",
-					defaultOrder: "DESC",
-				},
-				{
-					type: "limit",
-					title: "Einträge pro Seite",
-					displayTemplate: "Einträge pro Seite: %1",
-					options: [10, 25, 50, 100, 250, 500],
-					defaultSelection: 50,
-				},
-				{
-					type: "boolean",
-					title: "Status",
-					options: {
-						isPublished: this.$lang.resources.isPublished,
-						isProtected: this.$lang.resources.isProtected,
-					},
-					applyNegated: {
-						isPublished: [false, true],
-						isProtected: [true, false],
-					},
-				},
-			],
+			parser: parser.FeathersJS,
 			filterQuery: {},
 		};
 	},
 	computed: {
+		hasDefaultQuery() {
+			return !!Object.keys(this.defaultQuery).length;
+		},
 		apiSearchQuery() {
+			const { providerId, role } = this.$store.getters["user/GET_USER"];
+			const restrictToProviderQuery =
+				role === "superhero" ? {} : { providerId };
 			return {
+				...restrictToProviderQuery,
+				...this.defaultQuery,
 				...this.filterQuery,
 				$limit: this.pagination.itemsPerPage,
 				$skip: this.pagination.itemsPerPage * (this.pagination.page - 1),
@@ -117,6 +111,9 @@ export default {
 		},
 	},
 	watch: {
+		defaultQuery: function() {
+			this.loadContent();
+		},
 		searchString: function(to, from) {
 			if (to === from) {
 				return;
@@ -158,13 +155,19 @@ export default {
 				},
 			],
 		};
-		this.$store.commit("ui/registerFab", config);
+		this.registerFab(config);
 
 		this.loadContent();
 		window.onhashchange = this.handleUrlChange;
 	},
 	methods: {
-		updateFilter([feathersQuery, urlQuery]) {
+		...mapMutations("ui", {
+			registerFab: "REGISTER_FAB",
+		}),
+		reload() {
+			location.reload();
+		},
+		updateFilter(feathersQuery) {
 			if (feathersQuery.$limit) {
 				this.pagination.itemsPerPage = feathersQuery.$limit;
 			}
@@ -179,6 +182,7 @@ export default {
 			this.searchString = this.$route.query.q;
 			this.pagination.page = parseInt(this.$route.query.p);
 		},
+		/*
 		updateUrlQuery() {
 			this.$router.push({
 				query: {
@@ -187,9 +191,10 @@ export default {
 				},
 			});
 		},
+		*/
 		loadContent() {
 			// set unique browser url
-			this.updateUrlQuery();
+			// this.updateUrlQuery();
 
 			if (this.searchString.length === 0) {
 				this.apiSearchQuery["_all[$match]"] = undefined;
@@ -202,10 +207,21 @@ export default {
 					this.pagination.totalEntrys = data.total;
 				})
 				.catch((error) => {
-					console.error(e);
+					console.error(error);
 					this.$toasted.error(error);
 				});
 		},
 	},
 };
 </script>
+
+<style lang="scss" scoped>
+.remove-predefined-filter {
+	display: flex;
+	align-items: center;
+	float: right;
+	i {
+		margin-right: 0.5rem;
+	}
+}
+</style>

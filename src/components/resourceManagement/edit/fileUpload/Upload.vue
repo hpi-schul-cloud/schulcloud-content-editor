@@ -1,6 +1,8 @@
 <template>
 	<div class="upload-wrapper">
-		<Dropzone @drop.prevent="handleDropEvent">Drop your files here!</Dropzone>
+		<Dropzone @drop.prevent="handleDropEvent">
+			{{ this.$lang.buttons.dropzone }}
+		</Dropzone>
 		<div v-show="filetree.objects.length !== 0" id="filetree">
 			<h4>Your uploaded Files:</h4>
 			<Filetree

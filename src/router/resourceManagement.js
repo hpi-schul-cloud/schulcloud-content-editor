@@ -5,6 +5,7 @@ export default [
 		component: "resourceManagement/index.vue",
 		sidebarTitle: "Verwaltung",
 		sidebarIcon: "home",
+		props: true,
 	},
 	{
 		path: "/resources/create",

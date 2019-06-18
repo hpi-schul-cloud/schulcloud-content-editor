@@ -1,4 +1,5 @@
 <template>
+	<!-- eslint-disable-next-line vue/require-component-is -->
 	<component
 		:is="getComponent(attribute).component"
 		v-model="input"
@@ -9,7 +10,7 @@
 </template>
 
 <script>
-import { keyInputMapping } from "./EditTableRow";
+import { resourceInputMapping } from "@/mixins/inputMappings";
 
 export default {
 	model: {
@@ -21,7 +22,7 @@ export default {
 			type: String,
 			required: true,
 			validator: (key) =>
-				keyInputMapping.findIndex((a) => a.key === key) !== -1,
+				resourceInputMapping.findIndex((a) => a.key === key) !== -1,
 		},
 		value: {
 			type: [String, Number, Boolean, Array, Object],
@@ -49,7 +50,7 @@ export default {
 	},
 	methods: {
 		getComponent(key) {
-			return keyInputMapping.find((coloumn) => coloumn.key === key);
+			return resourceInputMapping.find((coloumn) => coloumn.key === key);
 		},
 	},
 };

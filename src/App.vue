@@ -4,8 +4,8 @@
 		<vue-progress-bar />
 		<!--eslint-enable-->
 		<TheHeader class="header" />
-		<TheSidebar class="sidebar" :items="sidebarItems" />
-		<main class="container-fluid-max">
+		<TheSidebar v-if="jwt" :items="sidebarItems" class="sidebar" />
+		<main :class="{ 'with-sidebar': !!jwt }">
 			<Transition name="fade" mode="out-in" appear>
 				<RouterView v-if="jwt" />
 			</Transition>
@@ -27,9 +27,7 @@ import TheSidebar from "@/components/app/TheSidebar";
 import TheFooter from "@/components/app/TheFooter";
 import Router from "@/router/index.js";
 
-const sidebarItems = Router.options.routes.filter((route) => {
-	return !!route.sidebarTitle;
-});
+import { mapGetters } from "vuex";
 
 export default {
 	components: {
@@ -41,12 +39,25 @@ export default {
 	},
 	data() {
 		return {
-			jwt: localStorage.getItem("jwt"),
 			primaryColor: getComputedStyle(document.documentElement).getPropertyValue(
 				"--primaryColor"
 			),
-			sidebarItems,
 		};
+	},
+	computed: {
+		...mapGetters("user", {
+			jwt: "GET_JWT",
+			userInfo: "GET_USER",
+		}),
+		sidebarItems() {
+			return Router.options.routes.filter((route) => {
+				if ((this.userInfo || {}).role === "user") {
+					return (
+						!!route.sidebarTitle && route.name !== "userManagement/registration"
+					);
+				} else return !!route.sidebarTitle;
+			});
+		},
 	},
 	created() {
 		this.$Progress.start();
@@ -102,8 +113,10 @@ main {
 	max-width: 100% !important;
 	padding-top: $header-height;
 	padding-right: 25px;
-	padding-left: 200px;
-	margin: 0 auto !important;
+	padding-left: 25px;
+	&.with-sidebar {
+		padding-left: 200px;
+	}
 }
 
 .header {

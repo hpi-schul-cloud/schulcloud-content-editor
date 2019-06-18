@@ -52,8 +52,8 @@
 				{{ backwardButtonText }}
 			</BaseButton>
 			<BaseButton
-				styling="primary"
 				:disabled="forwardButtonDisabled"
+				styling="primary"
 				@click="handleNextStep"
 			>
 				{{ forwardButtonText }}
@@ -72,6 +72,7 @@ import ResultPage from "@/components/resourceManagement/import/ResultPage";
 import BaseButton from "@/components/base/BaseButton";
 import LoadingBooks from "@/components/LoadingBooks";
 
+import { mapGetters } from "vuex";
 import api from "@/mixins/api.js";
 
 const Ajv = require("ajv");
@@ -115,6 +116,9 @@ export default {
 		return this.initialDataState();
 	},
 	computed: {
+		...mapGetters("user", {
+			userInfo: "GET_USER",
+		}),
 		validCSVHeaders() {
 			let validHeaders = {};
 			this.csv.headers.forEach((header) => {
@@ -266,8 +270,8 @@ export default {
 		formatImportedResources() {
 			const formatResource = (row, index) => {
 				let resource = {
-					providerName: "TestProvider",
-					userId: JSON.parse(localStorage.getItem("userInfo"))._id,
+					providerId: this.userInfo.providerId,
+					userId: this.userInfo._id,
 					originId: Date.now().toString() + index,
 					isPublished: this.isPublished,
 				};

@@ -2,13 +2,13 @@
 	<div class="select-wrapper">
 		<label v-if="label" :for="name">{{ label }}</label>
 		<button
-			type="button"
 			:class="{
 				select_button: true,
 				disabled: disabled === true,
 				expand: expanded,
 			}"
 			:disabled="disabled"
+			type="button"
 			@click="expandSelect"
 		>
 			{{ getContent() }}

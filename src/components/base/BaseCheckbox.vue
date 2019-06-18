@@ -1,10 +1,10 @@
 <template>
 	<label>
 		<input
-			type="checkbox"
 			:checked="value"
 			:value="label"
 			:name="name"
+			type="checkbox"
 			@change="$emit('input', $event.target.checked)"
 		/>
 		<span class="checkbox"></span>

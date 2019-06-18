@@ -1,5 +1,5 @@
 <template>
-	<BaseInput class="searchbar" v-bind="$attrs" v-on="$listeners" />
+	<BaseInput v-bind="$attrs" class="searchbar" v-on="$listeners" />
 </template>
 
 <script>

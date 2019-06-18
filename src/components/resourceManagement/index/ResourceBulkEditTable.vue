@@ -43,6 +43,7 @@
 						:resource="resource"
 						:row-name="indexStart + rowIndex + 1"
 						:visible-coloumns="visibleColoumns"
+						:key-input-mapping="availableColoumns"
 						@submit="$emit('patchResource', $event)"
 						@delete="$emit('deleteResource', $event)"
 					/>
@@ -53,10 +54,11 @@
 </template>
 
 <script>
-import EditTableRow, { keyInputMapping } from "./EditTable/EditTableRow";
+import EditTableRow from "./EditTable/EditTableRow";
+import { resourceInputMapping } from "@/mixins/inputMappings";
 import BulkEditTableRow from "./EditTable/BulkEditTableRows";
 
-export const availableColoumns = keyInputMapping;
+export const availableColoumns = resourceInputMapping;
 
 export default {
 	components: {

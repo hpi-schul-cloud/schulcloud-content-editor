@@ -22,7 +22,7 @@ const bulk = {
 
 export default {
 	create: "Inhalt erstellen",
-	import: "Inhalte importieren",
+	import: "externe Inhalte importieren",
 	search,
 	bulk,
 };

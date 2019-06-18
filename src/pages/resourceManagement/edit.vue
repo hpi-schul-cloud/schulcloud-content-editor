@@ -12,16 +12,16 @@
 						<ContentTitle
 							v-model="data.title"
 							v-validate
+							:error="errors.first('title')"
 							data-vv-name="title"
 							data-vv-rules="required"
-							:error="errors.first('title')"
 						/>
 						<ContentDescription
 							v-model="data.description"
 							v-validate
+							:error="errors.first('description')"
 							data-vv-name="description"
 							data-vv-rules="max:500|required"
-							:error="errors.first('description')"
 						/>
 						<ContentLicense v-model="data.licenses" />
 						<ContentCategory v-model="data.contentCategory" />
@@ -139,14 +139,14 @@
 							<ContentUrl
 								v-model="data.url"
 								v-validate="{ url: { require_host: false } }"
-								data-vv-rules="required|url"
 								:error="errors.first('url')"
+								data-vv-rules="required|url"
 							/>
 							<ContentUrlThumbnail
 								v-model="data.thumbnail"
 								v-validate="{ url: { require_host: false } }"
-								data-vv-name="thumbnail"
 								:error="errors.first('thumbnail')"
+								data-vv-name="thumbnail"
 							/>
 						</template>
 						<template>
@@ -154,23 +154,23 @@
 								v-show="hostingOption === 'hostedAtSchulcloud'"
 								v-model="data.url"
 								v-validate
-								data-vv-name="entrypointSelector"
-								FIX-data-vv-rules="{required: true, url: {require_protocol: false, require_host: false, allow_protocol_relative_urls: true}}"
 								:error="errors.first('entrypointSelector')"
 								:disabled="filetree.objects.length === 0"
 								:files="entrypointFiles"
 								:resource-id="$route.params.id || ''"
+								data-vv-name="entrypointSelector"
+								FIX-data-vv-rules="{required: true, url: {require_protocol: false, require_host: false, allow_protocol_relative_urls: true}}"
 							/>
 							<ContentThumbnailSelector
 								v-show="hostingOption === 'hostedAtSchulcloud'"
 								v-model="data.thumbnail"
 								v-validate
-								data-vv-name="thumbnailSelector"
-								FIX-data-vv-rules="{required: true, url: {require_protocol: false, require_host: false, allow_protocol_relative_urls: true}}"
 								:error="errors.first('thumbnailSelector')"
 								:disabled="filetree.objects.length === 0"
 								:files="thumbnailFiles"
 								:resource-id="$route.params.id || ''"
+								data-vv-name="thumbnailSelector"
+								FIX-data-vv-rules="{required: true, url: {require_protocol: false, require_host: false, allow_protocol_relative_urls: true}}"
 							/>
 							<FileUpload
 								v-show="hostingOption === 'hostedAtSchulcloud'"
@@ -199,9 +199,9 @@
 								{{ $lang.buttons.cancel }}
 							</BaseButton>
 							<BaseButton
+								:disabled="!isFormValid"
 								form="contentForm"
 								type="submit"
-								:disabled="!isFormValid"
 							>
 								{{ $lang.buttons.save }}
 							</BaseButton>
@@ -246,6 +246,7 @@ import ContentWatermarkSelector from "@/components/resourceManagement/edit/input
 
 import filetree from "@/mixins/filetree.js";
 import api from "@/mixins/api.js";
+import { mapGetters } from "vuex";
 
 import FileUpload from "@/components/resourceManagement/edit/fileUpload/Upload";
 
@@ -280,7 +281,7 @@ export default {
 		return {
 			data: {
 				originId: Date.now().toString(), // TODO FIX
-				providerName: "Cornelsen",
+				providerId: "",
 				url: "",
 				title: "",
 				description: "",
@@ -302,12 +303,14 @@ export default {
 				confirmText: this.$lang.edit.dialog.confirm,
 				cancelText: this.$lang.edit.dialog.cancle,
 			},
-			userInfo: JSON.parse(localStorage.getItem("userInfo")) || {},
 			filetree: { objects: [] },
 			hostingOption: "",
 		};
 	},
 	computed: {
+		...mapGetters("user", {
+			userInfo: "GET_USER",
+		}),
 		isFormValid() {
 			return Object.keys(this.fields).every((key) => this.fields[key].valid);
 		},
@@ -349,6 +352,7 @@ export default {
 		},
 	},
 	created() {
+		this.data.providerId = this.userInfo.providerId;
 		this.loadContent();
 		this.loadFiletree();
 	},

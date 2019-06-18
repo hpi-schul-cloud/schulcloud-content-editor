@@ -2,9 +2,9 @@
 	<div class="wrapper">
 		<BaseSelect
 			:label="getLabel"
-			name="Kategorie"
 			:options="options"
 			:selected="value"
+			name="Kategorie"
 			@input="$emit('input', $event)"
 		/>
 	</div>
@@ -50,6 +50,6 @@ export default {
 
 <style lang="scss" scoped>
 .wrapper {
-	margin: 1.5em 0;
+	margin: 0.5rem 0 1rem;
 }
 </style>

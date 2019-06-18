@@ -25,9 +25,9 @@
 		</template>
 		<progress
 			v-if="file.progress !== undefined"
+			:value="file.progress"
 			class="progress"
 			max="100"
-			:value="file.progress"
 		/>
 	</div>
 </template>

@@ -3,9 +3,9 @@
 		v-model="newTag"
 		:aria-label="label"
 		v-bind="$attrs"
-		class="table-tag-input"
 		:tags="value.map((item) => ({ text: item }))"
 		:placeholder="placeholder"
+		class="table-tag-input"
 		@tags-changed="tagsChanged"
 	/>
 </template>
@@ -54,51 +54,53 @@ export default {
 	},
 };
 </script>
-<style lang="scss">
-.table-tag-input {
-	overflow: auto;
+<style lang="scss" scoped>
+div.table-tag-input {
+	max-width: 100%;
+	overflow: initial;
 	font-size: 0.8em;
+	color: #1d1d1d;
+	background: transparent;
+	border-radius: 0;
 	&::-webkit-scrollbar {
 		width: 0;
 		height: 0;
 		background: transparent;
 	}
-	.ti-input {
+}
+/deep/ {
+	.ti-input[class~="ti-input"] {
 		padding: 1px 0;
 		border: 0;
-	}
-	&.ti-focus .ti-input {
-		border-color: var(--primaryColor);
-	}
-	&.vue-tags-input {
-		max-width: 100%;
-		color: #1d1d1d;
-		background: transparent;
-		border-radius: 0;
-		.ti-new-tag-input-wrapper {
-			padding: 0;
+		.ti-tags {
+			flex-wrap: nowrap;
+			.ti-tag {
+				font-size: 1em;
+				color: inherit;
+				background-color: transparent;
+				border: 0;
+				box-shadow: inset 0 0 0 1px #333;
 
-			.ti-new-tag-input {
-				font-size: 1rem;
-				color: #757575;
-				background: none;
+				&.ti-deletion-mark {
+					color: #fff;
+					background-color: var(--primaryColor);
+					border-color: #fff;
+				}
 			}
 		}
 	}
-	.ti-tags {
-		flex-wrap: nowrap;
-	}
-	.ti-tag {
-		font-size: 1em;
-		color: inherit;
-		background-color: transparent;
-		border: 0;
-		box-shadow: inset 0 0 0 1px #333;
+	.ti-new-tag-input-wrapper[class~="ti-new-tag-input-wrapper"] {
+		padding: 0;
 
-		&.ti-tag.ti-deletion-mark {
-			color: #fff;
+		.ti-new-tag-input {
+			font-size: 1rem;
+			color: #757575;
+			background: none;
+		}
+	}
+	.ti-autocomplete[class~="ti-autocomplete"] {
+		.ti-selected-item {
 			background-color: var(--primaryColor);
-			border-color: #fff;
 		}
 	}
 }

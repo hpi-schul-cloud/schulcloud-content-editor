@@ -21,7 +21,7 @@
 				/>
 			</td>
 			<!-- ACTIONS -->
-			<td style="text-align: right;" :rowspan="1">
+			<td :rowspan="1" style="text-align: right;">
 				<BaseButton
 					type="button"
 					class="action"

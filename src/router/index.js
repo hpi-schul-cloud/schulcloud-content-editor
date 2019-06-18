@@ -10,6 +10,7 @@ const loadView = (path) => {
 import resourceManagement from "./resourceManagement";
 import statistics from "./statistics";
 import video from "./video";
+import registration from "./registration";
 
 const routes = [
 	{ path: "/", redirect: "/resources", name: "main" },
@@ -17,6 +18,12 @@ const routes = [
 	...resourceManagement,
 	...statistics,
 	...video,
+	...registration,
+	{
+		path: "*",
+		name: "404",
+		component: "404.vue",
+	},
 ];
 
 export default new Router({
