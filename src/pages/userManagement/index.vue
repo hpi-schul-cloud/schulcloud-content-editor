@@ -71,6 +71,11 @@ export default {
 			tmpUsers: [],
 		};
 	},
+	computed: {
+		...mapGetters("user", {
+			users: "GET_USERS",
+		}),
+	},
 	watch: {
 		users: function(to) {
 			this.tmpUsers = JSON.parse(JSON.stringify(to));
@@ -120,11 +125,6 @@ export default {
 				}
 			);
 		},
-	},
-	computed: {
-		...mapGetters("user", {
-			users: "GET_USERS",
-		}),
 	},
 };
 </script>
