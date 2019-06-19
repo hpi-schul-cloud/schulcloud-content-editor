@@ -46,8 +46,8 @@
 			</RouterLink>
 			<BaseButton
 				v-if="actionConfig.delete"
-				class="action"
 				@click="isModalActive = true"
+				class="action"
 			>
 				<i class="material-icons">
 					delete
@@ -57,11 +57,11 @@
 				<BaseConfirm
 					:active.sync="isModalActive"
 					:content="`Soll der Eintrag ${rowName} wirklich gelöscht werden`"
+					@confirm="handleDelete()"
+					@cancle="isModalActive = false"
 					title="Eintrag löschen?"
 					confirm-text="Ja"
 					cancel-text="Nein"
-					@confirm="handleDelete()"
-					@cancle="isModalActive = false"
 				/>
 			</template>
 		</td>
