@@ -1,6 +1,6 @@
 # Schul-Cloud Content-Editor
 
-[![Travis Status](https://travis-ci.com/schul-cloud/schulcloud-content-editor.svg?branch=master)](https://travis-ci.com/schul-cloud/schulcloud-content-editor) [![Greenkeeper badge](https://badges.greenkeeper.io/schul-cloud/schulcloud-content-editor.svg)](https://greenkeeper.io/)
+[![Build Status](https://travis-ci.com/schul-cloud/schulcloud-content-editor.svg?branch=BALS)](https://travis-ci.com/schul-cloud/schulcloud-content-editor) [![Greenkeeper badge](https://badges.greenkeeper.io/schul-cloud/schulcloud-content-editor.svg)](https://greenkeeper.io/)
 
 [![Deploy badge](https://img.shields.io/badge/Demo-Deployed-brightgreen.svg)](https://schul-cloud.github.io/schulcloud-content-editor/)
 
