@@ -1,33 +1,38 @@
 import Vue from "vue";
 import Router from "vue-router";
-import config from "../config.js";
-
-function loadView(path) {
-	return () =>
-		import(/* webpackChunkName: "view-[request]" */ `@/pages/${path}`);
-}
-
 Vue.use(Router);
+
+const loadView = (path) => {
+	return () =>
+		import(/* webpackChunkName: "page-[request]" */ `@/pages/${path}`);
+};
+
+import resourceManagement from "./resourceManagement";
+import statistics from "./statistics";
+import registration from "./registration";
+
+const routes = [
+	{ path: "/", redirect: "/resources", name: "main" },
+	// Plugins:
+	...resourceManagement,
+	...statistics,
+	...registration,
+	{
+		path: "*",
+		name: "404",
+		component: "404.vue",
+	},
+];
 
 export default new Router({
 	mode: "history",
 	base: process.env.VUE_APP_PUBLIC_PATH || "/",
-	routes: [
-		{ path: "/", name: "main", component: loadView("overview/overview.vue") },
-		{ path: "/stats", name: "stats", component: loadView("stats/stats.vue") },
-		{
-			path: "/create",
-			name: "create",
-			component: loadView("edit/edit.vue"),
-			props: { editMode: false },
-		},
-		{
-			path: "/edit/:id",
-			name: "edit",
-			component: loadView("edit/edit.vue"),
-			props: { editMode: true },
-		},
-	],
+	routes: routes.map((route) => {
+		if (route.component) {
+			route.component = loadView(route.component);
+		}
+		return route;
+	}),
 	scrollBehavior(to, from, savedPosition) {
 		if (savedPosition) {
 			return savedPosition;

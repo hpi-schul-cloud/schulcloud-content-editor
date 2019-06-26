@@ -6,7 +6,7 @@ module.exports = {
 	jsxBracketSameLine: false,
 	arrowParens: "always",
 	proseWrap: "never",
-	htmlWhitespaceSensitivity: "strict",
+	htmlWhitespaceSensitivity: "ignore",
 	endOfLine: "lf",
 	semi: true,
 	singleQuote: false,

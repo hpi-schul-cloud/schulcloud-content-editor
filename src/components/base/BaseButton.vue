@@ -1,5 +1,18 @@
 <template>
+	<!-- eslint-disable vue/valid-template-root -->
+	<RouterLink v-if="to !== undefined" :to="to">
+		<button
+			:class="getClass()"
+			:type="type"
+			:disabled="disabled"
+			v-bind="$attrs"
+			v-on="$listeners"
+		>
+			<slot></slot>
+		</button>
+	</RouterLink>
 	<button
+		v-else
 		:class="getClass()"
 		:type="type"
 		:disabled="disabled"
@@ -12,7 +25,6 @@
 
 <script>
 export default {
-	name: "BaseButton",
 	props: {
 		type: {
 			type: String,
@@ -33,6 +45,10 @@ export default {
 		styling: {
 			type: String,
 			default: "secondary",
+		},
+		to: {
+			type: [String, Object, undefined],
+			default: undefined,
 		},
 	},
 	methods: {
@@ -73,7 +89,8 @@ export default {
 	background: rgba(255, 255, 255, 0);
 
 	&:hover {
-		background: #b104381f;
+		background: var(--accentColor);
+		opacity: 0.95;
 	}
 }
 .primary_btn {
@@ -81,7 +98,7 @@ export default {
 	background-color: var(--primaryColor);
 
 	&:hover {
-		background: #ba2350;
+		background: var(--accentColor);
 	}
 }
 .secondary_btn {

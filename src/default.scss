@@ -1,6 +1,9 @@
 :root {
-	--primaryColor: #b10438;
-	--accentColor: #f8a41b;
+	--primaryColor: #1b6de7;
+	--accentColor: #5bc3ce;
+	--darkGrey: #4a4a4a;
+	--lightGrey: #bbb;
+	--errorColor: #d60000;
 }
 
 * {
@@ -9,6 +12,15 @@
 
 body {
 	margin: 0;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu,
+		"Helvetica Neue", Arial, sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+input,
+textarea {
+	font: inherit;
 }
 
 a {

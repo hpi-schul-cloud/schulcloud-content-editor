@@ -1,18 +1,19 @@
 <template>
 	<div class="menu-wrapper">
 		<button
-			type="button"
 			:class="{
 				select_button: true,
 				expand: expanded,
 			}"
 			@click="toggleExpansion"
+			type="button"
 		>
-			<slot name="MenuTitle"></slot>
-			<img
-				:class="{ rotate: expanded }"
-				src="@/assets/icon-arrow_down_white.svg"
-			/>
+			<slot>
+				<slot name="MenuTitle" />
+				<i :class="{ 'material-icons': true, rotate: expanded }">
+					arrow_drop_down
+				</i>
+			</slot>
 		</button>
 		<ul class="select">
 			<li
@@ -20,15 +21,15 @@
 				:key="option.text"
 				:class="{ option: true, selected: option.text === selected }"
 				@click="selectOption(option)"
-				>{{ option.text }}</li
 			>
+				{{ option.text }}
+			</li>
 		</ul>
 	</div>
 </template>
 
 <script>
 export default {
-	name: "BaseMenu",
 	props: {
 		options: {
 			type: Array,
@@ -64,21 +65,15 @@ export default {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	width: 100%;
-	padding: 8px 16px;
+	min-width: 100%;
 	font-family: inherit;
 	font-size: 14px;
 	font-weight: 500;
-	color: #fff;
 	text-transform: uppercase;
 	cursor: pointer;
-	background: rgba(255, 255, 255, 0);
+	background: transparent;
 	border: none;
 	border-radius: 2px;
-
-	&:hover {
-		background: #ba2350;
-	}
 
 	.rotate {
 		transform: rotate(180deg);
@@ -87,7 +82,6 @@ export default {
 .select {
 	position: absolute;
 	right: 0;
-	left: 0;
 	z-index: 99;
 	display: none;
 	padding: 0;
@@ -107,6 +101,8 @@ export default {
 	padding: 16px;
 	font-size: 16px;
 	font-weight: 400;
+	text-align: right;
+	white-space: nowrap;
 
 	&:hover {
 		background: #e0e0e0;

@@ -1,16 +1,16 @@
 <template>
 	<div class="wrapper">
-		<label v-if="label" :class="{ invalid: !!error }" :for="name">{{
-			label
-		}}</label>
+		<label v-if="label" :class="{ invalid: !!error }" :for="name">
+			{{ label }}
+		</label>
 		<input
 			v-bind="$attrs"
-			class="input"
 			:name="name"
 			:type="type"
 			:value="value"
 			:placeholder="placeholder"
 			@input="$emit('input', $event.target.value)"
+			class="input"
 		/>
 		<slot name="icon"></slot>
 		<span v-if="!!error" class="invalid">{{ error }}</span>
@@ -19,7 +19,6 @@
 
 <script>
 export default {
-	name: "BaseInput",
 	props: {
 		value: {
 			type: String,
@@ -53,7 +52,7 @@ export default {
 .wrapper {
 	position: relative;
 	width: 100%;
-	margin: 1.5em 0;
+	margin: 0.5rem 0 1rem;
 }
 label {
 	font-size: 0.9em;
@@ -65,11 +64,13 @@ label {
 	width: 100%;
 	font-size: 1.15em;
 	line-height: 32px;
-	color: #757575;
+	color: #333;
 	background: rgba(255, 255, 255, 0);
 	border: none;
 	border-bottom: 1px solid #949494;
-
+	::placeholder {
+		color: #999;
+	}
 	&:focus {
 		border-bottom-color: var(--primaryColor);
 		border-bottom-width: 2px;

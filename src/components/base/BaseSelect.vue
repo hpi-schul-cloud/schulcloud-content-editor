@@ -1,8 +1,7 @@
 <template>
-	<div style="position: relative">
+	<div class="select-wrapper">
 		<label v-if="label" :for="name">{{ label }}</label>
 		<button
-			type="button"
 			:class="{
 				select_button: true,
 				disabled: disabled === true,
@@ -10,22 +9,32 @@
 			}"
 			:disabled="disabled"
 			@click="expandSelect"
+			type="button"
 		>
 			{{ getContent() }}
-			<img
-				:class="{ icon: true, rotate: expanded }"
-				src="@/assets/icon-arrow_down_black.svg"
-			/>
+			<i :class="{ 'material-icons': true, rotate: expanded }">
+				arrow_drop_down
+			</i>
 		</button>
 		<ul class="select">
 			<li
 				v-for="option in options"
 				:key="option.key"
-				:class="{ option: true, selected: option.key === selected }"
+				:class="{
+					option: true,
+					selected: option.key === selected,
+					'disabled-option': disabledOptions.includes(option.key),
+				}"
 				:value="option.key"
-				@click="selectOption(option)"
-				>{{ option.value }}</li
 			>
+				<button
+					:disabled="disabledOptions.includes(option.key)"
+					@click="selectOption(option)"
+					type="button"
+				>
+					{{ option.value }}
+				</button>
+			</li>
 		</ul>
 	</div>
 </template>
@@ -39,14 +48,17 @@ export default {
 			default: () => [],
 			required: true,
 		},
+		disabledOptions: {
+			type: Array,
+			default: () => [],
+			required: false,
+		},
 		label: {
 			type: String,
-			default: "",
 			required: true,
 		},
 		name: {
 			type: String,
-			default: "",
 			required: true,
 		},
 		selected: {
@@ -57,7 +69,6 @@ export default {
 		disabled: {
 			type: Boolean,
 			default: false,
-			required: false,
 		},
 	},
 	data() {
@@ -88,6 +99,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.select-wrapper {
+	position: relative;
+}
 label {
 	font-size: 0.9em;
 	font-weight: 500;
@@ -139,12 +153,24 @@ label {
 	border-bottom-color: #ccc;
 }
 .option {
-	padding: 8px;
 	&:hover {
 		background: #e0e0e0;
+	}
+
+	button {
+		display: block;
+		width: 100%;
+		padding: 8px;
+		text-align: left;
+		cursor: pointer;
+		background: none;
+		border: none;
 	}
 }
 .selected {
 	color: var(--primaryColor);
+}
+.disabled-option {
+	color: red;
 }
 </style>

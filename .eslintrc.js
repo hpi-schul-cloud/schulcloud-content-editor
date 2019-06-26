@@ -40,6 +40,8 @@ module.exports = {
 					"transition-group",
 					"keep-alive",
 					"slot",
+					"vue-fab",
+					"fab-item",
 				],
 			},
 		],

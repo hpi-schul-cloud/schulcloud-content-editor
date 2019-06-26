@@ -3,70 +3,61 @@
 		<!-- eslint-disable -->
 		<vue-progress-bar />
 		<!--eslint-enable-->
-		<header>
-			<div class="flex">
-				<div id="title-wrapper">
-					<RouterLink to="/" style="flex: 1">
-						<div class="flex">
-							<span class="logo"
-								><img src="./assets/cloud-transparent-mono.svg"
-							/></span>
-							<h2 class="title" style="flex: 1">{{ title }}</h2>
-						</div>
-					</RouterLink>
-				</div>
-				<div v-if="jwt" id="button-wrapper">
-					<RouterLink to="/create">
-						<BaseButton styling="primary">{{
-							$lang.buttons.create
-						}}</BaseButton>
-					</RouterLink>
-					<RouterLink to="/stats">
-						<BaseButton styling="primary">{{ $lang.buttons.stats }}</BaseButton>
-					</RouterLink>
-					<BaseMenu :options="MenuOptions" @input="handleMenuClick($event)">
-						<template slot="MenuTitle">{{ userInfo.displayName }}</template>
-					</BaseMenu>
-				</div>
-			</div>
-		</header>
-		<main class="container-fluid-max">
+		<TheHeader class="header" />
+		<TheSidebar v-if="jwt" :items="sidebarItems" class="sidebar" />
+		<main :class="{ 'with-sidebar': !!jwt }">
 			<Transition name="fade" mode="out-in" appear>
 				<RouterView v-if="jwt" />
 			</Transition>
-			<AppLogin v-if="!jwt" />
+			<TheLogin v-if="!jwt" />
 		</main>
-		<AppFooter />
+		<TheFAB />
+		<TheFooter class="footer" />
+
+		<portal-target name="app"></portal-target>
 	</div>
 </template>
 
 <script>
 /* load login async */
-const login = () =>
-	import(/* webpackChunkName: "login" */ "@/components/login.vue");
-/* load hpiFooter async */
-const hpiFooter = () =>
-	import(/* webpackChunkName: "hpiFooter" */ "@/components/footer.vue");
-import BaseMenu from "@/components/base/BaseMenu.vue";
-import BaseButton from "@/components/base/BaseButton.vue";
+const TheLogin = () => import("@/components/app/TheLogin");
+import TheHeader from "@/components/app/TheHeader";
+import TheFAB from "@/components/app/TheFAB";
+import TheSidebar from "@/components/app/TheSidebar";
+import TheFooter from "@/components/app/TheFooter";
+import Router from "@/router/index.js";
+
+import { mapGetters } from "vuex";
 
 export default {
-	name: "App",
 	components: {
-		AppLogin: login,
-		AppFooter: hpiFooter,
-		BaseMenu,
-		BaseButton,
+		TheLogin,
+		TheHeader,
+		TheFAB,
+		TheSidebar,
+		TheFooter,
 	},
 	data() {
 		return {
-			title: "Schul-Cloud Content",
-			jwt: localStorage.getItem("jwt"),
-			userInfo: JSON.parse(localStorage.getItem("userInfo")) || {},
-			MenuOptions: [
-				{ text: this.$lang.buttons.logout, actionOnClick: "logout" },
-			],
+			primaryColor: getComputedStyle(document.documentElement).getPropertyValue(
+				"--primaryColor"
+			),
 		};
+	},
+	computed: {
+		...mapGetters("user", {
+			jwt: "GET_JWT",
+			userInfo: "GET_USER",
+		}),
+		sidebarItems() {
+			return Router.options.routes.filter((route) => {
+				if ((this.userInfo || {}).role === "user") {
+					return (
+						!!route.sidebarTitle && route.name !== "userManagement/registration"
+					);
+				} else return !!route.sidebarTitle;
+			});
+		},
 	},
 	created() {
 		this.$Progress.start();
@@ -79,15 +70,15 @@ export default {
 		this.$router.afterEach(() => {
 			this.$Progress.finish();
 		});
+
+		this.$eventHub.$on("navigate", this.navigate);
+	},
+	beforeDestroy() {
+		this.$eventHub.$off("navigate");
 	},
 	methods: {
-		handleMenuClick(ev) {
-			this[ev.actionOnClick]();
-		},
-		logout() {
-			localStorage.clear();
-			this.$cookies.remove("jwt");
-			window.location.href = "/";
+		navigate(target) {
+			this.$router.push(target);
 		},
 	},
 };
@@ -95,16 +86,6 @@ export default {
 
 <style lang="scss">
 @import "./default";
-#app {
-	display: flex;
-	flex-direction: column;
-	min-height: 100vh;
-	padding: 0;
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu,
-		"Helvetica Neue", Arial, sans-serif;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-}
 
 .fade-enter-active,
 .fade-leave-active {
@@ -115,76 +96,43 @@ export default {
 .fade-leave-active {
 	opacity: 0;
 }
-
-header {
-	top: 0;
-	left: 0;
-	z-index: 999;
-	width: 100vw;
-	padding: 0 32px 0 16px !important;
-	color: white;
-	background: var(--primaryColor);
-	box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14),
-		0 1px 3px 0 rgba(0, 0, 0, 0.12);
-
-	.flex {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		justify-content: space-between;
-
-		@media (max-width: 730px) {
-			justify-content: space-around;
-		}
-
-		a {
-			text-decoration: none;
-
-			&:hover {
-				text-decoration: none;
-			}
-		}
-	}
-
-	#title-wrapper {
-		max-width: 300px;
-
-		.logo {
-			max-width: 50px;
-			margin: 8px;
-
-			img {
-				width: 100%;
-			}
-		}
-
-		.title {
-			font-size: 20px;
-			font-weight: 500;
-			line-height: 26px;
-			color: white;
-			letter-spacing: 0.005em;
-
-			@media (max-width: 730px) {
-				text-align: center;
-			}
-		}
-	}
-
-	#button-wrapper {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		justify-content: center;
-		max-width: 500px;
-	}
+</style>
+<style lang="scss" scoped>
+#app {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+	padding: 0;
 }
+
+$header-height: 56px;
 
 main {
 	flex: 1;
 	// display: contents;
 	max-width: 100% !important;
-	padding: 0;
-	margin: 0 auto !important;
+	padding-top: $header-height;
+	padding-right: 25px;
+	padding-left: 25px;
+	&.with-sidebar {
+		padding-left: 200px;
+	}
+}
+
+.header {
+	position: fixed;
+	top: 0;
+	height: $header-height;
+	background: white;
+	box-shadow: 0 2px 8px 0 rgb(140, 139, 139);
+}
+.sidebar {
+	position: fixed;
+	top: $header-height;
+	bottom: 0;
+	width: 175px;
+}
+.footer {
+	padding-left: 175px;
 }
 </style>
