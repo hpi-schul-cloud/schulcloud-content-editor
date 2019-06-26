@@ -40,8 +40,14 @@ import VueLang from "vuejs-localization";
 VueLang.requireAll(require.context("./lang", true, /\.js$/));
 Vue.use(VueLang, { default: "de" });
 
+// internationalization for rights-editor
+import VueI18n from "vue-i18n";
+Vue.use(VueI18n);
+import i18n from "@schul-cloud/rights-editor/src/i18n";
+
 // Progressbar
 import VueProgressBar from "vue-progressbar";
+
 const progressbarOptions = {
 	color: "var(--accentColor)",
 	failedColor: "var(--errorColor)",
@@ -66,5 +72,6 @@ new Vue({
 	el: "#app",
 	router,
 	store,
+	i18n,
 	render: (h) => h(App),
 }).$mount("#app");

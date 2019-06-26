@@ -10,6 +10,7 @@ const loadView = (path) => {
 import resourceManagement from "./resourceManagement";
 import statistics from "./statistics";
 import registration from "./registration";
+import { routes as LicenseRoutes } from "@schul-cloud/rights-editor/src/router";
 
 const routes = [
 	{ path: "/", redirect: "/resources", name: "main" },
@@ -17,6 +18,19 @@ const routes = [
 	...resourceManagement,
 	...statistics,
 	...registration,
+	{
+		path: "/licenses",
+		component: "licenses/index.vue",
+		sidebarTitle: "Lizenzen",
+		sidebarIcon: "gavel",
+		children: LicenseRoutes.map((route) => {
+			if (route.path === "/") {
+				route.name = "RightsEditor";
+			}
+			route.path = route.path.slice(1);
+			return route;
+		}),
+	},
 	{
 		path: "*",
 		name: "404",
