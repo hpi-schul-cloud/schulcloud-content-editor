@@ -1,7 +1,12 @@
 <template>
 	<footer>
 		<div>© 2018 Schul-Cloud</div>
-		<img src="@/assets/hpi-logo.png" width="235" height="44" />
+		<img
+			src="@/assets/hpi-logo.png"
+			width="235"
+			height="44"
+			alt="HPI Wort-Bild Marke (Logo)"
+		/>
 		<div>
 			<a href="https://schul-cloud.org/impressum">
 				Impressum
@@ -25,10 +30,10 @@
 <style lang="scss" scoped>
 footer {
 	margin: 2rem 0;
-	color: #aaa;
+	color: var(--darkGrey);
 	text-align: center;
 	img {
-		filter: grayscale(1);
+		filter: grayscale(1) contrast(1.5);
 		opacity: 0.7;
 	}
 }

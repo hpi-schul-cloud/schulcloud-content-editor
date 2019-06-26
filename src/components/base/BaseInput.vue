@@ -1,6 +1,10 @@
 <template>
 	<div class="wrapper">
-		<label v-if="label" :class="{ invalid: !!error }" :for="name">
+		<label
+			v-if="!hiddenLabel && label"
+			:class="{ invalid: !!error }"
+			:for="name"
+		>
 			{{ label }}
 		</label>
 		<input
@@ -10,6 +14,7 @@
 			:value="value"
 			:placeholder="placeholder"
 			@input="$emit('input', $event.target.value)"
+			:aria-label="hiddenLabel ? label : undefined"
 			class="input"
 		/>
 		<slot name="icon"></slot>
@@ -31,6 +36,9 @@ export default {
 		label: {
 			type: String,
 			required: true,
+		},
+		hiddenLabel: {
+			type: Boolean,
 		},
 		placeholder: {
 			type: String,

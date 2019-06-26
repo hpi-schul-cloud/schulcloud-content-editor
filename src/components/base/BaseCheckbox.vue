@@ -48,18 +48,29 @@ label {
 		width: 1em;
 		height: 1em;
 		background: white;
+		background-size: cover;
 		border: 1px solid black;
 		border-radius: 2px;
-		transition: all 0.2s ease;
 	}
 
 	input[type="checkbox"] {
-		display: none;
+		/* https://snook.ca/archives/html_and_css/hiding-content-for-accessibility */
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+		clip: rect(1px, 1px, 1px, 1px);
 
 		&:checked + .checkbox {
-			color: white;
 			background-image: url("~@/assets/icon-check.svg");
-			background-size: cover;
+		}
+
+		&:focus + .checkbox {
+			outline: 2px solid var(--primaryColor);
+			outline-offset: 2px;
 		}
 	}
 }
