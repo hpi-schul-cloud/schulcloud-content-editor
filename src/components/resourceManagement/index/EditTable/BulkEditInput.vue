@@ -12,6 +12,7 @@
 			:disabled="isInputRequired && validateRequired && !isInputDefined"
 			class="active-toggle"
 			type="checkbox"
+			aria-label="toggle active state of cell"
 		/>
 	</div>
 </template>

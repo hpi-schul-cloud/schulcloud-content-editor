@@ -11,9 +11,15 @@
 			<i class="material-icons">arrow_back</i>
 		</BaseButton>
 
-		<BaseButton id="page-number" :raised="true" styling="primary">
-			<input v-model.lazy="pageString" :max="maxPages" type="number" min="1" />
-		</BaseButton>
+		<div :raised="true" class="page-number" styling="primary">
+			<input
+				v-model.lazy="pageString"
+				:max="maxPages"
+				type="number"
+				min="1"
+				aria-label="Eingabe der aktuellen Seite"
+			/>
+		</div>
 
 		<BaseButton
 			:disabled="config.page == maxPages"
@@ -94,10 +100,26 @@ export default {
 [disabled] {
 	visibility: hidden;
 }
-#page-number {
+.page-number {
 	height: 40px;
 	padding: 0;
 	margin: 0;
+	font-family: inherit;
+	font-size: 14px;
+	font-weight: 500;
+	color: #fff;
+	text-transform: uppercase;
+	background: rgba(255, 255, 255, 0);
+	background-color: var(--primaryColor);
+	border: none;
+	border-radius: 2px;
+	box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+		0 1px 5px 0 rgba(0, 0, 0, 0.12);
+	transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+	&:hover,
+	&:focus {
+		background: var(--accentColor);
+	}
 	input {
 		width: 100%;
 		max-width: 88px;

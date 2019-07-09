@@ -5,13 +5,13 @@
 		<!--eslint-enable-->
 		<TheHeader class="header" />
 		<TheSidebar v-if="jwt" :items="sidebarItems" class="sidebar" />
+		<TheFAB />
 		<main :class="{ 'with-sidebar': !!jwt }">
 			<Transition name="fade" mode="out-in" appear>
 				<RouterView v-if="jwt" />
 			</Transition>
 			<TheLogin v-if="!jwt" />
 		</main>
-		<TheFAB />
 		<TheFooter class="footer" />
 
 		<portal-target name="app"></portal-target>

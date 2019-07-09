@@ -1,14 +1,18 @@
 <template>
 	<header>
 		<span class="logo">
-			<img src="@/assets/cloud-transparent.svg" />
+			<img src="@/assets/cloud-transparent.svg" alt="HPI Schul-Cloud Logo" />
 		</span>
 		<RouterLink to="/" style="flex: 1">
 			<h2 class="title" style="flex: 1">{{ title }}</h2>
 		</RouterLink>
 		<div id="button-wrapper" v-if="jwt">
 			<BaseMenu :options="MenuOptions" @input="handleMenuClick($event)">
-				<img src="http://i.pravatar.cc/50" class="user-avatar" />
+				<img
+					src="http://i.pravatar.cc/50"
+					class="user-avatar"
+					alt="random user avatar"
+				/>
 			</BaseMenu>
 		</div>
 	</header>

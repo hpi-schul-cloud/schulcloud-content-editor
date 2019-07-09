@@ -1,5 +1,11 @@
 <template>
-	<BaseInput v-bind="$attrs" v-on="$listeners" class="searchbar" />
+	<BaseInput
+		v-bind="$attrs"
+		v-on="$listeners"
+		:hidden-label="true"
+		class="searchbar"
+		label="Suche nach Inhalten"
+	/>
 </template>
 
 <script>

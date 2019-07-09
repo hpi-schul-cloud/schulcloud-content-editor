@@ -1,7 +1,7 @@
 <template>
 	<portal to="app">
 		<transition name="fade">
-			<div v-if="active" class="dialog-container">
+			<div v-show="active" class="dialog-container" role="dialog">
 				<div class="title">
 					<slot name="title">{{ title }}</slot>
 				</div>
@@ -17,6 +17,7 @@
 						{{ cancelText }}
 					</BaseButton>
 					<BaseButton
+						ref="confirm"
 						v-if="confirmText"
 						@click="handleConfirm"
 						styling="primary"
@@ -34,6 +35,7 @@
 
 <script>
 import BaseButton from "@/components/base/BaseButton";
+import { setTimeout } from "timers";
 
 export default {
 	components: {
@@ -59,6 +61,15 @@ export default {
 		cancelText: {
 			type: String,
 			default: "",
+		},
+	},
+	watch: {
+		active: function(to) {
+			if (to) {
+				setTimeout(() => {
+					this.$refs.confirm.$el.focus();
+				}, 300);
+			}
 		},
 	},
 	methods: {

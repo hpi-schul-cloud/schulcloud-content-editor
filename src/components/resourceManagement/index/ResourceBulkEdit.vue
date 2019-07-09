@@ -13,12 +13,26 @@
 			v-model="bulkEdit"
 			:label="$lang.resourceManagement.bulk.enableBulkEdit"
 		/>
+		<template v-if="bulkEdit">
+			<p class="hint">
+				Hinweis: Nur wenn der haken neben einem Eingabefeld gesetzt ist, wird
+				das Feld auch verändert.
+			</p>
+			<BaseCheckbox
+				v-if="bulkEdit"
+				v-model="bulkAdvancedEdit"
+				:label="$lang.resourceManagement.bulk.enableBulkEditAdvanced"
+			/>
+			<p v-if="bulkAdvancedEdit" class="hint">
+				Hinweis: Ist die Suche aktiviert (Haken rechts neben Eingabefeld), so
+				werden nur jene Teile der Daten verändert, auf die die Suche zutrifft.
+				Der Rest der Daten bleibt erhalten.
+				<br />
+				So kann beispielsweise durch aktivieren einer "leeren" Suche ein Tag
+				hinzugefügt werden, oder ein Teil der URL ausgetauscht werden.
+			</p>
+		</template>
 		<br />
-		<BaseCheckbox
-			v-if="bulkEdit"
-			v-model="bulkAdvancedEdit"
-			:label="$lang.resourceManagement.bulk.enableBulkEditAdvanced"
-		/>
 
 		<ResourceBulkEditTable
 			:bulk-inputs="bulkInputs"
@@ -270,3 +284,9 @@ export default {
 	},
 };
 </script>
+<style lang="scss" scoped>
+.hint {
+	margin: 0 auto 0.5em;
+	color: var(--darkGrey);
+}
+</style>

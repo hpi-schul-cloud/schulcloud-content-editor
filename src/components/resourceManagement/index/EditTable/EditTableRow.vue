@@ -27,6 +27,7 @@
 				:form="formId"
 				type="submit"
 				class="action"
+				title="Änderungen speichern"
 			>
 				<i class="material-icons">
 					check
@@ -39,6 +40,7 @@
 					params: { id: resource._id },
 				}"
 				class="action"
+				title="Eintrag in Detailansicht bearbeiten"
 			>
 				<i class="material-icons">
 					edit
@@ -48,6 +50,7 @@
 				v-if="actionConfig.delete"
 				@click="isModalActive = true"
 				class="action"
+				title="Eintrag löschen"
 			>
 				<i class="material-icons">
 					delete

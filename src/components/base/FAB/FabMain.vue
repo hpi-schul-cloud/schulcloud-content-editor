@@ -5,6 +5,7 @@
 		:class="{ open }"
 		:style="{ background: config.background, color: config.color }"
 		v-on="$listeners"
+		tabindex="0"
 		class="fab-container"
 	>
 		<transition name="spin" mode="out-in">
@@ -49,6 +50,11 @@ export default {
 	border-radius: 5em;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
 
+	&:focus {
+		filter: brightness(75%);
+		outline: 2px solid initial;
+		outline-offset: 4px;
+	}
 	.fab-icon {
 		user-select: none;
 		&--close {

@@ -4,6 +4,7 @@
 			:config="cfg"
 			:open="open"
 			@click="handleMainClick(cfg)"
+			@keypress.enter="handleMainClick(cfg)"
 			class="fab-main"
 		/>
 		<div class="actions-container">
@@ -16,10 +17,13 @@
 				tag="div"
 			>
 				<FabOption
-					v-for="option in options"
+					v-for="(option, index) in options"
 					:key="option.icon"
 					:config="option"
 					@click="handleActionClick(option)"
+					@keypress.enter="handleActionClick(option)"
+					@keydown.tab="closeOnLastTab(option, index)"
+					:tabindex="options.length ? '0' : '-1'"
 					class="action"
 				/>
 			</transition-group>
@@ -68,6 +72,11 @@ export default {
 		},
 	},
 	methods: {
+		closeOnLastTab(option, index) {
+			if (index === this.options.length - 1) {
+				this.open = false;
+			}
+		},
 		handleMainClick(targetConfig) {
 			if (!this.cfg.options || this.cfg.options.length !== 0) {
 				this.open = !this.open;

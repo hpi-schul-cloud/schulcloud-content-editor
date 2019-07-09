@@ -104,19 +104,31 @@ export default {
 	}
 }
 .hidden-but-accessible {
-	position: absolute;
-	width: 0;
-	height: 0;
+	/* https://snook.ca/archives/html_and_css/hiding-content-for-accessibility */
+	position: absolute !important;
+	top: 0;
+	left: 0;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+	clip: rect(1px, 1px, 1px, 1px);
 }
 .input-label {
+	position: relative;
 	flex: 1;
 	padding: 2em;
 	text-align: center;
 	cursor: pointer;
+	&:focus-within {
+		color: #fff;
+		background-color: var(--darkGrey);
+		filter: brightness(200%);
+	}
 }
 .upload-icon {
 	display: block;
 	font-size: 5em;
-	color: #aaa;
+	color: #666;
 }
 </style>

@@ -97,7 +97,8 @@ export default {
 	color: #fff;
 	background-color: var(--primaryColor);
 
-	&:hover {
+	&:hover,
+	&:focus {
 		background: var(--accentColor);
 	}
 }
@@ -105,7 +106,8 @@ export default {
 	color: black;
 	background: rgba(255, 255, 255, 0);
 
-	&:hover {
+	&:hover,
+	&:focus {
 		background: #00000021;
 	}
 }

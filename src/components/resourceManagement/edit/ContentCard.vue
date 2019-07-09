@@ -136,7 +136,7 @@ span {
 	vertical-align: middle;
 }
 .tags {
-	color: #999;
+	color: #666;
 }
 .button_wrapper {
 	display: flex;
