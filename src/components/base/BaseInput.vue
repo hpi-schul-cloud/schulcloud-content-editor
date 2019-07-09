@@ -1,23 +1,24 @@
 <template>
 	<div class="wrapper">
-		<label
-			v-if="!hiddenLabel && label"
-			:class="{ invalid: !!error }"
-			:for="name"
-		>
-			{{ label }}
+		<label>
+			<span
+				v-if="!hiddenLabel && label"
+				:class="{ label: true, invalid: !!error }"
+			>
+				{{ label }}
+			</span>
+			<input
+				v-bind="$attrs"
+				:name="name"
+				:type="type"
+				:value="value"
+				:placeholder="placeholder"
+				@input="$emit('input', $event.target.value)"
+				:aria-label="hiddenLabel ? label : undefined"
+				class="input"
+			/>
+			<slot name="icon"></slot>
 		</label>
-		<input
-			v-bind="$attrs"
-			:name="name"
-			:type="type"
-			:value="value"
-			:placeholder="placeholder"
-			@input="$emit('input', $event.target.value)"
-			:aria-label="hiddenLabel ? label : undefined"
-			class="input"
-		/>
-		<slot name="icon"></slot>
 		<span v-if="!!error" class="invalid">{{ error }}</span>
 	</div>
 </template>
@@ -62,7 +63,7 @@ export default {
 	width: 100%;
 	margin: 0.5rem 0 1rem;
 }
-label {
+.label {
 	font-size: 0.9em;
 	font-weight: 500;
 	color: black;

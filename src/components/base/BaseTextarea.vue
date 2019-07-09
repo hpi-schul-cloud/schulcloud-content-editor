@@ -1,6 +1,6 @@
 <template>
-	<div class="wrapper">
-		<label :class="{ invalid: !!error }" :for="name">{{ label }}</label>
+	<label class="wrapper">
+		<span :class="{ label: true, invalid: !!error }">{{ label }}</span>
 		<textarea
 			:name="name"
 			:maxlength="maxlength"
@@ -10,7 +10,7 @@
 			class="textarea"
 		/>
 		<span v-if="!!error" class="invalid">{{ error }}</span>
-	</div>
+	</label>
 </template>
 
 <script>
@@ -48,7 +48,7 @@ export default {
 .wrapper {
 	margin: 0.5rem 0 1rem;
 }
-label {
+.label {
 	font-size: 0.9em;
 	font-weight: 500;
 	color: black;

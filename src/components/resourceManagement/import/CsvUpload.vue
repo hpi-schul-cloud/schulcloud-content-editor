@@ -129,6 +129,6 @@ export default {
 .upload-icon {
 	display: block;
 	font-size: 5em;
-	color: #aaa;
+	color: #666;
 }
 </style>
