@@ -92,9 +92,17 @@ export default {
 		...mapActions("user", {
 			submitLogin: "LOGIN",
 		}),
-		validateBeforeSubmit() {
+		async validateBeforeSubmit() {
 			if (this.login.username != "" && this.login.password != "") {
-				return this.submitLogin(this.login);
+				try {
+					return await this.submitLogin(this.login);
+				} catch (error) {
+					this.$toasted.error(
+						`Login Fehlgeschlagen: ${
+							error.message ? `(${error.toString()})` : ""
+						}`
+					);
+				}
 			}
 		},
 		toggleVisibility() {
