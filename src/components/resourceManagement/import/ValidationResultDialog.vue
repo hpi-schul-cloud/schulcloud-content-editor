@@ -25,7 +25,7 @@
 						<th>Validierungs Fehler</th>
 					</tr>
 					<tr v-for="(value, key) in validationResults" :key="key">
-						<td>{{ key }}</td>
+						<td>{{ $lang.resources[key] || key }}</td>
 						<td>
 							<p
 								v-for="(errorMessage, index) in value"

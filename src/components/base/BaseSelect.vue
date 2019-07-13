@@ -6,6 +6,7 @@
 				select_button: true,
 				disabled: disabled === true,
 				expand: expanded,
+				standalone: label === '',
 			}"
 			:disabled="disabled"
 			@click="expandSelect"
@@ -124,6 +125,12 @@ label {
 	.rotate {
 		transform: rotate(180deg);
 	}
+}
+.standalone {
+	font: inherit;
+	font-size: inherit;
+	color: #000;
+	border: none;
 }
 .select {
 	position: absolute;

@@ -4,7 +4,7 @@
 		<table>
 			<tr>
 				<th v-for="(header, index) in headerFields" :key="index">
-					{{ header }}
+					{{ $lang.resources[header] || header }}
 				</th>
 			</tr>
 			<tr v-for="(row, index) in formattedContent" :key="index">
@@ -65,8 +65,15 @@ td {
 	padding: 8px;
 }
 
+td {
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
 table {
 	width: 100%;
+	text-align: left;
+	table-layout: fixed;
 }
 .text-center {
 	text-align: center;

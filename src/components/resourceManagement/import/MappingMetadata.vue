@@ -1,11 +1,11 @@
 <template>
 	<div>
-		<h3>Mapping</h3>
+		<h3>Zuordnung</h3>
 		<table class="fixed">
 			<thead>
 				<tr>
 					<th class="icon-column"></th>
-					<th>Metadaten Felder</th>
+					<th>Metadaten-Felder</th>
 					<th class="icon-column"></th>
 					<th>CSV-Felder</th>
 				</tr>
@@ -34,13 +34,13 @@
 							:selected="value.mappedHeader"
 							@input="handleInput($event, key)"
 							label=""
-							name="Mapping"
+							name="Wähle eine CSV-Spalte"
 						/>
 					</td>
 				</tr>
 			</tbody>
 		</table>
-		<p>* required Felder</p>
+		<p>* Pflichtangaben</p>
 	</div>
 </template>
 
@@ -71,7 +71,7 @@ export default {
 	},
 	computed: {
 		mappingOptions: function() {
-			let options = [{ key: "none", value: "kein Match" }];
+			let options = [{ key: "none", value: "keine Zuordnung möglich" }];
 
 			options.push(
 				...this.csvHeaders.map((headerField) => {
