@@ -1,0 +1,1 @@
+Use [https://googlechrome.github.io/lighthouse/viewer/](https://googlechrome.github.io/lighthouse/viewer/) to open the files

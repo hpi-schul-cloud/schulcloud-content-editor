@@ -1,0 +1,1 @@
+Use [https://toolbox.googleapps.com/apps/har_analyzer/](https://toolbox.googleapps.com/apps/har_analyzer/) to open the files
