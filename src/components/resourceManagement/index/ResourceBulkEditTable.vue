@@ -109,12 +109,6 @@ export default {
 		}
 	}
 	tbody tr {
-		/*
-		&:nth-of-type(2n) {
-			background-color: #eee;
-		}
-		*/
-
 		&:hover {
 			background-color: #ccc;
 		}

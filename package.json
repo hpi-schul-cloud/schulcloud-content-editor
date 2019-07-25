@@ -39,6 +39,7 @@
 		"velocity-animate": "^1.5.2",
 		"vue": "^2.6.10",
 		"vue-chartjs": "^3.4.2",
+		"vue-click-outside": "^1.0.7",
 		"vue-config": "^1.0.0",
 		"vue-cookies": "^1.5.13",
 		"vue-fragment": "^1.5.1",

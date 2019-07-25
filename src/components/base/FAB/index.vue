@@ -133,16 +133,4 @@ export default {
 .staggered-leave {
 	opacity: 0;
 }
-
-/*
-.fade-enter-active,
-.fade-leave-active {
-	transition: opacity 0.3s, transform 0.3s;
-}
-.fade-enter,
-.fade-leave-to {
-	opacity: 0;
-	transform: translateX(-50%) translateY(0.5em);
-}
-*/
 </style>

@@ -1,5 +1,5 @@
 <template>
-	<div class="select-wrapper">
+	<div v-click-outside="handleClickOutside" class="select-wrapper">
 		<label v-if="label" :for="name">{{ label }}</label>
 		<button
 			:class="{
@@ -41,8 +41,13 @@
 </template>
 
 <script>
+import ClickOutside from "vue-click-outside";
+
 export default {
 	name: "BaseSelect",
+	directives: {
+		ClickOutside,
+	},
 	props: {
 		options: {
 			type: Array,
@@ -80,6 +85,11 @@ export default {
 	methods: {
 		expandSelect(event) {
 			this.expanded = !this.expanded;
+		},
+		handleClickOutside() {
+			if (this.expanded) {
+				this.expanded = false;
+			}
 		},
 		selectOption(option) {
 			this.$emit("input", option.key);

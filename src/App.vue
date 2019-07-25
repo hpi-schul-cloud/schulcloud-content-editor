@@ -19,7 +19,6 @@
 </template>
 
 <script>
-/* load login async */
 const TheLogin = () => import("@/components/app/TheLogin");
 import TheHeader from "@/components/app/TheHeader";
 import TheFAB from "@/components/app/TheFAB";

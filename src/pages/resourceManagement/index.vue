@@ -185,20 +185,7 @@ export default {
 			this.searchString = this.$route.query.q;
 			this.pagination.page = parseInt(this.$route.query.p);
 		},
-		/*
-		updateUrlQuery() {
-			this.$router.push({
-				query: {
-					q: this.searchString || "",
-					p: this.pagination.page || 1,
-				},
-			});
-		},
-		*/
 		loadContent() {
-			// set unique browser url
-			// this.updateUrlQuery();
-
 			if (this.searchString.length === 0) {
 				this.apiSearchQuery["_all[$match]"] = undefined;
 			}

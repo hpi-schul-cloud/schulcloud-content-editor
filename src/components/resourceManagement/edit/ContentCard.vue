@@ -65,7 +65,6 @@
 </template>
 
 <script>
-/* load confirmDialog async */
 const BaseConfirm = () => import("@/components/base/BaseConfirm");
 import BaseCard from "@/components/base/BaseCard";
 import BaseButton from "@/components/base/BaseButton";

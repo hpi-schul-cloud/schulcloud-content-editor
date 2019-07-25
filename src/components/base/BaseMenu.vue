@@ -1,5 +1,5 @@
 <template>
-	<div class="menu-wrapper">
+	<div v-click-outside="handleClickOutside" class="menu-wrapper">
 		<button
 			:class="{
 				select_button: true,
@@ -29,7 +29,12 @@
 </template>
 
 <script>
+import ClickOutside from "vue-click-outside";
+
 export default {
+	directives: {
+		ClickOutside,
+	},
 	props: {
 		options: {
 			type: Array,
@@ -45,6 +50,11 @@ export default {
 	methods: {
 		toggleExpansion(event) {
 			this.expanded = !this.expanded;
+		},
+		handleClickOutside() {
+			if (this.expanded) {
+				this.expanded = false;
+			}
 		},
 		selectOption(option) {
 			this.selected = option.text;
