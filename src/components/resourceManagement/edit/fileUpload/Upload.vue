@@ -45,7 +45,6 @@ export default {
 						this.filetree.objects,
 						newItemsForest
 					);
-					this.$emit("update", this.value); // TODO why? value isn't changed in this method
 					return this.$emit("update:filetree", this.filetree);
 				})
 				.then((res) => {

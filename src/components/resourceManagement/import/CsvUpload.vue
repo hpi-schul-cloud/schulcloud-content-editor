@@ -45,12 +45,11 @@ export default {
 			this.loadCSV(file);
 		},
 		loadCSV(file) {
-			if (!file.type === "application/vnd.ms-excel") {
-				// TODO is CSV always of this type?
+			if (!file.name.toLowerCase().endsWith(".csv")) {
 				return alert("Wrong file type! Please choose a csv-file.");
 			}
 			if (!window.FileReader) {
-				return alert("FileReader is not supported in this browser.");
+				return alert("This Browser is not supported (FileReader is missing).");
 			}
 
 			this.csv.fileName = file.name;

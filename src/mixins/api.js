@@ -75,7 +75,7 @@ const removeUndefined = (obj) => {
 
 const stringify = (query) => {
 	const newQuery = {};
-	// undefined --> null
+	// convert undefined to null
 	// include empty arrays ?key=&...
 	Object.entries(removeUndefined(flattenQuery(query))).forEach(
 		([key, value]) => {

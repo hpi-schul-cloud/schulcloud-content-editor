@@ -177,7 +177,7 @@ export default {
 	data() {
 		return {
 			data: {
-				originId: Date.now().toString(), // TODO FIX
+				originId: Date.now().toString(), // TODO - We don't know the intention of this attribute. Ask @Alex or @Arne
 				providerId: "",
 				url: "",
 				title: "",
@@ -250,6 +250,7 @@ export default {
 					.then((data) => {
 						// JSON responses are automatically parsed.
 						this.data = data;
+						this.$set(this.data, "files", { delete: [], save: [] });
 						this.hostingOption = (this.data.url || "").startsWith(
 							this.$config.API.contentServerUrl + this.$config.API.hostingEntry
 						)

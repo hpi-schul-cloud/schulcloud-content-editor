@@ -1,5 +1,4 @@
 <template>
-	<!-- TODO: Buttons in die Step-Komponenten (?) -->
 	<div>
 		<h2>CSV-Import</h2>
 		<StepProgress

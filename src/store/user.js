@@ -1,6 +1,5 @@
 import { jsonFetch } from "@/mixins/api.js";
 import configFile from "@/config";
-import { stat } from "fs";
 
 const state = {
 	jwt: undefined,
@@ -54,7 +53,10 @@ const actions = {
 			}
 		);
 
-		localStorage.setItem("jwt", accessToken); // TODO refactor jsonFetch so we don't need localStorage anymore
+		// REFACTOR jsonFetch so we don't need localStorage anymore
+		// this is a huge refactoring, because all API calls should be done by VUEX
+		// low priority, it's working as it is
+		localStorage.setItem("jwt", accessToken);
 		const { userId } = decodeJwt(accessToken);
 
 		const user = await jsonFetch(

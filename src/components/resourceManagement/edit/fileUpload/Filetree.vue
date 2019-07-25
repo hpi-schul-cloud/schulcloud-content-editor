@@ -222,8 +222,6 @@ export default {
 			this.handleDragleave(event);
 		},
 		wrappingFolder(event, callback) {
-			// TODO refactor, don't use direct dom manipulation
-			// TODO highlight dropzone only if folder isn't deleted
 			const wrapper = event.target.closest(".list-item");
 			if (wrapper && Array.from(wrapper.classList).includes("is-folder")) {
 				callback(wrapper);
