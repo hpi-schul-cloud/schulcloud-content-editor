@@ -31,7 +31,7 @@
 						<BaseSelect
 							:options="mappingOptions"
 							:disabled-options="disabledOptions"
-							:selected="value.mappedHeader"
+							:value="value.mappedHeader"
 							@input="handleInput($event, key)"
 							label=""
 							name="Wähle eine CSV-Spalte"

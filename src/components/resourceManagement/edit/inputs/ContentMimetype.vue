@@ -3,7 +3,7 @@
 		<BaseSelect
 			:label="$lang.edit.form.mimetype"
 			:options="options"
-			:selected="value"
+			:value="value"
 			@input="$emit('input', $event)"
 			name="Mimetype"
 		/>

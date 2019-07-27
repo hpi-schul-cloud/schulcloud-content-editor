@@ -1,4 +1,6 @@
 import { inputs, layouts } from "vue-filter-ui";
+import BaseSelect from "@/components/base/BaseSelect";
+import BaseInput from "@/components/base/BaseInput";
 
 const resourceAttributes = [
 	"contentCategory",
@@ -60,7 +62,7 @@ export default {
 						{
 							attribute: "$sort-attribute",
 							operator: "=",
-							input: inputs.Select,
+							input: BaseSelect,
 							options: resourceOptions,
 						},
 						{
@@ -87,13 +89,13 @@ export default {
 						{
 							attribute: "$contains-attribute",
 							operator: "=",
-							input: inputs.Select,
+							input: BaseSelect,
 							options: resourceOptions,
 						},
 						{
 							attribute: "$contains-value",
 							operator: "=",
-							input: inputs.InputText,
+							input: BaseInput,
 						},
 					],
 				},
@@ -132,7 +134,7 @@ export default {
 						{
 							attribute: "mimeType",
 							operator: "=",
-							input: inputs.Select,
+							input: BaseSelect,
 							options: mimeTypeOptions,
 						},
 					],

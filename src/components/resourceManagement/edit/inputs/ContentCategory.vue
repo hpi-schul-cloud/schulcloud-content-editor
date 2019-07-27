@@ -3,7 +3,7 @@
 		<BaseSelect
 			:label="getLabel"
 			:options="options"
-			:selected="value"
+			:value="value"
 			@input="$emit('input', $event)"
 			name="Kategorie"
 		/>

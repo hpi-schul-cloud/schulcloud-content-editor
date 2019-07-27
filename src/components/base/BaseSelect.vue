@@ -12,7 +12,7 @@
 			@click="expandSelect"
 			type="button"
 		>
-			{{ getContent() }}
+			{{ selection }}
 			<i :class="{ 'material-icons': true, rotate: expanded }">
 				arrow_drop_down
 			</i>
@@ -20,16 +20,18 @@
 		<ul class="select">
 			<li
 				v-for="option in options"
-				:key="option.key"
+				:key="option.key || option.value"
 				:class="{
 					option: true,
-					selected: option.key === selected,
-					'disabled-option': disabledOptions.includes(option.key),
+					selected: (option.key || option.value) === value,
+					'disabled-option': disabledOptions.includes(
+						option.key || option.value
+					),
 				}"
-				:value="option.key"
+				:value="option.key || option.value"
 			>
 				<button
-					:disabled="disabledOptions.includes(option.key)"
+					:disabled="disabledOptions.includes(option.key || option.value)"
 					@click="selectOption(option)"
 					type="button"
 				>
@@ -47,6 +49,10 @@ export default {
 	name: "BaseSelect",
 	directives: {
 		ClickOutside,
+	},
+	model: {
+		prop: "value",
+		event: "input",
 	},
 	props: {
 		options: {
@@ -67,7 +73,7 @@ export default {
 			type: String,
 			required: true,
 		},
-		selected: {
+		value: {
 			type: String,
 			default: undefined,
 			required: false,
@@ -82,6 +88,17 @@ export default {
 			expanded: false,
 		};
 	},
+	computed: {
+		selection() {
+			if (this.value === undefined) return this.name;
+			else {
+				let selectedObject = this.options.find((elem) => {
+					return (elem.key || elem.value) === this.value;
+				});
+				return selectedObject ? selectedObject.value : this.name;
+			}
+		},
+	},
 	methods: {
 		expandSelect(event) {
 			this.expanded = !this.expanded;
@@ -92,18 +109,8 @@ export default {
 			}
 		},
 		selectOption(option) {
-			this.$emit("input", option.key);
+			this.$emit("input", option.key || option.value);
 			this.expanded = false;
-		},
-		getContent() {
-			if (this.selected === undefined) return this.name;
-			else {
-				let selectedObject = this.options.find((elem) => {
-					return elem.key === this.selected;
-				});
-				if (selectedObject) return selectedObject.value;
-				else return this.name;
-			}
 		},
 	},
 };

@@ -2,7 +2,7 @@
 	<BaseSelect
 		:label="$lang.edit.form.thumbnailSelector"
 		:options="options"
-		:selected="value"
+		:value="value"
 		:disabled="disabled || !files.length"
 		@input="$emit('input', $event)"
 		name="Thumbnail"

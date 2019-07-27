@@ -3,7 +3,7 @@
 		<BaseSelect
 			:label="$lang.edit.form.entrypointSelector"
 			:options="options"
-			:selected="value"
+			:value="value"
 			:disabled="disabled || !files.length"
 			@input="$emit('input', $event)"
 			name="Entrypoint"
