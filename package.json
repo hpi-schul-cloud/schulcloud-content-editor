@@ -79,7 +79,7 @@
 		"stylelint": "^10.0.1",
 		"stylelint-config-prettier": "^4.0.0",
 		"stylelint-config-recess-order": "^2.0.2",
-		"stylelint-config-standard": "^18.3.0",
+		"stylelint-config-standard": "^19.0.0",
 		"stylelint-scss": "^3.6.0",
 		"vue-eslint-parser": "^6.0.4",
 		"vue-filter-ui": "^0.4.0",
