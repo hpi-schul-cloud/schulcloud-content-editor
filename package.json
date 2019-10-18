@@ -52,7 +52,7 @@
 		"vuex-persistedstate": "^2.5.4"
 	},
 	"devDependencies": {
-		"@vue/cli-plugin-babel": "^3.6.0",
+		"@vue/cli-plugin-babel": "^4.0.4",
 		"@vue/cli-plugin-eslint": "^3.6.0",
 		"@vue/cli-plugin-pwa": "^3.6.0",
 		"@vue/cli-plugin-unit-jest": "^3.6.3",
