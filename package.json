@@ -81,7 +81,7 @@
 		"stylelint-config-recess-order": "^2.0.2",
 		"stylelint-config-standard": "^18.3.0",
 		"stylelint-scss": "^3.6.0",
-		"vue-eslint-parser": "^6.0.4",
+		"vue-eslint-parser": "^7.0.0",
 		"vue-filter-ui": "^0.4.0",
 		"vue-jest": "^3.0.3",
 		"vue-template-compiler": "^2.6.10",
