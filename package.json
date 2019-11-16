@@ -76,7 +76,7 @@
 		"pascal-case": "^2.0.1",
 		"prettier": "github:prettier/prettier#3de36e3",
 		"sass-loader": "^7.0.1",
-		"stylelint": "^10.0.1",
+		"stylelint": "^12.0.0",
 		"stylelint-config-prettier": "^4.0.0",
 		"stylelint-config-recess-order": "^2.0.2",
 		"stylelint-config-standard": "^18.3.0",
