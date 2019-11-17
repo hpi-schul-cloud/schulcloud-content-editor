@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "78c9068ed85105e76e28",
+    "revision": "8520055193e80899661f",
     "url": "/schulcloud-content-editor/css/app.ae825870.css"
   },
   {
-    "revision": "78c9068ed85105e76e28",
-    "url": "/schulcloud-content-editor/js/app.56e90d3b.js"
+    "revision": "8520055193e80899661f",
+    "url": "/schulcloud-content-editor/js/app.39b8c9b2.js"
   },
   {
     "revision": "fce90ed1dcd6abaa1d94",
@@ -112,7 +112,7 @@ self.__precacheManifest = [
     "url": "/schulcloud-content-editor/img/icon-check-outline.3e288c24.svg"
   },
   {
-    "revision": "1ad14bb3565e64779bec24cb19a58f96",
+    "revision": "e02e2bb6f3475d77fdcdb82c6a420668",
     "url": "/schulcloud-content-editor/index.html"
   },
   {
