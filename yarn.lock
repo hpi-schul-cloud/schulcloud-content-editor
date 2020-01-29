@@ -12863,10 +12863,10 @@ vary@~1.1.2:
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha1-IpnwLG3tMNSllhsLn3RSShj2NPw=
 
-vee-validate@^2.2.3:
-  version "2.2.7"
-  resolved "https://registry.yarnpkg.com/vee-validate/-/vee-validate-2.2.7.tgz#6b089f41f8ae1be0c2f3a76b1085aba7d6be3d56"
-  integrity sha512-TC5jomtBGK5rMDrWZvjFjxW3rT81HfWvNebBiye6/o32EDabmMWBqQqZ955ahrJAC1h1gl9HEqH9fbQ2NPL0Ww==
+vee-validate@^3.2.3:
+  version "3.2.3"
+  resolved "https://registry.yarnpkg.com/vee-validate/-/vee-validate-3.2.3.tgz#e8ba1841b2ae9fe792e52cf860a59e1c6cadc452"
+  integrity sha512-OZmFQ25x0rzwH/Ockb1UZUjSNh4zzsZqMMUKjWyxv3AkIc2CB8D189iey7yXmSY9km2qMTYHn6F+Bcd3kvq82Q==
 
 velocity-animate@^1.5.2:
   version "1.5.2"
